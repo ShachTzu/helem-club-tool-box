@@ -24,7 +24,7 @@
 ## 1. מטרה
 
 מרקטפלייס production של אפליקציות התמודדות: הגשה, מודרציה, wishlist, מנטורים. עברית RTL. עיון חופשי בלי הרשמה; חשבון (OTP/Google) רק לפעולות.
-**היעד הקרוב (§10):** הרשמה + הגשה, כדי שרואי ישתף לינק עם משתתפי **האקתון 1 (שכבר קרה)** שיגישו את הכלים שכבר בנו → נתוני אמת, **בלי נתון בדוי ב-prod**.
+**היעד הקרוב (§10):** הרשמה + הגשה. מי שנרשם הופך ל**חבר קהילה** (role `member`). **כדי להגיש כלי לארגז הכלים חובה להיות חבר קהילה רשום.** הסיינים הראשונים יהיו חברי קהילה שהם גם משתתפי **האקתון 1 (שכבר קרה)** — רואי משתף איתם לינק, הם נרשמים כחברי קהילה ומגישים את הכלים שבנו → נתוני אמת. *(אפשר להשתתף בהאקתון בלי להיות חבר קהילה; אבל הגשה לארגז הכלים דורשת הרשמה.)* **בלי נתון בדוי ב-prod.**
 
 ---
 
@@ -88,7 +88,7 @@ upvote/claim אטומיים (on-read בשאילתה), fulfillment+קרדיט, co
 
 ## 7. חוזה הפלטפורמה (✅ אושר)
 
-**Roles:** `visitor` · `member` · `admin`.
+**Roles:** `visitor` (גולש) · `member` (= חבר קהילה רשום — נדרש להגשה/דירוג/תגובה) · `admin` (רואי/Shachar).
 **Slots:** `Route`(+guard), `NavigationItem`, `HeaderAction`, `UserMenuItem`, `ModerationQueue`(+badge), `FooterLink`, `BackendServer`, `OnStartHook`.
 **עוזרים:** `getCurrentUser(req)` → `null` לאנונימי; `requireRole(user, role)` על mutations.
 **מודל מודרציה:** `ModerationRecord`. ⚠️ היום `status` שטוח `default:'approved'` — migration ל-lifecycle + default → `pending` (§10 step 5).
