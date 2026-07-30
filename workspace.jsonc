@@ -60,9 +60,12 @@
     "allowScripts": {},
     "rootComponents": true,
     "policy": {
-      "dependencies": {},
+      "dependencies": {
+        "google-auth-library": "^11.0.0"
+      },
       "peerDependencies": {}
-    }
+    },
+    "linkCoreAspects": true
   },
   "teambit.workspace/workspace-config-files": {
     "enableWorkspaceConfigWrite": true

@@ -27,6 +27,16 @@ export type CreateUserProps = {
    * community role assigned to the user.
    */
   role?: string;
+
+  /**
+   * whether the email is already verified at creation (true for Google).
+   */
+  emailVerified?: boolean;
+
+  /**
+   * the Google subject id, when created via Google sign-in.
+   */
+  googleSub?: string;
 };
 
 /**
@@ -63,12 +73,33 @@ export class UserRepository {
       avatarUrl: options.avatarUrl,
       provider: options.provider || 'email',
       role: options.role || 'member',
+      emailVerified: options.emailVerified || false,
+      googleSub: options.googleSub,
       onboardingCompleted: false,
       interests: [],
       createdAt: new Date().toISOString(),
     });
 
     return User.from(toPlainUser(doc.toObject()));
+  }
+
+  /**
+   * apply authentication state after a successful sign-in: mark the email
+   * verified, link a Google subject id, and/or promote the role. only the
+   * provided fields are written. returns the updated user.
+   */
+  async setAuthState(
+    userId: string,
+    patch: { emailVerified?: boolean; googleSub?: string; role?: string }
+  ): Promise<User | null> {
+    const update: Record<string, unknown> = {};
+    if (patch.emailVerified !== undefined) update.emailVerified = patch.emailVerified;
+    if (patch.googleSub !== undefined) update.googleSub = patch.googleSub;
+    if (patch.role !== undefined) update.role = patch.role;
+    if (Object.keys(update).length === 0) return this.findById(userId);
+
+    const doc = await this.userModel.findOneAndUpdate({ userId }, { $set: update }, { new: true });
+    return doc ? User.from(toPlainUser(doc.toObject())) : null;
   }
 
   /**

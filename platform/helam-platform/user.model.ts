@@ -53,6 +53,20 @@ export class UserModel {
   public provider!: string;
 
   /**
+   * whether the user's email has been verified (via OTP, or a verified Google
+   * account). required before submitting to the toolbox.
+   */
+  @prop({ type: Boolean, default: false })
+  public emailVerified!: boolean;
+
+  /**
+   * the Google account subject id, when the user signed in with Google. unique
+   * across users; sparse so email-only users (null) do not collide.
+   */
+  @prop({ type: String, unique: true, sparse: true })
+  public googleSub?: string;
+
+  /**
    * whether the user has completed the mandatory post-signup onboarding flow.
    */
   @prop({ type: Boolean, default: false })

@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import MongoStore from 'connect-mongo';
 import session from 'express-session';
 import bodyParser from 'body-parser';
@@ -7,12 +8,15 @@ import {
   SymphonyPlatformAspect,
   type SymphonyPlatformNode,
 } from '@bitdev/symphony.symphony-platform';
-import { User, mockUsers } from '@helemclub/platform.entities.user';
+import { User } from '@helemclub/platform.entities.user';
 import type { BackendServerDefinition } from '@bitdev/symphony.backends.backend-server';
 import type { HelamPlatformConfig } from './helam-platform-config.js';
 import { helamPlatformGqlSchema } from './helam-platform.graphql.js';
 import { UserRepository } from './user-repository.js';
 import { UserModel } from './user.model.js';
+import { OtpModel } from './otp.model.js';
+import { OtpRepository } from './otp-repository.js';
+import { verifyGoogleIdToken } from './google.js';
 
 /**
  * an authenticated session returned after a successful sign-in.
@@ -33,6 +37,7 @@ export class HelamPlatformNode {
   constructor(
     private config: HelamPlatformConfig,
     private userRepository: UserRepository,
+    private otpRepository: OtpRepository,
     private symphonyPlatform: SymphonyPlatformNode
   ) {}
 
@@ -80,37 +85,67 @@ export class HelamPlatformNode {
   }
 
   /**
-   * request a one-time-password for the given email. this platform uses a
-   * password-less flow: the code is not persisted or emailed here — any code
-   * is accepted on verification, and the note is logged on start for the
-   * seeded admin. always resolves true so the client advances to the code step.
+   * issue a real one-time-password for the given email: generate a 6-digit
+   * code, store only its hash with a short TTL, and email it (or log it in dev
+   * when no mail provider is configured). returns false on an invalid email or
+   * when a code was requested too recently.
    */
   async requestEmailOtp(email: string): Promise<boolean> {
     if (!email || !email.includes('@')) return false;
-    // eslint-disable-next-line no-console
-    console.log(`[helam-platform] OTP requested for ${email} (password-less: enter any code to continue).`);
+    const result = await this.otpRepository.issue(email);
+    if (!result.ok) return false;
+    await this.sendOtp(email.toLowerCase(), result.code);
     return true;
   }
 
   /**
-   * verify an email one-time-password and establish a session. finds the user
-   * by email or provisions a new member on first sign-in, then issues a token.
+   * verify an email one-time-password and establish a session. on success the
+   * code is consumed, the user is found or provisioned, their email is marked
+   * verified, and admins are promoted by the configured allow-list.
    */
   async verifyEmailOtp(email: string, code: string): Promise<AuthSession | undefined> {
     if (!email || !code) return undefined;
-    const user = await this.userRepository.findOrCreate({ email, provider: 'email' });
-    return { user, token: this.issueToken(user) };
+    const result = await this.otpRepository.verify(email, code);
+    if (!result.ok) return undefined;
+
+    const user = await this.userRepository.findOrCreate({
+      email: email.toLowerCase(),
+      provider: 'email',
+    });
+    const updated =
+      (await this.userRepository.setAuthState(user.id, {
+        emailVerified: true,
+        role: this.adminRoleFor(email, user.toObject().role),
+      })) || user;
+    return { user: updated, token: this.issueToken() };
   }
 
   /**
-   * exchange a Google ID token for a platform session. in this environment the
-   * token payload is trusted and mapped to a user by a derived email.
+   * exchange a Google ID token for a platform session. the token is verified
+   * server-side against the configured client id — an unconfigured client
+   * disables Google sign-in rather than trusting the token.
    */
   async signInWithGoogle(idToken: string): Promise<AuthSession | undefined> {
     if (!idToken) return undefined;
-    const email = this.emailFromGoogleToken(idToken);
-    const user = await this.userRepository.findOrCreate({ email, provider: 'google' });
-    return { user, token: this.issueToken(user) };
+    const clientId = this.config.googleClientId;
+    if (!clientId) throw new Error('Google sign-in is not configured');
+
+    const identity = await verifyGoogleIdToken(idToken, clientId);
+    if (!identity) return undefined;
+
+    const user = await this.userRepository.findOrCreate({
+      email: identity.email,
+      provider: 'google',
+      emailVerified: identity.emailVerified,
+      googleSub: identity.sub,
+    });
+    const updated =
+      (await this.userRepository.setAuthState(user.id, {
+        emailVerified: true,
+        googleSub: identity.sub,
+        role: this.adminRoleFor(identity.email, user.toObject().role),
+      })) || user;
+    return { user: updated, token: this.issueToken() };
   }
 
   /**
@@ -120,35 +155,103 @@ export class HelamPlatformNode {
     return user.role === 'admin';
   }
 
-  private issueToken(user: User): string {
-    return `helam.${user.id}.${Date.now()}`;
+  /**
+   * the role to promote a signing-in user to, or undefined to leave unchanged.
+   * only promotes emails on the configured admin allow-list.
+   */
+  private adminRoleFor(email: string, currentRole: string): string | undefined {
+    const admins = this.config.adminEmails || [];
+    if (admins.includes(email.toLowerCase()) && currentRole !== 'admin') return 'admin';
+    return undefined;
   }
 
-  private emailFromGoogleToken(idToken: string): string {
-    // derive a stable, deterministic email for the token in this environment.
-    const normalized = idToken.replace(/[^a-zA-Z0-9]/g, '').slice(0, 24).toLowerCase() || 'guest';
-    return `${normalized}@google.helemclub.org`;
+  /**
+   * send an OTP by email via Resend, or log it to the console in non-production
+   * when no mail provider is configured. throws in production without a key.
+   */
+  private async sendOtp(email: string, code: string): Promise<void> {
+    const { resendApiKey, otpFromEmail } = this.config;
+    if (resendApiKey && otpFromEmail) {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${resendApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: otpFromEmail,
+          to: email,
+          subject: 'קוד הכניסה שלך ל-Helam Club',
+          html: `<div dir="rtl" style="font-family:Assistant,Arial,sans-serif;font-size:16px">קוד הכניסה שלך: <strong style="font-size:28px;letter-spacing:4px">${code}</strong><br/>הקוד תקף ל-10 דקות. אם לא ביקשת אותו, אפשר להתעלם.</div>`,
+        }),
+      });
+      if (!res.ok) throw new Error(`OTP email failed to send (Resend ${res.status}).`);
+      return;
+    }
+
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('RESEND_API_KEY and OTP_FROM_EMAIL are required to send OTP emails in production.');
+    }
+
+    // ponytail: dev-only fallback so local testing works without a mail provider.
+    // eslint-disable-next-line no-console
+    console.log(`[helam-platform] DEV OTP for ${email}: ${code} (valid 10 min).`);
+  }
+
+  private issueToken(): string {
+    return randomUUID();
   }
 
   static dependencies = [SymphonyPlatformAspect];
 
   static defaultConfig: HelamPlatformConfig = {
     mongoUrl: process.env.MONGO_URL,
-    sessionSecretKey: 'SESSION_SECRET',
+    sessionSecretKey: process.env.SESSION_SECRET,
+    googleClientId: process.env.GOOGLE_CLIENT_ID,
+    resendApiKey: process.env.RESEND_API_KEY,
+    otpFromEmail: process.env.OTP_FROM_EMAIL || 'onboarding@resend.dev',
+    adminEmails: (process.env.ADMIN_EMAILS || '')
+      .split(',')
+      .map((entry) => entry.trim().toLowerCase())
+      .filter(Boolean),
   };
 
   static async provider(
     [symphonyPlatform]: [SymphonyPlatformNode],
     config: HelamPlatformConfig
   ) {
+    const dc = HelamPlatformNode.defaultConfig;
+
     const mongoUrl = process.env.MONGO_URL || config.mongoUrl;
-    if (mongoUrl) {
-      await mongoose.connect(mongoUrl);
+    if (!mongoUrl) {
+      throw new Error('MONGO_URL is required — refusing to start without a database.');
     }
+    const sessionSecret = process.env.SESSION_SECRET || config.sessionSecretKey;
+    if (!sessionSecret) {
+      throw new Error('SESSION_SECRET is required — refusing to start without a session secret.');
+    }
+
+    await mongoose.connect(mongoUrl);
+
+    const resolved: HelamPlatformConfig = {
+      mongoUrl,
+      sessionSecretKey: sessionSecret,
+      googleClientId: config.googleClientId ?? dc.googleClientId,
+      resendApiKey: config.resendApiKey ?? dc.resendApiKey,
+      otpFromEmail: config.otpFromEmail ?? dc.otpFromEmail,
+      adminEmails: config.adminEmails ?? dc.adminEmails,
+    };
 
     const userModel = getModelForClass(UserModel);
     const userRepository = new UserRepository(userModel);
-    const helamPlatform = new HelamPlatformNode(config, userRepository, symphonyPlatform);
+    const otpModel = getModelForClass(OtpModel);
+    const otpRepository = new OtpRepository(otpModel, sessionSecret);
+    const helamPlatform = new HelamPlatformNode(
+      resolved,
+      userRepository,
+      otpRepository,
+      symphonyPlatform
+    );
 
     const gqlSchema = helamPlatformGqlSchema(helamPlatform);
 
@@ -164,16 +267,22 @@ export class HelamPlatformNode {
     ]);
 
     /**
-     * session middleware backing the password-less auth flow.
+     * session middleware backing the password-less auth flow. cookies are
+     * http-only by express-session default; secure in production (needs the
+     * app behind a trusted proxy for TLS termination), and lax same-site so the
+     * OAuth redirect back from Google keeps the session.
      */
     symphonyPlatform.registerMiddlewares([
       bodyParser.urlencoded({ extended: true }),
       session({
-        store: mongoUrl ? MongoStore.create({ mongoUrl }) : undefined,
-        secret: config.sessionSecretKey || 'SESSION_SECRET',
+        store: MongoStore.create({ mongoUrl }),
+        secret: sessionSecret,
         resave: false,
-        saveUninitialized: true,
-        cookie: { secure: 'auto', sameSite: true },
+        saveUninitialized: false,
+        cookie: {
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+        },
       }),
       async (req: any, _res: any, next: any) => {
         if (!req?.session?.userId) return next();
@@ -182,43 +291,6 @@ export class HelamPlatformNode {
         return next();
       },
     ]);
-
-    /**
-     * seed users from the platform's User mock when the collection is empty,
-     * including at least one admin. logs the admin's password-less OTP note.
-     */
-    symphonyPlatform.registerOnStart(async () => {
-      const existing = await userRepository.count();
-      if (existing > 0) return undefined;
-
-      const seedUsers = mockUsers();
-      await userModel.insertMany(
-        seedUsers.map((user) => {
-          const plain = user.toObject();
-          return {
-            userId: plain.id,
-            email: plain.email.toLowerCase(),
-            displayName: plain.displayName,
-            avatarUrl: plain.avatarUrl,
-            role: plain.role,
-            provider: plain.provider,
-            onboardingCompleted: true,
-            interests: [],
-            createdAt: plain.createdAt,
-          };
-        })
-      );
-
-      const admin = seedUsers.find((user) => user.role === 'admin');
-      if (admin) {
-        // eslint-disable-next-line no-console
-        console.log(
-          `[helam-platform] seeded admin ${admin.email} — sign in password-less: request an OTP for this email, then enter any code.`
-        );
-      }
-
-      return undefined;
-    });
 
     return helamPlatform;
   }
