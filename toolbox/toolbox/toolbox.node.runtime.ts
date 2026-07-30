@@ -232,8 +232,13 @@ export class ToolboxNode {
     helamPlatform.registerOnStart(async () => {
       // sync indexes so the text index picks up the language_override option
       // (the `language` field holds Hebrew values that mongo would otherwise
-      // try to interpret as a text-search language).
+      // try to interpret as a text-search language). runs in every environment.
       await appModel.syncIndexes();
+
+      // ponytail: demo catalog + reviews are dev-only. production starts empty
+      // and fills from real submissions (the hackathon). fake developers and
+      // made-up ratings must never face real users on a mental-health platform.
+      if (process.env.NODE_ENV === 'production') return;
 
       const existingApps = await appModel.find().limit(1);
       if (!existingApps.length) {
