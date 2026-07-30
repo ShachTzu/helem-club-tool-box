@@ -3,9 +3,9 @@
 **מוכן עבור:** Shachar Tzuk (@shacharoli) · **חשבון:** helemclub · **תאריך:** 2026-07-31
 **Repo (Bit workspace):** `github.com/ShachTzu/helem-club-tool-box` (private)
 **Lane קיים:** `helemclub.marketplace/helam-club` — **165 קומפוננטות, 88 מהן ב-4 ה-scopes הרלוונטיים.**
-**סטטוס:** 🟢 **מאושר לביצוע (hopeAI sign-off על v4).** v5 קולט את ה-re-review. Step 1 (Mongo) הושלם. קלוד מתחיל מ-Step 0.
+**סטטוס:** 🟢 **בביצוע.** Step 0–1 ✅ · Step 2 (auth) אצל hopeAI — **Google-only לגל זה** · Step 3 ✅ (Claude, `feat/step3-seeds`) · Step 4 ממתין ל-Step 2 של hopeAI + `CLOUDINARY_URL`.
 
-> **מה השתנה מ-v4 (re-review של hopeAI):** Step 1 (חיבור Mongo) ✅ הושלם. `defaultConfig` שורה 137 מתווסף ל-§9. הסרת `mockUsers()` seed נכנסת ל-step 2. `UserModel` מקבל `emailVerified`+`googleSub`+collection `otpCodes`. נוסף משפט מפורש "אין לבנות מחדש" ל-Step 0. §11 עודכן.
+> **חלוקת עבודה (אפס חפיפה):** **hopeAI** — קבצי auth בלבד: `helam-platform.node.runtime.ts`, `user.model.ts`, `entities/user`, `hooks/use-auth`, `pages/login`, `pages/signup`. **Claude** — seeds / הגשה / מודרציה (toolbox). כשהופ מסיימת Step 2 ו-exports ל-lane, Claude מושך מה-lane לפני שממשיך. **גל זה = Google-only** (OTP + Resend נדחים לגל הבא; tradeoff: חבר קהילה בלי Google ימתין).
 
 ---
 
@@ -45,7 +45,7 @@ flow אחד בשלושה כובעים: `draft → pending → approved | changes
 
 ## 4. ההחלטות שננעלו (✅ נעולות וקוהרנטיות)
 
-1. **כניסה:** OTP למייל + Google OAuth (אימות `id_token` מלא). בלי סיסמאות.
+1. **כניסה:** **גל זה — Google OAuth בלבד** (אימות `id_token` מלא). בלי סיסמאות. OTP למייל + Resend נדחים לגל הבא (משתתפי האקתון עם Google).
 2. **מייל (Resend):** OTP + התראות מודרציה.
 3. **מדיה:** Cloudinary uploads (signed), עוברים ביקורת בתור.
 4. **מנטורים:** CTA מאחורי login → ערוץ חיצוני. אין תיאום on-platform.
@@ -136,8 +136,8 @@ PII ישראלי — שער `ran-bar-zik` + `israeli-appsec` לפני go-live.
 |---|---|---|---|
 | 0 | Repo + `bit init` + import + env | — | ⬜ **הבא** — `bit status` נקי |
 | 1 | חיבור Mongo | 0 | ✅ **הושלם** (נותר: `throw` שורה 144) |
-| 2 | סגירת ה-auth ⛔ + הסרת seed המשתמשים | 1 | ⬜ 🚦 Shachar נרשמת ונכנסת |
-| 3 | ניקוי seeds + dev/prod | 1 | ⬜ הקטלוג ריק בנקי |
+| 2 | סגירת ה-auth (Google-only) + הסרת seed המשתמשים | 1 | 🔵 **אצל hopeAI** |
+| 3 | ניקוי seeds + dev/prod | 1 | ✅ **הושלם** (Claude) — prod ריק, empty-state מותאם |
 | 4 | טופס הגשה + `/my-submissions` | 2,3 | ⬜ 🚦 Shachar מגישה אפליקציה |
 | 5 | מודרציה + מיילים | 4 | ⬜ הגשה עוברת לקטלוג |
 | 6 | ליטוש `/submit` לשיתוף | 5 | ⬜ 🚦 רואי משתף |
