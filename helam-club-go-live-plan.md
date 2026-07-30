@@ -1,98 +1,89 @@
-# Helam Club — Go-Live Plan (v3)
+# Helam Club — Go-Live Plan (v4)
 
-**מוכן עבור:** Shachar Tzuk (@shacharoli) · **חשבון:** helemclub · **תאריך:** 2026-07-30
+**מוכן עבור:** Shachar Tzuk (@shacharoli) · **חשבון:** helemclub · **תאריך:** 2026-07-31
 **Repo (Bit workspace):** `github.com/ShachTzu/helem-club-tool-box` (private)
 **Lane קיים:** `helemclub.marketplace/helam-club` — **165 קומפוננטות, 88 מהן ב-4 ה-scopes הרלוונטיים.**
-**סטטוס:** 🟡 v3 — משלב את ביקורת hopeAI (מעגל 1). ממתין ל-re-review שלה לפני ביצוע.
+**סטטוס:** 🟡 v4 — §10 הוחלף במסלול ההגשה של האקתון 1 (מבוסס על ביקורת hopeAI + בדיקת `submit-tool.tsx` בפועל). ממתין ל-re-review לפני ביצוע.
 
-> **מה השתנה מ-v2:** לא greenfield — רוב הבנייה כבר קיימת ב-lane, בונים מעליה. auth = OTP+Google בלי סיסמאות. בלי נתוני דמו ב-prod. §8/§9/§10 נכתבו מחדש לפי בדיקת ה-lane בפועל של hopeAI. נוסף **Milestone A — האקתון 1**: הרשמה + הגשה, כדי שרואי ישתף לינק ומשתתפים יגישו אפליקציות אמיתיות.
+> **מה השתנה מ-v3:** §10 הוחלף ב**מסלול ההגשה להאקתון 1** — הרשמה + הגשה ראשונים, כדי שרואי ישתף לינק ומשתתפי ההאקתון (ש**כבר קרה**) יגישו את הכלים שכבר בנו → נתוני אמת. Google **נכנס עכשיו עם אימות id_token מלא**. מגיש יחיד + שם צוות כטקסט. שני מודרטורים (רואי + Shachar). `status` default משתנה מ-`approved` ל-`pending`.
 
 ---
 
 ## 0. איך לקרוא (handoff ל-hopeAI)
 
-מעגלי ביקורת:
-
 | מעגל | מי | איך | על מה |
 |---|---|---|---|
-| 1. ביקורת תוכנית | hopeAI | Shachar מדביקה את הקובץ; הערות חוזרות כטקסט, קלוד מיישם | המסמך הזה |
-| 2. ביקורת קוד | hopeAI | קלוד מפיק diff → Shachar מדביקה → hopeAI מחזירה הערות לפי קובץ+שורה → קלוד מיישם | כל שלב |
-| 3. שער פונקציונלי | Shachar | להתחבר ולנסות | אחרי סגירת ה-auth bypass (§10 step 2) |
+| 1. ביקורת תוכנית | hopeAI | Shachar מדביקה את הקובץ; הערות כטקסט, קלוד מיישם | המסמך הזה |
+| 2. ביקורת קוד | hopeAI | קלוד מפיק diff → Shachar מדביקה → הערות לפי קובץ+שורה → קלוד מיישם | כל שלב |
+| 3. שער פונקציונלי | Shachar | להירשם, לקבל קוד, להיכנס, להגיש | §10 |
 
-> **hopeAI קוראת בלבד — אין אינטגרציית GitHub** (לא push/PR/approve). הריפו הוא ה-Bit workspace, לא ממשק הביקורת שלה. **קלוד הוא נקודת הממשק.** הדבר הראשון שהיא בודקת בכל diff: שאין קומפוננטה חדשה שמשכפלת קיימת, ושה-env נעוץ.
+> **hopeAI קוראת בלבד — אין אינטגרציית GitHub.** הריפו הוא ה-Bit workspace, לא ממשק הביקורת. **קלוד הוא נקודת הממשק.** הדבר הראשון שהיא בודקת בכל diff: שאין קומפוננטה חדשה שמשכפלת קיימת, ושה-env נעוץ.
 
 ---
 
 ## 1. מטרה
 
-להפוך את הפרוטוטייפ למרקטפלייס production של אפליקציות התמודדות, עם: הגשת אפליקציה, מודרציה, wishlist, ומנטורים. עברית RTL, מותג הפרוטוטייפ.
+מרקטפלייס production של אפליקציות התמודדות: הגשה, מודרציה, wishlist, מנטורים. עברית RTL. עיון חופשי בלי הרשמה; חשבון (OTP/Google) רק לפעולות.
 
-**עיון חופשי בלי הרשמה.** חשבון (OTP/Google) נדרש רק להגיש, לדרג, להעלות upvote, לתפוס רעיון, או לפנות למנטור.
-
-**היעד הקרוב (Milestone A):** להעמיד **הרשמה + הגשה** כך שרואי ישתף לינק עם משתתפי **האקתון 1**, והם יגישו את האפליקציות האמיתיות שלהם. כך הקטלוג מתאכלס בנתוני אמת — **בלי שום נתון בדוי ב-prod**.
+**היעד הקרוב (§10):** הרשמה + הגשה, כדי שרואי ישתף לינק עם משתתפי **האקתון 1 (שכבר קרה)** שיגישו את הכלים האמיתיים שכבר בנו. הקטלוג מתאכלס אמת — **בלי שום נתון בדוי ב-prod**.
 
 ---
 
 ## 2. סביבת ועקרונות העבודה
 
-- **הריפו עצמו הוא ה-Bit workspace** (`bit init` בתוכו). branches + PRs ל-CI/גרסאות. **ביקורת hopeAI בהדבקה**, לא ב-GitHub.
+- **הריפו עצמו הוא ה-Bit workspace** (`bit init` בתוכו). branches + PRs ל-CI/גרסאות. **ביקורת hopeAI בהדבקה.**
 - **`bit` CLI:** מותקן (v2.0.26), מחובר `shacharoli`, `defaultScope = helemclub.marketplace`.
-- **עיקרון-על:** **reuse/extend לפני build.** 88 קומפוננטות כבר קיימות — משתמשים בהן, לא בונים מחדש. כל קומפוננטה חדשה נוצרת עם `bit create` (env נעוץ + spec + compositions + docs), לא כקובץ React בודד → החזרה פנימה = `bit export` ל-lane, לא מיגרציה.
-- **סודות/env:** `MONGO_URL` (מ-hopeAI/Atlas), `GOOGLE_CLIENT_ID`/`SECRET`, `RESEND_API_KEY`, `CLOUDINARY_URL`, `SESSION_SECRET`, admin seed. `.env` ב-`.gitignore` + Bit Cloud env. **אף סוד לא ב-repo ולא ב-frontend.**
+- **עיקרון-על:** **reuse/extend לפני build.** 88 קומפוננטות קיימות — משתמשים בהן. קומפוננטה חדשה נוצרת עם `bit create` (env נעוץ + spec + compositions + docs) → החזרה פנימה = `bit export` ל-lane, לא מיגרציה.
+- **סודות:** `.env` ב-`.gitignore` + Bit Cloud env. אף סוד לא ב-repo/frontend.
 
 ---
 
-## 3. הרעיון הארכיטקטוני (✅ אושר ע"י hopeAI)
+## 3. הרעיון הארכיטקטוני (✅ אושר)
 
-ארבעת ה-flows הם flow אחד בשלושה כובעים: `draft → pending → approved | changes_requested | rejected`, עם הערת מודרטור והיסטוריה append-only.
-הפלטפורמה מחזיקה את ה-lifecycle ואת קונסולת המודרציה, וחושפת `ModerationQueue` slot. כל feature רושם את התור שלו. הפלטפורמה לא מייבאת feature.
+flow אחד בשלושה כובעים: `draft → pending → approved | changes_requested | rejected`, עם הערת מודרטור והיסטוריה append-only. הפלטפורמה מחזיקה את ה-lifecycle וקונסולת המודרציה, וחושפת `ModerationQueue` slot. features רושמים את עצמם — הפלטפורמה לא מייבאת feature.
 
 ---
 
 ## 4. ההחלטות שננעלו
 
-1. **כניסה:** **OTP למייל + Google OAuth. בלי סיסמאות.** מי שאין לו Google נכנס בקוד למייל. פחות PII, פחות משטח תקיפה. (מבטל את כל סעיפי הסיסמה מ-v2.)
-2. **תשתית מייל (Resend):** OTP + התראות מודרציה (אושר/דרוש תיקון/נדחה).
-3. **מדיה:** Cloudinary uploads (אייקונים + צילומי מסך), עוברים ביקורת בתור האישור.
-4. **מנטורים:** CTA "צור קשר/תאם" מאחורי login, פותח ערוץ חיצוני. אין תיאום on-platform.
-5. **דירוגים/תגובות:** כוכבים — צפייה ציבורית, דירוג רק למחוברים. תגובות — צפייה+כתיבה רק למחוברים + דיווח והסרה. **מרחיבים את `app-review` הקיימת (stars+comment), לא מפצלים.**
-6. **Wishlist:** עולה מיד + שער content-safety (שפת משבר) + רצועת מוקדי סיוע. claim 60 יום, auto-expire on-read.
-7. **נתוני דמו:** **מגודרים ל-dev בלבד. prod מתחיל ריק** ומתמלא מהגשות אמיתיות (האקתון).
+1. **כניסה:** **OTP למייל + Google OAuth (עם אימות id_token מלא). בלי סיסמאות.** מי שאין לו Google נכנס בקוד למייל.
+2. **מייל (Resend):** OTP + התראות מודרציה.
+3. **מדיה:** Cloudinary uploads (signed), עוברים ביקורת בתור.
+4. **מנטורים:** CTA מאחורי login → ערוץ חיצוני. אין תיאום on-platform.
+5. **דירוגים/תגובות:** כוכבים ציבוריים, דירוג רק למחוברים; תגובות רק למחוברים + דיווח/הסרה. **מרחיבים את `app-review`, לא מפצלים.**
+6. **Wishlist:** עולה מיד + content-safety + רצועת סיוע. claim 60 יום, on-read בשאילתה.
+7. **נתוני דמו:** מגודרים ל-dev. **prod ריק.**
 8. **אירוח:** Bit Cloud + MongoDB Atlas.
+9. **הגשה:** מגיש יחיד; שם צוות/חברים כשדה טקסט. סימון `submissionSource: 'hackathon-1'`.
+10. **מודרציה:** שני admin (רואי + Shachar). `status` default משתנה מ-`approved` ל-**`pending`**.
 
 ---
 
 ## 5. מפרטי הזרימות
 
-*(ליבת המפרט מ-v2 נשמרת. עדכונים: 5.1 auth = OTP; ההגשה היא Milestone A.)*
-
-### 5.1 הגשת אפליקציה — ⭐ Milestone A
-`/submit`, חברים בלבד. אנונימי → הרשמה/כניסה (OTP או Google) → חוזר לכאן.
-טופס 4 שלבים עם autosave: (1) זהות וקישור — שם, כותרת משנה, `externalLink` https, אייקון (emoji/**Cloudinary upload**), שם מפתח; (2) תיאור ומדיה — `fullDescription` 80–2000, **העלאת צילומי מסך** (Cloudinary); (3) סיווג — domains (1–4), עלות, פלטפורמות, שפה, requires-signup; (4) קרדיטים ואישור — `creditsIdeaId` אופציונלי, תקנון, preview, שליחה.
-`toolbox/pages/submit-tool` **כבר קיים** — מרחיבים אותו, לא בונים מחדש. **ההגשות שלי** (`/my-submissions`) עם tabs לפי סטטוס.
+### 5.1 הגשת אפליקציה — ⭐ מסלול ההאקתון (§10)
+`/submit`, חברים בלבד. `toolbox/pages/submit-tool` **כבר קיים** (8 שדות, מוגן ב-ProtectedRoute, מחובר ל-`useApps().submitApp`). מרחיבים: תמונות (Cloudinary), פרטי צוות+קשר, טיוטות, preview, עמוד תודה. **ההגשות שלי** (`/my-submissions`) עם tabs לפי סטטוס.
 
 ### 5.2 אישור / מודרציה
-תור `אפליקציות` בקונסולה `/admin` (`toolbox/admin/review-submissions` **קיים**). מסך ביקורת: preview מלא + checklist + הערה + אשרו/בקשו-תיקון/דחו. רק `approved` קריא לציבור — **נאכף ב-resolvers, לא בצד לקוח.**
+`toolbox/admin/review-submissions` **קיים** (approve/reject). משלימים: `changes_requested` + הערה, migration ל-lifecycle, מיילים. רק `approved` קריא לציבור — **ב-resolvers, לא בצד לקוח.**
 
-### 5.3 Wishlist — Milestone B
-`/wishlist`. כרטיסי רעיון, upvote (קול אחד, optimistic, אטומי), claim (60 יום, אטומי, expiry on-read **בשאילתה**), fulfillment + קרדיט. content-safety + רצועת סיוע. סטטוס: `open → claimed → fulfilled`. דירוג: `upvotes / (hoursSince + 2)^1.5`.
+### 5.3 Wishlist — גל הבא
+upvote (אטומי), claim (on-read בשאילתה), fulfillment + קרדיט, content-safety. `open → claimed → fulfilled`. דירוג `upvotes / (hoursSince + 2)^1.5`.
 
-### 5.4 מנטורים — Milestone C (scope חדש, net-new)
-מדריך `/mentors` ציבורי, פרופיל, CTA מאחורי login לערוץ חיצוני, בקשה `/mentors/apply` (4 שלבים), תור+ביקורת אדמין, toggle verified, cross-linking לעמוד האפליקציה.
+### 5.4 מנטורים — גל הבא (scope חדש)
+מדריך ציבורי, CTA מאחורי login, בקשה 4 שלבים, תור אדמין, verified, cross-linking.
 
 ---
 
-## 6. טופולוגיית ה-Scopes (מול הקיים ב-lane)
+## 6. טופולוגיית ה-Scopes (מול הקיים)
 
 | Scope | קיים | מצב |
 |---|---|---|
-| `helemclub.design` | 27 | ✅ design system מוכן (button, star-rating, table, modal, tabs, select-list…) |
-| `helemclub.platform` | 32 | ✅ shell מוכן (header, footer, login, admin-dashboard, admin-shell, protected-route, helam-platform, אפליקציית helam) |
-| `helemclub.knowledge-domains` | 13 | ✅ domains מוכן (domain-filter, domain-selector) |
-| `helemclub.toolbox` | 16 | ✅ קטלוג/פירוט/הגשה/review/rating-summary; wishlist חסר |
-| `helemclub.mentors` | 0 | ❌ **net-new — צריך ליצור את ה-scope ב-Bit Cloud ידנית (לא דרך CLI)** |
-
-לא נוגעים: `blog`, `events`, `gallery`, `knowledge-base`, `engagement`, `marketplace`.
+| `helemclub.design` | 27 | ✅ button, star-rating, table, modal, tabs, select-list… |
+| `helemclub.platform` | 32 | ✅ header, footer, **signup (OTP+Google), login**, admin-dashboard, admin-shell, protected-route, helam-platform, אפליקציית helam |
+| `helemclub.knowledge-domains` | 13 | ✅ domain-filter, domain-selector |
+| `helemclub.toolbox` | 16 | ✅ catalog, app-detail, **submit-tool**, review-submissions, rating-summary, **app-repository (createApp+slug)** |
+| `helemclub.mentors` | 0 | ❌ net-new — ליצור scope ב-Bit Cloud ידנית (גל הבא) |
 
 ---
 
@@ -101,100 +92,115 @@
 **Roles:** `visitor` · `member` · `admin`.
 **Slots:** `Route`(+guard), `NavigationItem`, `HeaderAction`, `UserMenuItem`, `ModerationQueue`(+badge), `FooterLink`, `BackendServer`, `OnStartHook`.
 **עוזרים:** `getCurrentUser(req)` → `null` לאנונימי; `requireRole(user, role)` על mutations.
-**מודל מודרציה:** `ModerationRecord` — status, submittedBy/At, reviewedBy/At, moderatorNote, `history` append-only. ⚠️ **היום `status` הוא string שטוח `default:'approved'` בלי enum ובלי history — נדרש migration של הרשומות הקיימות ל-lifecycle (§10 step 4).**
+**מודל מודרציה:** `ModerationRecord` (status, submittedBy/At, reviewedBy/At, moderatorNote, `history` append-only). ⚠️ היום `status` string שטוח `default:'approved'` — נדרש migration ל-lifecycle + שינוי default ל-`pending` (§10 step 5).
 
 ---
 
 ## 8. מודל הנתונים — MongoDB (תשובות hopeAI, מוסמך)
 
-MongoDB Atlas דרך `MONGO_URL`, typegoose, GraphQL מכל aspect.
+- **DB אחד משותף.** `mongoose.connect(mongoUrl)` פעם אחת ב-provider; features עושים `getModelForClass` בלבד — **לא `connect` שוב.**
+- **Pooling:** ברירת מחדל mongoose (100), מנוהל ע"י הקריאה היחידה.
+- **Session:** cookie (`express-session` + `connect-mongo`) — נשאר, לא JWT.
+- **claim on-read בשאילתה:** `{ $or: [ {status:'open'}, {status:'claimed', 'claim.expiresAt': {$lt: new Date()}} ] }` — לא ב-JS.
 
-- **DB אחד משותף.** `helam-platform.node.runtime.ts` קורא `mongoose.connect(mongoUrl)` **פעם אחת** ב-provider; כל aspect עושה `getModelForClass` על אותו חיבור. **כלל מחייב:** feature חדש (mentors כלול) **לא קורא ל-`mongoose.connect` שוב** — רק `getModelForClass`.
-- **Pooling:** ברירת מחדל mongoose (100), מנוהל ע"י אותה קריאה יחידה. אין קונפיג נוסף.
-- **Session:** cookie session (`express-session` + `connect-mongo`, collection `sessions` חי) — **נשאר, לא JWT.**
-- **claim פג — on-read, בשאילתה:** `{ $or: [ {status:'open'}, {status:'claimed', 'claim.expiresAt': {$lt: new Date()}} ] }` — הסינון ב-Mongo, **לא ב-JS אחרי שליפה.**
-
-### ⚠️ שמות שדות — לא משנים אף שדה קיים (רק מוסיפים)
-
-| §v2 הציע | קיים בפועל | הכרעה |
-|---|---|---|
-| `link` | `externalLink` | השאר קיים |
-| `iconRef` | `icon` | השאר קיים |
-| `description` | `fullDescription` | השאר קיים |
-| `ratingAvg` | `avgRating` | השאר קיים |
-| `moderation{}` מקונן | `status`+`submittedBy` שטוחים | השאר שטוח; הוסף lifecycle+history בזהירות |
-| `creditsIdeaId` | `originatorName` | הוסף `creditsIdeaId`, השאר גם הקיים |
-| `photoRef` (mentors) | — | חדש, בסדר |
-
-- **ratings/comments:** לא לפצל — `app-review` הקיימת מחזיקה stars+comment; מרחיבים ב-`reports[]` + `removed`.
-- **דפוס מזהים:** לכל model קיים יש `id: string` ייחודי בנוסף ל-`_id`. כל model חדש (`WishlistIdeaModel`, `MentorModel`) שומר על זה.
+### ⚠️ שמות שדות — לא משנים אף קיים (רק מוסיפים)
+`externalLink`(לא link) · `icon`(לא iconRef) · `fullDescription`(לא description) · `avgRating`(לא ratingAvg) · `status`+`submittedBy` שטוחים · `originatorName` (מוסיפים `creditsIdeaId` לצידו) · `photoRef` חדש.
+- **ratings/comments:** לא לפצל — מרחיבים את `app-review` (stars+comment) ב-`reports[]`+`removed`.
+- **מזהים:** כל model קיים עם `id:string` ייחודי בנוסף ל-`_id`; models חדשים שומרים על הדפוס.
 
 ---
 
-## 9. אבטחה — ⚠️ שלושה bypasses חיים, חוסמים כל פיצ'ר חדש
+## 9. אבטחה — ⚠️ שלושה bypasses חיים, חוסמים כל פיצ'ר (§10 step 2)
 
-hopeAI קראה את `helam-platform.node.runtime.ts`. שלושה חורים פתוחים **היום** (כולל לחשבון האדמין הנזרע):
+`helam-platform.node.runtime.ts`:
+- **`verifyEmailOtp` מקבל כל קוד** → OTP אמיתי: 6 ספרות, hashed at rest, TTL 10 דק', single-use, rate-limited.
+- **`signInWithGoogle` לא מאמת** → **לאמת `id_token` מול Google** (נכלל בגל הזה — לא להסיר).
+- **`issueToken` לא חתום/נחיש** → להישען על ה-cookie session בלבד.
+- session/boot: `saveUninitialized:false`, `sameSite:'lax'`, **fail-fast** על `SESSION_SECRET` ו-`MONGO_URL`.
 
-- **א. `verifyEmailOtp` מקבל כל קוד** — אין יצירה/אחסון/השוואה. → לממש **OTP אמיתי:** קוד 6 ספרות, **hashed at rest**, TTL 10 דק', single-use, rate-limited, השוואה בשרת.
-- **ב. `signInWithGoogle` לא מאמת** — `emailFromGoogleToken` ממציא מייל ממחרוזת. → **לאמת `id_token` בצד שרת** (ספריית Google), להשתמש ב-email/sub מאומתים בלבד.
-- **ג. `issueToken` → `helam.${id}.${Date.now()}`** — לא חתום, נחיש. → לא לסמוך עליו; להישען על ה-cookie session בלבד (או לחתום).
-
-**תיקוני session/boot (חובה):**
-- `saveUninitialized: true → false` (אחרת session לכל בוט).
-- `sameSite: true(strict) → 'lax'` (strict שובר את redirect ה-OAuth).
-- `secret: … || 'SESSION_SECRET'` → **fail-fast** אם המשתנה חסר (לא ברירת מחדל מילולית).
-- Mongo: `if (mongoUrl) connect` → **`throw` מפורש** אם `MONGO_URL` חסר.
-
-**אין סיסמאות** → אין argon2id/reset/rate-limit-סיסמה. **PII ישראלי** (מיילים, פרטי מנטורים) — שער `ran-bar-zik` + `israeli-appsec` לפני go-live. content-safety + רצועת סיוע ב-wishlist.
+PII ישראלי — שער `ran-bar-zik` + `israeli-appsec` לפני go-live.
 
 ---
 
-## 10. סדר וכיוון העבודה (מתוקן — hopeAI)
+## 10. מסלול ההגשה — האקתון 1  🎯 (מחליף את §10 של v2)
 
-### Step 0 — Repo + import + env (לפני שורת קוד; `bit status` נקי = שער)
+**מטרה:** קישור אחד לרואי לשתף עם משתתפי האקתון 1 (שכבר קרה) → הם נרשמים ומגישים את הכלים שכבר בנו → נתוני אמת מאכלסים את הקטלוג. **מאושר לביצוע אחרי Step 0.**
+
+**כבר קיים ובנוי ל-lane:** signup (OTP+Google), login, submit-tool (8 שדות, מוגן, `pending`), app-repository (`createApp`+slug), review-submissions (approve/reject), קטלוג+פירוט, shell/guards/roles.
+**חוסם בפועל — שלושה:** חיבור Mongo, פרצת ה-auth, ניקוי seeds. אחריהם — השלמות לטופס.
+**התאריך כבר עבר → אין לחץ דדליין:** רצים על המסלול המלא כולל שלב 5.
+
+### רצף השלבים
+| # | שלב | תלוי | שער |
+|---|---|---|---|
+| 0 | Repo + `bit init` + import מה-lane + env | — | `bit status` נקי |
+| 1 | חיבור Mongo אמיתי | 0 | הקטלוג נטען מ-Atlas |
+| 2 | סגירת ה-auth ⛔ | 1 | 🚦 Shachar נרשמת ונכנסת (OTP + Google) |
+| 3 | ניקוי seeds + הפרדת dev/prod | 1 | הקטלוג ריק בנקי |
+| 4 | השלמת טופס ההגשה + `/my-submissions` | 2, 3 | 🚦 Shachar מגישה אפליקציה אמיתית |
+| 5 | השלמת מודרציה + מיילים | 4 | הגשה עוברת לקטלוג |
+| 6 | ליטוש `/submit` לשיתוף | 5 | 🚦 רואי משתף |
+
+**מקביליות:** 2 ו-3 מקבילים (תלויים רק ב-1). 4 חייב את שניהם.
+
+### Step 0 — תשתית
 ```
 bit init                                     # defaultScope = helemclub.marketplace
 bit lane switch helemclub.marketplace/helam-club
-bit import helemclub.design/**
-bit import helemclub.platform/**
-bit import helemclub.knowledge-domains/**
-bit import helemclub.toolbox/**
+bit import "helemclub.design/**"
+bit import "helemclub.platform/**"
+bit import "helemclub.knowledge-domains/**"
+bit import "helemclub.toolbox/**"
 bit install
-bit status                                   # חייב לצאת נקי
+bit status                                   # חייב לצאת נקי — זה השער
 ```
-+ למפות קומפוננטות קיימות מול §5–§8 (מה extend, מה חסר). + env/secrets. + Ripple CI על PRs.
-**נעיצת env (חובה):** UI → `helemclub.design/envs/helam-env@275621ea…` · Aspects → `bitdev.symphony/envs/symphony-env@5.0.20` · Entities → `bitdev.node/node-env@6.0.20`. env חדש יותר שובר את ה-capsule build.
+**env נעוץ (חובה):** UI/pages/hooks → `helemclub.design/envs/helam-env@275621ea…` · Aspects → `bitdev.symphony/envs/symphony-env@5.0.20` · Entities → `bitdev.node/node-env@6.0.20`.
+**סודות לגל 1:** `MONGO_URL`, `SESSION_SECRET`, `RESEND_API_KEY`, `GOOGLE_CLIENT_ID`/`SECRET`, admin seed ×2 (רואי + Shachar). Cloudinary — שלב 4.
 
-### רצף השלבים
-| # | שלב | תלוי | הערה |
-|---|---|---|---|
-| 0 | Repo + bit init + import + env | — | `bit status` נקי = שער |
-| 1 | אימות חיבור Mongo | 0 | הקטלוג נטען מ-Atlas |
-| 2 | **סגירת ה-auth bypass** (OTP אמיתי + אימות Google + session flags) | 1 | **חוסם.** ← שער Shachar כאן |
-| 3 | הפרדת dev/prod + גידור seeds (`NODE_ENV !== 'production'`) | 1 | prod מתחיל ריק |
-| 4 | מודל מודרציה משותף + `ModerationQueue` slot + **migration של `status`** | 2 | **חוסם את 5 ו-6** |
-| 5 | Wishlist: model, repository, GraphQL, upvote, claim, fulfillment | 4 | Milestone B |
-| 6 | Mentors: scope חדש + aspect מלא | 4 | Milestone C, net-new |
-| 7 | השלמת אישור: changes_requested + history + מיילים | 4 | |
+### Step 1 — חיבור Mongo אמיתי  *(Shachar + hopeAI עובדות על זה עכשיו)*
+`MONGO_URL` נדחה ע"י ה-hosting: *"value contains characters not allowed"* — כנראה תו שמור ב-URI בסיסמה (`@ : / ? # %`).
+**תיקון (Shachar, לא קלוד):** Atlas → Database Access → `helem_app` → Edit Password → Autogenerate עד שאותיות+ספרות בלבד. להרכיב `mongodb+srv://helem_app:PASSWORD@cluster0.xxxxx.mongodb.net/helam_dev?retryWrites=true&w=majority` — בלי גרשיים/רווח, `@` אחד.
+**קוד:** להחליף `if (mongoUrl) connect` ב-**`throw`** מפורש. **שער:** הקטלוג נטען מ-Atlas.
 
-**מקביליות:** 5 ו-6 מקבילים **רק אחרי** ש-4 נוחת (שניהם נשענים על מודל המודרציה + slot). לא לפני.
+### Step 2 — סגירת ה-auth ⛔
+שלושת ה-bypasses (§9). **OTP אמיתי** + **אימות Google id_token מלא (כולל, לא להסיר)** + תיקוני session. **🚦 שער Shachar:** להירשם עם מייל אמיתי, לקבל קוד, להיכנס; קוד שגוי נדחה; כניסת Google עובדת.
 
-### Milestones (מיפוי ליעד שלך)
-- **🎯 Milestone A — האקתון 1 (הרשמה + הגשה):** steps 0→1→2→3 + החלק של 4/7 שמספיק ל-`submit → pending → approve → publish` + `my-submissions`. **תוצאה:** רואי משתף לינק, משתתפים נרשמים (OTP/Google) ומגישים אפליקציות אמיתיות, אדמין מאשר, הקטלוג מתמלא אמת. **זה מה שבונים ראשון.**
-- **Milestone B — Wishlist** (step 5).
-- **Milestone C — מנטורים** (step 6).
+### Step 3 — ניקוי seeds
+לגדר `app.model.ts` ו-`wishlist.mock.ts` ב-`if (process.env.NODE_ENV !== 'production')`. `helam_dev` (seeds) נפרד מ-`helam_prod` (ריק). empty state בעברית: *"עוד רגע יתמלא. האפליקציות הראשונות בדרך מהאקתון."* **שער:** prod ריק.
+
+### Step 4 — השלמת טופס ההגשה
+| תוספת | למה |
+|---|---|
+| שם צוות/מגיש (טקסט) + מייל קשר | רואי צריך לדעת מי הגיש ואיך לחזור |
+| אייקון + צילומי מסך (Cloudinary signed) | בלי תמונות הקטלוג ריק |
+| `submissionSource: 'hackathon-1'` | לזהות ולסנן את המחזור |
+| Autosave טיוטה + `?id=` | טופס ארוך — לא לאבד מילוי |
+| ולידציית https חיה | קישור שבור = הגשה פסולה |
+| preview + עמוד תודה + מייל אישור | סוגר את הלולאה למשתתף |
+
+`/my-submissions` — סטטוס אישי. **🚦 שער Shachar:** להגיש אפליקציה אמיתית מקצה לקצה.
+
+### Step 5 — מודרציה על אמת
+`changes_requested` + הערה. migration של `status` ל-lifecycle + **default `approved` → `pending`** (רשומה חדשה לא מתפרסמת אוטומטית). מיילים על כל החלטה (Resend). רק `approved` קריא — ב-resolvers. שני admin (רואי + Shachar) נזרעים **אחרי** תיקון ה-OTP.
+
+### Step 6 — ליטוש `/submit` לשיתוף
+עמוד נחיתה קצר: מה מגישים ולמי, מפנה להרשמה. **זה מה שרואי משתף. 🚦**
+
+**גל הבא (שאר v2):** Wishlist עם persistence, מנטורים, תגובות ודיווחים — אחרי שההאקתון הזרים תוכן אמיתי.
 
 ---
 
-## 11. הכרעות — סטטוס
+## 11. פתוח / לאישור
 
-**נסגר:** auth = OTP+Google בלי סיסמאות · בלי נתוני דמו ב-prod · claim 60 יום · wishlist עולה מיד + content-safety · קונסולת אדמין מאוחדת · member בברירת מחדל · עריכת מנטור חוזרת ל-review בשינוי מהותי · Resend.
+**נסגר:** OTP+Google(מאומת) בלי סיסמאות · prod ריק · claim 60 יום · wishlist מיד+safety · admin מאוחד · member ברירת מחדל · Resend · מגיש יחיד+שם צוות טקסט · שני מודרטורים · `status` default→`pending` · `submissionSource='hackathon-1'`.
 
-**פתוח / לאישור hopeAI:**
-1. re-review של v3 — במיוחד §8/§9/§10.
-2. מי ה-admin שמאשר הגשות בהאקתון (רואי? Shachar?) ואיך זורעים אותו בבטחה אחרי תיקון ה-OTP.
-3. deliverability של OTP דרך Resend (SPF/DKIM לדומיין).
+**פתוח:**
+1. re-review של v4 (hopeAI).
+2. **חיבור Mongo** — בעבודה עכשיו (Shachar + hopeAI); ה-URI-encoding של סיסמת Atlas (§10 step 1).
+3. Resend — SPF/DKIM לדומיין כדי ש-OTP לא ייפול לספאם.
+4. כמה משתתפים צפויים? (rate limits — כרגע default שמרני; לעדכן אם ידוע).
+5. סימון ויזואלי "מהאקתון 1" בקטלוג? (default מוצע: badge עדין).
 
 ---
 
-*ממתין ל-re-review של hopeAI (מעגל 1, סבב 2) לפני ביצוע. אחרי sign-off: Step 0 → Milestone A.*
+*ממתין ל-re-review של hopeAI לפני ביצוע. אחרי sign-off: Step 0 → חיבור Mongo → סגירת auth → הגשה → לינק לרואי.*
