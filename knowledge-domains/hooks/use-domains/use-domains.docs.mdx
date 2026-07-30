@@ -1,0 +1,78 @@
+---
+description: "useDomains hook: fetch all domains with counts, plus helpers to get/set a content object's domains via GraphQL."
+labels: ['hook', 'react', 'graphql', 'domains']
+---
+
+The `useDomains` family of hooks fetch knowledge domains and manage the association between domains and content objects (apps, posts, records, events, gallery items) across the Helem Club ecosystem.
+
+- `useDomains` — fetches all knowledge domains, each with its tagged content count.
+- `useGetContentDomains` — fetches the domains associated with a specific content object.
+- `useTagContent` — associates a content object with a set of domains.
+
+## Usage
+
+### Listing all domains
+
+```tsx
+const DomainsList = () => {
+  const { domains, loading, error } = useDomains();
+
+  if (loading) return <p>טוען דומיינים...</p>;
+  if (error) return <p>שגיאה: {error}</p>;
+
+  return (
+    <ul>
+      {domains.map((domain) => (
+        <li key={domain.id}>
+          {domain.icon} {domain.name} — {domain.count} פריטים
+        </li>
+      ))}
+    </ul>
+  );
+};
+```
+
+### Using mock data for previews and tests
+
+```tsx
+const DomainsListMocked = () => {
+  const { domains } = useDomains({
+    mockData: [
+      { id: 'anxiety', slug: 'anxiety', name: 'חרדה', icon: '😰', count: 5 },
+      { id: 'sleep', slug: 'sleep', name: 'שינה', icon: '🌙', count: 4 },
+    ],
+  });
+
+  return (
+    <ul>
+      {domains.map((domain) => (
+        <li key={domain.id}>{domain.name}</li>
+      ))}
+    </ul>
+  );
+};
+```
+
+### Fetching and tagging a content object's domains
+
+```tsx
+const ContentDomainsEditor = ({ targetType, targetId }: { targetType: string; targetId: string }) => {
+  const { domains, loading } = useGetContentDomains({ targetType, targetId });
+  const { tagContent, loading: saving } = useTagContent();
+
+  const handleSave = (domainIds: string[]) => {
+    tagContent({ targetType, targetId, domainIds });
+  };
+
+  if (loading) return <p>טוען...</p>;
+
+  return (
+    <div>
+      <p>דומיינים משויכים: {domains.map((domain) => domain.name).join(', ')}</p>
+      <button onClick={() => handleSave(domains.map((domain) => domain.id))} disabled={saving}>
+        שמור שיוך
+      </button>
+    </div>
+  );
+};
+```

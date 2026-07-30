@@ -1,0 +1,41 @@
+---
+description: "User avatar with image or initials fallback, sizes, and optional ring. Used for comments and user bar. Supports anonymous placeholder."
+labels: ["avatar", "user", "image", "profile"]
+---
+
+The `Avatar` component displays a user's profile picture, falling back to initials derived from their name, or to a generic placeholder icon for anonymous users. It supports multiple sizes and an optional highlighted ring, and is used across the Helam Club platform in comment threads and the user bar.
+
+## Basic usage
+
+Render an avatar with an image, or fall back to initials when no image is provided:
+
+```tsx
+<div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+  <Avatar name="מיכל רבין" imageUrl="https://i.pravatar.cc/150?img=32" />
+  <Avatar name="דניאל כהן" />
+</div>
+```
+
+## Sizes
+
+The `size` prop controls the avatar dimensions: `small`, `medium` (default), `large`, or `x-large`.
+
+```tsx
+<div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+  <Avatar name="נועה לוי" size="small" imageUrl="https://i.pravatar.cc/150?img=5" />
+  <Avatar name="נועה לוי" size="medium" imageUrl="https://i.pravatar.cc/150?img=5" />
+  <Avatar name="נועה לוי" size="large" imageUrl="https://i.pravatar.cc/150?img=5" />
+  <Avatar name="נועה לוי" size="x-large" imageUrl="https://i.pravatar.cc/150?img=5" />
+</div>
+```
+
+## Ring and anonymous placeholder
+
+Use the `ring` prop to highlight an avatar, for example for the active user in a comment thread. Use the `anonymous` prop to render a generic placeholder icon for users without a name or image.
+
+```tsx
+<div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+  <Avatar name="צוות הלם קלאב" size="large" ring imageUrl="https://i.pravatar.cc/150?img=12" />
+  <Avatar name="אנונימי/ת" size="large" ring anonymous />
+</div>
+```

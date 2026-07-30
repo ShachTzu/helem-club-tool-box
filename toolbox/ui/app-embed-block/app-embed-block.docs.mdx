@@ -1,0 +1,67 @@
+---
+description: "A compact, embeddable card presenting a toolbox app with icon, name, live rating and a call-to-action button."
+labels: ['app', 'embed', 'card', 'toolbox']
+---
+
+The `AppEmbedBlock` renders a compact card for a single toolbox app, showing its icon, name and live rating, along
+with a `לאפליקציה` button that opens the app's external link and records a click-through tagged with a `source`.
+It is designed to be reused across the toolbox and embedded inside blog posts.
+
+## Usage
+
+Render the block for a given app id, letting it fetch the app data:
+
+```tsx
+<AppEmbedBlock appId="breathe-calm" source="blog" />
+```
+
+## Passing pre-loaded app data
+
+When app data is already available (e.g. from a parent page), pass it directly to skip the network request:
+
+```tsx
+const app = {
+  id: 'ground-me',
+  slug: 'ground-me',
+  name: 'קרקוע',
+  subtitle: 'כלים להתמודדות עם טריגרים ופלאשבקים',
+  fullDescription: 'ערכת כלי קרקוע זמינים בלחיצה אחת ברגע של הצפה.',
+  externalLink: 'https://example.com/ground',
+  icon: '🪨',
+  costType: 'חינם לחברי הקהילה',
+  language: 'עברית',
+  requiresSignup: false,
+  developerName: 'מיכל ברק',
+  avgRating: 4.9,
+  ratingCount: 143,
+};
+
+<AppEmbedBlock app={app} source="blog" />;
+```
+
+## Embedding inside a blog post
+
+The block is designed to sit naturally inside long-form content, such as a blog article recommending a tool:
+
+```tsx
+const app = {
+  id: 'breathe-calm',
+  slug: 'breathe-calm',
+  name: 'נשימה רגועה',
+  subtitle: 'תרגילי נשימה מודרכים להרגעה מיידית',
+  fullDescription: 'אפליקציה שמלווה אותך בתרגילי נשימה קצרים ברגעים של הצפה.',
+  externalLink: 'https://example.com/breathe',
+  icon: '🫧',
+  costType: 'חינם לחברי הקהילה',
+  language: 'עברית',
+  requiresSignup: false,
+  developerName: 'דנה לוי',
+  avgRating: 4.7,
+  ratingCount: 96,
+};
+
+<div style={{ maxWidth: 640 }}>
+  <p>אחד הכלים האהובים על הקהילה להרגעה מיידית הוא:</p>
+  <AppEmbedBlock app={app} source="blog" />
+</div>;
+```

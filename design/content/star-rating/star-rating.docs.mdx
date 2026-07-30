@@ -1,0 +1,41 @@
+---
+description: "Amber star rating with read-only display (average, half-stars, count) and an interactive input mode. RTL aware."
+labels: ["rating", "stars", "reviews", "input"]
+---
+
+The `StarRating` component displays a 1-to-5 (or custom scale) star rating in amber, either as a read-only summary (with support for fractional averages, like `4.5`) or as an interactive input control for submitting a new rating.
+
+## Read-only average rating
+
+Use the default read-only mode to display an average rating, optionally with the numeric value and total rating count.
+
+```tsx
+<StarRating value={4.5} ratingCount={128} showValue />
+```
+
+## Fractional (half-star) ratings
+
+Any decimal value between `0` and `maxStars` is supported — the filled portion of the stars is clipped proportionally to render partial stars.
+
+```tsx
+<StarRating value={3.2} showValue size={22} />
+```
+
+## Interactive rating input
+
+Set `interactive` to let users pick and submit a rating by clicking a star. Use `onChange` to receive the selected value.
+
+```tsx
+function ReviewForm() {
+  const [rating, setRating] = React.useState(0);
+
+  return (
+    <StarRating
+      value={rating}
+      interactive
+      size={28}
+      onChange={(newValue) => setRating(newValue)}
+    />
+  );
+}
+```

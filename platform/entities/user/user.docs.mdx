@@ -1,0 +1,70 @@
+---
+labels: ['entity', 'user', 'auth']
+description: "A User entity: id, email, displayName, role and provider, with role hierarchy helpers."
+---
+
+A component for a `User` entity, representing a registered member of the Helem Club platform. Supports
+serialization and de-serialization of `User` objects and can be used from both the backend and the frontend.
+
+## Get started
+
+Create a `User` instance from a plain object:
+
+```tsx
+import { User } from '@helemclub/platform.entities.user';
+
+const user = User.from({
+  id: 'u1',
+  email: 'sam.doe@example.com',
+  displayName: 'Sam Doe',
+  role: 'member',
+  provider: 'email',
+  createdAt: new Date().toISOString(),
+});
+
+console.log(user.displayName);
+```
+
+## Role hierarchy
+
+`User` roles are ordered by privilege: `member` < `writer` < `moderator` < `admin`. Use `isAtLeast()` to check
+whether a user meets a minimum required role, without hardcoding role comparisons throughout the app.
+
+```tsx
+import { mockUser } from '@helemclub/platform.entities.user';
+
+const moderator = mockUser({ role: 'moderator' });
+
+const canModerate = moderator.isAtLeast('moderator');
+const isAdmin = moderator.isAtLeast('admin');
+
+console.log(canModerate, isAdmin);
+```
+
+## Serialization
+
+Use `toObject()` to turn a `User` instance back into a plain, serializable object, for example before sending it
+over the network or storing it in a cache.
+
+```tsx
+import { mockUser } from '@helemclub/platform.entities.user';
+
+const user = mockUser();
+const plainUser = user.toObject();
+
+console.log(plainUser);
+```
+
+## Mock data
+
+Use the `mockUser` and `mockUsers` APIs to generate mock data for development and testing purposes, with support
+for partial overrides.
+
+```tsx
+import { mockUser, mockUsers } from '@helemclub/platform.entities.user';
+
+const admin = mockUser({ role: 'admin', displayName: 'Helem Admin' });
+const users = mockUsers();
+
+console.log(admin, users);
+```

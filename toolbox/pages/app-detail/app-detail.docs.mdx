@@ -1,0 +1,75 @@
+---
+description: "App detail page (/toolbox/:slug): screenshots, description, metadata, domain badges, rating summary, submit rating and external CTA. RTL."
+labels: ["toolbox", "app", "detail", "page", "rtl"]
+---
+
+The `AppDetail` component renders the full detail page for a single toolbox app, ported from the
+Helam Club marketplace prototype. It shows the app's icon, name, subtitle, average rating and
+click count, a call-to-action linking to the app's external page (which records a click-through),
+community credits, a screenshot gallery, the full description with domain badges, platform
+metadata, a rating summary with a submit-rating form, the list of reviews, and an engagement bar.
+
+## Basic usage
+
+Render the page with pre-loaded app data (useful for tests and previews). When no `app` prop is
+provided, the component reads the `:slug` route param and fetches the app via the `useApps` hook.
+
+```tsx
+import { AppDetail } from '@helemclub/toolbox.pages.app-detail';
+
+function ToolboxAppRoute() {
+  return <AppDetail />;
+}
+```
+
+## Providing mock data
+
+Pass `app` and `reviews` directly to skip data fetching, which is useful for tests, previews and
+server-rendered pages that already resolved the app data.
+
+```tsx
+import { AppDetail } from '@helemclub/toolbox.pages.app-detail';
+
+const app = {
+  id: 'ground-me',
+  slug: 'ground-me',
+  name: 'קרקוע',
+  subtitle: 'כלים להתמודדות עם טריגרים ופלאשבקים',
+  fullDescription: 'ערכת כלי קרקוע זמינים בלחיצה אחת ברגע של הצפה או פלאשבק.',
+  externalLink: 'https://example.com/ground',
+  icon: '🪨',
+  screenshots: [],
+  costType: 'חינם לחברי הקהילה',
+  platform: ['iOS', 'Android'],
+  language: 'עברית',
+  requiresSignup: false,
+  clickCount: 1520,
+  helpfulYes: 402,
+  helpfulNo: 19,
+  isFeatured: true,
+  developerName: 'מיכל ברק',
+  originatorName: 'שרה דוד',
+  domains: ['טריגרים', 'ויסות רגשי', 'חרדה'],
+  avgRating: 4.9,
+  ratingCount: 143,
+  ratingHistogram: [1, 1, 4, 15, 122],
+  status: 'approved' as const,
+};
+
+function AppDetailPreview() {
+  return <AppDetail app={app} reviews={[]} />;
+}
+```
+
+## Customizing the back link and domain links
+
+Use `backHref` to control the "back to toolbox" link destination, and `domainLinkBase` to control
+where each domain badge links to.
+
+```tsx
+import { AppDetail } from '@helemclub/toolbox.pages.app-detail';
+
+function CustomLinksAppDetail() {
+  return <AppDetail backHref="/tools" domainLinkBase="/coping-domains" />;
+}
+```

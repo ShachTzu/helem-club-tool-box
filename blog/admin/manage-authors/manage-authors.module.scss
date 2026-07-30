@@ -1,0 +1,119 @@
+.manageAuthors {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-large);
+  background: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-large);
+  box-shadow: var(--effects-shadows-card);
+  padding: var(--spacing-xl);
+}
+
+.header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-default);
+}
+
+.headerIcon {
+  font-size: var(--typography-sizes-heading-h1);
+  line-height: 1;
+}
+
+.headerText {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.title {
+  margin: 0 0 var(--spacing-small);
+  font-size: var(--typography-sizes-heading-h3);
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-primary-default);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-secondary);
+  line-height: var(--typography-line-height-base);
+  max-width: 640px;
+}
+
+.summaryRow {
+  box-sizing: border-box;
+  display: flex;
+  gap: var(--spacing-default);
+  flex-wrap: wrap;
+}
+
+.summaryCard {
+  box-sizing: border-box;
+  flex: 1 1 160px;
+  background: var(--colors-surface-secondary);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-default);
+  text-align: center;
+}
+
+.summaryValue {
+  font-size: var(--typography-sizes-heading-h2);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+}
+
+.summaryLabel {
+  margin-top: var(--spacing-small);
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-secondary);
+}
+
+.errorMessage {
+  box-sizing: border-box;
+  background: var(--colors-status-negative-subtle);
+  color: var(--colors-status-negative-default);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-default);
+  font-size: var(--typography-sizes-body-default);
+}
+
+.loadingState {
+  box-sizing: border-box;
+  padding: var(--spacing-x4);
+  text-align: center;
+  color: var(--colors-text-secondary);
+  font-size: var(--typography-sizes-body-default);
+}
+
+.statusBadge {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--borders-radius-pill);
+  font-size: var(--typography-sizes-caption-medium);
+  font-weight: var(--typography-font-weight-semi-bold);
+}
+
+.statusActive {
+  background: var(--colors-status-positive-subtle);
+  color: var(--colors-status-positive-default);
+}
+
+.statusInactive {
+  background: var(--colors-status-warning-subtle);
+  color: var(--colors-status-warning-default);
+}
+
+@media (max-width: 640px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .summaryRow {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,61 @@
+---
+labels: ['search', 'entity', 'search-result']
+description: "A SearchResult entity representing a single item returned from a platform-wide search query."
+---
+
+A component for a `SearchResult` entity, representing a single item returned from a search query across
+registered search providers (apps, blog posts, events, knowledge articles, and more). Supports
+serialization and de-serialization, and can be used from both backend and frontend.
+
+## Get started
+
+Install and use the component in your code:
+
+```tsx
+import { SearchResult } from '@helemclub/platform.entities.search-result';
+
+const result = SearchResult.from({
+  id: 'app-breathing-478',
+  type: 'app',
+  title: 'נשימה 4-7-8',
+  excerpt: 'תרגול נשימות מודרך להפחתת חרדה והירגעות מהירה בזמן משבר.',
+  url: '/apps/breathing-478',
+  imageUrl: 'https://storage.googleapis.com/bit-generated-images/images/image_a_calming_minimalist_icon_styl_0_1785184768460.png',
+  domains: ['חרדה', 'משבר'],
+});
+
+console.log(result.title);
+```
+
+## Serialization
+
+Use `toObject()` to convert a `SearchResult` instance back into a plain, serializable object — useful
+when sending data over the network or storing it.
+
+```tsx
+import { SearchResult } from '@helemclub/platform.entities.search-result';
+
+const result = SearchResult.from({
+  id: 'blog-intrusive-thoughts',
+  type: 'blog',
+  title: 'איך להתמודד עם מחשבות טורדניות',
+  url: '/blog/intrusive-thoughts',
+});
+
+const plain = result.toObject();
+console.log(plain);
+```
+
+## Mock data
+
+Use the `mockSearchResult` and `mockSearchResults` APIs to create mock data for development and testing
+purposes.
+
+```tsx
+import { mockSearchResult, mockSearchResults } from '@helemclub/platform.entities.search-result';
+
+const single = mockSearchResult({ title: 'תוצאה מותאמת אישית' });
+const list = mockSearchResults();
+
+console.log(single, list);
+```

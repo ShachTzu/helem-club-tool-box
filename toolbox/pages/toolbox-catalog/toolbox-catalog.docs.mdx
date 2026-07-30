@@ -1,0 +1,65 @@
+---
+description: "Toolbox catalog page (/toolbox): hero, domain filter bar, rating/clicks sort, and app grid."
+labels: ["page", "toolbox", "catalog"]
+---
+
+The `ToolboxCatalog` component renders the public toolbox catalog page: a navy hero band, a domain filter bar,
+a rating/clicks sort toggle, and a responsive grid of community-rated coping apps. Browsing is completely free —
+no signup required — and a "הגשת כלי" call-to-action invites members to contribute a new tool.
+
+## Basic usage
+
+Render the catalog with its default hero copy. Apps and domains are fetched via the `useApps` and `DomainFilter`
+hooks unless mock data is provided.
+
+```tsx
+<ToolboxCatalog />
+```
+
+## With mock data
+
+Pass `mockApps` and `mockDomains` to preview the catalog without a network connection, useful for tests and stories.
+
+```tsx
+const mockApps = [
+  {
+    id: `breathe-calm`,
+    slug: `breathe-calm`,
+    name: `נשימה רגועה`,
+    subtitle: `תרגילי נשימה מודרכים להרגעה מיידית`,
+    fullDescription: `אפליקציה שמלווה אותך בתרגילי נשימה קצרים ברגעים של הצפה.`,
+    externalLink: `https://example.com/breathe`,
+    icon: `🫧`,
+    costType: `חינם לחברי הקהילה`,
+    language: `עברית`,
+    requiresSignup: false,
+    developerName: `דנה לוי`,
+    domains: [`מיינדפולנס ונשימות`, `חרדה`],
+    avgRating: 4.7,
+    ratingCount: 96,
+    clickCount: 1240,
+    isFeatured: true,
+  },
+];
+
+const mockDomains = [
+  { id: `anxiety`, slug: `anxiety`, name: `חרדה`, icon: `😰`, count: 5 },
+  { id: `sleep`, slug: `sleep`, name: `שינה`, icon: `🌙`, count: 4 },
+];
+
+<ToolboxCatalog mockApps={mockApps} mockDomains={mockDomains} />
+```
+
+## Custom hero copy and links
+
+Override the hero eyebrow, title, subtitle, and the routes used by the CTA buttons.
+
+```tsx
+<ToolboxCatalog
+  heroEyebrow="חדש בארגז"
+  heroTitle="הכלים החמים של החודש"
+  heroSubtitle="נבחרת האפליקציות שהצטרפו לאחרונה, ממתינות לגילוי ולדירוג שלכם."
+  submitHref="/toolbox/submit"
+  wishlistHref="/toolbox/wishlist"
+/>
+```

@@ -1,0 +1,83 @@
+---
+description: "A React hook for listing an app's reviews and submitting a star rating (rateApp)."
+labels: ['hook', 'react', 'reviews', 'toolbox']
+---
+
+The `useAppReviews` hook lists the reviews submitted for a given toolbox app and exposes a `rateApp` function for submitting a new star rating, with an optional comment and display name.
+
+It follows the "דירוגים וביקורות" (ratings and reviews) section of the app detail page in the Helam Club toolbox: an average rating, a rating histogram, and a list of individual reviews sorted by helpfulness.
+
+## Usage
+
+### Listing reviews for an app
+
+```tsx
+const AppReviewsList = () => {
+  const { reviews, loading, error } = useAppReviews('ground-me');
+
+  if (loading) return <p>טוען ביקורות...</p>;
+  if (error) return <p>שגיאה בטעינת הביקורות</p>;
+
+  return (
+    <ul>
+      {reviews.map((review) => (
+        <li key={review.id}>
+          {review.stars} ★ — {review.displayName || 'אנונימי'}
+          {review.comment ? `: ${review.comment}` : null}
+        </li>
+      ))}
+    </ul>
+  );
+};
+```
+
+### Submitting a rating
+
+```tsx
+const RateAppForm = () => {
+  const { rateApp, submitting, submitError } = useAppReviews('ground-me');
+
+  const handleSubmit = async () => {
+    await rateApp({ stars: 5, comment: 'עזר לי מאוד ברגעים קשים.', displayName: 'אנונימי' });
+  };
+
+  return (
+    <div>
+      <button onClick={() => handleSubmit()} disabled={submitting}>
+        {submitting ? 'שולח...' : 'שלחו דירוג'}
+      </button>
+      {submitError && <p>שגיאה בשליחת הדירוג</p>}
+    </div>
+  );
+};
+```
+
+### Providing mock data for tests and previews
+
+```tsx
+const MockedAppReviews = () => {
+  const mockReviews = [
+    {
+      id: '1',
+      appId: 'ground-me',
+      stars: 5,
+      comment: 'תרגיל 5-4-3-2-1 זמין מיד וזה עשה הבדל אמיתי.',
+      displayName: 'אנונימי',
+      helpfulCount: 47,
+      createdAt: new Date('2024-01-15T09:30:00.000Z').toISOString(),
+    },
+  ];
+
+  const { reviews } = useAppReviews('ground-me', { mockData: mockReviews });
+
+  return (
+    <ul>
+      {reviews.map((review) => (
+        <li key={review.id}>
+          {review.stars} ★ — {review.comment}
+        </li>
+      ))}
+    </ul>
+  );
+};
+```

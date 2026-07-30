@@ -1,0 +1,42 @@
+---
+title: Blog Preview
+description: A home-page preview of the latest blog posts, with a link to the full blog.
+labels: ['blog', 'section', 'home', 'preview']
+---
+
+import { MemoryRouter } from 'react-router-dom';
+import { mockPostList } from '@helemclub/blog.hooks.use-posts';
+import { BlogPreview } from './blog-preview.js';
+
+The `BlogPreview` section shows a compact grid of the latest published blog posts,
+with a "see all" link to the full blog. It is registered into the platform's
+`HomeSection` slot by the blog aspect, so it appears on the home page without the
+platform depending on the blog scope.
+
+## Default
+
+```jsx live
+<MemoryRouter>
+  <BlogPreview mockPosts={mockPostList()} />
+</MemoryRouter>
+```
+
+## Limited to one post
+
+```jsx live
+<MemoryRouter>
+  <BlogPreview mockPosts={mockPostList()} limit={1} />
+</MemoryRouter>
+```
+
+## Custom heading
+
+```jsx live
+<MemoryRouter>
+  <BlogPreview
+    mockPosts={mockPostList()}
+    title="כתבות נבחרות"
+    subtitle="מבחר מהתכנים האחרונים"
+  />
+</MemoryRouter>
+```

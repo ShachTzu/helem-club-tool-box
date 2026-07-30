@@ -1,0 +1,39 @@
+---
+description: "RTL heading component with levels 1-6 mapped to the theme type scale, weight and color tokens."
+labels: ["typography", "heading", "rtl", "text"]
+---
+
+The `Heading` component renders semantic heading elements (`h1`-`h6`) mapped to the Helam Club theme type scale. It is RTL-first by default and supports Hebrew-friendly line height, weight and color tokens.
+
+## Usage
+
+Render a basic heading with a given level:
+
+```tsx
+<Heading level={1}>הלם קלאב — כותרת ראשית</Heading>
+```
+
+## Decoupling visual level from semantic element
+
+Use the `as` prop to render a different HTML element than the visual `level`, useful for keeping a correct document outline while matching a design's visual scale:
+
+```tsx
+<Heading level={1} as="h2">
+  כותרת שנראית כמו H1 אך נטמעת כ-H2
+</Heading>
+```
+
+## Colors and alignment
+
+Use the `color` and `align` props to match the surrounding surface and reading direction:
+
+```tsx
+<div>
+  <Heading level={2} color="primary" align="right">
+    ארגז הכלים
+  </Heading>
+  <Heading level={4} color="muted" align="center">
+    קטלוג אפליקציות התמודדות מדורג ומסונן
+  </Heading>
+</div>
+```

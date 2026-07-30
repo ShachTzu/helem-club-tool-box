@@ -1,0 +1,42 @@
+---
+description: "RTL paragraph/body text component with size variants, muted tone, and comfortable line-height for long Hebrew article bodies."
+labels: ["typography", "paragraph", "rtl", "text"]
+---
+
+The `Paragraph` component renders body text tuned for long-form Hebrew article content. It is RTL-aligned by default, uses a comfortable line-height for readability, and supports three sizes plus a muted tone for secondary text like captions and metadata.
+
+## Basic usage
+
+Render a paragraph with the default body size and color:
+
+```tsx
+<Paragraph>
+  הלם קלאב היא קהילה תומכת שבה חברים משתפים ידע, ניסיון אישי וכלים מעשיים להתמודדות עם החיים לאחר
+  טראומה.
+</Paragraph>
+```
+
+## Sizes
+
+Use the `size` prop to control the font size — `sm`, `md` (default) or `lg`:
+
+```tsx
+<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+  <Paragraph size="lg">פסקה גדולה לפתיחת כתבה או תקציר בולט.</Paragraph>
+  <Paragraph size="md">פסקה בגודל בינוני, ברירת המחדל לגוף כתבה.</Paragraph>
+  <Paragraph size="sm">פסקה קטנה להערות שוליים או מידע משני.</Paragraph>
+</div>
+```
+
+## Muted variant
+
+Use the `muted` prop for secondary text such as byline, date or supporting descriptions:
+
+```tsx
+<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+  <Paragraph>תוכן הכתבה הראשי מוצג כאן בצבע הטקסט הרגיל.</Paragraph>
+  <Paragraph muted size="sm">
+    פורסם על ידי צוות הלם קלאב · 6 דקות קריאה
+  </Paragraph>
+</div>
+```

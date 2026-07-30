@@ -1,0 +1,66 @@
+---
+description: "A SavedItem entity representing content a device saved for later, with display fields for rendering a saved list."
+labels: ['entity', 'saved-item', 'engagement']
+---
+
+The `SavedItem` entity models an item a visitor bookmarked for later — an app, article, event, or any other piece of
+content in the Helam Club ecosystem. Saving works anonymously, keyed by a per-device id, so no account is required.
+Alongside the reference fields (`targetType`, `targetId`), the entity carries display fields (`title`, `url`,
+`imageUrl`) so the saved list can be rendered without re-fetching the original content.
+
+## Get started
+
+Create a `SavedItem` from a plain object using the `from` factory:
+
+```tsx
+import { SavedItem } from '@helemclub/engagement.entities.saved-item';
+
+const savedItem = SavedItem.from({
+  id: 'saved-1',
+  targetType: 'app',
+  targetId: 'calm-space',
+  deviceId: 'device-1234',
+  savedAt: new Date().toISOString(),
+  title: 'Calm Space — כלי להרגעה מיידית',
+  url: '/toolbox/calm-space',
+  imageUrl: 'https://example.com/calm-space-icon.png',
+});
+
+console.log(savedItem.title);
+```
+
+## Serialization
+
+Use `toObject()` to turn a `SavedItem` back into a plain, transferable object — useful when sending data over the
+network or persisting it to local storage:
+
+```tsx
+import { SavedItem } from '@helemclub/engagement.entities.saved-item';
+
+const savedItem = SavedItem.from({
+  id: 'saved-1',
+  targetType: 'article',
+  targetId: 'article-42',
+  deviceId: 'device-1234',
+  savedAt: new Date().toISOString(),
+  title: 'איך לזהות טריגרים לפני שהם משתלטים',
+  url: '/blog/article-42',
+});
+
+const plain = savedItem.toObject();
+console.log(plain);
+```
+
+## Mock data
+
+Use `mockSavedItem` and `mockSavedItems` to get sample entities for development, tests, and rendering a saved list
+composition. Both support overriding any property:
+
+```tsx
+import { mockSavedItem, mockSavedItems } from '@helemclub/engagement.entities.saved-item';
+
+const single = mockSavedItem({ title: 'כלי מותאם אישית' });
+const list = mockSavedItems();
+
+console.log(single, list);
+```

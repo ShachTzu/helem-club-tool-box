@@ -1,0 +1,113 @@
+---
+description: "The Helam Club theme — RTL-first design tokens for navy, steel and amber."
+labels: ['react', 'design', 'theme', 'rtl', 'helam-club']
+---
+
+A theme component providing the Helam Club design language and design tokens: a calm, breathing,
+RTL-first palette built around deep navy, steel blue and a warm amber accent.
+
+## Get started
+
+To use the Helam Club theme in your app, install the theme and apply it on your component tree.
+Themes are usually applied at the root of your component tree.
+
+```bash
+$ bit install @helemclub/design.helam-theme
+```
+
+Alternatively, use PNPM or NPM:
+
+```
+$ npm install @helemclub/design.helam-theme
+```
+
+```tsx
+import { HelamTheme } from '@helemclub/design.helam-theme';
+
+export function MyApp() {
+  return (
+    <HelamTheme>
+      <div>שלום, הלם קלאב</div>
+    </HelamTheme>
+  );
+}
+```
+
+## Reading tokens with `useTheme`
+
+Use the `useTheme` hook to read design tokens directly inside any component nested under
+`HelamTheme`, for example to compose custom inline styles.
+
+```tsx
+import { HelamTheme, useTheme } from '@helemclub/design.helam-theme';
+
+function BrandBadge() {
+  const theme = useTheme();
+
+  return (
+    <span
+      style={{
+        background: theme.colors.accent.default,
+        color: theme.colors.primary.default,
+        borderRadius: theme.borders.radius.pill,
+        padding: '6px 14px',
+        fontWeight: theme.typography.fontWeight.bold,
+      }}
+    >
+      קהילת הלם קלאב
+    </span>
+  );
+}
+
+export function BadgeExample() {
+  return (
+    <HelamTheme>
+      <BrandBadge />
+    </HelamTheme>
+  );
+}
+```
+
+## Dark variation
+
+The theme ships a dark variation. Switch to it using the `initialTheme` prop.
+
+```tsx
+import { HelamTheme } from '@helemclub/design.helam-theme';
+
+export function DarkApp() {
+  return (
+    <HelamTheme initialTheme="dark">
+      <div>גרסה כהה של הלם קלאב</div>
+    </HelamTheme>
+  );
+}
+```
+
+## Overriding tokens
+
+You can override any token in the schema using the `overrides` prop. Overrides are deep-merged
+into the active theme variation.
+
+```tsx
+import { HelamTheme } from '@helemclub/design.helam-theme';
+
+export function CustomAccentApp() {
+  return (
+    <HelamTheme overrides={{ colors: { accent: { default: '#D1863A' } } }}>
+      <div>גוון הדגשה מותאם אישית</div>
+    </HelamTheme>
+  );
+}
+```
+
+## Design tokens
+
+- **Colors**: primary navy `#0B1A30`, secondary steel `#4F6D7A`, accent amber `#E89F4B`, surface
+  `#F6F8FA`, surface alt `#EDF1F4`, border `#DDE4E9`, muted text `#5C6B76`, white `#FFFFFF`, black
+  `#1A1A1A`.
+- **Radius**: small `8px`, medium `14px`, large `22px`, pill `999px`.
+- **Shadows**: dedicated shadows for cards, card hover states and the sticky header.
+- **Typography**: `'Assistant', 'Rubik', sans-serif` with a type scale for H1 (36px, extrabold),
+  H2 (24px), subhead (18px, semibold) and body text (14–16px).
+- **Direction**: RTL by default, with direction-aware spacing tokens.

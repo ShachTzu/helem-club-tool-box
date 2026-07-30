@@ -1,0 +1,44 @@
+---
+description: "A reusable, controlled domain filter bar with toggle chips for the 14 coping domains."
+labels: ["filter", "domains", "chips", "tags"]
+---
+
+The `DomainFilter` component renders a wrapping row of toggle chips, one per coping domain, and lets people multi-select the domains they want to filter content by. It is fully controlled — the parent owns the selected `value` and receives updates via `onChange`.
+
+It is used across every feature's listing pages (apps, blog, knowledge, events, gallery) to provide a consistent way to filter content by domain.
+
+## Basic usage
+
+Control the selected domains with your own state:
+
+```tsx
+function ListingFilters() {
+  const [selectedDomains, setSelectedDomains] = React.useState<string[]>([]);
+
+  return <DomainFilter value={selectedDomains} onChange={setSelectedDomains} />;
+}
+```
+
+## Only showing domains with content
+
+Pass `onlyWithContent` to hide domains that have no tagged content, useful on pages that should not show empty filters:
+
+```tsx
+function ListingFiltersWithContentOnly() {
+  const [selectedDomains, setSelectedDomains] = React.useState<string[]>([]);
+
+  return <DomainFilter value={selectedDomains} onChange={setSelectedDomains} onlyWithContent />;
+}
+```
+
+## Pre-selected domains
+
+The component is controlled, so you can initialize the `value` with any pre-selected domain ids, for example from the URL query string:
+
+```tsx
+function PreselectedFilters() {
+  const [selectedDomains, setSelectedDomains] = React.useState<string[]>(['anxiety', 'sleep']);
+
+  return <DomainFilter value={selectedDomains} onChange={setSelectedDomains} />;
+}
+```

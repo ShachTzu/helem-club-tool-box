@@ -1,0 +1,126 @@
+---
+description: "A React hook for listing, filtering and managing Helam Club toolbox apps (GraphQL-backed)."
+labels: ['hook', 'react', 'toolbox', 'apps', 'graphql']
+---
+
+The `useApps` hook lists the published apps in the Helam Club toolbox catalog, with optional filtering by coping domain, sorting, featured status, and a free-text search query. It also exposes actions for fetching a single app, submitting a new app for review, moderating pending apps, listing pending apps, and recording click-throughs on an app's external link.
+
+It follows the "ארגז הכלים" (toolbox) catalog page in the Helam Club prototype: a filterable, sortable grid of coping apps, each rated and tagged by coping domain.
+
+## Usage
+
+### Listing and filtering the toolbox catalog
+
+```tsx
+const ToolboxCatalog = () => {
+  const { apps, loading, error } = useApps({ sort: 'rating', featured: true });
+
+  if (loading) return <p>טוען אפליקציות...</p>;
+  if (error) return <p>שגיאה בטעינת ארגז הכלים</p>;
+
+  return (
+    <ul>
+      {apps.map((app) => (
+        <li key={app.id}>
+          {app.icon} {app.name} — {app.subtitle} ({app.avgRating.toFixed(1)}★)
+        </li>
+      ))}
+    </ul>
+  );
+};
+```
+
+### Fetching a single app and recording a click
+
+```tsx
+const AppDetail = () => {
+  const { getApp, app, appLoading, incrementClick } = useApps();
+
+  const handleOpen = async () => {
+    const loadedApp = await getApp('ground-me');
+    if (loadedApp) {
+      await incrementClick({ appId: loadedApp.id, source: 'toolbox-list' });
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={() => handleOpen()}>פתחו את הכלי</button>
+      {appLoading && <p>טוען...</p>}
+      {app && <h3>{app.name}</h3>}
+    </div>
+  );
+};
+```
+
+### Submitting a new app and moderating pending apps
+
+```tsx
+const SubmitAndModerate = () => {
+  const { submitApp, submitting, pendingApps, reviewApp } = useApps();
+
+  const handleSubmit = async () => {
+    await submitApp({
+      name: 'כלי חדש',
+      subtitle: 'תיאור קצר של הכלי',
+      fullDescription: 'תיאור מלא של האפליקציה ומה היא עוזרת.',
+      externalLink: 'https://example.com/new-tool',
+      costType: 'חינם לחברי הקהילה',
+      language: 'עברית',
+      domains: ['חרדה'],
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => handleSubmit()} disabled={submitting}>
+        {submitting ? 'שולח...' : 'הגישו כלי'}
+      </button>
+      <ul>
+        {pendingApps.map((pendingApp) => (
+          <li key={pendingApp.id}>
+            {pendingApp.name}
+            <button onClick={() => reviewApp({ appId: pendingApp.id, action: 'approve' })}>אישור</button>
+            <button onClick={() => reviewApp({ appId: pendingApp.id, action: 'reject' })}>דחייה</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+```
+
+### Providing mock data for tests and previews
+
+```tsx
+const MockedToolbox = () => {
+  const mockData = [
+    {
+      id: 'ground-me',
+      slug: 'ground-me',
+      name: 'קרקוע',
+      subtitle: 'כלים להתמודדות עם טריגרים ופלאשבקים',
+      fullDescription: 'ערכת כלי קרקוע זמינים בלחיצה אחת ברגע של הצפה.',
+      externalLink: 'https://example.com/ground',
+      icon: '🪨',
+      costType: 'חינם לחברי הקהילה',
+      language: 'עברית',
+      requiresSignup: false,
+      developerName: 'מיכל ברק',
+      domains: ['טריגרים', 'חרדה'],
+      avgRating: 4.9,
+      ratingCount: 143,
+    },
+  ];
+
+  const { apps } = useApps({ mockData });
+
+  return (
+    <ul>
+      {apps.map((app) => (
+        <li key={app.id}>{app.name}</li>
+      ))}
+    </ul>
+  );
+};
+```

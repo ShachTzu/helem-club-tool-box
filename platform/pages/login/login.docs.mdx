@@ -1,0 +1,44 @@
+---
+description: "Login page (RTL, Hebrew) with email OTP and Google sign-in, redirecting to the intended route after login."
+labels: ["login", "auth", "page", "rtl"]
+---
+
+The `Login` component renders the Helem Club sign-in experience: a calm, RTL Hebrew page that lets members sign in either with a one-time-password sent to their email, or with a Google account. After a successful sign-in, it redirects back to the route the visitor originally intended to reach.
+
+## Basic usage
+
+Render the login page. Wrap it with your app's providers (router, auth) in a real application.
+
+```tsx
+import { Login } from '@helemclub/platform.pages.login';
+
+function App() {
+  return <Login />;
+}
+```
+
+## Redirecting to a specific route
+
+By default the page redirects to `/` after sign-in, unless the router navigation state includes a `from` path (the route the user originally tried to access). You can also set an explicit fallback:
+
+```tsx
+import { Login } from '@helemclub/platform.pages.login';
+
+function App() {
+  return <Login defaultRedirectPath="/toolbox" />;
+}
+```
+
+## Configuring Google sign-in
+
+Provide a `getGoogleIdToken` function that resolves a Google ID token from your identity provider SDK. The page calls it when the visitor clicks "התחברות עם Google":
+
+```tsx
+import { Login } from '@helemclub/platform.pages.login';
+
+function App() {
+  const getGoogleIdToken = () => Promise.resolve('real-google-id-token');
+
+  return <Login getGoogleIdToken={getGoogleIdToken} />;
+}
+```

@@ -1,0 +1,77 @@
+.galleryItemPage {
+  width: 100%;
+}
+
+.loading {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--helam-color-text-muted, #6b7c8f);
+}
+
+.breadcrumbs {
+  font-size: 13.5px;
+  color: var(--helam-color-text-muted, #6b7c8f);
+  margin: 12px 0 20px;
+
+  a {
+    color: var(--helam-color-secondary, #4f6d7a);
+    text-decoration: none;
+  }
+}
+
+.media {
+  width: 100%;
+  background: #0b1a30;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 22px;
+  display: flex;
+  justify-content: center;
+}
+
+.mediaEl {
+  width: 100%;
+  max-height: 560px;
+  object-fit: contain;
+  display: block;
+}
+
+.header {
+  max-width: 760px;
+}
+
+.title {
+  margin: 0 0 6px;
+  font-size: clamp(24px, 3.6vw, 32px);
+  font-weight: 800;
+  color: var(--helam-color-primary, #0b1a30);
+}
+
+.artist {
+  font-size: 15px;
+  color: var(--helam-color-secondary, #4f6d7a);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.description {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--helam-color-text, #1c2b3a);
+  margin: 0 0 16px;
+  white-space: pre-line;
+}
+
+.domains {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.domainLink {
+  text-decoration: none;
+}
+
+.engagement {
+  margin-top: 28px;
+}

@@ -1,0 +1,55 @@
+---
+description: "RTL text input with label, placeholder, error state, helper text, and optional icon."
+labels: ["input", "form", "text-input", "rtl"]
+---
+
+## Overview
+
+`TextInput` is a right-to-left form field used across the Helam Club platform. It supports a label,
+placeholder, error state with an inline message, helper text, and an optional leading icon. It also
+supports `email`, `tel` and `url` input types for common contact fields.
+
+## Basic usage
+
+```tsx
+function Example() {
+  return <TextInput label="שם מלא" placeholder="איך קוראים לך?" />;
+}
+```
+
+## Controlled input with helper text
+
+```tsx
+function Example() {
+  const [email, setEmail] = React.useState('');
+
+  return (
+    <TextInput
+      label="דוא&quot;ל"
+      type="email"
+      placeholder="name@example.com"
+      value={email}
+      onChange={(value) => setEmail(value)}
+      helperText="נשתמש בכתובת הזו רק לעדכונים חשובים"
+    />
+  );
+}
+```
+
+## Error state
+
+```tsx
+function Example() {
+  const [phone, setPhone] = React.useState('123');
+
+  return (
+    <TextInput
+      label="טלפון"
+      type="tel"
+      value={phone}
+      onChange={(value) => setPhone(value)}
+      error={phone.length < 9 ? `מספר הטלפון קצר מדי` : undefined}
+    />
+  );
+}
+```

@@ -1,0 +1,57 @@
+---
+description: "Shared top header (RTL): logo, primary navigation, global search, header actions, and user bar. Collapses to a compact bar with hamburger on mobile."
+labels: ["header", "navigation", "layout"]
+---
+
+The `Header` component is the shared top navigation bar for the Helam Club platform. It renders the brand logo, primary
+navigation items, a global search box, optional header actions, and the user bar (login/signup or authenticated user
+menu). On smaller screens it collapses into a compact bar with a hamburger button that opens a drawer menu. The header
+is sticky and RTL by default, matching the Helam Club brand book.
+
+### Basic usage
+
+```tsx
+<Header
+  navigationItems={[
+    { label: `בית`, path: `/` },
+    { label: `חוכמת הקהילה`, path: `/wisdom` },
+    { label: `ארגז כלים`, path: `/toolbox` },
+  ]}
+  mockUser={null}
+  activePath="/"
+/>
+```
+
+### Authenticated user with a custom user menu item
+
+```tsx
+<Header
+  mockUser={{
+    id: `1`,
+    email: `noa@example.com`,
+    displayName: `נועה כהן`,
+    avatarUrl: undefined,
+    role: `member`,
+    provider: `email`,
+    createdAt: new Date().toISOString(),
+  }}
+  activePath="/toolbox"
+  userMenuItems={[{ label: `הכלים שהגשתי`, path: `/toolbox/my-submissions` }]}
+/>
+```
+
+### With registered header actions
+
+Feature aspects can register additional header actions, rendered between the search box and the user bar:
+
+```tsx
+<Header
+  mockUser={null}
+  headerActions={[
+    {
+      id: `notifications`,
+      component: () => <span style={{ fontSize: 18 }}>🔔</span>,
+    },
+  ]}
+/>
+```

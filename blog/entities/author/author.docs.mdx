@@ -1,0 +1,59 @@
+---
+description: "An Author entity representing a blog contributor: identity, bio, write permission and post stats."
+labels: ['author', 'entity', 'blog']
+---
+
+A component for an `Author` entity, supports serialization and de-serialization of Author objects and can be used from both backend and frontend.
+
+## Get started
+
+Install and use the component in your code:
+
+```tsx
+import { Author } from '@helemclub/blog.entities.author';
+
+const author = Author.from({
+  id: 'author-1',
+  userId: 'user-1',
+  name: 'ד״ר מיכל ברק',
+  bio: 'פסיכולוגית קלינית וכותבת, מתמחה בהתמודדות עם פוסט-טראומה.',
+  photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
+  hasWritePermission: true,
+  postCount: 12,
+  lastPostDate: '2026-05-12',
+});
+
+console.log(author.name);
+```
+
+## Serializing an author
+
+Use `toObject()` to convert an `Author` instance into a plain, serializable object — useful when sending data over the network or to storage.
+
+```tsx
+import { Author } from '@helemclub/blog.entities.author';
+
+const author = Author.from({
+  id: 'author-2',
+  userId: 'user-2',
+  name: 'רון אבני',
+  hasWritePermission: false,
+  postCount: 0,
+});
+
+const plainAuthor = author.toObject();
+console.log(plainAuthor);
+```
+
+## Mock data
+
+You can use author mock data for development and testing purposes using the `mockAuthor` and `mockAuthors` APIs.
+
+```tsx
+import { mockAuthor, mockAuthors } from '@helemclub/blog.entities.author';
+
+const singleAuthor = mockAuthor({ name: 'תמר גל', postCount: 3 });
+const authorList = mockAuthors();
+
+console.log(singleAuthor, authorList);
+```

@@ -1,0 +1,63 @@
+---
+description: "Multi-select input for choosing knowledge domains when authoring or submitting content. RTL."
+labels: ['domains', 'select', 'form', 'rtl']
+---
+
+The `DomainSelector` component lets authors and members tag content — articles, tools, events, records and gallery items — with one or more knowledge domains. It fetches the list of available domains via the `useDomains` hook and renders them as a searchable, multi-select dropdown with chip display.
+
+## Usage
+
+A basic domain selector, controlled by the parent component:
+
+```tsx
+function ArticleDomainsField() {
+  const [domainIds, setDomainIds] = React.useState<string[]>([]);
+
+  return (
+    <DomainSelector
+      value={domainIds}
+      onChange={(next) => setDomainIds(next)}
+    />
+  );
+}
+```
+
+## Required field with helper text
+
+Use `required` together with a custom `helperText` when the field must be filled before submitting content:
+
+```tsx
+function EventDomainsField() {
+  const [domainIds, setDomainIds] = React.useState<string[]>([]);
+
+  return (
+    <DomainSelector
+      value={domainIds}
+      onChange={(next) => setDomainIds(next)}
+      label="תחומים רלוונטיים לאירוע"
+      helperText="בחרו לפחות תחום אחד — נעזור למשתתפים הנכונים למצוא את האירוע."
+      required
+    />
+  );
+}
+```
+
+## Limiting the number of selections
+
+Use `maxSelections` to cap the number of domains a member can tag a content item with:
+
+```tsx
+function GalleryItemDomainsField() {
+  const [domainIds, setDomainIds] = React.useState<string[]>([]);
+
+  return (
+    <DomainSelector
+      value={domainIds}
+      onChange={(next) => setDomainIds(next)}
+      label="תחומים לפריט הגלריה"
+      maxSelections={3}
+      placeholder="עד שלושה תחומים..."
+    />
+  );
+}
+```

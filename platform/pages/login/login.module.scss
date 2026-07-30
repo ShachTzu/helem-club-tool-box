@@ -1,0 +1,120 @@
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: var(--spacing-x4) var(--spacing-medium);
+  background-color: var(--colors-surface-background);
+}
+
+.card {
+  width: 100%;
+  max-width: 440px;
+  box-sizing: border-box;
+  background-color: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  border-radius: var(--borders-radius-large);
+  box-shadow: var(--effects-shadows-card);
+  padding: var(--spacing-xl);
+  margin-top: var(--spacing-x4);
+}
+
+.title {
+  margin-bottom: var(--spacing-small);
+}
+
+.subtitle {
+  margin: 0 0 var(--spacing-large);
+  text-align: center;
+  color: var(--colors-text-secondary);
+  font-size: var(--typography-sizes-body-default);
+  line-height: var(--typography-line-height-base);
+}
+
+.googleButton {
+  margin-bottom: var(--spacing-medium);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  margin: var(--spacing-default) 0 var(--spacing-large);
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background-color: var(--colors-border);
+}
+
+.dividerLabel {
+  color: var(--colors-text-muted);
+  font-size: var(--typography-sizes-caption-default);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+}
+
+.error {
+  margin: 0;
+  color: var(--colors-status-negative-default);
+  font-size: var(--typography-sizes-caption-default);
+}
+
+.helperText {
+  margin: 0;
+  color: var(--colors-text-muted);
+  font-size: var(--typography-sizes-caption-default);
+  line-height: var(--typography-line-height-base);
+  text-align: center;
+}
+
+.codeSentText {
+  margin: 0;
+  color: var(--colors-text-secondary);
+  font-size: var(--typography-sizes-body-small);
+  text-align: center;
+}
+
+.emailHighlight {
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+}
+
+.linksRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-small);
+}
+
+.linkButton {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--colors-secondary-default);
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-caption-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+  cursor: var(--interactions-cursor-pointer);
+}
+
+.linkButton:disabled {
+  color: var(--colors-text-muted);
+  cursor: var(--interactions-cursor-disabled);
+}
+
+.legalText {
+  margin: var(--spacing-large) 0 0;
+  color: var(--colors-text-muted);
+  font-size: var(--typography-sizes-caption-default);
+  text-align: center;
+  line-height: var(--typography-line-height-base);
+}

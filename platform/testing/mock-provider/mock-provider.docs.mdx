@@ -1,0 +1,79 @@
+---
+description: "A test/preview provider wrapping children with MemoryRouter, Apollo MockedProvider, and the helam-theme (RTL)."
+labels: ["testing", "mock", "provider", "helam-theme"]
+---
+
+The `MockProvider` wraps components with the providers they need to render in isolation: a react-router `MemoryRouter`, an Apollo `MockedProvider`, and the Helam Club theme (RTL). It is used across all components in this scope, both in compositions and in specs.
+
+## Basic usage
+
+Wrap any component tree with the mock provider to render it as it would appear inside the Helam Club platform:
+
+```tsx
+import { MockProvider } from '@helemclub/platform.testing.mock-provider';
+
+function BasicUsage() {
+  return (
+    <MockProvider>
+      <div>שלום, קהילת הלם קלאב!</div>
+    </MockProvider>
+  );
+}
+```
+
+## Using react-router navigation
+
+The provider wraps children in a `MemoryRouter`, so components can safely use `Link`, `useNavigate` and other react-router APIs:
+
+```tsx
+import { MockProvider } from '@helemclub/platform.testing.mock-provider';
+import { Link } from 'react-router-dom';
+
+function WithNavigation() {
+  return (
+    <MockProvider>
+      <nav style={{ display: 'flex', gap: 16 }}>
+        <Link to="/domains">דומיינים</Link>
+        <Link to="/events">אירועים</Link>
+      </nav>
+    </MockProvider>
+  );
+}
+```
+
+## Checking for mock mode
+
+Use the `useIsMock` hook to determine whether a component is currently rendering inside a mocked context, for example to skip real network calls:
+
+```tsx
+import { MockProvider, useIsMock } from '@helemclub/platform.testing.mock-provider';
+
+function StatusIndicator() {
+  const isMock = useIsMock();
+  return <p>מצב הדמיה: {isMock ? 'פעיל' : 'כבוי'}</p>;
+}
+
+function WithIsMock() {
+  return (
+    <MockProvider>
+      <StatusIndicator />
+    </MockProvider>
+  );
+}
+```
+
+## Opting out of specific providers
+
+Pass `noRouter`, `noTheme` or `noApollo` to skip wrapping with a specific provider, for example when a component already renders inside its own router:
+
+```tsx
+import { MockProvider } from '@helemclub/platform.testing.mock-provider';
+
+function WithoutRouter() {
+  return (
+    <MockProvider noRouter>
+      <div>רכיב זה לא עטוף בנתב משלו</div>
+    </MockProvider>
+  );
+}
+```

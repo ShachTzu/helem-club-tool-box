@@ -1,0 +1,62 @@
+---
+description: "A like + emoji reaction bar with counts, one selection per device and an optimistic toggle. RTL by default."
+labels: ["reactions", "engagement", "rtl"]
+---
+
+The `ReactionBar` component renders a set of "like" and emoji reactions with aggregated counts. Only one reaction is allowed per device per target object; selecting a new reaction replaces the previous one, and the UI updates optimistically before the server confirms the change.
+
+## Basic usage
+
+Render a reaction bar for a piece of content, providing the target type and id it should react to:
+
+```tsx
+import { ReactionBar } from '@helemclub/engagement.ui.reaction-bar';
+
+function PostFooter() {
+  return <ReactionBar targetType="post" targetId="post-finding-calm-in-the-storm" />;
+}
+```
+
+## Custom reaction options
+
+Provide your own list of reaction options to control which emojis are offered:
+
+```tsx
+import { ReactionBar } from '@helemclub/engagement.ui.reaction-bar';
+
+function EventFooter() {
+  const options = [
+    { type: 'like', emoji: '👍', label: 'אהבתי' },
+    { type: 'star', emoji: '⭐', label: 'מעולה' },
+  ];
+
+  return <ReactionBar targetType="event" targetId="event-community-circle" options={options} />;
+}
+```
+
+## Rendering with a known summary
+
+Pass `mockData` to render a reaction bar with a specific set of counts and an existing device reaction, useful for previews and tests:
+
+```tsx
+import { ReactionBar } from '@helemclub/engagement.ui.reaction-bar';
+
+function LikedGalleryItem() {
+  const summary = {
+    counts: [
+      { type: 'like', count: 24 },
+      { type: 'heart', count: 6 },
+    ],
+    myReaction: 'like',
+  };
+
+  return (
+    <ReactionBar
+      targetType="gallery"
+      targetId="gallery-item-1"
+      mockData={summary}
+      mockDeviceId="device-1"
+    />
+  );
+}
+```

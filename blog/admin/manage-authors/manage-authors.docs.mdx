@@ -1,0 +1,67 @@
+---
+description: "Admin panel for managing blog authors: grant or revoke write permission and view post counts."
+labels: ['blog', 'admin', 'authors', 'react']
+---
+
+The `ManageAuthors` component is an admin panel for managing blog authors. It lists all authors, shows how many posts each one has published and the date of their last post, and lets an admin grant or revoke write permission. The panel is protected — only users with the `admin` role can view it — and is designed to be registered as an `AdminPanel` in the platform's admin shell.
+
+## Usage
+
+### Basic usage
+
+```tsx
+function ManageAuthorsExample() {
+  return <ManageAuthors />;
+}
+```
+
+### Providing mock data for tests and previews
+
+```tsx
+function ManageAuthorsMockExample() {
+  const authors = [
+    {
+      id: `1`,
+      userId: `user-1`,
+      name: `ד״ר מיכל ברק`,
+      bio: `פסיכולוגית קלינית וכותבת.`,
+      hasWritePermission: true,
+      postCount: 12,
+      lastPostDate: `2026-05-12`,
+    },
+    {
+      id: `2`,
+      userId: `user-2`,
+      name: `תמר גל`,
+      hasWritePermission: false,
+      postCount: 1,
+      lastPostDate: `2026-04-19`,
+    },
+  ];
+
+  const adminUser = {
+    id: `admin-1`,
+    email: `admin@helam.club`,
+    displayName: `מנהלת הקהילה`,
+    role: `admin` as const,
+    provider: `email` as const,
+    createdAt: `2024-01-01T00:00:00.000Z`,
+  };
+
+  return <ManageAuthors mockAuthors={authors} mockUser={adminUser} />;
+}
+```
+
+### Registering as an AdminPanel
+
+The component is intended to be registered as an admin panel entry in the platform's admin shell, alongside the other management panels (users, toolbox, moderation, etc). It renders its own protection logic, so it can safely be used as the panel's `component`.
+
+```tsx
+function AdminPanelsExample() {
+  const panels = [
+    { id: `blog-authors`, label: `ניהול כותבים`, path: `/admin/blog/authors`, component: ManageAuthors },
+  ];
+
+  return <p>נרשמו {panels.length} פאנלים לאזור הניהול.</p>;
+}
+```

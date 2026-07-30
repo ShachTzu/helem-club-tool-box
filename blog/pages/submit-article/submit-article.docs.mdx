@@ -1,0 +1,46 @@
+---
+description: "Community blog article submission form: title, excerpt, body, domains, and private identifier details, submitted as pending. RTL."
+labels: ["blog", "form", "submission", "rtl"]
+---
+
+The `SubmitArticle` component renders the community submission form served at `/blog/submit`. It collects
+the article's title, excerpt, body and relevant coping-domains, along with identifying contact details
+(full name, email, phone and Facebook profile link) that are never shown publicly, plus an optional
+display-name or anonymous option. On submit, the article is created as a `pending` post awaiting
+moderation review.
+
+### Basic usage
+
+```tsx
+<SubmitArticle
+  mockDomains={[
+    { id: `anxiety`, slug: `anxiety`, name: `חרדה`, count: 5, icon: `😰` },
+    { id: `sleep`, slug: `sleep`, name: `שינה`, count: 4, icon: `🌙` },
+  ]}
+/>
+```
+
+### Handling successful submissions
+
+Use the `onSubmitted` callback to react to a successful submission, for example to track analytics or
+show a toast notification.
+
+```tsx
+<SubmitArticle
+  mockDomains={[{ id: `sleep`, slug: `sleep`, name: `שינה`, count: 4, icon: `🌙` }]}
+  onSubmitted={(title) => console.log(`Article submitted: ${title}`)}
+/>
+```
+
+### Previewing the success state
+
+Set `previewSubmitted` to render the thank-you confirmation state directly, without going through the
+form, useful when designing the post-submission flow.
+
+```tsx
+<SubmitArticle
+  mockDomains={[{ id: `anxiety`, slug: `anxiety`, name: `חרדה`, count: 5, icon: `😰` }]}
+  previewSubmitted
+  blogHref="/blog"
+/>
+```

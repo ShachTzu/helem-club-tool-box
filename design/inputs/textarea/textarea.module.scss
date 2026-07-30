@@ -1,0 +1,93 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  gap: var(--spacing-small);
+  font-family: var(--typography-font-family);
+  direction: var(--layout-direction);
+}
+
+.label {
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+}
+
+.required {
+  color: var(--colors-status-negative-default);
+  margin-inline-start: 4px;
+}
+
+.textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-small);
+  padding: var(--spacing-default) var(--spacing-medium);
+  font-size: var(--typography-sizes-body-default);
+  line-height: var(--typography-line-height-base);
+  font-family: inherit;
+  color: var(--colors-text-primary);
+  background-color: var(--colors-surface-primary);
+  resize: none;
+  transition: border-color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out),
+    box-shadow var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out);
+}
+
+.textarea::placeholder {
+  color: var(--colors-text-muted);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--borders-focus-color);
+  box-shadow: 0 0 0 var(--borders-focus-offset) var(--borders-focus-color);
+}
+
+.error {
+  border-color: var(--colors-status-negative-default);
+}
+
+.error:focus {
+  border-color: var(--colors-status-negative-default);
+  box-shadow: 0 0 0 var(--borders-focus-offset) var(--colors-status-negative-default);
+}
+
+.disabled {
+  cursor: var(--interactions-cursor-disabled);
+  opacity: var(--effects-opacity-disabled);
+  background-color: var(--colors-surface-secondary);
+}
+
+.footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-small);
+  min-height: 18px;
+}
+
+.message {
+  flex: 1;
+  font-size: var(--typography-sizes-caption-default);
+  line-height: var(--typography-line-height-base);
+}
+
+.helperText {
+  color: var(--colors-text-muted);
+}
+
+.errorText {
+  color: var(--colors-status-negative-default);
+}
+
+.counter {
+  flex-shrink: 0;
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-muted);
+}
+
+.counterWarn {
+  color: var(--colors-accent-default);
+}

@@ -1,0 +1,56 @@
+---
+description: "Global cross-content search box for the header, with a grouped results dropdown, keyboard navigation and a mobile full-screen overlay."
+labels: ["search", "header", "input", "dropdown"]
+---
+
+The `GlobalSearch` component provides a cross-content search experience for the platform header. It debounces the user's query, groups matching results by content type (apps, blog posts, events, knowledge articles and more), and supports full keyboard navigation. On small screens the results panel expands into a full-screen overlay.
+
+## Basic usage
+
+Render the search box with mock results for previews or tests:
+
+```tsx
+import { GlobalSearch } from '@helemclub/platform.ui.global-search';
+import { mockSearchResults } from '@helemclub/platform.entities.search-result';
+
+function Example() {
+  return <GlobalSearch mockResults={mockSearchResults()} />;
+}
+```
+
+## Reacting to a selected result
+
+Pass an `onResultSelect` handler to run custom logic (e.g. analytics) before the component navigates to the result's URL:
+
+```tsx
+import { GlobalSearch } from '@helemclub/platform.ui.global-search';
+import { mockSearchResults } from '@helemclub/platform.entities.search-result';
+
+function Example() {
+  return (
+    <GlobalSearch
+      mockResults={mockSearchResults()}
+      onResultSelect={(result) => console.log(`selected result: ${result.title}`)}
+    />
+  );
+}
+```
+
+## Custom placeholder and group labels
+
+Override the placeholder text or the labels rendered above each group of results:
+
+```tsx
+import { GlobalSearch } from '@helemclub/platform.ui.global-search';
+import { mockSearchResults } from '@helemclub/platform.entities.search-result';
+
+function Example() {
+  return (
+    <GlobalSearch
+      placeholder="חפשו כלים, מאמרים ואירועים..."
+      typeLabels={{ app: `כלי התמודדות`, blog: `כתבות בלוג` }}
+      mockResults={mockSearchResults()}
+    />
+  );
+}
+```

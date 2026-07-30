@@ -1,0 +1,59 @@
+---
+description: "A route guard that shows a spinner while auth loads, redirects anonymous users to login, and enforces allowed roles."
+labels: ['hook', 'route-guard', 'authentication', 'react']
+---
+
+The `ProtectedRoute` component guards page content from anonymous access and, optionally, from users whose role is not privileged enough. While the authentication state is still resolving it renders a spinner. Once resolved, signed-out users are redirected to a configurable path (`/login` by default), and signed-in users whose role is not listed in `allowedRoles` see an access-denied message instead of the protected content.
+
+## Usage
+
+### Guarding a page for any signed-in user
+
+```tsx
+const MyAccountRoute = () => {
+  return (
+    <ProtectedRoute>
+      <div>
+        <h1>האזור האישי שלי</h1>
+        <p>תוכן זה גלוי רק למשתמשים מחוברים.</p>
+      </div>
+    </ProtectedRoute>
+  );
+};
+```
+
+This renders the protected content for any signed-in user, regardless of role, and redirects anonymous visitors to `/login`.
+
+### Restricting a page to specific roles
+
+```tsx
+const ModerationQueueRoute = () => {
+  return (
+    <ProtectedRoute allowedRoles={['moderator', 'admin']} redirectTo="/login">
+      <div>
+        <h1>תור מודרציה</h1>
+        <p>ניהול תגובות שדווחו על ידי חברי הקהילה.</p>
+      </div>
+    </ProtectedRoute>
+  );
+};
+```
+
+Only users with the `moderator` or `admin` role see the content. Signed-in users with a lower role see an access-denied message, and anonymous visitors are redirected to `redirectTo`.
+
+### Restricting content creation to writers and above
+
+```tsx
+const NewBlogPostRoute = () => {
+  return (
+    <ProtectedRoute allowedRoles={['writer', 'moderator', 'admin']}>
+      <div>
+        <h1>כתיבת פוסט חדש</h1>
+        <p>טופס יצירת תוכן זמין לכותבים, מודרטורים ואדמינים בלבד.</p>
+      </div>
+    </ProtectedRoute>
+  );
+};
+```
+
+This example shows how `allowedRoles` composes the platform role hierarchy (member, writer, moderator, admin) to gate a content-creation route.

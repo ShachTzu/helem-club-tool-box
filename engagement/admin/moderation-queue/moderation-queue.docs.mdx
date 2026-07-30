@@ -1,0 +1,81 @@
+---
+description: "Moderation queue admin panel for hidden/reported comments with restore/delete actions."
+labels: ["moderation", "admin", "comments", "rtl"]
+---
+
+The `ModerationQueue` component lists comments that were hidden or reported by the community and are
+awaiting a moderator or admin decision. Each row shows the author, comment text, report count and
+current visibility status, alongside restore/delete actions. Access is restricted to users holding
+the `moderator` or `admin` role, and the panel shows a soft 48-hour resolution target hint.
+
+It is designed to be registered as an `AdminPanel` entry in the platform's admin shell, but can also
+be rendered standalone.
+
+### Basic usage
+
+Renders the moderation queue for a signed-in moderator/admin, backed by mock comment data.
+
+```tsx
+import { ModerationQueue } from '@helemclub/engagement.admin.moderation-queue';
+import { mockComments } from '@helemclub/engagement.entities.comment';
+
+function Example() {
+  const mockedComments = mockComments().map((comment) => comment.toObject());
+  const adminUser = {
+    id: `user-1`,
+    email: `admin@helam.club`,
+    displayName: `נועה מנהלת`,
+    role: `admin` as const,
+    provider: `email` as const,
+    createdAt: new Date().toISOString(),
+  };
+
+  return <ModerationQueue mockData={mockedComments} mockUser={adminUser} />;
+}
+```
+
+### Empty queue
+
+When there are no hidden or reported comments left, the panel shows a friendly empty state instead
+of the table.
+
+```tsx
+import { ModerationQueue } from '@helemclub/engagement.admin.moderation-queue';
+
+function Example() {
+  const adminUser = {
+    id: `user-1`,
+    email: `admin@helam.club`,
+    displayName: `נועה מנהלת`,
+    role: `admin` as const,
+    provider: `email` as const,
+    createdAt: new Date().toISOString(),
+  };
+
+  return <ModerationQueue mockData={[]} mockUser={adminUser} />;
+}
+```
+
+### Restricted access
+
+Signed-in users without the `moderator` or `admin` role are shown an access-denied message instead
+of the queue.
+
+```tsx
+import { ModerationQueue } from '@helemclub/engagement.admin.moderation-queue';
+import { mockComments } from '@helemclub/engagement.entities.comment';
+
+function Example() {
+  const mockedComments = mockComments().map((comment) => comment.toObject());
+  const memberUser = {
+    id: `user-2`,
+    email: `member@helam.club`,
+    displayName: `דניאל חבר`,
+    role: `member` as const,
+    provider: `email` as const,
+    createdAt: new Date().toISOString(),
+  };
+
+  return <ModerationQueue mockData={mockedComments} mockUser={memberUser} />;
+}
+```

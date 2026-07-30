@@ -1,0 +1,11 @@
+.onboardingPage {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--helam-color-surface, #f6f8fa);
+}
+
+.inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 40px 20px 64px;
+}

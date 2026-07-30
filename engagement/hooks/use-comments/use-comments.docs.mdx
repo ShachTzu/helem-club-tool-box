@@ -1,0 +1,112 @@
+---
+description: "A React hook managing a comment thread for a target: visibility-filtered listing, posting (anonymous/named/members-only), and reporting."
+labels: ['hook', 'react', 'comments', 'engagement']
+---
+
+`useComments` manages the full comment-thread lifecycle for a piece of content (an app, blog post, domain, etc). It lists comments filtered by the current viewer's membership status, exposes an action to post a new comment (anonymously, under a device id, or as a named member), and an action to report a comment as inappropriate.
+
+It relies on `useAuth` to resolve the current member and `useDeviceId` to scope anonymous engagement to the visitor's device.
+
+## Usage
+
+### Listing visible comments
+
+```tsx
+import { useComments } from '@helemclub/engagement.hooks.use-comments';
+
+function CommentList() {
+  const { comments, loading, isMember } = useComments('app', 'meditation-timer');
+
+  if (loading) return <p>טוען תגובות...</p>;
+
+  return (
+    <div>
+      <p>{isMember ? 'מחובר/ת כחבר/ת קהילה' : 'צפייה כאורח/ת'}</p>
+      <ul>
+        {comments.map((comment) => (
+          <li key={comment.id}>
+            {comment.isAnonymous ? 'אנונימי/ת' : comment.displayName}: {comment.text}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+### Posting a comment (anonymous or named)
+
+```tsx
+import { useState } from 'react';
+import { useComments } from '@helemclub/engagement.hooks.use-comments';
+
+function CommentComposer() {
+  const { addComment, addingComment } = useComments('blog', 'grounding-practice');
+  const [text, setText] = useState('');
+
+  const submit = async () => {
+    if (!text.trim()) return;
+    await addComment({ text, isAnonymous: false });
+    setText('');
+  };
+
+  return (
+    <div>
+      <textarea value={text} onChange={(e) => setText(e.target.value)} />
+      <button onClick={() => submit()} disabled={addingComment}>
+        פרסום תגובה
+      </button>
+    </div>
+  );
+}
+```
+
+### Reporting a comment
+
+```tsx
+import { useComments } from '@helemclub/engagement.hooks.use-comments';
+
+function ReportButton({ commentId }: { commentId: string }) {
+  const { reportComment, reportingComment } = useComments('app', 'meditation-timer');
+
+  return (
+    <button onClick={() => reportComment(commentId)} disabled={reportingComment}>
+      דיווח על תגובה
+    </button>
+  );
+}
+```
+
+## Mocking for tests and previews
+
+`useComments` accepts `mockComments`, `mockUser`, and `mockDeviceId` options to bypass network requests entirely, making it easy to test and preview without a live GraphQL server.
+
+```tsx
+import { useComments } from '@helemclub/engagement.hooks.use-comments';
+
+function MockedCommentList() {
+  const { comments } = useComments('app', 'meditation-timer', {
+    mockComments: [
+      {
+        id: 'c1',
+        targetType: 'app',
+        targetId: 'meditation-timer',
+        text: 'תודה על השיתוף, ממש עזר לי.',
+        displayName: 'מיכל ר.',
+        isAnonymous: false,
+        membersOnly: false,
+        createdAt: new Date().toISOString(),
+      },
+    ],
+    mockUser: null,
+  });
+
+  return (
+    <ul>
+      {comments.map((comment) => (
+        <li key={comment.id}>{comment.text}</li>
+      ))}
+    </ul>
+  );
+}
+```

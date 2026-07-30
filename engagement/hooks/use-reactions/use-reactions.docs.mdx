@@ -1,0 +1,70 @@
+---
+description: "A React hook for reaction counts, the current device's reaction, and toggling reactions on any target object."
+labels: ['hook', 'react', 'reactions', 'engagement']
+---
+
+`useReactions` fetches aggregated reaction counts and the current device's reaction for a target object (post, event, record, gallery item, app, or comment), and exposes a `toggleReaction` function to react or un-react anonymously. It relies on `useDeviceId` under the hood so no authentication is required — the reaction is scoped to a persisted anonymous device id.
+
+## Usage
+
+### Displaying reaction counts and the current device reaction
+
+```tsx
+function PostReactions() {
+  const { counts, totalCount, myReaction, loading } = useReactions('post', 'post-42');
+
+  if (loading) return <span>טוען תגובות...</span>;
+
+  return (
+    <div>
+      <span>סה"כ תגובות: {totalCount}</span>
+      <ul>
+        {counts.map((reaction) => (
+          <li key={reaction.type}>
+            {reaction.type}: {reaction.count} {myReaction === reaction.type ? '(שלי)' : ''}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+### Toggling a reaction
+
+```tsx
+function LikeButton() {
+  const { myReaction, toggleReaction, toggling } = useReactions('record', 'record-7');
+  const liked = myReaction === 'like';
+
+  return (
+    <button disabled={toggling} onClick={() => toggleReaction('like')}>
+      {liked ? '❤️ אהבתי' : '🤍 אהבתי'}
+    </button>
+  );
+}
+```
+
+### Providing mock data for previews and tests
+
+```tsx
+function MockedReactions() {
+  const { counts, myReaction } = useReactions('event', 'event-3', {
+    mockData: {
+      counts: [
+        { type: 'like', count: 24 },
+        { type: 'heart', count: 6 },
+      ],
+      myReaction: 'like',
+    },
+    mockDeviceId: 'preview-device',
+  });
+
+  return (
+    <div>
+      <span>לייקים: {counts.find((c) => c.type === 'like')?.count ?? 0}</span>
+      <span>התגובה שלי: {myReaction ?? 'אין'}</span>
+    </div>
+  );
+}
+```

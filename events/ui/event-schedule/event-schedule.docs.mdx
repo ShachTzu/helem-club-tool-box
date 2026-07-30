@@ -1,0 +1,55 @@
+---
+description: "Upcoming/past schedule with tabs and a responsive grid of event cards. RTL."
+labels: ["events", "schedule", "tabs", "rtl"]
+---
+
+The `EventSchedule` component renders a title, description, an upcoming/past tab switcher, and a responsive grid of event cards. It automatically splits the provided events into upcoming (sorted soonest first) and past (sorted most recent first) buckets, and shows a friendly empty state when a tab has no events.
+
+## Basic usage
+
+Provide a list of plain events (as produced by the `@helemclub/events.entities.event` mock factory or a GraphQL query) and the component takes care of splitting and sorting them:
+
+```tsx
+import { EventSchedule } from '@helemclub/events.ui.event-schedule';
+import { mockEvents } from '@helemclub/events.entities.event';
+
+function EventsSection() {
+  const events = mockEvents().map((event) => event.toObject());
+  return <EventSchedule events={events} />;
+}
+```
+
+## Custom titles and empty states
+
+Customize the title, description and the messages shown when a tab has no events:
+
+```tsx
+import { EventSchedule } from '@helemclub/events.ui.event-schedule';
+import { mockEvents } from '@helemclub/events.entities.event';
+
+function CommunityArchive() {
+  const events = mockEvents().map((event) => event.toObject());
+  return (
+    <EventSchedule
+      events={events}
+      defaultTab="past"
+      title="ארכיון האירועים"
+      description="הקלטות ותיעוד של מפגשי הקהילה מהעבר."
+      emptyPastTitle="אין עדיין אירועים בארכיון"
+      emptyPastDescription="אירועים שהסתיימו יופיעו כאן."
+    />
+  );
+}
+```
+
+## Empty schedule
+
+When no events are provided, a friendly empty state is shown instead of an empty grid:
+
+```tsx
+import { EventSchedule } from '@helemclub/events.ui.event-schedule';
+
+function EmptySchedule() {
+  return <EventSchedule events={[]} title="לוח אירועים" description="עדיין לא פורסמו אירועים." />;
+}
+```

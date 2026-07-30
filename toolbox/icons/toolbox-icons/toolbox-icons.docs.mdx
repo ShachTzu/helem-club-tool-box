@@ -1,0 +1,68 @@
+---
+description: "Toolbox icon set (app, submit, featured, external-link) built on design content/icon."
+labels: ["icon", "toolbox", "icons"]
+---
+
+The toolbox icon set provides a small, named collection of icons used across the Helam Club toolbox catalog: `AppIcon`, `SubmitIcon`, `FeaturedIcon` and `ExternalLinkIcon`. Every icon is a thin wrapper over the design system's `Icon` component, so they share the same size, color and variant API.
+
+## Basic usage
+
+Render any of the icons directly, optionally setting a themed size and color:
+
+```tsx
+import { AppIcon } from '@helemclub/toolbox.icons.toolbox-icons';
+
+function Example() {
+  return <AppIcon size="large" color="primary" title="אפליקציה" />;
+}
+```
+
+## Marking a featured app
+
+Use `FeaturedIcon` next to an app's title to indicate it was recommended by the community:
+
+```tsx
+import { FeaturedIcon } from '@helemclub/toolbox.icons.toolbox-icons';
+
+function AppTitle() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <h3 style={{ margin: 0 }}>נשימה רגועה</h3>
+      <FeaturedIcon size="small" title="מומלץ ע״י הקהילה" />
+    </div>
+  );
+}
+```
+
+## Linking to an external app
+
+Combine `ExternalLinkIcon` with an anchor tag to signal the link opens outside the platform:
+
+```tsx
+import { ExternalLinkIcon } from '@helemclub/toolbox.icons.toolbox-icons';
+
+function ExternalAppLink() {
+  return (
+    <a href="https://example.com" target="_blank" rel="noreferrer">
+      לאפליקציה <ExternalLinkIcon size="small" />
+    </a>
+  );
+}
+```
+
+## Submitting a new tool
+
+`SubmitIcon` pairs well with the "submit a tool" call to action:
+
+```tsx
+import { SubmitIcon } from '@helemclub/toolbox.icons.toolbox-icons';
+
+function SubmitButton() {
+  return (
+    <button>
+      <SubmitIcon size="small" />
+      הגשת כלי
+    </button>
+  );
+}
+```

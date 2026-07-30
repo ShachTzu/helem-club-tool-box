@@ -1,0 +1,116 @@
+.page {
+  box-sizing: border-box;
+  width: 100%;
+  background-color: var(--colors-surface-background);
+  direction: var(--layout-direction);
+  font-family: var(--typography-font-family);
+  padding: var(--spacing-xl) var(--spacing-large) var(--spacing-x4);
+}
+
+.container {
+  box-sizing: border-box;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: var(--typography-sizes-heading-h1);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+  margin: 0 0 8px;
+  line-height: var(--typography-line-height-heading);
+}
+
+.subtitle {
+  color: var(--colors-text-muted);
+  font-size: var(--typography-sizes-body-large);
+  line-height: var(--typography-line-height-base);
+  margin: 0 0 var(--spacing-xl);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-large);
+}
+
+.identityCard {
+  box-sizing: border-box;
+  background-color: var(--colors-surface-secondary);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-large);
+  box-shadow: var(--effects-shadows-card);
+}
+
+.identityTitle {
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+  margin-bottom: var(--spacing-medium);
+  font-size: var(--typography-sizes-body-default);
+}
+
+.identityGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-medium);
+}
+
+.anonymousLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-secondary);
+  cursor: var(--interactions-cursor-pointer);
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--colors-primary-default);
+  cursor: var(--interactions-cursor-pointer);
+}
+
+.errorText {
+  color: var(--colors-status-negative-default);
+  font-size: var(--typography-sizes-body-small);
+  margin: 0;
+}
+
+.successContainer {
+  box-sizing: border-box;
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+  padding: var(--spacing-x4) var(--spacing-large);
+}
+
+.successIcon {
+  font-size: 48px;
+  margin-bottom: var(--spacing-medium);
+}
+
+.successTitle {
+  font-size: var(--typography-sizes-heading-h2);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+  margin: 0 0 var(--spacing-small);
+}
+
+.successText {
+  color: var(--colors-text-muted);
+  font-size: var(--typography-sizes-body-large);
+  line-height: var(--typography-line-height-base);
+  margin: 0 0 var(--spacing-xl);
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: var(--spacing-large) var(--spacing-medium) var(--spacing-xl);
+  }
+
+  .identityGrid {
+    grid-template-columns: 1fr;
+  }
+}

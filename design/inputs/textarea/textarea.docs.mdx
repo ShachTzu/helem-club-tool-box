@@ -1,0 +1,69 @@
+---
+description: "RTL multi-line textarea with label, error state, and auto-grow, used for comments and article submission."
+labels: ['textarea', 'input', 'form', 'rtl']
+---
+
+The `Textarea` component is a Hebrew RTL multi-line text input used across the Helam Club platform for writing comments, replies, and longer form submissions like article drafts or wishlist ideas.
+
+It supports an optional label, helper text, error state, character counting, and auto-grow behavior so the field expands as the user types.
+
+## Basic usage
+
+```tsx
+function Example() {
+  const [value, setValue] = React.useState('');
+
+  return (
+    <Textarea
+      label="הוספת תגובה"
+      placeholder="מה עלה לך מהכתבה? כתבו בעדינות ובכבוד..."
+      value={value}
+      onChange={(nextValue) => setValue(nextValue)}
+      maxLength={800}
+    />
+  );
+}
+```
+
+## Error state
+
+Pass an `error` message to switch the field into its error state. The error message replaces any `helperText` below the field.
+
+```tsx
+function Example() {
+  const [value, setValue] = React.useState('רעיון קצר מדי');
+
+  return (
+    <Textarea
+      label="תיאור הרעיון"
+      required
+      value={value}
+      onChange={(nextValue) => setValue(nextValue)}
+      error="התיאור חייב לכלול לפחות 30 תווים"
+    />
+  );
+}
+```
+
+## Auto-grow for longer content
+
+Use `minRows` and `maxRows` to control the auto-grow range, useful for article submission forms where content can be long.
+
+```tsx
+function Example() {
+  const [value, setValue] = React.useState(
+    'פתחתי את הבוקר עם תרגול נשימה קצר, וזה שינה לי את כל היום.'
+  );
+
+  return (
+    <Textarea
+      label="גוף הכתבה"
+      helperText="ניתן להרחיב חופשי — השדה גדל אוטומטית עם הטקסט"
+      value={value}
+      onChange={(nextValue) => setValue(nextValue)}
+      minRows={4}
+      maxRows={12}
+    />
+  );
+}
+```

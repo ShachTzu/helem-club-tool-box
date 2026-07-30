@@ -1,0 +1,44 @@
+---
+description: "Site footer (RTL) with logo, grouped links, social icons, and the medical disclaimer."
+labels: ["footer", "layout", "rtl"]
+---
+
+The `Footer` component renders the Helam Club site footer: the brand logo and description, grouped
+navigation links supplied via props, outbound social links (Facebook/Instagram), and the medical
+disclaimer alongside emergency contact numbers (מד"א 101 / ער"ן 1201). The layout is RTL and adapts
+to a responsive column grid.
+
+## Basic usage
+
+Render the footer with its default content:
+
+```tsx
+<Footer />
+```
+
+## Custom links and description
+
+Pass grouped links and a custom description to reflect the app's own sections:
+
+```tsx
+<Footer
+  description="קהילה תומכת של בוגרי קרב, ניצולי אירועים ובני משפחה - יחד, בלי שיפוטיות."
+  links={[
+    { label: `ארגז כלים`, href: `/toolbox`, group: `האקוסיסטם` },
+    { label: `מאגר ידע`, href: `/knowledge`, group: `האקוסיסטם` },
+    { label: `תחומי התמודדות`, href: `/domains`, group: `קהילה` },
+  ]}
+/>
+```
+
+## Custom social links and disclaimer
+
+Override the outbound social links and the bottom disclaimer text:
+
+```tsx
+<Footer
+  facebookUrl="https://facebook.com/helamclub"
+  instagramUrl="https://instagram.com/helamclub"
+  disclaimer="התכנים באתר אינם תחליף לייעוץ מקצועי."
+/>
+```

@@ -1,0 +1,79 @@
+---
+description: "Knowledge-base icon set (video, audio, play, label) with named exports."
+labels: ["icons", "knowledge-base", "svg"]
+---
+
+The knowledge-base icon set provides a small collection of themed SVG icons used across the Helam Club knowledge-base — media type badges, thumbnail play overlays and project labels.
+
+All icons share the same props: `size`, `color`, `variant`, `strokeWidth`, `title`, `className` and `style`, matching the underlying `Icon` component from `@helemclub/design.content.icon`.
+
+## Basic usage
+
+```tsx
+import { VideoIcon, AudioIcon, PlayIcon, LabelIcon } from '@helemclub/knowledge-base.icons.knowledge-base-icons';
+
+function IconRow() {
+  return (
+    <div style={{ display: 'flex', gap: 16 }}>
+      <VideoIcon size="large" color="primary" />
+      <AudioIcon size="large" color="secondary" />
+      <PlayIcon size="large" color="accent" />
+      <LabelIcon size="large" color="primary" />
+    </div>
+  );
+}
+```
+
+## Media type badge
+
+Use `VideoIcon` or `AudioIcon` alongside a badge to mark the media type of a knowledge-base record.
+
+```tsx
+import { VideoIcon } from '@helemclub/knowledge-base.icons.knowledge-base-icons';
+
+function VideoBadge() {
+  return (
+    <span
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 6,
+        background: 'var(--colors-status-info-subtle)',
+        color: 'var(--colors-status-info-default)',
+        padding: '6px 12px',
+        borderRadius: 'var(--borders-radius-pill)',
+        fontWeight: 700,
+      }}
+    >
+      <VideoIcon size="small" color="current" />
+      וידאו
+    </span>
+  );
+}
+```
+
+## Play overlay on a thumbnail
+
+Use `PlayIcon` with the `fill` variant as an overlay affordance on media thumbnails.
+
+```tsx
+import { PlayIcon } from '@helemclub/knowledge-base.icons.knowledge-base-icons';
+
+function ThumbnailOverlay() {
+  return (
+    <div
+      style={{
+        position: 'relative',
+        width: 240,
+        aspectRatio: '16/9',
+        background: 'var(--effects-gradients-primary)',
+        borderRadius: 'var(--borders-radius-medium)',
+      }}
+    >
+      <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center' }}>
+        <PlayIcon size={40} color="inverse" />
+      </div>
+    </div>
+  );
+}
+```

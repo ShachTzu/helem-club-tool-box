@@ -1,0 +1,48 @@
+---
+description: "A large amber call-to-action button built on actions/button, used in hero and section CTAs."
+labels: ["button", "cta", "action", "amber"]
+---
+
+The `CtaButton` wraps the base `Button` component with the `accent` (amber) variant and a subtle
+glow-on-hover effect, tuned for high-visibility calls-to-action in hero sections and content
+sections across the Helam Club ecosystem.
+
+## Basic usage
+
+```tsx
+<CtaButton>הצטרפו עכשיו</CtaButton>
+```
+
+## As a link
+
+Pass an `href` to render the CTA as a navigable link, useful for hero sections pointing to a
+destination page.
+
+```tsx
+<CtaButton href="/toolbox">גלו את ארגז הכלים</CtaButton>
+```
+
+## Sizes
+
+The CTA button defaults to a large size, but supports the same sizes as the base button.
+
+```tsx
+<div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
+  <CtaButton size="sm">הצטרפו</CtaButton>
+  <CtaButton size="md">הצטרפו</CtaButton>
+  <CtaButton size="lg">הצטרפו</CtaButton>
+</div>
+```
+
+## Full width and states
+
+Use `fullWidth` to stretch the CTA across its container, and `loading`/`disabled` to reflect
+async or unavailable states.
+
+```tsx
+<div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 360 }}>
+  <CtaButton fullWidth>הרשמה לניוזלטר</CtaButton>
+  <CtaButton loading>שולח בקשה...</CtaButton>
+  <CtaButton disabled>לא זמין כרגע</CtaButton>
+</div>
+```

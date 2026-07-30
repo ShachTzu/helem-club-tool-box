@@ -1,0 +1,66 @@
+---
+description: "A GalleryItem entity representing a single piece of community artwork (image or video) shown in the PTSDART gallery."
+labels: ['entity', 'gallery', 'ptsdart']
+---
+
+A component for a `GalleryItem` entity, supports serialization and de-serialization of gallery item objects and can be used from both backend and frontend.
+
+A gallery item represents a single piece of community artwork — an image or a short video — tagged with one or more coping-domains, and optionally attributed to an artist.
+
+## Get started
+
+Install and use the component in your code:
+
+```tsx
+import { GalleryItem } from '@helemclub/gallery.entities.gallery-item';
+
+const item = GalleryItem.from({
+  id: '1',
+  slug: 'quiet-after-the-storm',
+  title: 'שקט אחרי הסערה',
+  description: 'יצירה שמבטאת את הרוגע שמגיע אחרי גל של הצפה רגשית.',
+  mediaType: 'image',
+  mediaUrl: 'https://example.com/quiet-after-the-storm.png',
+  thumbnailUrl: 'https://example.com/quiet-after-the-storm-thumb.png',
+  artistName: 'נועה ל.',
+  domains: ['ויסות רגשי'],
+  createdAt: '2026-01-12T09:00:00.000Z',
+});
+
+console.log(item.title);
+```
+
+## Serializing to a plain object
+
+Use `toObject()` to convert a `GalleryItem` instance into a plain, JSON-serializable object — useful when sending data over the network or storing it.
+
+```tsx
+import { GalleryItem } from '@helemclub/gallery.entities.gallery-item';
+
+const item = GalleryItem.from({
+  id: '2',
+  slug: 'light-at-the-edge',
+  title: 'אור בקצה',
+  mediaType: 'image',
+  mediaUrl: 'https://example.com/light-at-the-edge.png',
+  domains: ['דיכאון ותחושת תקיעות'],
+  createdAt: '2026-02-03T09:00:00.000Z',
+});
+
+const plainItem = item.toObject();
+console.log(plainItem);
+```
+
+## Mock data
+
+You can use gallery item mock data for development and testing purposes using the `mockGalleryItem` and `mockGalleryItems` APIs. `mockGalleryItem` accepts a partial object to override any of the default mock properties.
+
+```tsx
+import { mockGalleryItem, mockGalleryItems } from '@helemclub/gallery.entities.gallery-item';
+
+const items = mockGalleryItems();
+console.log(items);
+
+const customItem = mockGalleryItem({ title: 'נשימה', mediaType: 'video' });
+console.log(customItem);
+```

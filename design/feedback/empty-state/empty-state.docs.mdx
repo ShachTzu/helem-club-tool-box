@@ -1,0 +1,50 @@
+---
+description: "Friendly empty-state with icon slot, Hebrew title + description and optional action button."
+labels: ['empty-state', 'feedback', 'placeholder']
+---
+
+The `EmptyState` component is shown when lists or filters return no results. It offers an icon slot, a Hebrew title and description, and an optional action button that helps the user move forward — by resetting a filter, navigating elsewhere, or trying again.
+
+## Basic usage
+
+Render an empty-state with the default friendly illustration and copy:
+
+```tsx
+<EmptyState />
+```
+
+## With an action button
+
+Provide `actionLabel` together with either `onAction` (for an in-place handler) or `actionHref` (to navigate to a route):
+
+```tsx
+<EmptyState
+  title="לא מצאנו כלים מתאימים"
+  description="נסו לשנות את מילות החיפוש או להסיר חלק מהמסננים שבחרתם."
+  actionLabel="איפוס סינון"
+  onAction={() => console.log('reset filters')}
+/>
+```
+
+## Navigating to another page
+
+```tsx
+<EmptyState
+  title="עדיין לא שמרתם תוכן"
+  description="בכל כתבה, כלי או תוכן תמצאו כפתור שמירה. מה שתשמרו יופיע כאן."
+  actionLabel="לגלות תוכן"
+  actionHref="/toolbox"
+/>
+```
+
+## Custom icon
+
+Pass any `ReactNode` as the `icon` prop to override the default illustration:
+
+```tsx
+<EmptyState
+  icon={<span style={{ fontSize: 48 }}>🔖</span>}
+  title="אין אירועים קרובים"
+  description="ברגע שיתפרסמו אירועים חדשים בתחום שבחרתם, הם יופיעו כאן."
+/>
+```

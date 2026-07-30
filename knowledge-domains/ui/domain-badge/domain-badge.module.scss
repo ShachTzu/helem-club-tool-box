@@ -1,0 +1,24 @@
+.domainBadge {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-small);
+  box-sizing: border-box;
+}
+
+.chipLink {
+  display: inline-flex;
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--borders-radius-pill);
+  transition: transform var(--interactions-transitions-duration-fast)
+    var(--interactions-transitions-easing-ease-out);
+}
+
+.chipLink:hover {
+  transform: translateY(-1px);
+}
+
+.chipLink:focus-visible {
+  box-shadow: 0 0 0 var(--borders-focus-width) var(--borders-focus-color);
+}

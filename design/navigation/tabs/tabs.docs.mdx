@@ -1,0 +1,52 @@
+---
+description: "Accessible RTL tabs component with items {key,label} and controlled/uncontrolled active tab, amber active indicator."
+labels: ["tabs", "navigation", "rtl", "react"]
+---
+
+The `Tabs` component renders an accessible, RTL-friendly tab list backed by a moving amber indicator that highlights the active tab. It supports both controlled and uncontrolled active tab state.
+
+## Basic usage
+
+Render tabs uncontrolled with a `defaultActiveKey`:
+
+```tsx
+function Example() {
+  const items = [
+    { key: `apps`, label: `כלים` },
+    { key: `posts`, label: `כתבות` },
+    { key: `events`, label: `אירועים` },
+  ];
+
+  return <Tabs items={items} defaultActiveKey="apps" />;
+}
+```
+
+## Controlled tabs
+
+Control the active tab externally by passing `activeKey` and `onChange`:
+
+```tsx
+function Example() {
+  const items = [
+    { key: `overview`, label: `סקירה` },
+    { key: `reviews`, label: `ביקורות` },
+  ];
+
+  return <Tabs items={items} activeKey="reviews" onChange={(key) => console.log(key)} />;
+}
+```
+
+## Custom class name
+
+Apply a custom class name for spacing or positioning in a parent layout:
+
+```tsx
+function Example() {
+  const items = [
+    { key: `a`, label: `ראשון` },
+    { key: `b`, label: `שני` },
+  ];
+
+  return <Tabs items={items} defaultActiveKey="a" className="my-tabs-spacing" />;
+}
+```

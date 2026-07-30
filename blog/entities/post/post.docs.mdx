@@ -1,0 +1,89 @@
+---
+description: "A Post entity for the Helam Club blog, supporting serialization and mock data generation."
+labels: ['entity', 'post', 'blog']
+---
+
+A `Post` represents a single blog article in the Helam Club blog: knowledge pieces, personal stories, or
+community contributions. It supports serialization to and from plain objects, and can be used both on the
+backend and the frontend.
+
+## Get started
+
+Create a `Post` from a plain object using the static `from()` method:
+
+```tsx
+import { Post } from '@helemclub/blog.entities.post';
+
+const post = Post.from({
+  id: 'p-1',
+  slug: 'shame-and-guilt',
+  title: 'הבושה שאף אחד לא מדבר עליה',
+  excerpt: 'על אשמה ובושה אחרי טראומה — למה הן מופיעות, ואיך אפשר להתחיל לשחרר.',
+  body: '<p>תוכן הכתבה...</p>',
+  authorName: 'ד״ר מיכל ברק',
+  isStaffAuthor: true,
+  domains: ['אשמה, בושה וביקורת עצמית', 'ויסות רגשי'],
+  embeddedApps: ['ground-me'],
+  status: 'published',
+  visibility: 'public',
+  viewCount: 1240,
+  uniqueVisitors: 860,
+});
+
+console.log(post.title);
+```
+
+## Serializing a post
+
+Use `toObject()` to turn a `Post` instance back into a plain, JSON-serializable object — useful when sending
+data over the network or storing it:
+
+```tsx
+import { Post } from '@helemclub/blog.entities.post';
+
+const post = Post.from({
+  id: 'p-2',
+  slug: 'triggers-toolkit',
+  title: '5 כלים שעוזרים לי עם טריגרים',
+  excerpt: 'רשימה פרקטית של כלים קטנים.',
+  body: '<p>תוכן...</p>',
+  authorName: 'רון אבני',
+  isStaffAuthor: false,
+  domains: ['טריגרים', 'חרדה'],
+  embeddedApps: [],
+  status: 'pending',
+  visibility: 'public',
+  viewCount: 0,
+  uniqueVisitors: 0,
+});
+
+const plainPost = post.toObject();
+console.log(plainPost);
+```
+
+## Derived state
+
+`Post` exposes convenient getters for common checks used across the app:
+
+```tsx
+import { mockPost } from '@helemclub/blog.entities.post';
+
+const post = mockPost({ status: 'published', visibility: 'members_only' });
+
+console.log(post.isPublished); // true
+console.log(post.isMembersOnly); // true
+```
+
+## Mock data
+
+Use `mockPost` to generate a single mock post with optional overrides, or `mockPosts` to generate a small
+feed of posts for development and testing purposes:
+
+```tsx
+import { mockPost, mockPosts } from '@helemclub/blog.entities.post';
+
+const singlePost = mockPost({ title: 'כותרת מותאמת אישית' });
+const feed = mockPosts([{ status: 'draft' }]);
+
+console.log(singlePost, feed);
+```

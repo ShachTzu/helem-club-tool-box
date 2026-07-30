@@ -1,0 +1,84 @@
+---
+description: "useBlogStats hook: fetch dashboard metrics for a selected TimeRange."
+labels: ['hook', 'react', 'blog', 'stats']
+---
+
+A React hook that fetches aggregated dashboard metrics for the Helam Club blog — total posts, unique visitors, total views, top performing posts, per-author contribution stats, comments, reactions, saves and verified members — scoped to a selected `TimeRange`.
+
+## Usage
+
+### Basic usage
+
+Fetch stats for the last 30 days:
+
+```tsx
+const BlogDashboardSummary = () => {
+  const { stats, loading, error } = useBlogStats({ preset: '30d' });
+
+  if (loading) return <p>טוען נתונים...</p>;
+  if (error) return <p>אירעה שגיאה בטעינת הנתונים</p>;
+
+  return (
+    <div>
+      <h2>סקירת ביצועי הבלוג</h2>
+      <p>סה&quot;כ פוסטים: {stats?.totalPosts}</p>
+      <p>מבקרים ייחודיים: {stats?.uniqueVisitors}</p>
+      <p>סה&quot;כ צפיות: {stats?.totalViews}</p>
+    </div>
+  );
+};
+```
+
+### Selecting a custom time range
+
+Pass explicit `from`/`to` dates instead of a preset:
+
+```tsx
+const CustomRangeStats = () => {
+  const { stats, loading } = useBlogStats({ from: '2026-01-01', to: '2026-03-31' });
+
+  if (loading) return <p>טוען...</p>;
+
+  return (
+    <ul>
+      {stats?.topPosts.map((post) => (
+        <li key={post.id}>
+          {post.title} — {post.views} צפיות
+        </li>
+      ))}
+    </ul>
+  );
+};
+```
+
+### Using mock data for previews and tests
+
+Provide `mockData` to bypass the network request entirely:
+
+```tsx
+const MockedBlogStats = () => {
+  const { stats } = useBlogStats(
+    { preset: '7d' },
+    {
+      mockData: {
+        totalPosts: 12,
+        uniqueVisitors: 340,
+        totalViews: 980,
+        comments: 24,
+        reactions: 88,
+        saves: 15,
+        verifiedMembers: 20,
+        topPosts: [{ id: 'post-1', title: 'כתבה לדוגמה', views: 210 }],
+        authors: [],
+      },
+    }
+  );
+
+  return (
+    <div>
+      <p>סה&quot;כ פוסטים: {stats?.totalPosts}</p>
+      <p>מבקרים ייחודיים: {stats?.uniqueVisitors}</p>
+    </div>
+  );
+};
+```

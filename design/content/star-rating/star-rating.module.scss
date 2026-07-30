@@ -1,0 +1,87 @@
+.starRating {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  font-family: var(--typography-font-family);
+  color: var(--colors-text-primary);
+  box-sizing: border-box;
+}
+
+.starsWrapper {
+  position: relative;
+  display: inline-block;
+  direction: ltr;
+  line-height: 1;
+  letter-spacing: 2px;
+  user-select: none;
+}
+
+.starsBase {
+  color: var(--colors-border);
+  white-space: nowrap;
+}
+
+.starsFilled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--colors-star);
+  transition: width var(--interactions-transitions-duration-medium) var(--interactions-transitions-easing-ease-out);
+}
+
+.interactiveStars {
+  display: inline-flex;
+  align-items: center;
+  direction: ltr;
+  gap: 2px;
+}
+
+.starButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--colors-border);
+  line-height: 1;
+  cursor: var(--interactions-cursor-pointer);
+  transition: color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out),
+    transform var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out);
+}
+
+.starButton:hover {
+  transform: scale(1.12);
+}
+
+.starButton:focus-visible {
+  outline: var(--borders-focus-width) var(--borders-focus-style) var(--borders-focus-color);
+  outline-offset: var(--borders-focus-offset);
+  border-radius: var(--borders-radius-small);
+}
+
+.starButtonFilled {
+  color: var(--colors-star);
+}
+
+.disabled {
+  opacity: var(--effects-opacity-disabled);
+}
+
+.disabled .starButton {
+  cursor: var(--interactions-cursor-disabled);
+  pointer-events: none;
+}
+
+.value {
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-text-primary);
+  font-size: var(--typography-sizes-body-small);
+}
+
+.count {
+  color: var(--colors-text-muted);
+  font-size: var(--typography-sizes-body-small);
+}

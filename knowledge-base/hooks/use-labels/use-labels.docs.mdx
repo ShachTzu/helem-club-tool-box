@@ -1,0 +1,105 @@
+---
+description: "Hooks for listing knowledge base labels with record counts, fetching a single label, and upserting labels for admin use."
+labels: ['hook', 'react', 'graphql', 'labels', 'knowledge-base']
+---
+
+The `use-labels` component provides a set of hooks for working with knowledge base labels ("projects") such as "עזרה ראשונה" or "אפטר": listing all labels with their record counts, fetching a single label by id or slug, and creating/updating labels for admin flows.
+
+## Usage
+
+### Listing all labels with record counts
+
+Use `useLabels` to render the list of projects, together with the number of records associated with each one.
+
+```tsx
+const LabelsList = () => {
+  const { labels, loading, error } = useLabels();
+
+  if (loading) return <p>טוען פרויקטים...</p>;
+  if (error) return <p>שגיאה בטעינת הפרויקטים: {error}</p>;
+
+  return (
+    <ul>
+      {labels.map((label) => (
+        <li key={label.id}>
+          {label.name} — {label.recordCount} תכנים
+        </li>
+      ))}
+    </ul>
+  );
+};
+```
+
+### Fetching a single label by slug
+
+Use `useLabel` to fetch a specific label, for example when rendering a label's lobby page.
+
+```tsx
+const LabelHeader = ({ slug }: { slug: string }) => {
+  const { label, loading } = useLabel(slug);
+
+  if (loading) return <p>טוען...</p>;
+  if (!label) return <p>הפרויקט לא נמצא</p>;
+
+  return (
+    <div>
+      <h1>{label.name}</h1>
+      <p>{label.description}</p>
+    </div>
+  );
+};
+```
+
+### Creating or updating a label (admin)
+
+Use `useUpsertLabel` to create a new label, or update an existing one by slug, from an admin form.
+
+```tsx
+const LabelAdminForm = () => {
+  const { upsertLabel, loading, error } = useUpsertLabel();
+
+  const handleSave = async () => {
+    await upsertLabel({
+      slug: 'first-aid',
+      name: 'עזרה ראשונה',
+      description: 'כלים מיידיים לרגעי הצפה, חרדה ומשבר.',
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={() => handleSave()}>שמור פרויקט</button>
+      {loading && <span>שומר...</span>}
+      {error && <span>שגיאה: {error}</span>}
+    </div>
+  );
+};
+```
+
+## Working with mock data
+
+Every query hook accepts an optional `mockData` option, allowing components and tests to render without hitting the network.
+
+```tsx
+const MockedLabelsList = () => {
+  const { labels } = useLabels({
+    mockData: [
+      {
+        id: 'label-first-aid',
+        slug: 'first-aid',
+        name: 'עזרה ראשונה',
+        description: 'כלים מיידיים לרגעי הצפה, חרדה ומשבר.',
+        recordCount: 12,
+      },
+    ],
+  });
+
+  return (
+    <ul>
+      {labels.map((label) => (
+        <li key={label.id}>{label.name}</li>
+      ))}
+    </ul>
+  );
+};
+```

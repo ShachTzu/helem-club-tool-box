@@ -1,0 +1,58 @@
+---
+description: "An AppReview entity representing a user's rating and comment for a toolbox app."
+labels: ['entity', 'app-review', 'toolbox']
+---
+
+The `AppReview` entity represents a single user review for an app in the Helam Club toolbox. It supports serialization and de-serialization, and can be used from both backend and frontend.
+
+## Get started
+
+Install and use the component in your code:
+
+```tsx
+import { AppReview } from '@helemclub/toolbox.entities.app-review';
+
+const review = AppReview.from({
+  id: 'r1',
+  appId: 'ground-me',
+  stars: 5,
+  comment: 'הכלי הזה ליווה אותי ברגעים הכי קשים.',
+  displayName: 'אנונימי',
+  helpfulCount: 47,
+  createdAt: new Date().toISOString(),
+});
+
+console.log(review.stars);
+```
+
+## Serializing a review
+
+Use `toObject()` to convert an `AppReview` instance into a plain, serializable object — useful when sending data over the network or storing it.
+
+```tsx
+import { AppReview } from '@helemclub/toolbox.entities.app-review';
+
+const review = AppReview.from({
+  id: 'r2',
+  appId: 'breathe-calm',
+  stars: 4,
+  helpfulCount: 12,
+  createdAt: new Date().toISOString(),
+});
+
+const plainReview = review.toObject();
+console.log(plainReview);
+```
+
+## Mock data
+
+Use the `mockAppReview` and `mockAppReviews` APIs to generate mock data for development and testing purposes. `mockAppReview` accepts partial overrides.
+
+```tsx
+import { mockAppReview, mockAppReviews } from '@helemclub/toolbox.entities.app-review';
+
+const review = mockAppReview({ stars: 3, comment: 'תרגול נחמד, אבל חסר תוכן בעברית.' });
+const reviews = mockAppReviews();
+
+console.log(review, reviews);
+```

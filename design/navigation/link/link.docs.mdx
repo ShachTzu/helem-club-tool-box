@@ -1,0 +1,88 @@
+---
+description: "Themed link supporting internal and external navigation, active state and RTL underline/hover interactions."
+labels: ["link", "navigation", "rtl"]
+---
+
+The `Link` component renders a themed, accent-colored link. It works as a plain anchor by default,
+and can be rendered as a react-router `Link` (or any other component) using the `as` prop, making it
+easy to integrate with client-side routing while keeping a consistent visual language.
+
+## Basic usage
+
+```tsx
+import { Link } from '@helemclub/design.navigation.link';
+
+function Example() {
+  return (
+    <div style={{ display: 'flex', gap: 16 }}>
+      <Link href="/domains">תחומי התמודדות</Link>
+      <Link href="/knowledge">מאגר ידע</Link>
+      <Link href="/blog">בלוג</Link>
+    </div>
+  );
+}
+```
+
+## Active state
+
+Set `active` to highlight the current navigation item with the accent color and a persistent underline:
+
+```tsx
+import { Link } from '@helemclub/design.navigation.link';
+
+function Example() {
+  return (
+    <div style={{ display: 'flex', gap: 16 }}>
+      <Link href="/toolbox" active>ארגז כלים</Link>
+      <Link href="/events">אירועים</Link>
+    </div>
+  );
+}
+```
+
+## External links
+
+Links pointing to an `http(s)` address are automatically detected as external, open in a new tab,
+and render a small arrow indicator. You can also force this behavior with the `external` prop:
+
+```tsx
+import { Link } from '@helemclub/design.navigation.link';
+
+function Example() {
+  return <Link href="https://facebook.com">עמוד הפייסבוק שלנו</Link>;
+}
+```
+
+## Router-aware links
+
+Pass a react-router `Link` (or any custom component) via the `as` prop to enable client-side navigation
+while keeping the same themed appearance:
+
+```tsx
+import { Link as RouterLink } from 'react-router-dom';
+import { Link } from '@helemclub/design.navigation.link';
+
+function Example() {
+  return (
+    <Link as={RouterLink} href="/domains" active>
+      תחומי התמודדות
+    </Link>
+  );
+}
+```
+
+## Inverse links on dark surfaces
+
+Use the `inverse` prop when placing links on the primary/dark brand surface, such as inside a header:
+
+```tsx
+import { Link } from '@helemclub/design.navigation.link';
+
+function Example() {
+  return (
+    <div style={{ background: 'var(--colors-primary-default)', padding: 16 }}>
+      <Link href="/" inverse active>בית</Link>
+    </div>
+  );
+}
+```

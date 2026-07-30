@@ -1,0 +1,51 @@
+---
+description: "Rating summary showing average rating, count, and a per-star histogram, RTL-ready."
+labels: ["rating", "reviews", "summary", "histogram"]
+---
+
+The `RatingSummary` component renders an app's average rating, total rating count, and a breakdown histogram of ratings per star level (1 through 5). It is designed for RTL layouts and matches the Helam Club toolbox app detail page.
+
+## Basic usage
+
+Render the average rating alongside a count and histogram breakdown:
+
+```tsx
+<RatingSummary
+  averageRating={4.7}
+  ratingCount={96}
+  ratingHistogram={[2, 3, 6, 20, 65]}
+/>
+```
+
+## Low rating example
+
+The histogram bars scale relative to the highest count, so summaries with lower ratings still render clearly:
+
+```tsx
+<RatingSummary
+  averageRating={2.3}
+  ratingCount={41}
+  ratingHistogram={[14, 12, 8, 5, 2]}
+/>
+```
+
+## Inside a card
+
+`RatingSummary` can be placed inside any container, such as an app detail card:
+
+```tsx
+<div
+  style={{
+    padding: 24,
+    background: 'var(--colors-surface-primary)',
+    borderRadius: 'var(--borders-radius-large)',
+    maxWidth: 520,
+  }}
+>
+  <RatingSummary
+    averageRating={4.9}
+    ratingCount={143}
+    ratingHistogram={[1, 1, 4, 15, 122]}
+  />
+</div>
+```

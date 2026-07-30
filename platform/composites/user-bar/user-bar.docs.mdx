@@ -1,0 +1,57 @@
+---
+description: "User bar for the header: login/signup for anonymous users, avatar and dropdown for authenticated users."
+labels: ["user", "auth", "header", "dropdown", "rtl"]
+---
+
+The `UserBar` renders the authentication status of the current visitor inside the platform header. For anonymous
+visitors it shows login and signup actions. For authenticated users it shows an avatar with the user's display name
+and a dropdown menu with a profile link, saved items, registered `UserMenuItem` entries, an admin area link (when the
+user is a moderator or admin), and a sign-out action. Fully Hebrew and RTL.
+
+### Anonymous state
+
+Shows login and signup call-to-actions when no user is signed in.
+
+```tsx
+<UserBar mockUser={null} />
+```
+
+### Authenticated member
+
+Shows the user's avatar and display name, with a dropdown for profile, saved items and sign out.
+
+```tsx
+<UserBar
+  mockUser={{
+    id: `1`,
+    email: `noa@example.com`,
+    displayName: `נועה כהן`,
+    role: `member`,
+    provider: `email`,
+    createdAt: new Date().toISOString(),
+  }}
+/>
+```
+
+### Admin with registered menu items
+
+Feature aspects can register additional menu entries through the platform's `UserMenuItem` slot. Moderators and
+admins also see a link to the admin area.
+
+```tsx
+<UserBar
+  mockUser={{
+    id: `2`,
+    email: `dana@example.com`,
+    displayName: `דנה אדמין`,
+    role: `admin`,
+    provider: `google`,
+    createdAt: new Date().toISOString(),
+    avatarUrl: `https://i.pravatar.cc/150?u=dana.admin@example.com`,
+  }}
+  userMenuItems={[
+    { label: `הכלים שהגשתי`, path: `/toolbox/my-submissions` },
+    { label: `רשימת המשאלות שלי`, path: `/wishlist/mine` },
+  ]}
+/>
+```

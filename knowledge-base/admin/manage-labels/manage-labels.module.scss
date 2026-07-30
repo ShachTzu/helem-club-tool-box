@@ -1,0 +1,240 @@
+.manageLabels {
+  box-sizing: border-box;
+  width: 100%;
+  background-color: var(--colors-surface-background);
+  padding: var(--spacing-large);
+  border-radius: var(--borders-radius-large);
+}
+
+.header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-large);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-large);
+}
+
+.headerText {
+  box-sizing: border-box;
+  max-width: 640px;
+}
+
+.eyebrow {
+  color: var(--colors-accent-default);
+  font-weight: var(--typography-font-weight-bold);
+  font-size: var(--typography-sizes-caption-medium);
+  letter-spacing: var(--typography-letter-spacing-wide);
+  margin-bottom: var(--spacing-small);
+}
+
+.title {
+  margin: 0 0 var(--spacing-small);
+  font-size: var(--typography-sizes-heading-h2);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-secondary);
+  line-height: var(--typography-line-height-base);
+}
+
+.banner {
+  box-sizing: border-box;
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-default) var(--spacing-medium);
+  margin-bottom: var(--spacing-large);
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-semi-bold);
+}
+
+.bannerSuccess {
+  background-color: var(--colors-status-positive-subtle);
+  color: var(--colors-status-positive-default);
+}
+
+.bannerError {
+  background-color: var(--colors-status-negative-subtle);
+  color: var(--colors-status-negative-default);
+}
+
+.formCard {
+  box-sizing: border-box;
+  background-color: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-large);
+  box-shadow: var(--effects-shadows-card);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-large);
+}
+
+.formTitle {
+  margin: 0 0 var(--spacing-medium);
+  font-size: var(--typography-sizes-heading-h4);
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-primary-default);
+}
+
+.formGrid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-default);
+  margin-bottom: var(--spacing-default);
+}
+
+.formField {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.formFieldWide {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+}
+
+.required {
+  color: var(--colors-status-negative-default);
+  margin-inline-start: 2px;
+}
+
+.textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 88px;
+  resize: vertical;
+  background-color: var(--colors-white);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  border-radius: var(--borders-radius-small);
+  padding: 12px 14px;
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-primary);
+  direction: var(--layout-direction);
+  transition: border-color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-in-out),
+    box-shadow var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-in-out);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--borders-focus-color);
+  box-shadow: 0 0 0 var(--borders-focus-width) var(--borders-focus-color);
+}
+
+.preview {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-default);
+  margin-bottom: var(--spacing-medium);
+}
+
+.previewImage {
+  box-sizing: border-box;
+  width: 96px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: var(--borders-radius-medium);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  background-color: var(--colors-surface-secondary);
+}
+
+.previewFallback {
+  box-sizing: border-box;
+  width: 96px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--borders-radius-medium);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  background-color: var(--colors-surface-secondary);
+  color: var(--colors-text-muted);
+  font-size: var(--typography-sizes-caption-default);
+}
+
+.formActions {
+  box-sizing: border-box;
+  display: flex;
+  gap: var(--spacing-small);
+  justify-content: flex-end;
+}
+
+.formError {
+  color: var(--colors-status-negative-default);
+  font-size: var(--typography-sizes-caption-default);
+  margin: 0 0 var(--spacing-small);
+}
+
+.tableWrapper {
+  box-sizing: border-box;
+}
+
+.thumb {
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: var(--borders-radius-small);
+  display: block;
+}
+
+.thumbFallback {
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--borders-radius-small);
+  background-color: var(--colors-surface-secondary);
+  display: block;
+}
+
+.nameCell {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.nameCellName {
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+}
+
+.nameCellSlug {
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-muted);
+}
+
+.description {
+  color: var(--colors-text-secondary);
+  font-size: var(--typography-sizes-body-small);
+}
+
+.loadingState {
+  box-sizing: border-box;
+  padding: var(--spacing-x4);
+  text-align: center;
+  color: var(--colors-text-secondary);
+  font-size: var(--typography-sizes-body-default);
+}
+
+@media (max-width: 640px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

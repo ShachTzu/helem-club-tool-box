@@ -1,0 +1,83 @@
+---
+description: "Admin panel to list/search platform users and change their role via the role-selector, restricted to admins."
+labels: ["admin", "users", "roles", "table", "rtl"]
+---
+
+## Overview
+
+`ManageUsers` is an RTL admin panel that lists platform users, supports searching by name or
+email, and lets an admin change a user's role directly from the table using the `RoleSelector`.
+Access is restricted to users holding the `admin` role — signed-out users are redirected, and
+users with an insufficient role see an access-denied message.
+
+## Basic usage
+
+```tsx
+import { ManageUsers } from '@helemclub/platform.admin.manage-users';
+
+function AdminUsersRoute() {
+  return <ManageUsers />;
+}
+```
+
+## Providing mock data for previews and tests
+
+Pass `mockCurrentUser` to bypass the admin access check, and `mockUsers` to bypass the network
+request for the users list. Role changes made through the role selector are applied locally to
+the provided mock list.
+
+```tsx
+import { ManageUsers } from '@helemclub/platform.admin.manage-users';
+
+const mockUsers = [
+  {
+    id: `user-1`,
+    email: `sam.doe@example.com`,
+    displayName: `Sam Doe`,
+    role: `member` as const,
+    provider: `email` as const,
+    createdAt: `2023-01-12T09:30:00.000Z`,
+  },
+];
+
+function ManageUsersPreview() {
+  return (
+    <ManageUsers
+      mockCurrentUser={{
+        id: `admin-1`,
+        email: `admin@helemclub.org`,
+        displayName: `הלם אדמין`,
+        role: `admin`,
+        provider: `google`,
+        createdAt: `2022-11-14T09:30:00.000Z`,
+      }}
+      mockUsers={mockUsers}
+    />
+  );
+}
+```
+
+## Restricted access
+
+Signed-in users whose role is below `admin` see an access-denied message instead of the users
+table.
+
+```tsx
+import { ManageUsers } from '@helemclub/platform.admin.manage-users';
+
+function RestrictedPreview() {
+  return (
+    <ManageUsers
+      mockCurrentUser={{
+        id: `mod-1`,
+        email: `dan.mod@example.com`,
+        displayName: `דן מודרטור`,
+        role: `moderator`,
+        provider: `email`,
+        createdAt: `2023-09-21T09:30:00.000Z`,
+      }}
+      mockUsers={[]}
+    />
+  );
+}
+```

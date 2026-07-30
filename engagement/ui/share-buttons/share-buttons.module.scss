@@ -1,0 +1,93 @@
+.shareButtons {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  flex-wrap: wrap;
+  font-family: var(--typography-font-family);
+}
+
+.label {
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-secondary);
+  margin-inline-end: var(--spacing-small);
+}
+
+.button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--borders-radius-pill);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  background-color: var(--colors-surface-primary);
+  color: var(--colors-secondary-default);
+  cursor: var(--interactions-cursor-pointer);
+  flex-shrink: 0;
+  transition: background-color var(--interactions-transitions-duration-fast)
+      var(--interactions-transitions-easing-ease-out),
+    color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out),
+    transform var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out),
+    border-color var(--interactions-transitions-duration-fast)
+      var(--interactions-transitions-easing-ease-out);
+}
+
+.button:hover {
+  transform: scale(1.06);
+}
+
+.button:active {
+  transform: scale(0.96);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+
+.whatsapp:hover {
+  background-color: var(--colors-status-positive-subtle);
+  color: var(--colors-status-positive-default);
+  border-color: var(--colors-status-positive-default);
+}
+
+.facebook:hover {
+  background-color: var(--colors-status-info-subtle);
+  color: var(--colors-status-info-default);
+  border-color: var(--colors-status-info-default);
+}
+
+.x:hover {
+  background-color: var(--colors-surface-secondary);
+  color: var(--colors-text-primary);
+  border-color: var(--colors-primary-default);
+}
+
+.copy {
+  color: var(--colors-secondary-default);
+}
+
+.copy:hover {
+  background-color: var(--colors-accent-default);
+  color: var(--colors-primary-default) !important;
+  border-color: var(--colors-accent-default);
+}
+
+.copied {
+  background-color: var(--colors-status-positive-subtle);
+  color: var(--colors-status-positive-default);
+  border-color: var(--colors-status-positive-default);
+}
+
+.copiedToast {
+  font-size: var(--typography-sizes-caption-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-status-positive-default);
+  white-space: nowrap;
+}

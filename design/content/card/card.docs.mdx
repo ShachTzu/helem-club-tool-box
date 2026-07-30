@@ -1,0 +1,40 @@
+---
+description: "Surface card with theme radius/shadow, hover elevation, optional padding and clickable variant."
+labels: ['card', 'surface', 'content']
+---
+
+The `Card` component is the base building block for content surfaces across the Helam Club platform. It applies theme radius, shadow and hover elevation, and supports configurable padding and a clickable interactive variant.
+
+## Basic usage
+
+Render content inside a default card surface:
+
+```tsx
+<Card>
+  <h3>קהילת יזמים</h3>
+  <p>דומיין תוכן לחברי קהילת הלם קלאב, הכולל כלים, מדריכים ואירועים.</p>
+</Card>
+```
+
+## Clickable card
+
+Set the `clickable` prop and provide an `onClick` handler to make the card interactive, including keyboard support:
+
+```tsx
+<Card clickable onClick={() => console.log('card clicked')}>
+  <h3>ארגז כלים</h3>
+  <p>לחצו כדי לפתוח את אוסף הכלים המומלצים על ידי הקהילה.</p>
+</Card>
+```
+
+## Padding variants
+
+Control the inner spacing of the card using the `padding` prop (`none`, `small`, `medium`, `large`):
+
+```tsx
+<div style={{ display: 'flex', gap: 16 }}>
+  <Card padding="small">ריפוד קטן</Card>
+  <Card padding="medium">ריפוד בינוני</Card>
+  <Card padding="large">ריפוד גדול</Card>
+</div>
+```

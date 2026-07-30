@@ -1,0 +1,165 @@
+---
+description: "A pluggable aspect providing coping domains data and pages for the community platform."
+labels: ['aspect', 'domains', 'graphql', 'navigation']
+---
+
+The knowledge domains aspect manages the fixed set of coping domains used across the community platform, exposes them through a graphql api, and registers the domains and wisdom pages along with primary navigation links.
+
+## List all coping domains
+
+This example shows how a component consuming the domains data can render a list of domains passed in as props, without depending on the aspect internals directly.
+
+```tsx
+type DomainItem = {
+  id: string;
+  slug: string;
+  name: string;
+  description?: string;
+};
+
+type DomainsListProps = {
+  domains: DomainItem[];
+};
+
+function DomainsList({ domains }: DomainsListProps) {
+  return (
+    <div>
+      <h2>תחומי התמודדות</h2>
+      <ul>
+        {domains.map((domain) => (
+          <li key={domain.id}>
+            <strong>{domain.name}</strong>
+            {domain.description ? <p>{domain.description}</p> : null}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+const sampleDomains: DomainItem[] = [
+  {
+    id: '1',
+    slug: 'trauma',
+    name: 'טראומה ופוסט טראומה',
+    description: 'מידע וכלים להתמודדות עם חוויית טראומה ופוסט-טראומה',
+  },
+  {
+    id: '2',
+    slug: 'anxiety',
+    name: 'חרדה ופחדים',
+    description: 'כלים להפחתת חרדה והתמודדות עם התקפי פחד',
+  },
+  {
+    id: '3',
+    slug: 'community',
+    name: 'קהילה ותמיכה',
+    description: 'כוחה של קהילה, קבוצות תמיכה והתנדבות',
+  },
+];
+
+export function DomainsListExample() {
+  return <DomainsList domains={sampleDomains} />;
+}
+
+```
+
+## Display a single domain content page
+
+This example demonstrates rendering the content items belonging to a specific domain, such as articles and guides, using data passed through props.
+
+```tsx
+type ContentItem = {
+  id: string;
+  title?: string;
+  contentType?: string;
+  url?: string;
+  summary?: string;
+};
+
+type DomainContentPageProps = {
+  domainName: string;
+  items: ContentItem[];
+};
+
+function DomainContentPage({ domainName, items }: DomainContentPageProps) {
+  return (
+    <div>
+      <h2>{domainName}</h2>
+      {items.length === 0 ? (
+        <p>אין עדיין תכנים בתחום זה</p>
+      ) : (
+        <ul>
+          {items.map((item) => (
+            <li key={item.id}>
+              <a href={item.url}>{item.title}</a>
+              <p>{item.summary}</p>
+              <span>{item.contentType}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+const sampleItems: ContentItem[] = [
+  {
+    id: '101',
+    title: 'הבנת תסמיני פוסט-טראומה',
+    contentType: 'article',
+    url: 'https://helem.org.il/trauma-symptoms',
+    summary: 'מדריך מקיף לזיהוי תסמינים והבנת תהליך ההחלמה',
+  },
+  {
+    id: '102',
+    title: 'תרגילי קרקוע והרגעה לרגעי הצפה',
+    contentType: 'guide',
+    url: 'https://helem.org.il/grounding-exercises',
+    summary: 'טכניקות פרקטיות להתמודדות בזמן אמת',
+  },
+];
+
+export function DomainContentPageExample() {
+  return <DomainContentPage domainName="טראומה ופוסט טראומה" items={sampleItems} />;
+}
+
+```
+
+## Render primary navigation links
+
+This example shows a simple navigation bar rendering the two primary links exposed by the aspect, wisdom of the community and coping domains.
+
+```tsx
+type NavLink = {
+  label: string;
+  href: string;
+};
+
+type PrimaryNavProps = {
+  links: NavLink[];
+};
+
+function PrimaryNav({ links }: PrimaryNavProps) {
+  return (
+    <nav>
+      <ul>
+        {links.map((link) => (
+          <li key={link.href}>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+const primaryLinks: NavLink[] = [
+  { label: 'חוכמת הקהילה', href: '/wisdom' },
+  { label: 'תחומי התמודדות', href: '/domains' },
+];
+
+export function PrimaryNavExample() {
+  return <PrimaryNav links={primaryLinks} />;
+}
+```

@@ -1,0 +1,27 @@
+.customPanel {
+  box-sizing: border-box;
+  background: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-large);
+  box-shadow: var(--effects-shadows-card);
+  padding: var(--spacing-xl);
+}
+
+.customPanelIcon {
+  font-size: var(--typography-sizes-heading-h1);
+  margin-bottom: var(--spacing-small);
+}
+
+.customPanelTitle {
+  margin: 0 0 var(--spacing-small);
+  font-size: var(--typography-sizes-heading-h3);
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-primary-default);
+}
+
+.customPanelDescription {
+  margin: 0;
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-secondary);
+  line-height: var(--typography-line-height-base);
+}

@@ -1,0 +1,79 @@
+---
+description: "A React Hook for listing, filtering, creating and moderating Helam Club blog posts."
+labels: ['hook', 'react', 'blog', 'posts']
+---
+
+`usePosts` powers the Helam Club blog reading experience: it lists published posts filtered by coping-domain and free-text search, hides members-only posts from anonymous visitors, and exposes actions for creating, updating, submitting, reviewing and tracking views of posts. It relies on the platform's `useAuth` for membership/role checks and `useDeviceId` for anonymous view tracking.
+
+## Usage
+
+### Listing published posts
+
+```tsx
+const BlogFeed = () => {
+  const { posts, loading, isMember } = usePosts();
+
+  if (loading) return <p>טוען כתבות...</p>;
+
+  return (
+    <div>
+      <p>{isMember ? 'מחובר/ת כחבר/ת קהילה' : 'צפייה כאורח/ת'}</p>
+      <ul>
+        {posts.map((post) => (
+          <li key={post.id}>
+            {post.title} {post.isMembersOnly ? '🔒' : ''}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+```
+
+### Filtering by domain and free-text query
+
+```tsx
+const FilteredBlogFeed = () => {
+  const { posts, loading } = usePosts({
+    domainIds: ['ויסות רגשי'],
+    query: 'בושה',
+  });
+
+  return (
+    <div>
+      {loading ? <p>טוען...</p> : <p>{posts.length} כתבות נמצאו</p>}
+    </div>
+  );
+};
+```
+
+### Submitting an article and tracking a view
+
+```tsx
+const SubmitAndTrack = () => {
+  const { submitPost, submitting, incrementView } = usePosts();
+
+  const handleSubmit = async () => {
+    const created = await submitPost({
+      title: 'הכתבה שלי',
+      excerpt: 'תקציר קצר',
+      body: '<p>גוף הכתבה</p>',
+      domains: ['חרדה'],
+      submitterName: 'ישראל ישראלי',
+      submitterEmail: 'israel@example.com',
+      submitterPhone: '0500000000',
+      submitterFacebook: 'facebook.com/israel',
+    });
+
+    if (created) {
+      await incrementView(created.id);
+    }
+  };
+
+  return (
+    <button onClick={() => handleSubmit()} disabled={submitting}>
+      {submitting ? 'שולח...' : 'הגשת כתבה'}
+    </button>
+  );
+};
+```

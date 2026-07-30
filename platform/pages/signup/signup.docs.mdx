@@ -1,0 +1,41 @@
+---
+description: "Signup page (RTL, Hebrew) with display name + email OTP flow and Google signup."
+labels: ["signup", "auth", "page", "rtl"]
+---
+
+The `Signup` component renders the Helam Club signup page: a display name and email field that trigger a one-time-password flow, alongside a Google signup option. It explains that reading the platform's content is always free, while creating an account unlocks members-only content, saved favorites and content submissions.
+
+## Basic usage
+
+Render the signup page with its default behavior. The component manages its own authentication flow through the `useAuth` hook.
+
+```tsx
+<Signup />
+```
+
+## Custom login link
+
+Point the "already have an account?" link to a different route.
+
+```tsx
+<Signup loginHref="/auth/login" />
+```
+
+## Wiring Google signup
+
+Provide a `requestGoogleIdToken` function that integrates with your Google Identity Services setup and resolves with an ID token (or `null` when cancelled).
+
+```tsx
+<Signup
+  requestGoogleIdToken={() => Promise.resolve('mock-google-id-token')}
+  onSignupSuccess={(user) => console.log('Signed up:', user.displayName)}
+/>
+```
+
+## Behavior
+
+- The form first collects a display name and email address.
+- Submitting requests a one-time-password sent to the email.
+- The user then enters the code to verify their email and complete signup.
+- A "Google הרשמה עם" button offers an alternative, single-step signup path.
+- On success, `onSignupSuccess` is called with the authenticated user, or the page navigates to the homepage by default.

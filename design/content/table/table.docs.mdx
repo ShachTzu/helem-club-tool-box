@@ -1,0 +1,90 @@
+---
+description: "A responsive RTL data table with columns config, header, hover rows, and mobile stacked layout."
+labels: ["table", "data", "admin", "dashboard", "rtl"]
+---
+
+The `Table` component renders tabular data with a configurable set of columns. On wide screens it renders a classic header/rows table with hover highlighting, and on narrow screens it automatically switches to a stacked card layout, making it suitable for admin panels and dashboards.
+
+## Basic usage
+
+Render a table by providing `columns` and `rows`:
+
+```tsx
+import { Table } from '@helemclub/design.content.table';
+
+const columns = [
+  { key: 'name', header: 'שם מלא' },
+  { key: 'email', header: 'דוא"ל', hideOnMobile: true },
+  { key: 'role', header: 'תפקיד' },
+];
+
+const rows = [
+  { id: 1, name: 'נועה כהן', email: 'noa.cohen@helamclub.co.il', role: 'אדמין' },
+  { id: 2, name: 'איתי לוי', email: 'itay.levi@helamclub.co.il', role: 'מודרטור' },
+];
+
+function MembersTable() {
+  return <Table columns={columns} rows={rows} />;
+}
+```
+
+## Custom cell rendering
+
+Use `renderCell` on a column to render custom content, such as a colored status label:
+
+```tsx
+import { Table } from '@helemclub/design.content.table';
+
+const columns = [
+  { key: 'name', header: 'שם הכלי' },
+  {
+    key: 'status',
+    header: 'סטטוס',
+    align: 'center',
+    renderCell: (row) => (
+      <span style={{ color: row.status === 'אושר' ? '#237a53' : '#b06f1e', fontWeight: 700 }}>
+        {String(row.status)}
+      </span>
+    ),
+  },
+];
+
+const rows = [
+  { id: 1, name: 'נשימה מודעת', status: 'אושר' },
+  { id: 2, name: 'יומן מצב רוח', status: 'ממתין' },
+];
+
+function ToolsApprovalTable() {
+  return <Table columns={columns} rows={rows} />;
+}
+```
+
+## Handling row clicks
+
+Pass an `onRowClick` callback to react to row selection, for example to navigate to a detail view or open a drawer:
+
+```tsx
+import { useState } from 'react';
+import { Table } from '@helemclub/design.content.table';
+
+const columns = [
+  { key: 'name', header: 'שם מלא' },
+  { key: 'role', header: 'תפקיד' },
+];
+
+const rows = [
+  { id: 1, name: 'נועה כהן', role: 'אדמין' },
+  { id: 2, name: 'איתי לוי', role: 'מודרטור' },
+];
+
+function SelectableTable() {
+  const [selectedName, setSelectedName] = useState('');
+
+  return (
+    <div>
+      <p>שורה נבחרת: {selectedName || 'לא נבחרה שורה'}</p>
+      <Table columns={columns} rows={rows} onRowClick={(row) => setSelectedName(String(row.name))} />
+    </div>
+  );
+}
+```

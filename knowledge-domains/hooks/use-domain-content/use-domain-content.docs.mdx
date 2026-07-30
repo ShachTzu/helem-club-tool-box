@@ -1,0 +1,78 @@
+---
+description: "A cross-slice hook returning all ecosystem content tagged with a knowledge domain."
+labels: ['hook', 'react', 'knowledge-domains', 'graphql']
+---
+
+The `useDomainContent` hook performs a cross-slice query: given a domain id (and optionally a list of content types), it returns all the `TaggedContent` items tagged with that domain across the entire Helam Club ecosystem — blog posts, knowledge records, events, toolbox apps and gallery items alike — together with loading and empty states.
+
+## Usage
+
+### Basic usage
+
+Fetch all content tagged with a given domain and render it while handling loading and empty states.
+
+```tsx
+import { useDomainContent } from '@helemclub/knowledge-domains.hooks.use-domain-content';
+
+function DomainContentList() {
+  const { content, loading, isEmpty } = useDomainContent('triggers');
+
+  if (loading) return <p>טוען תוכן...</p>;
+  if (isEmpty) return <p>אין עדיין תוכן בתחום זה.</p>;
+
+  return (
+    <ul>
+      {content.map((item) => (
+        <li key={`${item.type}-${item.id}`}>
+          {item.title} ({item.type})
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+### Filtering by content type
+
+Restrict the cross-slice query to specific content type providers, such as blog posts and events only.
+
+```tsx
+import { useDomainContent } from '@helemclub/knowledge-domains.hooks.use-domain-content';
+
+function DomainEventsAndPosts() {
+  const { content, loading } = useDomainContent('anxiety', { types: ['post', 'event'] });
+
+  if (loading) return <p>טוען...</p>;
+
+  return (
+    <div>
+      <h3>תוכן בתחום החרדה</h3>
+      {content.map((item) => (
+        <p key={`${item.type}-${item.id}`}>{item.title}</p>
+      ))}
+    </div>
+  );
+}
+```
+
+### Using mock data for testing and previews
+
+Pass `mockData` to bypass the underlying GraphQL query and render the hook with predetermined content — useful for tests and compositions.
+
+```tsx
+import { useDomainContent, mockTaggedContentList } from '@helemclub/knowledge-domains.hooks.use-domain-content';
+
+function DomainContentPreview() {
+  const { content, isEmpty } = useDomainContent('triggers', { mockData: mockTaggedContentList() });
+
+  if (isEmpty) return <p>אין תוכן.</p>;
+
+  return (
+    <ul>
+      {content.map((item) => (
+        <li key={`${item.type}-${item.id}`}>{item.title}</li>
+      ))}
+    </ul>
+  );
+}
+```

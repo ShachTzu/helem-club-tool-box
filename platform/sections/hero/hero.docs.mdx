@@ -1,0 +1,42 @@
+---
+description: "Home hero (RTL) with a navy gradient, the Helam Club headline, calm subtext about the community ecosystem, and CTAs into the toolbox and knowledge base."
+labels: ["hero", "home", "rtl", "marketing"]
+---
+
+The `Hero` component renders the top band of the Helam Club home page: a navy gradient background, a bold headline, a calm supporting subtext about the community ecosystem, and two calls-to-action leading into the toolbox and the knowledge base. It is fully responsive and built RTL-first.
+
+## Basic usage
+
+Render the hero with its default Helam Club content:
+
+```tsx
+<Hero />
+```
+
+## Custom content
+
+Override the eyebrow, headline, subtext and calls-to-action to fit a different landing context:
+
+```tsx
+<Hero
+  eyebrow="קהילת הלם קלאב"
+  title="ביחד, צעד אחר צעד, לדרך של החלמה"
+  subtitle="פלטפורמה קהילתית שמחברת בין ידע מקצועי, כלים דיגיטליים וסיפורים אישיים - כדי שאף אחד לא יתמודד לבד."
+  primaryCta={{ label: `התחילו כאן`, href: `/onboarding` }}
+  secondaryCta={{ label: `קראו על הקהילה`, href: `/domains` }}
+/>
+```
+
+## External secondary link
+
+The secondary call-to-action can point to an external destination by marking it `external`, which opens the link in a new tab:
+
+```tsx
+<Hero
+  eyebrow="שותפים ותומכים"
+  title="בונים יחד את ארגז הכלים של המחר"
+  subtitle="הצטרפו כארגון שותף או תרמו ידע מקצועי למאגר הידע הקהילתי."
+  primaryCta={{ label: `לארגז הכלים`, href: `/toolbox` }}
+  secondaryCta={{ label: `אתר עמותת הלם קלאב`, href: `https://example.org`, external: true }}
+/>
+```

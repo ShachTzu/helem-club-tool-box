@@ -1,0 +1,80 @@
+---
+description: "A React Hook for debounced, global cross-content search against the platform aspect."
+labels: ['hook', 'react', 'search']
+---
+
+A React Hook that runs a debounced, global cross-content search against the platform's registered search providers (apps, blog posts, events, gallery items, knowledge articles, community wisdom and coping domains). It returns the matching `SearchResult[]`, grouped by content type, along with loading and empty states.
+
+## Usage
+
+### Basic search
+
+```tsx
+const SearchBox = () => {
+  const [query, setQuery] = React.useState('');
+  const { results, loading, isEmpty } = useSearch(query);
+
+  return (
+    <div>
+      <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="חיפוש בהלם קלאב" />
+      {loading && <p>טוען תוצאות...</p>}
+      {isEmpty && <p>לא נמצאו תוצאות עבור החיפוש.</p>}
+      <ul>
+        {results.map((result) => (
+          <li key={result.id}>{result.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+```
+
+This example debounces the user's input and displays a loading state while the query is in flight, and an empty state once it resolves with no matches.
+
+### Grouped results by content type
+
+```tsx
+const GroupedSearchResults = () => {
+  const [query, setQuery] = React.useState('חרדה');
+  const { groupedResults } = useSearch(query, { limit: 20 });
+
+  return (
+    <div>
+      {Object.keys(groupedResults).map((type) => (
+        <div key={type}>
+          <h4>{type}</h4>
+          <ul>
+            {groupedResults[type].map((result) => (
+              <li key={result.id}>{result.title}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+};
+```
+
+This example groups the flat list of results by their content type (e.g. `app`, `blog`, `event`), so consumers can render separate sections per category.
+
+### Restricting to a domain and testing with mock data
+
+```tsx
+const DomainSearchWithMock = () => {
+  const mockResults = mockSearchResults();
+  const { results, refetch } = useSearch('נשימה', { domainId: 'anxiety', mockData: mockResults });
+
+  return (
+    <div>
+      <button onClick={() => refetch()}>רענון</button>
+      <ul>
+        {results.map((result) => (
+          <li key={result.id}>{result.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+```
+
+This example restricts the search to a specific coping domain and demonstrates supplying `mockData` for testing and previews, bypassing the network request entirely.

@@ -1,0 +1,71 @@
+---
+description: "Blog icon set (article, edit, submit, members-only, stats). Named exports."
+labels: ["icons", "blog", "svg"]
+---
+
+The blog icon set provides a curated collection of SVG icons used across the Helam Club blog: articles, editing, submitting content, member-only gating, and statistics. Each icon is a thin wrapper around the design system `Icon` component, sharing the same size, color and variant tokens.
+
+## Basic usage
+
+Render any icon with its default size and color:
+
+```tsx
+import { ArticleIcon, EditIcon, SubmitIcon, MembersOnlyIcon, StatsIcon } from '@helemclub/blog.icons.blog-icons';
+
+function BlogToolbar() {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+      <ArticleIcon />
+      <EditIcon />
+      <SubmitIcon />
+      <MembersOnlyIcon />
+      <StatsIcon />
+    </div>
+  );
+}
+```
+
+## Sizes and colors
+
+Icons accept a themed `size` keyword (`small`, `medium`, `large`) or an explicit pixel value, and a themed `color` such as `primary`, `secondary`, `accent` or `muted`:
+
+```tsx
+import { SubmitIcon, MembersOnlyIcon } from '@helemclub/blog.icons.blog-icons';
+
+function SubmitCallout() {
+  return (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+      <SubmitIcon size="large" color="accent" />
+      <MembersOnlyIcon size={20} color="muted" title="לחברי קהילה בלבד" />
+    </div>
+  );
+}
+```
+
+## Composing with content
+
+Combine icons with labels to build badges or stat chips, matching the Helam Club design language:
+
+```tsx
+import { StatsIcon, ArticleIcon } from '@helemclub/blog.icons.blog-icons';
+
+function BlogStatChip() {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        background: 'var(--colors-surface-primary)',
+        border: '1px solid var(--colors-border)',
+        borderRadius: 'var(--borders-radius-medium)',
+        padding: '10px 16px',
+      }}
+    >
+      <ArticleIcon size="small" color="secondary" />
+      <span>128 כתבות</span>
+      <StatsIcon size="small" color="secondary" />
+    </div>
+  );
+}
+```

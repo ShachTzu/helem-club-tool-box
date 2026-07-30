@@ -1,0 +1,33 @@
+---
+description: "Themed loading spinner with size variants for auth-loading and data fetching states."
+labels: ["spinner", "loader", "loading", "ui"]
+---
+
+The `Spinner` component renders a themed, animated loading indicator using the Helam Club brand colors. It supports multiple size variants and an optional message, making it suitable for authentication loading screens, data fetching states, or inline loading indicators.
+
+## Basic usage
+
+```tsx
+<Spinner />
+```
+
+## Size variants
+
+Choose from `small`, `medium`, `large` and `xLarge` sizes to match the context it is used in.
+
+```tsx
+<div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+  <Spinner size="small" />
+  <Spinner size="medium" />
+  <Spinner size="large" />
+  <Spinner size="xLarge" />
+</div>
+```
+
+## With a message
+
+Use the `message` prop to communicate what is happening while the spinner is visible, for example during authentication or data fetching.
+
+```tsx
+<Spinner size="large" message="בודקים את החשבון שלך, רגע אחד..." />
+```

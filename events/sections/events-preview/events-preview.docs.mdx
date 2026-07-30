@@ -1,0 +1,30 @@
+---
+title: Events Preview
+description: A home-page preview of upcoming community events, with a link to the events page.
+labels: ['events', 'section', 'home', 'preview']
+---
+
+import { MemoryRouter } from 'react-router-dom';
+import { mockEvents } from '@helemclub/events.entities.event';
+import { EventsPreview } from './events-preview.js';
+
+The `EventsPreview` section shows a compact grid of upcoming community events, with
+a "see all" link to the full events page. It is registered into the platform's
+`HomeSection` slot by the events aspect, so it appears on the home page without the
+platform depending on the events scope.
+
+## Default
+
+```jsx live
+<MemoryRouter>
+  <EventsPreview mockEvents={mockEvents().map((e) => e.toObject())} />
+</MemoryRouter>
+```
+
+## Limited to two events
+
+```jsx live
+<MemoryRouter>
+  <EventsPreview mockEvents={mockEvents().map((e) => e.toObject())} limit={2} />
+</MemoryRouter>
+```

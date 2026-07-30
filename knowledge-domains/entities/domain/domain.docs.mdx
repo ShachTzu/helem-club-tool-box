@@ -1,0 +1,84 @@
+---
+labels: ['entity', 'domain', 'knowledge-domains']
+description: "A Domain entity representing a cross-cutting coping domain used to classify content across the ecosystem."
+---
+
+A `Domain` represents one of the coping domains that cross-cut the entire Helem Club ecosystem — apps, blog posts,
+knowledge-base records, events and gallery items are all tagged with domains, so members can find content relevant
+to what they're going through.
+
+It supports serialization and de-serialization, and can be used both on the backend and the frontend.
+
+## Get started
+
+Create a `Domain` instance from a plain object using `Domain.from()`:
+
+```tsx
+import { Domain } from '@helemclub/knowledge-domains.entities.domain';
+
+function Example() {
+  const domain = Domain.from({
+    id: 'anxiety',
+    slug: 'anxiety',
+    name: 'חרדה',
+    description: 'כלים מיידיים ומתמשכים להתמודדות עם חרדה והתקפי פאניקה.',
+    icon: '😰',
+    count: 5,
+  });
+
+  return (
+    <div>
+      <span>{domain.icon}</span>
+      <strong>{domain.name}</strong>
+      <span>{domain.count}</span>
+    </div>
+  );
+}
+```
+
+## Serialization
+
+Use `toObject()` to serialize a `Domain` instance back into a plain, JSON-friendly object — useful when sending data
+over the network or storing it.
+
+```tsx
+import { Domain } from '@helemclub/knowledge-domains.entities.domain';
+
+function Example() {
+  const domain = Domain.from({
+    id: 'sleep',
+    slug: 'sleep',
+    name: 'שינה',
+    count: 4,
+  });
+
+  const plainDomain = domain.toObject();
+
+  return <pre>{JSON.stringify(plainDomain, null, 2)}</pre>;
+}
+```
+
+## Mock data
+
+The 14 closed coping domains are available as seed/mock data via `mockDomains()`, and a single domain via
+`mockDomain()`. Both support partial overrides for development and testing purposes.
+
+```tsx
+import { mockDomains, mockDomain } from '@helemclub/knowledge-domains.entities.domain';
+
+function Example() {
+  const domains = mockDomains();
+  const custom = mockDomain({ name: 'תחום מותאם אישית', count: 10 });
+
+  return (
+    <ul>
+      {domains.map((domain) => (
+        <li key={domain.id}>
+          {domain.icon} {domain.name} ({domain.count})
+        </li>
+      ))}
+      <li>{custom.name}</li>
+    </ul>
+  );
+}
+```

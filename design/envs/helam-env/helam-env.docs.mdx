@@ -1,0 +1,69 @@
+---
+description: "A React development environment for the Helam design system."
+labels: ['env', 'react', 'dev', 'vite', 'rspack', 'vitest', 'helam']
+---
+
+A reusable React development environment tailored for the Helam design system.
+It pins React and its peer dependencies to a single supported range, applies the Helam theme in previews, and gives every design component a consistent build, lint, and test toolchain.
+
+## Setting the env on a design component
+
+Apply the environment to any existing component so it builds, lints, and tests using the Helam toolchain.
+
+```tsx
+// bit env set helam.design.button bitdev.react/examples/helam-env
+
+```
+
+## Using generator templates from the workspace config
+
+Add the environment to the generator configuration so new components are scaffolded with the Helam toolchain by default.
+
+
+```tsx
+const workspaceConfig = {
+  "teambit.generator/generator": {
+    "envs": [
+      "bitdev.react/examples/helam-env"
+    ]
+  }
+};
+
+export default workspaceConfig;
+
+```
+
+## Rendering a themed component in a preview
+
+Because the env applies the Helam theme automatically in previews, components built with it can rely on shared design tokens rather than defining their own colors and spacing.
+
+
+```tsx
+function HelamCard({ title, description }: { title: string; description: string }) {
+  return (
+    <div className="helam-card">
+      <h3>{title}</h3>
+      <p>{description}</p>
+    </div>
+  );
+}
+
+function HelamCardExample() {
+  return (
+    <HelamCard
+      title="Consistent toolchain"
+      description="This card renders using the same React version and Helam theme across every component."
+    />
+  );
+}
+
+```
+
+## Starting a new Helam based workspace
+
+Create a brand new workspace that is preconfigured with this environment, useful when starting a new set of design components from scratch.
+
+
+```tsx
+// bit new react my-helam-workspace --aspect bitdev.react/examples/helam-env
+```

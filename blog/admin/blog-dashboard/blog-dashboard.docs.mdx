@@ -1,0 +1,66 @@
+---
+description: "Blog admin dashboard with a global time filter, headline metrics, top posts, authors table and engagement metrics. Protected admin. RTL."
+labels: ['dashboard', 'admin', 'blog', 'analytics', 'react']
+---
+
+The `BlogDashboard` component is an admin-only analytics dashboard for the Helam Club blog. It surfaces a global time filter (day/week/month/quarter/half-year/year/custom), headline metrics (total posts, unique visitors, total views), a top 10 posts panel, an authors table with a hover popover listing each author's posts, and engagement metrics (comments/reactions/saves) alongside verified members. It's restricted to admins via `ProtectedRoute`, and is registered as an `AdminPanel` entry through `blogDashboardAdminPanel`.
+
+## Usage
+
+### Basic usage (live data)
+
+Renders the dashboard for the currently signed-in admin, fetching live stats through `useBlogStats`.
+
+```tsx
+const BlogAdminPage = () => {
+  return <BlogDashboard />;
+};
+```
+
+### Using mock data for previews and tests
+
+Provide `mockStats` and `mockUser` to bypass the network requests entirely.
+
+```tsx
+const MockedBlogDashboard = () => {
+  const stats = {
+    totalPosts: 12,
+    uniqueVisitors: 340,
+    totalViews: 980,
+    comments: 24,
+    reactions: 88,
+    saves: 15,
+    verifiedMembers: 20,
+    topPosts: [{ id: `post-1`, title: `כתבה לדוגמה`, views: 210 }],
+    authors: [
+      {
+        name: `ד״ר מיכל ברק`,
+        postCount: 3,
+        lastPostDate: `12 במאי 2026`,
+        posts: [{ title: `כתבה לדוגמה`, date: `12 במאי 2026` }],
+      },
+    ],
+  };
+
+  const admin = {
+    id: `admin-1`,
+    email: `admin@helem.club`,
+    displayName: `הלם אדמין`,
+    role: `admin` as const,
+    provider: `email` as const,
+    createdAt: `2026-01-01T00:00:00.000Z`,
+  };
+
+  return <BlogDashboard mockStats={stats} mockUser={admin} />;
+};
+```
+
+### Registering as an admin panel
+
+`blogDashboardAdminPanel` can be plugged into the platform's admin shell `AdminPanel` slot so it appears in the admin navigation.
+
+```tsx
+const RegisterBlogDashboardPanel = () => {
+  return <p>ID: {`blog-dashboard`}, מוגבל לתפקיד: {`admin`}</p>;
+};
+```

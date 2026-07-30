@@ -1,0 +1,104 @@
+---
+description: "A card presenting a knowledge-base media record: thumbnail, title, media-type badge, duration and domain badges."
+labels: ["card", "knowledge-base", "media-record", "rtl"]
+---
+
+The `RecordCard` component presents a knowledge-base media record (a video or audio item), showing its thumbnail, title, media-type badge, duration and the domains it is tagged with. The whole card links to the record's page, and is rendered right-to-left (RTL) for Hebrew content.
+
+## Basic usage
+
+Render a card for a single record:
+
+```tsx
+<RecordCard
+  record={{
+    id: `record-grounding-flashbacks`,
+    slug: `grounding-flashbacks`,
+    labelId: `first-aid`,
+    title: `קרקוע ברגע של פלאשבק`,
+    description: `תרגיל מודרך קצר להחזרת תחושת הביטחון בזמן הצפה או פלאשבק.`,
+    mediaType: `video`,
+    mediaUrl: `https://example.com/media/grounding-flashbacks.mp4`,
+    thumbnailUrl:
+      `https://images.unsplash.com/photo-1476611317561-60117649dd94?auto=format&fit=crop&w=900&q=80`,
+    durationSec: 504,
+    domains: [`טריגרים`, `חרדה`, `ויסות רגשי`],
+    viewCount: 3240,
+    publishedAt: `2026-03-01T09:00:00.000Z`,
+  }}
+/>
+```
+
+## Grid of records
+
+Use the card inside a responsive grid to present multiple records:
+
+```tsx
+<div
+  style={{
+    display: `grid`,
+    gridTemplateColumns: `repeat(auto-fill, minmax(260px, 1fr))`,
+    gap: 18,
+  }}
+>
+  <RecordCard
+    record={{
+      id: `record-panic-breathing`,
+      slug: `panic-breathing`,
+      labelId: `first-aid`,
+      title: `נשימה בזמן התקף חרדה`,
+      description: `הקלטה קולית שמלווה אותך צעד-צעד דרך התקף חרדה.`,
+      mediaType: `audio`,
+      mediaUrl: `https://example.com/media/panic-breathing.mp3`,
+      thumbnailUrl:
+        `https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=900&q=80`,
+      durationSec: 662,
+      domains: [`חרדה`, `מיינדפולנס ונשימות`],
+      viewCount: 2115,
+      publishedAt: `2026-02-18T09:00:00.000Z`,
+    }}
+  />
+  <RecordCard
+    record={{
+      id: `record-life-after-panel`,
+      slug: `life-after-panel`,
+      labelId: `after`,
+      title: `החיים שאחרי — שולחן עגול`,
+      description: `שיחה כנה של ארבעה מתמודדים על השגרה, הזוגיות והתקווה שאחרי.`,
+      mediaType: `video`,
+      mediaUrl: `https://example.com/media/life-after-panel.mp4`,
+      thumbnailUrl:
+        `https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=900&q=80`,
+      durationSec: 3130,
+      domains: [`משפחה, זוגיות ויחסים`, `דיכאון ותחושת תקיעות`],
+      viewCount: 1870,
+      publishedAt: `2026-01-22T09:00:00.000Z`,
+    }}
+  />
+</div>
+```
+
+## Custom link destination
+
+Override the default record page link (`/knowledge/record/{slug}`) with a custom `href`:
+
+```tsx
+<RecordCard
+  record={{
+    id: `record-rights-guide`,
+    slug: `rights-guide`,
+    labelId: `adequate-response`,
+    title: `מדריך מיצוי זכויות למתמודדים`,
+    description: `כל מה שצריך לדעת על הזכויות שלך מול הרשויות והביטוח.`,
+    mediaType: `video`,
+    mediaUrl: `https://example.com/media/rights-guide.mp4`,
+    thumbnailUrl:
+      `https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=900&q=80`,
+    durationSec: 2058,
+    domains: [`מיצוי זכויות`, `עבודה וקריירה`],
+    viewCount: 980,
+    publishedAt: `2026-04-02T09:00:00.000Z`,
+  }}
+  href="/knowledge/record/rights-guide"
+/>
+```

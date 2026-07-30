@@ -1,0 +1,217 @@
+---
+description: "A pluggable Engagement aspect for comments, reactions, saved items and moderation."
+labels: ['aspect', 'engagement', 'comments']
+---
+
+The Engagement aspect provides comments, reactions, saved items and moderation capabilities across the platform. It is a cross cutting aspect with no top level navigation, exposing a saved items page and an admin moderation queue.
+
+## Get started
+
+Install the Aspect.
+
+```
+bit install helemclub.engagement/engagement
+```
+
+## Comments example
+
+This example shows a simple comments list rendered from data passed through props, without relying on the aspect internals directly. The component accepts a list of comments and an add handler as props so it can be tested and composed easily.
+
+```tsx
+type CommentItem = {
+  id: string;
+  text: string;
+  authorName?: string;
+  hidden?: boolean;
+};
+
+type CommentsListProps = {
+  comments: CommentItem[];
+  onAddComment: (text: string) => void;
+};
+
+function CommentsList(props: CommentsListProps) {
+  const visibleComments = props.comments.filter((comment) => !comment.hidden);
+
+  return (
+    <div>
+      <h3>Comments</h3>
+      <ul>
+        {visibleComments.map((comment) => (
+          <li key={comment.id}>
+            <strong>{comment.authorName || 'Anonymous'}</strong>
+            <span> - {comment.text}</span>
+          </li>
+        ))}
+      </ul>
+      <button onClick={() => props.onAddComment('This is a great update, thanks for sharing.')}>
+        Add comment
+      </button>
+    </div>
+  );
+}
+
+export function CommentsListExample() {
+  const comments = [
+    { id: '1', text: 'Great insights on platform engineering', authorName: 'Alex Rivera', hidden: false },
+    { id: '2', text: 'Looking forward to the follow up post', authorName: 'Jordan Lee', hidden: false },
+    { id: '3', text: 'This should be hidden', authorName: 'Spammer', hidden: true },
+  ];
+
+  function handleAddComment(text: string) {
+    console.log('adding comment', text);
+  }
+
+  return <CommentsList comments={comments} onAddComment={handleAddComment} />;
+}
+
+```
+
+## Reactions and helpful votes
+
+This example renders a reaction bar that toggles a helpful vote or a like on a target item. State is kept locally so the example is self contained and does not depend on any network call.
+
+```tsx
+type ReactionCounts = {
+  helpful: number;
+  like: number;
+};
+
+type ReactionBarProps = {
+  initialCounts: ReactionCounts;
+};
+
+function ReactionBar(props: ReactionBarProps) {
+  const initialState = {
+    counts: props.initialCounts,
+    userReactions: { helpful: false, like: false },
+  };
+
+  let state = initialState;
+
+  function toggleReaction(kind: 'helpful' | 'like') {
+    const alreadyReacted = state.userReactions[kind];
+    const nextCounts = {
+      ...state.counts,
+      [kind]: alreadyReacted ? state.counts[kind] - 1 : state.counts[kind] + 1,
+    };
+    state = {
+      counts: nextCounts,
+      userReactions: { ...state.userReactions, [kind]: !alreadyReacted },
+    };
+    console.log('reaction state updated', state);
+  }
+
+  return (
+    <div>
+      <button onClick={() => toggleReaction('helpful')}>
+        Helpful ({props.initialCounts.helpful})
+      </button>
+      <button onClick={() => toggleReaction('like')}>
+        Like ({props.initialCounts.like})
+      </button>
+    </div>
+  );
+}
+
+export function ReactionBarExample() {
+  return <ReactionBar initialCounts={{ helpful: 4, like: 9 }} />;
+}
+
+```
+
+## Saved items and moderation queue
+
+This example demonstrates a saved items list alongside a moderation queue table, both driven entirely by props so they can be reused in a saved items page or an admin moderation page.
+
+```tsx
+type SavedItem = {
+  id: string;
+  title: string;
+  targetType: string;
+};
+
+type ModerationItem = {
+  id: string;
+  text: string;
+  authorName?: string;
+  reason: string;
+};
+
+type SavedItemsProps = {
+  items: SavedItem[];
+};
+
+function SavedItemsList(props: SavedItemsProps) {
+  return (
+    <div>
+      <h3>Saved items</h3>
+      <ul>
+        {props.items.map((item) => (
+          <li key={item.id}>
+            {item.title} ({item.targetType})
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+type ModerationQueueProps = {
+  reportedComments: ModerationItem[];
+  onHide: (commentId: string) => void;
+};
+
+function ModerationQueueTable(props: ModerationQueueProps) {
+  return (
+    <div>
+      <h3>Moderation queue</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Author</th>
+            <th>Text</th>
+            <th>Reason</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.reportedComments.map((item) => (
+            <tr key={item.id}>
+              <td>{item.authorName || 'Anonymous'}</td>
+              <td>{item.text}</td>
+              <td>{item.reason}</td>
+              <td>
+                <button onClick={() => props.onHide(item.id)}>Hide</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export function EngagementDashboardExample() {
+  const savedItems = [
+    { id: '1', title: 'Platform engineering deep dive', targetType: 'article' },
+    { id: '2', title: 'Quarterly community event', targetType: 'event' },
+  ];
+
+  const reportedComments = [
+    { id: '3', text: 'Will recordings be made available afterwards', authorName: 'Anonymous Member', reason: 'spam' },
+  ];
+
+  function handleHide(commentId: string) {
+    console.log('hiding comment', commentId);
+  }
+
+  return (
+    <div>
+      <SavedItemsList items={savedItems} />
+      <ModerationQueueTable reportedComments={reportedComments} onHide={handleHide} />
+    </div>
+  );
+}
+```
+```

@@ -1,0 +1,60 @@
+---
+description: "Profile page (protected): edit display name/avatar, show role, and sign out. RTL."
+labels: ["profile", "account", "settings", "rtl"]
+---
+
+The `Profile` component renders the Helem Club member profile page. It is protected — signed-out
+visitors are redirected — and lets a signed-in member edit their display name and avatar image,
+view their community role, and sign out.
+
+## Basic usage
+
+Render the profile page for the currently signed-in user (resolved from the auth hook):
+
+```tsx
+import { Profile } from '@helemclub/platform.pages.profile';
+
+function App() {
+  return <Profile />;
+}
+```
+
+## With mock data
+
+Pass `mockUser` to preview the page without a live authentication session, useful in tests and
+compositions:
+
+```tsx
+const mockUser = {
+  id: `user-204`,
+  email: `noa.levi@example.com`,
+  displayName: `נועה לוי`,
+  avatarUrl: `https://storage.googleapis.com/bit-generated-images/images/image_professional_friendly_headshot_0_1785193864993.png`,
+  role: `writer`,
+  provider: `google`,
+  createdAt: new Date(`2023-11-02T08:15:00.000Z`).toISOString(),
+};
+
+function ProfilePreview() {
+  return <Profile mockUser={mockUser} />;
+}
+```
+
+## Handling save
+
+Provide an `onSave` handler to persist changes to the display name and avatar. It receives the
+updated fields and should resolve with whether the update succeeded:
+
+```tsx
+function ProfileWithSave() {
+  const handleSave = async (input: { displayName: string; avatarUrl?: string }) => {
+    const response = await fetch(`/api/profile`, {
+      method: `PATCH`,
+      body: JSON.stringify(input),
+    });
+    return response.ok;
+  };
+
+  return <Profile onSave={handleSave} />;
+}
+```

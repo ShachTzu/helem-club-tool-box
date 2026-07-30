@@ -1,0 +1,103 @@
+.postBody {
+  box-sizing: border-box;
+  width: 100%;
+  direction: var(--layout-direction);
+  text-align: right;
+  font-family: var(--typography-font-family);
+  color: var(--colors-text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-large);
+}
+
+.htmlContent {
+  font-size: var(--typography-sizes-body-large);
+  line-height: var(--typography-line-height-base);
+  font-weight: var(--typography-font-weight-regular);
+  color: var(--colors-text-primary);
+}
+
+.htmlContent p {
+  margin: 0 0 var(--spacing-large);
+}
+
+.htmlContent p:last-child {
+  margin-bottom: 0;
+}
+
+.htmlContent h2 {
+  font-size: var(--typography-sizes-heading-h2);
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-primary-default);
+  line-height: var(--typography-line-height-heading);
+  margin: var(--spacing-xl) 0 var(--spacing-medium);
+}
+
+.htmlContent h3 {
+  font-size: var(--typography-sizes-heading-h3);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-primary-default);
+  line-height: var(--typography-line-height-heading);
+  margin: var(--spacing-large) 0 var(--spacing-medium);
+}
+
+.htmlContent blockquote {
+  box-sizing: border-box;
+  margin: var(--spacing-large) 0;
+  padding: var(--spacing-small) var(--spacing-large);
+  border-inline-start: 4px solid var(--colors-accent-default);
+  color: var(--colors-secondary-default);
+  font-size: var(--typography-sizes-subhead);
+  font-style: italic;
+  background-color: var(--colors-surface-primary);
+  border-radius: var(--borders-radius-small);
+}
+
+.htmlContent ul,
+.htmlContent ol {
+  margin: 0 0 var(--spacing-large);
+  padding-inline-start: var(--spacing-xl);
+  padding-inline-end: 0;
+}
+
+.htmlContent li {
+  margin-bottom: var(--spacing-small);
+}
+
+.htmlContent a {
+  color: var(--colors-secondary-default);
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.htmlContent strong {
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-primary-default);
+}
+
+.htmlContent img {
+  max-width: 100%;
+  border-radius: var(--borders-radius-medium);
+}
+
+.imageBlock {
+  width: 100%;
+}
+
+.appBlock {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-medium) 0;
+}
+
+@media (max-width: 480px) {
+  .htmlContent {
+    font-size: var(--typography-sizes-body-default);
+  }
+
+  .htmlContent blockquote {
+    font-size: var(--typography-sizes-body-large);
+    padding: var(--spacing-small) var(--spacing-medium);
+  }
+}

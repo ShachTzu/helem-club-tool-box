@@ -1,0 +1,21 @@
+.saveButton {
+  gap: var(--spacing-small);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--interactions-transitions-duration-fast)
+    var(--interactions-transitions-easing-spring);
+}
+
+.iconSaved {
+  transform: scale(1.1);
+}
+
+.saveLabel {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}

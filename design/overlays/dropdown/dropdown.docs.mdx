@@ -1,0 +1,62 @@
+---
+description: "Accessible dropdown/menu anchored to a trigger, RTL aligned, used by user bar, sort menus, and header actions."
+labels: ["dropdown", "menu", "overlay", "rtl"]
+---
+
+The `Dropdown` component renders an accessible menu anchored to a trigger element. It supports keyboard navigation (arrow keys, `Enter`, `Escape`), dismisses on click-outside, and aligns the menu panel to either edge of the trigger — respecting the RTL direction used across Helam Club.
+
+## Basic usage
+
+Render a dropdown with a default trigger button and a list of items:
+
+```tsx
+<Dropdown
+  label="תפריט"
+  items={[
+    { id: `edit`, label: `עריכה`, icon: `✏️` },
+    { id: `share`, label: `שיתוף`, icon: `🔗` },
+    { id: `delete`, label: `מחיקה`, icon: `🗑️`, danger: true },
+  ]}
+/>
+```
+
+## Custom trigger
+
+Pass any element as the `trigger` prop — the dropdown will toggle when it is clicked:
+
+```tsx
+<Dropdown
+  trigger={
+    <button type="button" style={{ padding: `8px 16px`, borderRadius: 999 }}>
+      דנה כהן ▾
+    </button>
+  }
+  items={[
+    { id: `profile`, label: `הפרופיל שלי`, icon: `👤` },
+    { id: `logout`, label: `התנתקות`, icon: `🚪`, danger: true },
+  ]}
+  align="end"
+/>
+```
+
+## Controlled open state
+
+Use the `open` and `onOpenChange` props to control the menu from a parent component:
+
+```tsx
+function ControlledExample() {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <Dropdown
+      label="מיון"
+      open={open}
+      onOpenChange={(next) => setOpen(next)}
+      items={[
+        { id: `rating`, label: `לפי דירוג` },
+        { id: `clicks`, label: `לפי קליקים` },
+      ]}
+    />
+  );
+}
+```

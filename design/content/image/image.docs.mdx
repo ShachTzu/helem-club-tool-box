@@ -1,0 +1,53 @@
+---
+description: "Responsive image with aspect-ratio, object-fit cover, rounded corners, and lazy loading; skeleton while loading."
+labels: ["image", "media", "skeleton", "lazy-loading"]
+---
+
+The `Image` component renders a responsive image inside a fixed aspect-ratio container. It shows an animated skeleton placeholder while the image loads, applies `object-fit` to control cropping, supports rounded corners, and defers loading with the native `loading="lazy"` attribute.
+
+## Basic usage
+
+```tsx
+<Image
+  src="https://storage.googleapis.com/bit-generated-images/images/image_wide_banner_photo_of_a_peacefu_0_1785186182783.png"
+  alt="מפגש קהילתי בטבע בשעת שקיעה"
+  aspectRatio="16 / 9"
+/>
+```
+
+## Square image with large rounded corners
+
+Use the `aspectRatio` and `rounded` props to control the container shape and border radius, useful for avatars or feature cards.
+
+```tsx
+<Image
+  src="https://storage.googleapis.com/bit-generated-images/images/image_warm_portrait_style_illustrati_0_1785186178200.png"
+  alt="איור של ידיים מחזיקות נבט צעיר"
+  aspectRatio="1 / 1"
+  rounded="large"
+/>
+```
+
+## Gallery grid
+
+Combine multiple `Image` components in a CSS grid to build a responsive gallery, each with its own aspect ratio and rounded corners.
+
+```tsx
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+  <Image
+    src="https://storage.googleapis.com/bit-generated-images/images/image_a_serene_abstract_watercolor_p_0_1785186182329.png"
+    alt="ציור אבסטרקטי בגווני ענבר ונייבי"
+    aspectRatio="4 / 3"
+  />
+  <Image
+    src="https://storage.googleapis.com/bit-generated-images/images/image_warm_portrait_style_illustrati_0_1785186178200.png"
+    alt="איור של צמיחה והחלמה"
+    aspectRatio="4 / 3"
+  />
+  <Image
+    src="https://storage.googleapis.com/bit-generated-images/images/image_wide_banner_photo_of_a_peacefu_0_1785186182783.png"
+    alt="מעגל קהילתי בטבע"
+    aspectRatio="4 / 3"
+  />
+</div>
+```

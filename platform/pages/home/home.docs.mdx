@@ -1,0 +1,62 @@
+---
+description: "Home page (/): public landing (hero + ecosystem overview + dashboard-panel slots) for everyone; personalized greeting and dashboard panels for authenticated users."
+labels: ["home", "landing", "page", "rtl"]
+---
+
+The `Home` component renders the Helem Club landing page at `/`. It is public — every visitor sees
+the hero section and the ecosystem overview — and when the visitor is authenticated it also surfaces
+a personalized greeting and any dashboard panels registered by feature aspects through the platform's
+`DashboardPanel` slot, above the marketing content.
+
+## Basic usage
+
+Render the home page for the current visitor (resolved from the auth hook):
+
+```tsx
+function App() {
+  return <Home />;
+}
+```
+
+## Signed-in member with dashboard panels
+
+Feature aspects register dashboard panels through the platform's `DashboardPanel` slot. Pass them to
+`dashboardPanels`, ordered by their `order` field, to render them above the marketing content for
+signed-in members:
+
+```tsx
+function ToolboxPanel() {
+  return (
+    <div>
+      <h3>ארגז הכלים שלי</h3>
+      <p>3 אפליקציות שסימנתם לאחרונה.</p>
+    </div>
+  );
+}
+
+const dashboardPanels = [{ id: `toolbox`, component: ToolboxPanel, order: 1 }];
+
+function HomeWithDashboard() {
+  return <Home dashboardPanels={dashboardPanels} />;
+}
+```
+
+## Previewing with mock data
+
+Pass `mockUser` to preview the page without a live authentication session, useful in tests and
+compositions. Passing `null` simulates a signed-out visitor:
+
+```tsx
+const mockUser = {
+  id: `user-204`,
+  email: `noa.levi@example.com`,
+  displayName: `נועה לוי`,
+  role: `member`,
+  provider: `google`,
+  createdAt: new Date(`2023-11-02T08:15:00.000Z`).toISOString(),
+};
+
+function HomePreview() {
+  return <Home mockUser={mockUser} />;
+}
+```

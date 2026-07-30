@@ -1,0 +1,52 @@
+---
+description: "Home section presenting the ecosystem pillars as cards, each linking to its lobby."
+labels: ["section", "home", "ecosystem", "cards"]
+---
+
+The `EcosystemOverview` component presents the Helam Club ecosystem pillars — מאגר ידע, ארגז כלים, בלוג, אירועים קהילתיים, וגלריית PTSDART — as a responsive grid of cards, each linking to its dedicated lobby page. It also explains the core idea that passive consumption and active participation together form the path to rehabilitation.
+
+## Basic usage
+
+Render the section with its default pillars, title and explainer text:
+
+```tsx
+<EcosystemOverview />
+```
+
+## Custom pillars
+
+Pass a custom set of pillars to control which ecosystem sections are highlighted:
+
+```tsx
+const pillars = [
+  {
+    slug: `knowledge`,
+    icon: `📚`,
+    title: `מאגר ידע`,
+    description: `סרטונים והרצאות שנבנו עם אנשי מקצוע.`,
+    href: `/knowledge`,
+  },
+  {
+    slug: `toolbox`,
+    icon: `🧰`,
+    title: `ארגז כלים`,
+    description: `אפליקציות מדורגות שהקהילה בדקה וממליצה עליהן.`,
+    href: `/toolbox`,
+  },
+];
+
+<EcosystemOverview pillars={pillars} title="עמודי התווך שלנו" />
+```
+
+## Custom heading and explainer
+
+Override the eyebrow, title, subtitle and explainer copy to fit different placements on the home page:
+
+```tsx
+<EcosystemOverview
+  eyebrow="האקוסיסטם הדיגיטלי של הלם קלאב"
+  title="מקום אחד לכל מה שאתם צריכים"
+  subtitle="חמישה רכיבים שנבנים על בסיס ידע מרכזי אחד"
+  explainer="ידע פסיבי וכלים אקטיביים משלימים זה את זה בדרך לשיקום."
+/>
+```

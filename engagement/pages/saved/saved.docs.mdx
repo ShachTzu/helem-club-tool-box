@@ -1,0 +1,52 @@
+---
+description: "Saved-for-later page (/saved) listing the device's saved content as cards with unsave. Works anonymously, RTL."
+labels: ["page", "saved", "engagement", "rtl"]
+---
+
+The `Saved` page renders the current device's saved-for-later list — apps, articles, events, gallery items and coping domains — as a grid of cards, each with an unsave action. Saving is fully anonymous: the list is persisted locally per device (via `localStorage`), so visitors can build a personal list without creating an account.
+
+## Basic usage
+
+Render the page. By default it uses the `useSaved` hook, which reads/writes the device's saved list from `localStorage`.
+
+```tsx
+function BasicSavedPage() {
+  return <Saved />;
+}
+```
+
+## With saved items (mock data)
+
+Pass `mockOptions` to preview the page with a fixed list of saved items, bypassing `localStorage`. This is useful for previews and tests.
+
+```tsx
+function SavedPageWithItems() {
+  const mockItems = [
+    {
+      id: `app:calm-space`,
+      targetType: `app` as const,
+      targetId: `calm-space`,
+      deviceId: `device-preview`,
+      savedAt: new Date(`2024-05-01T09:00:00.000Z`).toISOString(),
+      title: `Calm Space — כלי להרגעה מיידית`,
+      url: `/toolbox/calm-space`,
+      imageUrl: undefined,
+      toObject() {
+        return this;
+      },
+    },
+  ];
+
+  return <Saved mockOptions={{ mockDeviceId: `device-preview`, mockSavedItems: mockItems }} />;
+}
+```
+
+## Empty state
+
+When the device has not saved anything yet, a friendly empty state is shown with a call to action pointing visitors to discover content.
+
+```tsx
+function EmptySavedPage() {
+  return <Saved mockOptions={{ mockDeviceId: `device-preview`, mockSavedItems: [] }} discoverHref="/toolbox" />;
+}
+```

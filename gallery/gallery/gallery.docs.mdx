@@ -1,0 +1,126 @@
+---
+description: "A pluggable Gallery aspect for browsing, searching and managing therapeutic art media."
+labels: ['aspect', 'gallery', 'graphql']
+---
+
+The Gallery aspect provides a full backend and frontend solution for listing, viewing and managing gallery items such as images and videos. It exposes a GraphQL API for querying items by media type, domain and free text search, and includes admin capabilities for full CRUD operations.
+
+## List gallery items with filters
+
+This example demonstrates rendering a list of gallery items that were fetched using the listItems query, filtered by media type and a free text search term.
+
+```tsx
+function GalleryList() {
+  const items = [
+    {
+      id: '1',
+      slug: 'therapeutic-art-1',
+      title: 'Therapeutic Expression 1',
+      mediaType: 'image',
+      mediaUrl: 'https://storage.googleapis.com/bit-generated-images/images/image_a_breathtaking_therapeutic_art_0_1785227555283.png',
+      domains: ['art', 'healing'],
+    },
+    {
+      id: '2',
+      slug: 'healing-nature-2',
+      title: 'Healing Nature',
+      mediaType: 'image',
+      mediaUrl: 'https://res.cloudinary.com/ddnr1ptva/image/upload/f_auto,q_auto/ai-images/get/g5e532121663b556c807fe3136ae286640a50f991835238a4bc2758abaef89aa3a29e3fc565ff6ea7d63a6f787862bdfae523199dc5c22db71ee80a3ab6633582_1280.jpg',
+      domains: ['nature', 'healing'],
+    },
+  ];
+
+  return (
+    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+      {items.map((item) => (
+        <div key={item.id} style={{ width: '200px' }}>
+          <img src={item.mediaUrl} alt={item.title} style={{ width: '100%', borderRadius: '8px' }} />
+          <p>{item.title}</p>
+          <small>{item.domains.join(', ')}</small>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+```
+
+## View a single gallery item page
+
+This example shows a single gallery item page rendering the full details of an item, including description and artist information, as would be returned from the getItem query by slug.
+
+```tsx
+function GalleryItemView() {
+  const item = {
+    id: '3',
+    slug: 'mindful-reflections-3',
+    title: 'Mindful Reflections',
+    description: 'Deep black and white photography capturing inner thoughts.',
+    mediaType: 'image',
+    mediaUrl: 'https://res.cloudinary.com/ddnr1ptva/image/upload/f_auto,q_auto/ai-images/get/gb8a5796668fc8ead98bb9adeef244d53b085224218e53f6bcd0c226876abbb0cc2f028d715ebdd0ed9b0b2ec78d7f25e7b806da35253c3f6f5705b239049c8f0_1280.jpg',
+    artistName: 'Sam Chen',
+    domains: ['mindfulness', 'photography'],
+    createdAt: new Date('2023-01-03'),
+  };
+
+  return (
+    <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+      <img src={item.mediaUrl} alt={item.title} style={{ width: '100%', borderRadius: '12px' }} />
+      <h2>{item.title}</h2>
+      <p>{item.description}</p>
+      <p>
+        By {item.artistName} on {item.createdAt.toLocaleDateString()}
+      </p>
+      <div>
+        {item.domains.map((domain) => (
+          <span key={domain} style={{ marginRight: '8px', padding: '2px 8px', background: '#eee', borderRadius: '4px' }}>
+            {domain}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+```
+
+## Admin gallery management panel
+
+This example illustrates an admin panel listing gallery items with actions to delete an item, representing the moderator only createItem, updateItem and deleteItem mutations exposed by the aspect.
+
+```tsx
+function ManageGalleryPanel() {
+  const items = [
+    { id: '1', title: 'Therapeutic Expression 1', mediaType: 'image' },
+    { id: '2', title: 'Healing Nature', mediaType: 'image' },
+    { id: '3', title: 'Mindful Reflections', mediaType: 'image' },
+  ];
+
+  function handleDelete(id: string) {
+    console.log('delete item', id);
+  }
+
+  return (
+    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <thead>
+        <tr>
+          <th style={{ textAlign: 'left' }}>Title</th>
+          <th style={{ textAlign: 'left' }}>Media Type</th>
+          <th style={{ textAlign: 'left' }}>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {items.map((item) => (
+          <tr key={item.id}>
+            <td>{item.title}</td>
+            <td>{item.mediaType}</td>
+            <td>
+              <button onClick={() => handleDelete(item.id)}>Delete</button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+```

@@ -1,0 +1,88 @@
+---
+description: "A React Hook for listing blog authors and managing their write permission."
+labels: ['hook', 'react', 'blog', 'authors', 'graphql']
+---
+
+The `useAuthors` hook fetches the list of blog authors and exposes an admin action to grant or revoke a user's permission to write blog posts. It composes a GraphQL query (`listAuthors`) with a GraphQL mutation (`setWritePermission`), and automatically refetches the author list after a successful permission change.
+
+## Usage
+
+### Listing authors
+
+```tsx
+const AuthorListComponent = () => {
+  const { authors, loading, error } = useAuthors();
+
+  if (loading) return <p>טוען רשימת כותבים...</p>;
+  if (error) return <p>שגיאה בטעינת הכותבים.</p>;
+
+  return (
+    <ul>
+      {authors.map((author) => (
+        <li key={author.id}>
+          {author.name} — {author.postCount} פוסטים
+        </li>
+      ))}
+    </ul>
+  );
+};
+```
+
+### Granting or revoking write permission (admin)
+
+```tsx
+const AuthorPermissionsComponent = () => {
+  const { authors, setWritePermission, permissionLoading } = useAuthors();
+
+  const handleToggle = async (userId: string, current: boolean) => {
+    await setWritePermission(userId, !current);
+  };
+
+  return (
+    <ul>
+      {authors.map((author) => (
+        <li key={author.id}>
+          {author.name} — {author.hasWritePermission ? 'הרשאת כתיבה פעילה' : 'ללא הרשאת כתיבה'}
+          <button
+            disabled={permissionLoading}
+            onClick={() => handleToggle(author.userId, author.hasWritePermission)}
+          >
+            {author.hasWritePermission ? 'בטל הרשאה' : 'הענק הרשאה'}
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+};
+```
+
+### Providing mock data for tests and previews
+
+```tsx
+const MockedAuthorListComponent = () => {
+  const { authors } = useAuthors({
+    mockData: [
+      {
+        id: '1',
+        userId: 'user-1',
+        name: 'ד״ר מיכל ברק',
+        bio: 'פסיכולוגית קלינית וכותבת.',
+        photo: undefined,
+        hasWritePermission: true,
+        postCount: 12,
+        lastPostDate: '2026-05-12',
+      },
+    ],
+  });
+
+  return (
+    <ul>
+      {authors.map((author) => (
+        <li key={author.id}>{author.name}</li>
+      ))}
+    </ul>
+  );
+};
+```
+
+Passing `mockData` skips the underlying GraphQL query entirely and immediately returns the provided authors, which is useful for tests and design previews.

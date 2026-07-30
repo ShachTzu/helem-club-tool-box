@@ -1,0 +1,128 @@
+.tableWrapper {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  border-radius: var(--borders-radius-medium);
+  box-shadow: var(--effects-shadows-card);
+  overflow: hidden;
+}
+
+.scrollArea {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--typography-font-family);
+  direction: var(--layout-direction);
+}
+
+.headerRow {
+  background-color: var(--colors-surface-secondary);
+}
+
+.headerCell {
+  padding: var(--spacing-medium) var(--spacing-default);
+  font-size: var(--typography-sizes-caption-medium);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-secondary);
+  text-align: start;
+  white-space: nowrap;
+  letter-spacing: var(--typography-letter-spacing-wide);
+  border-bottom: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+}
+
+.headerCellCenter {
+  text-align: center;
+}
+
+.headerCellEnd {
+  text-align: end;
+}
+
+.bodyRow {
+  transition: background-color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out);
+}
+
+.bodyRow:hover {
+  background-color: var(--colors-surface-secondary);
+}
+
+.bodyRow:not(:last-child) {
+  border-bottom: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+}
+
+.bodyCell {
+  padding: var(--spacing-medium) var(--spacing-default);
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-primary);
+  text-align: start;
+  vertical-align: middle;
+}
+
+.bodyCellCenter {
+  text-align: center;
+}
+
+.bodyCellEnd {
+  text-align: end;
+}
+
+.emptyState {
+  padding: var(--spacing-x4);
+  text-align: center;
+  color: var(--colors-text-muted);
+  font-size: var(--typography-sizes-body-default);
+}
+
+.mobileList {
+  display: none;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+  padding: var(--spacing-medium);
+}
+
+.mobileCard {
+  background-color: var(--colors-surface-background);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-default);
+}
+
+.mobileCardRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-small);
+  padding: var(--spacing-small) 0;
+}
+
+.mobileCardRow:not(:last-child) {
+  border-bottom: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+}
+
+.mobileLabel {
+  font-size: var(--typography-sizes-caption-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-secondary);
+  white-space: nowrap;
+}
+
+.mobileValue {
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-primary);
+  text-align: end;
+}
+
+@media (max-width: 640px) {
+  .scrollArea {
+    display: none;
+  }
+
+  .mobileList {
+    display: flex;
+  }
+}

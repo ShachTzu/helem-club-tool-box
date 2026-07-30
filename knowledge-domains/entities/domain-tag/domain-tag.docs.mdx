@@ -1,0 +1,58 @@
+---
+labels: ['entity', 'domain-tag', 'knowledge-domains']
+description: "A DomainTag polymorphic association entity linking a knowledge domain to any piece of ecosystem content."
+---
+
+`DomainTag` represents a polymorphic association between a knowledge domain and a piece of content
+anywhere in the Helam Club ecosystem — an app, blog post, knowledge-base record, event, or gallery item.
+It supports serialization and de-serialization and can be used from both backend and frontend code.
+
+## Get started
+
+Install and use the component in your code:
+
+```tsx
+import { DomainTag } from '@helemclub/knowledge-domains.entities.domain-tag';
+
+const tag = DomainTag.from({
+  id: 'tag-1',
+  domainId: 'anxiety',
+  targetType: 'post',
+  targetId: 'triggers-toolkit',
+});
+
+console.log(tag.domainId, tag.targetType, tag.targetId);
+```
+
+## Serializing a DomainTag
+
+Use `toObject()` to convert a `DomainTag` instance into a plain, serializable object — useful when sending
+data over the network or storing it.
+
+```tsx
+import { DomainTag } from '@helemclub/knowledge-domains.entities.domain-tag';
+
+const tag = DomainTag.from({
+  id: 'tag-2',
+  domainId: 'sleep',
+  targetType: 'event',
+  targetId: 'webinar-sleep',
+});
+
+const plainTag = tag.toObject();
+console.log(plainTag);
+// { id: 'tag-2', domainId: 'sleep', targetType: 'event', targetId: 'webinar-sleep' }
+```
+
+## Mock data
+
+Use `mockDomainTag` and `mockDomainTags` to generate mock `DomainTag` data for development and testing purposes.
+
+```tsx
+import { mockDomainTag, mockDomainTags } from '@helemclub/knowledge-domains.entities.domain-tag';
+
+const tag = mockDomainTag({ domainId: 'triggers', targetType: 'post' });
+const tags = mockDomainTags();
+
+console.log(tag, tags);
+```

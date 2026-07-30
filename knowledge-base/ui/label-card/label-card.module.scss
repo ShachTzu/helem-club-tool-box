@@ -1,0 +1,72 @@
+.cardLink {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.coverWrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.cover {
+  display: block;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    0deg,
+    color-mix(in srgb, var(--colors-primary-default) 82%, transparent) 0%,
+    color-mix(in srgb, var(--colors-primary-default) 18%, transparent) 55%,
+    transparent 100%
+  );
+}
+
+.overlayContent {
+  position: absolute;
+  bottom: var(--spacing-medium);
+  inset-inline: var(--spacing-medium);
+}
+
+.name {
+  margin: 0;
+}
+
+.body {
+  box-sizing: border-box;
+  padding: var(--spacing-medium);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  flex: 1;
+}
+
+.description {
+  margin: 0;
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-secondary);
+  line-height: var(--typography-line-height-base);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.count {
+  margin-top: auto;
+  font-size: var(--typography-sizes-caption-medium);
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-secondary-default);
+}

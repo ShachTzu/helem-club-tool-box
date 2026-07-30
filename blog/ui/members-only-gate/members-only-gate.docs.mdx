@@ -1,0 +1,59 @@
+---
+description: "Placeholder shown to unauthenticated viewers for members-only content, with a join/login button. RTL."
+labels: ["gate", "auth", "members-only", "blog"]
+---
+
+## Overview
+
+`MembersOnlyGate` protects content that should only be visible to verified, signed-in members of the Helam Club community. While the viewer's auth state is resolving it shows a lightweight loading state, once resolved it either renders the wrapped `children` (for signed-in users) or an inviting placeholder card asking the viewer to join or log in.
+
+## Basic usage
+
+Wrap any members-only content with the gate. Signed-out viewers will see the placeholder instead of the protected content.
+
+```tsx
+import { MembersOnlyGate } from '@helemclub/blog.ui.members-only-gate';
+import { Paragraph } from '@helemclub/design.typography.paragraph';
+
+function MembersOnlySection() {
+  return (
+    <MembersOnlyGate>
+      <Paragraph>
+        תוכן בלעדי לחברי הקהילה: מפגש תמיכה חודשי, הקלטת ההרצאה המלאה וחוברת תרגול להורדה.
+      </Paragraph>
+    </MembersOnlyGate>
+  );
+}
+```
+
+## Previewing a signed-out state
+
+Pass `mockData={null}` to force the gate placeholder, useful for testing and design review.
+
+```tsx
+import { MembersOnlyGate } from '@helemclub/blog.ui.members-only-gate';
+
+function SignedOutPreview() {
+  return <MembersOnlyGate mockData={null} />;
+}
+```
+
+## Customizing the call to action
+
+The title, description, join label and destination can all be customized to fit the surrounding content.
+
+```tsx
+import { MembersOnlyGate } from '@helemclub/blog.ui.members-only-gate';
+
+function PodcastGate() {
+  return (
+    <MembersOnlyGate
+      mockData={null}
+      title="הפרק המלא שמור לחברי הקהילה"
+      description="פרקי הפודקאסט המלאים פתוחים לחברי קהילת הלם קלאב בלבד."
+      joinLabel="הצטרפו לקהילה בחינם"
+      joinHref="/onboarding"
+    />
+  );
+}
+```

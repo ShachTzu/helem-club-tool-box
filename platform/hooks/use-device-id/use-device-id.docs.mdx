@@ -1,0 +1,64 @@
+---
+description: "A React Hook that returns a stable, anonymous device id persisted in localStorage."
+labels: ['hook', 'react', 'device-id', 'engagement']
+---
+
+A React Hook that returns a stable, anonymous device id persisted in `localStorage`. It powers engagement features such as reactions, saves, and reports so anonymous visitors can act on content without creating an account.
+
+The id is generated once per browser (using `crypto.randomUUID` when available), persisted in `localStorage`, and reused across sessions and page reloads.
+
+## Usage
+
+### Basic usage
+
+Use the hook to obtain the current device's anonymous id, then attach it to engagement actions such as a "like" reaction.
+
+```tsx
+const ReactionButton = () => {
+  const deviceId = useDeviceId();
+
+  const react = () => {
+    console.log('reacting as device', deviceId);
+  };
+
+  return (
+    <button onClick={() => react()}>
+      תגובה אנונימית
+    </button>
+  );
+};
+```
+
+### Attaching a device id to saved items
+
+The same stable id can be reused across different engagement surfaces (reactions, saves, reports) to identify the anonymous device consistently.
+
+```tsx
+const SaveButton = ({ appId }: { appId: string }) => {
+  const deviceId = useDeviceId();
+  const [saved, setSaved] = useState(false);
+
+  const toggleSave = () => {
+    setSaved((current) => !current);
+    console.log('device', deviceId, 'toggled save for', appId);
+  };
+
+  return (
+    <button onClick={() => toggleSave()}>
+      {saved ? 'הוסר מהשמורים' : 'שמירה לאחר כך'}
+    </button>
+  );
+};
+```
+
+### Overriding the id for testing or previews
+
+An optional `mockDeviceId` can be passed to override the persisted value, useful for tests and previews where a deterministic id is needed.
+
+```tsx
+const PreviewWidget = () => {
+  const deviceId = useDeviceId({ mockDeviceId: 'preview-device-001' });
+
+  return <p>מזהה מכשיר: {deviceId}</p>;
+};
+```

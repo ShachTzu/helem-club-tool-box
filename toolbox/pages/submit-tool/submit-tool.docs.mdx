@@ -1,0 +1,54 @@
+---
+description: "A protected form allowing members to submit a new tool to the toolbox catalog, pending review."
+labels: ["form", "toolbox", "submission", "protected"]
+---
+
+The `SubmitTool` component renders a protected, RTL member form for submitting a new tool
+(app) to the Helam Club toolbox. The submission includes the tool name, subtitle, description,
+external link, cost model, supported platforms, primary language and relevant coping domains.
+Once submitted, the tool is created with a `pending` status and awaits moderator review.
+
+The form is wrapped with `ProtectedRoute`, so anonymous visitors are redirected to the sign-in
+page before they can access it.
+
+## Basic usage
+
+Render the form for a signed-in member (using mock data for previews and tests):
+
+```tsx
+<SubmitTool
+  mockUser={{ id: `user-1`, name: `דנה לוי`, email: `dana@example.com`, role: `member` }}
+  mockDomains={[
+    { id: `anxiety`, slug: `anxiety`, name: `חרדה`, icon: `😰`, count: 5 },
+    { id: `sleep`, slug: `sleep`, name: `שינה`, icon: `🌙`, count: 4 },
+  ]}
+/>
+```
+
+## Signed-out members
+
+When no user is signed in, the form redirects to the sign-in page instead of rendering the
+form:
+
+```tsx
+<SubmitTool mockUser={null} redirectTo="/login" />
+```
+
+## Custom field options
+
+The cost, platform and language options can be customized to match a different catalog of
+tools:
+
+```tsx
+<SubmitTool
+  mockUser={{ id: `user-2`, name: `יוסי כהן`, email: `yossi@example.com`, role: `member` }}
+  costOptions={[
+    { value: `free`, label: `חינם לגמרי` },
+    { value: `paid`, label: `בתשלום מלא` },
+  ]}
+  platformOptions={[
+    { value: `iOS`, label: `iOS` },
+    { value: `Android`, label: `Android` },
+  ]}
+/>
+```

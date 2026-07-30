@@ -1,0 +1,218 @@
+import type { KnowledgeLobbyLabel } from './knowledge-lobby-label-type.js';
+import type { KnowledgeLobbyRecord } from './knowledge-lobby-record-type.js';
+
+/**
+ * the 5 seed project labels of the knowledge base, for use in compositions and tests.
+ */
+export const mockKnowledgeLobbyLabels: KnowledgeLobbyLabel[] = [
+  {
+    id: `label-first-aid`,
+    slug: `first-aid`,
+    name: `עזרה ראשונה`,
+    description: `כלים מיידיים לרגעי הצפה, חרדה ומשבר — זמינים בכל רגע.`,
+    coverImage: `https://storage.googleapis.com/bit-generated-images/images/image_calming_abstract_illustration__0_1785198300582.png`,
+    recordCount: 12,
+  },
+  {
+    id: `label-after`,
+    slug: `after`,
+    name: `אפטר`,
+    description: `סדרת שיחות על החיים שאחרי — התמודדות, צמיחה והחלמה.`,
+    coverImage: `https://storage.googleapis.com/bit-generated-images/images/image_serene_sunrise_over_calm_still_0_1785198301786.png`,
+    recordCount: 18,
+  },
+  {
+    id: `label-recognition`,
+    slug: `recognition`,
+    name: `הכרה`,
+    description: `הבנה והכרה של תסמיני פוסט-טראומה — ידע מקצועי בגובה העיניים.`,
+    coverImage: `https://storage.googleapis.com/bit-generated-images/images/image_abstract_illustration_of_a_com_0_1785198303341.png`,
+    recordCount: 9,
+  },
+  {
+    id: `label-talking-therapy`,
+    slug: `talking-therapy`,
+    name: `מדברים טיפול`,
+    description: `סדרה על עולם הטיפול — גישות, כלים ומה שכדאי לדעת לפני שמתחילים.`,
+    coverImage: `https://storage.googleapis.com/bit-generated-images/images/image_two_abstract_chairs_facing_eac_0_1785198301838.png`,
+    recordCount: 15,
+  },
+  {
+    id: `label-adequate-response`,
+    slug: `adequate-response`,
+    name: `מענה הולם`,
+    description: `מיצוי זכויות, מול המערכת, ומענה מותאם למתמודדים ובני משפחה.`,
+    coverImage: `https://storage.googleapis.com/bit-generated-images/images/image_abstract_illustration_of_a_shi_0_1785198310980.png`,
+    recordCount: 11,
+  },
+];
+
+/**
+ * a sample of recently published records across labels, for the discovery
+ * feed, used in compositions and tests.
+ */
+export const mockKnowledgeLobbyRecords: KnowledgeLobbyRecord[] = [
+  {
+    id: `record-grounding-flashbacks`,
+    slug: `grounding-flashbacks`,
+    labelId: `label-first-aid`,
+    title: `קרקוע ברגע של פלאשבק`,
+    description: `תרגיל מודרך קצר להחזרת תחושת הביטחון בזמן הצפה או פלאשבק.`,
+    mediaType: `video`,
+    mediaUrl: `https://example.com/media/grounding-flashbacks.mp4`,
+    thumbnailUrl: `https://storage.googleapis.com/bit-generated-images/images/image_peaceful_grounding_exercise_sc_0_1785198304586.png`,
+    durationSec: 504,
+    domains: [`triggers`, `anxiety`, `emotional-regulation`],
+    viewCount: 3240,
+    publishedAt: `2026-03-01T09:00:00.000Z`,
+  },
+  {
+    id: `record-panic-breathing`,
+    slug: `panic-breathing`,
+    labelId: `label-first-aid`,
+    title: `נשימה בזמן התקף חרדה`,
+    description: `הקלטה קולית שמלווה אותך צעד-צעד דרך התקף חרדה.`,
+    mediaType: `audio`,
+    mediaUrl: `https://example.com/media/panic-breathing.mp3`,
+    thumbnailUrl: `https://storage.googleapis.com/bit-generated-images/images/image_close_up_of_a_person_practicin_0_1785198301745.png`,
+    durationSec: 662,
+    domains: [`anxiety`, `mindfulness-breathing`],
+    viewCount: 2115,
+    publishedAt: `2026-02-18T09:00:00.000Z`,
+  },
+  {
+    id: `record-life-after-panel`,
+    slug: `life-after-panel`,
+    labelId: `label-after`,
+    title: `החיים שאחרי — שולחן עגול`,
+    description: `שיחה כנה של ארבעה מתמודדים על השגרה, הזוגיות והתקווה שאחרי.`,
+    mediaType: `video`,
+    mediaUrl: `https://example.com/media/life-after-panel.mp4`,
+    thumbnailUrl: `https://storage.googleapis.com/bit-generated-images/images/image_warm_supportive_community_gath_0_1785198301938.png`,
+    durationSec: 3130,
+    domains: [`family-relationships`, `depression-stuckness`],
+    viewCount: 1870,
+    publishedAt: `2026-01-22T09:00:00.000Z`,
+  },
+  {
+    id: `record-understanding-ptsd`,
+    slug: `understanding-ptsd`,
+    labelId: `label-recognition`,
+    title: `מה זה בעצם פוסט-טראומה?`,
+    description: `הסבר מקצועי ונגיש על מנגנוני הטראומה בגוף ובנפש.`,
+    mediaType: `video`,
+    mediaUrl: `https://example.com/media/understanding-ptsd.mp4`,
+    thumbnailUrl: `https://storage.googleapis.com/bit-generated-images/images/image_calm_abstract_illustration_of__0_1785198301207.png`,
+    durationSec: 1187,
+    domains: [`emotional-regulation`],
+    viewCount: 4520,
+    publishedAt: `2026-01-10T09:00:00.000Z`,
+  },
+  {
+    id: `record-choosing-therapy`,
+    slug: `choosing-therapy`,
+    labelId: `label-talking-therapy`,
+    title: `איך בוחרים טיפול שמתאים לי?`,
+    description: `סקירה של הגישות המרכזיות ושאלות שכדאי לשאול מטפל.`,
+    mediaType: `audio`,
+    mediaUrl: `https://example.com/media/choosing-therapy.mp3`,
+    thumbnailUrl: `https://storage.googleapis.com/bit-generated-images/images/image_cozy_therapy_consultation_scen_0_1785198335815.png`,
+    durationSec: 1653,
+    domains: [`medication-psychiatry`, `depression-stuckness`],
+    viewCount: 1290,
+    publishedAt: `2025-12-29T09:00:00.000Z`,
+  },
+  {
+    id: `record-rights-guide`,
+    slug: `rights-guide`,
+    labelId: `label-adequate-response`,
+    title: `מדריך מיצוי זכויות למתמודדים`,
+    description: `כל מה שצריך לדעת על הזכויות שלך מול הרשויות והביטוח.`,
+    mediaType: `video`,
+    mediaUrl: `https://example.com/media/rights-guide.mp4`,
+    thumbnailUrl: `https://storage.googleapis.com/bit-generated-images/images/image_abstract_illustration_of_a_han_0_1785198336458.png`,
+    durationSec: 2058,
+    domains: [`rights`, `work-career`],
+    viewCount: 980,
+    publishedAt: `2025-12-15T09:00:00.000Z`,
+  },
+];
+
+/**
+ * a subset of the coping domains with content counts, for the discovery
+ * feed's filter bar, used in compositions and tests.
+ */
+export const mockKnowledgeLobbyDomains = [
+  {
+    id: `anxiety`,
+    slug: `anxiety`,
+    name: `חרדה`,
+    description: `כלים מיידיים ומתמשכים להתמודדות עם חרדה והתקפי פאניקה.`,
+    icon: `😰`,
+    count: 2,
+  },
+  {
+    id: `emotional-regulation`,
+    slug: `emotional-regulation`,
+    name: `ויסות רגשי`,
+    description: `כלים לזיהוי, ויסות והבנת רגשות עזים.`,
+    icon: `🌊`,
+    count: 2,
+  },
+  {
+    id: `triggers`,
+    slug: `triggers`,
+    name: `טריגרים`,
+    description: `זיהוי טריגרים וכלים מיידיים להתמודדות עם הצפה ופלאשבקים.`,
+    icon: `⚡`,
+    count: 1,
+  },
+  {
+    id: `mindfulness-breathing`,
+    slug: `mindfulness-breathing`,
+    name: `מיינדפולנס ונשימות`,
+    description: `תרגילי נשימה, מדיטציה ומיינדפולנס להרגעת הגוף והנפש.`,
+    icon: `🧘`,
+    count: 1,
+  },
+  {
+    id: `family-relationships`,
+    slug: `family-relationships`,
+    name: `משפחה, זוגיות ויחסים`,
+    description: `זוגיות, הורות ומערכות יחסים בצל התמודדות עם פוסט-טראומה.`,
+    icon: `👨‍👩‍👧`,
+    count: 1,
+  },
+  {
+    id: `depression-stuckness`,
+    slug: `depression-stuckness`,
+    name: `דיכאון ותחושת תקיעות`,
+    description: `התמודדות עם דיכאון, חוסר מוטיבציה ותחושת תקיעות.`,
+    icon: `🌧️`,
+    count: 2,
+  },
+  {
+    id: `medication-psychiatry`,
+    slug: `medication-psychiatry`,
+    name: `תרופות ופסיכיאטריה`,
+    description: `מידע על טיפול תרופתי, פסיכיאטריה ומה שכדאי לדעת.`,
+    icon: `💊`,
+    count: 1,
+  },
+  {
+    id: `rights`,
+    slug: `rights`,
+    name: `מיצוי זכויות`,
+    description: `מידע ומדריכים למיצוי זכויות מול הרשויות והמערכת.`,
+    icon: `🛡️`,
+    count: 1,
+  },
+  {
+    id: `work-career`,
+    slug: `work-career`,
+    name: `עבודה וקריירה`,
+    description: `התמודדות עם אתגרי תעסוקה, חזרה לעבודה ובניית קריירה.`,
+    icon: `💼`,
+    count: 1,
+  },
+];

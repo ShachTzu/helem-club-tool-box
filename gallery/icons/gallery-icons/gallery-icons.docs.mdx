@@ -1,0 +1,70 @@
+---
+description: "Gallery icon set (image, video, art) built on the shared Icon primitive."
+labels: ["icons", "gallery", "media"]
+---
+
+The gallery icon set provides three named icon components — `ImageIcon`, `VideoIcon` and `ArtIcon` — used to represent gallery media types across PTSDART. Each icon is built on top of the shared `Icon` primitive, so it inherits themed sizes, colors and stroke/fill variants.
+
+## Usage
+
+Render the media type icons directly:
+
+```tsx
+import { ImageIcon, VideoIcon, ArtIcon } from '@helemclub/gallery.icons.gallery-icons';
+
+function MediaTypeLegend() {
+  return (
+    <div style={{ display: 'flex', gap: 16 }}>
+      <ImageIcon color="primary" />
+      <VideoIcon color="primary" />
+      <ArtIcon color="primary" />
+    </div>
+  );
+}
+```
+
+## Sizes and colors
+
+Icons support the same `size` (`small` / `medium` / `large` / a number) and `color` (`primary`, `secondary`, `accent`, `muted`, `inverse`, `current`) props as the base `Icon` component:
+
+```tsx
+import { ImageIcon } from '@helemclub/gallery.icons.gallery-icons';
+
+function ImageIconSizes() {
+  return (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+      <ImageIcon size="small" color="secondary" />
+      <ImageIcon size="medium" color="secondary" />
+      <ImageIcon size="large" color="secondary" />
+      <ImageIcon size={48} color="accent" />
+    </div>
+  );
+}
+```
+
+## Using icons in filter chips
+
+Combine the icons with labels to build a media-type filter row, matching the gallery page filter chips:
+
+```tsx
+import { ImageIcon, VideoIcon, ArtIcon } from '@helemclub/gallery.icons.gallery-icons';
+
+function MediaTypeFilters() {
+  return (
+    <div style={{ display: 'flex', gap: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <ImageIcon size="small" color="primary" />
+        <span>תמונות</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <VideoIcon size="small" color="primary" />
+        <span>וידאו</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <ArtIcon size="small" color="primary" />
+        <span>אמנות</span>
+      </div>
+    </div>
+  );
+}
+```

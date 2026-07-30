@@ -1,0 +1,69 @@
+---
+description: "Pill chip for a coping-domain tag, with selectable, removable and count-suffix variants."
+labels: ["chip", "tag", "filter", "pill"]
+---
+
+The `TagChip` component is a pill-shaped chip used for representing a coping-domain tag. It is the core building block of the domain filtering UI across the Helam Club ecosystem — used to browse, select, and filter content by domains such as anxiety, depression, PTSD, loneliness and more.
+
+It supports three main variants:
+- A static/toggleable chip, turning amber when active
+- A removable chip with an "x" affordance
+- A chip with a numeric count suffix
+
+## Basic usage
+
+Render a plain, non-interactive tag chip:
+
+```tsx
+<TagChip label="חרדה" />
+```
+
+## Active / toggleable chip
+
+Pass `onToggle` to make the chip interactive, and `active` to control its selected (amber) state:
+
+```tsx
+function FilterExample() {
+  const [active, setActive] = React.useState(false);
+
+  return (
+    <TagChip
+      label="דיכאון"
+      active={active}
+      onToggle={() => setActive((prev) => !prev)}
+    />
+  );
+}
+```
+
+## Chip with a count suffix
+
+Show how many items are tagged with a given domain by passing `count`:
+
+```tsx
+<TagChip label="PTSD" count={12} />
+```
+
+## Removable chip
+
+Use `removable` together with `onRemove` to let users clear a selected tag, commonly used for showing currently applied filters:
+
+```tsx
+function SelectedTagsExample() {
+  const [tags, setTags] = React.useState([`חרדה`, `שינה`]);
+
+  return (
+    <div style={{ display: 'flex', gap: 8 }}>
+      {tags.map((tag) => (
+        <TagChip
+          key={tag}
+          label={tag}
+          active
+          removable
+          onRemove={() => setTags((prev) => prev.filter((t) => t !== tag))}
+        />
+      ))}
+    </div>
+  );
+}
+```

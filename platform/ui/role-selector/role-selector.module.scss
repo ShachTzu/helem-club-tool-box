@@ -1,0 +1,90 @@
+.roleSelector {
+  display: inline-flex;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  background-color: var(--colors-surface-primary);
+  color: var(--colors-text-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-pill);
+  padding: 8px 14px;
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+  cursor: var(--interactions-cursor-pointer);
+  transition: border-color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out),
+    box-shadow var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out);
+}
+
+.trigger:hover {
+  border-color: var(--colors-secondary-default);
+}
+
+.trigger:disabled {
+  cursor: var(--interactions-cursor-disabled);
+  opacity: var(--effects-opacity-disabled);
+}
+
+.triggerIcon {
+  font-size: var(--typography-sizes-body-large);
+  line-height: 1;
+}
+
+.triggerLabel {
+  white-space: nowrap;
+}
+
+.roleBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--borders-radius-pill);
+  font-size: var(--typography-sizes-caption-medium);
+  font-weight: var(--typography-font-weight-bold);
+  white-space: nowrap;
+}
+
+.roleBadgeMember {
+  background-color: var(--colors-surface-secondary);
+  color: var(--colors-text-secondary);
+}
+
+.roleBadgeWriter {
+  background-color: var(--colors-status-info-subtle);
+  color: var(--colors-status-info-default);
+}
+
+.roleBadgeModerator {
+  background-color: var(--colors-status-warning-subtle);
+  color: var(--colors-status-warning-default);
+}
+
+.roleBadgeAdmin {
+  background-color: var(--colors-accent-default);
+  color: var(--colors-primary-default);
+}
+
+.chevron {
+  color: var(--colors-text-secondary);
+  transition: transform var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out);
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.itemDescription {
+  display: block;
+  font-size: var(--typography-sizes-caption-default);
+  font-weight: var(--typography-font-weight-regular);
+  color: var(--colors-text-secondary);
+  margin-top: 2px;
+}
+
+.menu {
+  min-width: 240px;
+}

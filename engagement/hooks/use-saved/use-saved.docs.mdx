@@ -1,0 +1,90 @@
+---
+description: "A React Hook for saving and unsaving content and listing saved items, persisted locally per device."
+labels: ['hook', 'react', 'saved-items', 'engagement']
+---
+
+A React Hook for saving and unsaving content objects — apps, articles, events, gallery items or domains — and listing everything the current visitor has saved. Persistence is fully local: saved items are stored in the browser's localStorage, keyed by an anonymous device id (via `useDeviceId`), so visitors can build a personal saved list without creating an account.
+
+## Usage
+
+### Saving and unsaving a content object
+
+```tsx
+const AppSaveButton = () => {
+  const { isSaved, toggleSave } = useSaved();
+
+  const target = {
+    targetType: 'app' as const,
+    targetId: 'calm-space',
+    title: 'Calm Space — כלי להרגעה מיידית',
+    url: '/toolbox/calm-space',
+    imageUrl: undefined,
+  };
+
+  return (
+    <button onClick={() => toggleSave(target)}>
+      {isSaved('app', 'calm-space') ? '★ נשמר' : '☆ שמור לאחר כך'}
+    </button>
+  );
+};
+```
+
+This example uses `toggleSave` to save or unsave a target in one call, and `isSaved` to reflect the current state in the UI.
+
+### Listing saved items
+
+```tsx
+const SavedList = () => {
+  const { savedItems, unsave } = useSaved();
+
+  if (savedItems.length === 0) {
+    return <p>עדיין לא שמרת פריטים.</p>;
+  }
+
+  return (
+    <ul>
+      {savedItems.map((item) => (
+        <li key={item.id}>
+          {item.title}
+          <button onClick={() => unsave(item.targetType, item.targetId)}>הסר</button>
+        </li>
+      ))}
+    </ul>
+  );
+};
+```
+
+This example lists everything saved by the current device (most recently saved first) and removes an item with `unsave`.
+
+### Explicit save and unsave calls
+
+```tsx
+const EventCard = () => {
+  const { isSaved, save, unsave } = useSaved();
+  const saved = isSaved('event', 'event-7');
+
+  const target = {
+    targetType: 'event' as const,
+    targetId: 'event-7',
+    title: 'מפגש קהילתי חודשי — יולי',
+    url: '/events/event-7',
+  };
+
+  return (
+    <button
+      onClick={() => {
+        if (saved) {
+          unsave('event', 'event-7');
+          return;
+        }
+
+        save(target);
+      }}
+    >
+      {saved ? 'הסר משמורים' : 'שמור אירוע'}
+    </button>
+  );
+};
+```
+
+This example calls `save` and `unsave` directly instead of using `toggleSave`, which is useful when the save and unsave actions need distinct behavior.

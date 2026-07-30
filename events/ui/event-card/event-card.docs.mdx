@@ -1,0 +1,100 @@
+---
+description: "A card presenting a community event: cover, title, type badge, date/time, online/location and domains. Links to the event detail page."
+labels: ["card", "events", "rtl"]
+---
+
+The `EventCard` component presents a community event — a round table, webinar, local meetup, or big conference — showing its cover image, type badge, title, description, date/time, online/location indicator, and related coping domains. The whole card links to the event's detail page, and is rendered right-to-left (RTL) for Hebrew content.
+
+## Basic usage
+
+Render a card for a single event:
+
+```tsx
+<EventCard
+  event={{
+    id: `event-1`,
+    slug: `round-table-shame`,
+    title: `שולחן עגול: בושה ואשמה`,
+    description: `מפגש פתוח בהנחיית אנשי מקצוע ומתמודדים סביב נושא הבושה.`,
+    type: `round_table`,
+    coverImage:
+      `https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=900&q=80`,
+    startAt: `2026-06-04T19:00:00.000Z`,
+    isOnline: true,
+    location: `זום`,
+    domains: [`אשמה, בושה וביקורת עצמית`, `ויסות רגשי`],
+    rsvpCount: 42,
+  }}
+/>
+```
+
+## Grid of events
+
+Use the card inside a responsive grid to present multiple events, as on the events listing page:
+
+```tsx
+<div
+  style={{
+    display: `grid`,
+    gridTemplateColumns: `repeat(auto-fill, minmax(300px, 1fr))`,
+    gap: 18,
+  }}
+>
+  <EventCard
+    event={{
+      id: `event-2`,
+      slug: `webinar-sleep`,
+      title: `וובינר: שינה וטראומה`,
+      description: `הרצאה מקצועית על הקשר בין פוסט-טראומה להפרעות שינה + שאלות.`,
+      type: `webinar`,
+      coverImage:
+        `https://images.unsplash.com/photo-1520206183501-b80df61043c2?auto=format&fit=crop&w=900&q=80`,
+      startAt: `2026-06-18T20:30:00.000Z`,
+      isOnline: true,
+      location: `זום`,
+      domains: [`שינה`, `חרדה`],
+      rsvpCount: 128,
+    }}
+  />
+  <EventCard
+    event={{
+      id: `event-3`,
+      slug: `local-tlv`,
+      title: `מפגש קהילה — תל אביב`,
+      description: `מפגש פנים אל פנים לחברי הקהילה באזור המרכז, באווירה רגועה.`,
+      type: `local`,
+      coverImage:
+        `https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=80`,
+      startAt: `2026-07-09T18:00:00.000Z`,
+      isOnline: false,
+      location: `תל אביב`,
+      domains: [`בדידות וחיבור חברתי`],
+      rsvpCount: 19,
+    }}
+  />
+</div>
+```
+
+## Custom link destination
+
+Override the default detail-page link (`/events/{slug}`) with a custom `href`:
+
+```tsx
+<EventCard
+  event={{
+    id: `event-4`,
+    slug: `big-conference`,
+    title: `כנס הלם קלאב השנתי`,
+    description: `יום שלם של הרצאות, סדנאות ומפגשים — הקהילה נפגשת.`,
+    type: `big`,
+    coverImage:
+      `https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=900&q=80`,
+    startAt: `2026-03-02T09:00:00.000Z`,
+    isOnline: false,
+    location: `מרכז הכנסים, תל אביב`,
+    domains: [`בדידות וחיבור חברתי`, `הכרה`],
+    rsvpCount: 340,
+  }}
+  href="/events/big-conference-2026"
+/>
+```

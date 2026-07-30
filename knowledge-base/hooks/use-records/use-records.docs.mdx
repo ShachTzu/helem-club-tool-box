@@ -1,0 +1,91 @@
+---
+description: "A React Hook for listing, filtering and managing knowledge base media records."
+labels: ['hook', 'react', 'knowledge-base', 'graphql']
+---
+
+A family of React Hooks for working with knowledge base media records: listing and filtering
+by label/domain/query, fetching a single record, creating, updating, deleting records and
+incrementing their view count.
+
+## Usage
+
+### Listing and filtering records
+
+```tsx
+const RecordsList = () => {
+  const { records, loading, error } = useRecords({ labelId: 'first-aid', query: 'נשימה' });
+
+  if (loading) return <p>טוען תכנים...</p>;
+  if (error) return <p>שגיאה בטעינת התכנים.</p>;
+
+  return (
+    <ul>
+      {records.map((record) => (
+        <li key={record.id}>{record.title}</li>
+      ))}
+    </ul>
+  );
+};
+```
+
+This example filters records belonging to the `first-aid` label and matching a free text
+query. `records` are constructed `MediaRecord` entities.
+
+### Fetching a single record and incrementing its view count
+
+```tsx
+const RecordDetails = ({ slug }: { slug: string }) => {
+  const { record, loading } = useRecord(slug);
+  const { incrementView } = useIncrementView();
+
+  const handlePlay = async () => {
+    if (record) {
+      await incrementView(record.id);
+    }
+  };
+
+  if (loading) return <p>טוען...</p>;
+
+  return (
+    <div>
+      <h2>{record?.title}</h2>
+      <button onClick={() => handlePlay()}>נגן</button>
+    </div>
+  );
+};
+```
+
+### Creating, updating and deleting records
+
+```tsx
+const RecordManager = () => {
+  const { createRecord } = useCreateRecord();
+  const { updateRecord } = useUpdateRecord();
+  const { deleteRecord } = useDeleteRecord();
+
+  const handleCreate = async () => {
+    await createRecord({
+      labelId: 'first-aid',
+      title: 'תרגיל קרקוע חדש',
+      mediaType: 'video',
+      mediaUrl: 'https://example.com/media/new.mp4',
+    });
+  };
+
+  const handleUpdate = async (id: string) => {
+    await updateRecord(id, { title: 'כותרת מעודכנת' });
+  };
+
+  const handleDelete = async (id: string) => {
+    await deleteRecord(id);
+  };
+
+  return (
+    <div>
+      <button onClick={() => handleCreate()}>צור תוכן</button>
+      <button onClick={() => handleUpdate('record-id')}>עדכן תוכן</button>
+      <button onClick={() => handleDelete('record-id')}>מחק תוכן</button>
+    </div>
+  );
+};
+```

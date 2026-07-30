@@ -1,0 +1,70 @@
+---
+description: "Events icon set (calendar, webinar, location, rsvp) with named exports."
+labels: ["icons", "events", "svg"]
+---
+
+A set of themed icons for the Helam Club events domain: calendar, webinar, location and RSVP. Each icon is a thin wrapper around the shared `Icon` component, so it supports the same `size`, `color` and `variant` props, with a Hebrew accessible label set by default.
+
+## Usage
+
+Import the icon you need directly:
+
+```tsx
+import { CalendarIcon, WebinarIcon, LocationIcon, RsvpIcon } from '@helemclub/events.icons.events-icons';
+
+function EventMeta() {
+  return (
+    <div style={{ display: 'flex', gap: 16 }}>
+      <CalendarIcon color="secondary" />
+      <WebinarIcon color="secondary" />
+      <LocationIcon color="secondary" />
+      <RsvpIcon color="accent" />
+    </div>
+  );
+}
+```
+
+## Sizes and colors
+
+All icons accept the same `size` (`small` / `medium` / `large` / a custom pixel number) and `color` (`current`, `primary`, `secondary`, `accent`, `muted`, `inverse`, `white`, `black`) tokens as the base `Icon` component.
+
+```tsx
+import { CalendarIcon } from '@helemclub/events.icons.events-icons';
+
+function CalendarSizes() {
+  return (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+      <CalendarIcon size="small" color="primary" />
+      <CalendarIcon size="medium" color="primary" />
+      <CalendarIcon size="large" color="primary" />
+    </div>
+  );
+}
+```
+
+## Composing an event card summary
+
+Use the icons to label event metadata, matching the events page style in the Helam Club prototype:
+
+```tsx
+import { CalendarIcon, WebinarIcon, RsvpIcon } from '@helemclub/events.icons.events-icons';
+
+function EventSummary() {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontWeight: 600 }}>
+      <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <CalendarIcon size="small" color="secondary" />
+        יום שלישי, 12.3 · 18:00
+      </span>
+      <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <WebinarIcon size="small" color="secondary" />
+        מפגש מקוון בזום
+      </span>
+      <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <RsvpIcon size="small" color="accent" />
+        32 נרשמו
+      </span>
+    </div>
+  );
+}
+```

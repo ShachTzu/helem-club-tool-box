@@ -1,0 +1,71 @@
+.page {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--layout-max-page-width);
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--layout-gutter) var(--spacing-x4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-x4);
+}
+
+.overview {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.eyebrow {
+  color: var(--colors-accent-default);
+  font-weight: var(--typography-font-weight-bold);
+  font-size: var(--typography-sizes-caption-medium);
+  letter-spacing: var(--typography-letter-spacing-wide);
+  margin-bottom: var(--spacing-small);
+}
+
+.overviewTitle {
+  margin: 0 0 var(--spacing-large);
+  font-size: var(--typography-sizes-heading-h2);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+}
+
+.metricsGrid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--spacing-default);
+}
+
+.metricCard {
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.metricValue {
+  font-size: var(--typography-sizes-heading-h1);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+  line-height: var(--typography-line-height-heading);
+}
+
+.metricLabel {
+  margin-top: var(--spacing-small);
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-secondary);
+}
+
+.shell {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: var(--spacing-large) var(--spacing-default) var(--spacing-x4);
+    gap: var(--spacing-large);
+  }
+
+  .metricsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}

@@ -1,0 +1,90 @@
+.cardLink {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  cursor: var(--interactions-cursor-pointer);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.coverWrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.cover {
+  display: block;
+}
+
+.typeBadge {
+  position: absolute;
+  top: var(--spacing-small);
+  inset-inline-start: var(--spacing-small);
+}
+
+.body {
+  box-sizing: border-box;
+  padding: var(--spacing-medium);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  flex: 1;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--typography-sizes-subhead);
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-primary-default);
+  line-height: var(--typography-line-height-heading);
+}
+
+.description {
+  margin: 0;
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-muted);
+  line-height: var(--typography-line-height-base);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.metaList {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-secondary-default);
+}
+
+.metaIcon {
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.domains {
+  margin-top: auto;
+  padding-top: 2px;
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: var(--typography-sizes-body-large);
+  }
+}

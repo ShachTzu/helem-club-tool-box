@@ -1,0 +1,67 @@
+---
+description: "A blog post preview card with cover, title, excerpt, author, domains, date and a members-only badge."
+labels: ["blog", "post", "card", "ui"]
+---
+
+## Overview
+
+`PostCard` renders a preview of a blog post: a cover image, title, excerpt, coping-domain chips,
+author name, publish date, and an optional members-only badge. The entire card links to the post's page.
+It is RTL-first and responsive.
+
+## Basic usage
+
+```tsx
+<PostCard
+  title="הבושה שאף אחד לא מדבר עליה"
+  excerpt="על אשמה ובושה אחרי טראומה — למה הן מופיעות, ואיך אפשר להתחיל לשחרר."
+  coverImage="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=900&q=80"
+  authorName="ד״ר מיכל ברק"
+  date="12 במאי 2026"
+  domains={[
+    { id: 'shame-guilt', slug: 'shame-guilt', name: 'אשמה, בושה וביקורת עצמית' },
+    { id: 'emotional-regulation', slug: 'emotional-regulation', name: 'ויסות רגשי' },
+  ]}
+  href="/blog/shame-and-guilt"
+/>
+```
+
+## Members-only post
+
+Set `membersOnly` to render a lock badge over the cover image, indicating the post is restricted
+to community members.
+
+```tsx
+<PostCard
+  title="זוגיות בצל הפוסט-טראומה"
+  excerpt="שיתוף אישי על מערכת יחסים שמחזיקה שניים — כשאחד המתמודד."
+  coverImage="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80"
+  authorName="אנונימי"
+  date="3 במאי 2026"
+  membersOnly
+  href="/blog/couples-after-trauma"
+/>
+```
+
+## In a grid
+
+`PostCard` is designed to be placed inside a responsive grid, such as a blog listing page.
+
+```tsx
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 18 }}>
+  <PostCard
+    title="5 כלים שעוזרים לי עם טריגרים"
+    excerpt="רשימה פרקטית של כלים קטנים שאני משתמש בהם ברגעים של הצפה."
+    authorName="רון אבני"
+    date="28 באפריל 2026"
+    href="/blog/triggers-toolkit"
+  />
+  <PostCard
+    title="הלילות הארוכים — ומה שעזר לי לישון"
+    excerpt="על נדודי שינה אחרי טראומה, וסיפור אישי על הדרך חזרה למנוחה."
+    authorName="תמר גל"
+    date="19 באפריל 2026"
+    href="/blog/sleep-story"
+  />
+</div>
+```

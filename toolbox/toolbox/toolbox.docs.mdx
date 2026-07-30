@@ -1,0 +1,137 @@
+---
+description: "A pluggable Toolbox aspect for a coping apps catalog with domains, ratings, and moderation"
+labels: ['aspect', 'catalog', 'graphql']
+---
+
+The Toolbox aspect powers a coping apps catalog. It exposes GraphQL operations for listing, filtering, submitting, rating, and moderating apps, and registers browser routes and navigation for the catalog experience.
+
+Below are usage examples showing how UI components can consume toolbox app data through props, without relying on any mocking utilities.
+
+## Displaying a list of toolbox apps
+
+This example renders a simple catalog grid from an array of app objects, similar to what listToolboxApps would return.
+
+```tsx
+function ToolboxAppCard({ app }) {
+  return (
+    <div style={{ border: '1px solid #eee', borderRadius: 8, padding: 16, width: 220 }}>
+      <img src={app.icon} alt={app.name} style={{ width: 48, height: 48, borderRadius: 8 }} />
+      <h3>{app.name}</h3>
+      <p>{app.description}</p>
+      <div>Rating {app.avgRating} out of 5 ({app.ratingCount} reviews)</div>
+      <div>Clicks {app.clickCount}</div>
+    </div>
+  );
+}
+
+function ToolboxCatalogExample() {
+  const apps = [
+    {
+      id: '1',
+      name: 'Mindful Tracker',
+      description: 'Track your daily mood and mental wellness exercises.',
+      icon: 'https://storage.googleapis.com/bit-generated-images/images/image_modern_minimalist_mental_healt_0_1785227554710.png',
+      avgRating: 4.8,
+      ratingCount: 15,
+      clickCount: 120,
+    },
+    {
+      id: '2',
+      name: 'Calm Breathing',
+      description: 'Guided breathing techniques for anxiety relief.',
+      icon: 'https://res.cloudinary.com/ddnr1ptva/image/upload/f_auto,q_auto/ai-images/get/gdc778f8e1251159fcd3727ded4c6339ac99b228c83a557fea6aef95b8fe2220ab39fd14164fe3c1f34298c0e279fa42f41e55a84e72325635d3079f1dd1103c8_1280.jpg',
+      avgRating: 4.5,
+      ratingCount: 8,
+      clickCount: 85,
+    },
+  ];
+
+  return (
+    <div style={{ display: 'flex', gap: 12 }}>
+      {apps.map((app) => (
+        <ToolboxAppCard key={app.id} app={app} />
+      ))}
+    </div>
+  );
+}
+
+```
+
+## Filtering apps by domain and sort order
+
+This example shows a small controlled filter panel over a list of apps, mirroring the filtering options accepted by listToolboxApps such as domainIds, sort, and featured.
+
+```tsx
+function DomainFilterExample() {
+  const allApps = [
+    { id: '1', name: 'Mindful Tracker', domains: ['mental-health', 'wellness'], featured: true, avgRating: 4.8 },
+    { id: '2', name: 'Calm Breathing', domains: ['anxiety', 'mindfulness'], featured: true, avgRating: 4.5 },
+    { id: '3', name: 'Focus Companion', domains: ['adhd', 'productivity'], featured: false, avgRating: 4.0 },
+  ];
+
+  const selectedDomain = 'anxiety';
+  const onlyFeatured = false;
+
+  const filteredApps = allApps
+    .filter((app) => app.domains.includes(selectedDomain) || selectedDomain === 'all')
+    .filter((app) => (onlyFeatured ? app.featured : true))
+    .sort((a, b) => b.avgRating - a.avgRating);
+
+  return (
+    <div>
+      <div>Filter domain, {selectedDomain}</div>
+      <ul>
+        {filteredApps.map((app) => (
+          <li key={app.id}>
+            {app.name}, rating {app.avgRating}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+```
+
+## Submitting a review and showing the rating histogram
+
+This example demonstrates a review form and a histogram display, matching the shape produced by rateToolboxApp with avgRating, ratingCount, and ratingHistogram.
+
+```tsx
+function RatingHistogramExample() {
+  const app = {
+    name: 'Focus Companion',
+    avgRating: 4.0,
+    ratingCount: 2,
+    ratingHistogram: { 1: 0, 2: 0, 3: 0, 4: 2, 5: 0 },
+  };
+
+  const reviews = [
+    { id: '1', displayName: 'Sarah', stars: 5, comment: 'Helped me stay on track every day.' },
+    { id: '2', displayName: 'David', stars: 4, comment: 'Simple and effective, would recommend.' },
+  ];
+
+  const stars = [5, 4, 3, 2, 1];
+
+  return (
+    <div>
+      <h3>{app.name}</h3>
+      <div>Average rating {app.avgRating}, based on {app.ratingCount} reviews</div>
+      <div>
+        {stars.map((star) => (
+          <div key={star}>
+            {star} stars, {app.ratingHistogram[star]} reviews
+          </div>
+        ))}
+      </div>
+      <ul>
+        {reviews.map((review) => (
+          <li key={review.id}>
+            {review.displayName}, {review.stars} stars, {review.comment}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```

@@ -1,0 +1,66 @@
+---
+description: "Admin area shell (RTL): side/tab navigation listing registered AdminPanel entries and rendering the active one. Restricted to moderator/admin."
+labels: ["admin", "shell", "navigation", "rtl"]
+---
+
+The `AdminShell` component renders the Helem Club admin area. It lists admin panels registered by feature aspects (through the platform's `AdminPanel` slot) in a side navigation on wide screens, or a tab bar on narrow screens, and renders the currently selected panel's content. Access is restricted to users holding the moderator or admin role.
+
+## Usage
+
+Render the shell with a list of registered admin panels:
+
+```tsx
+function UsersPanel() {
+  return <div>ניהול משתמשים</div>;
+}
+
+function BlogPanel() {
+  return <div>ניהול בלוג</div>;
+}
+
+<AdminShell
+  panels={[
+    { id: `users`, label: `ניהול משתמשים`, path: `/admin/users`, component: UsersPanel },
+    { id: `blog`, label: `ניהול בלוג`, path: `/admin/blog`, component: BlogPanel },
+  ]}
+/>
+```
+
+## Restricting panels by role
+
+Panels can optionally declare which roles may view them. Panels without a `roles` list are visible to any moderator/admin who can access the shell:
+
+```tsx
+function ModerationPanel() {
+  return <div>תור תגובות שדווחו</div>;
+}
+
+<AdminShell
+  panels={[
+    {
+      id: `moderation`,
+      label: `מודרציה`,
+      path: `/admin/moderation`,
+      component: ModerationPanel,
+      roles: [`admin`],
+    },
+  ]}
+/>
+```
+
+## Access control
+
+The shell resolves the current user through the platform's authentication hook. Signed-in users below the moderator role see a restricted-access message instead of the admin content. For tests and previews, pass `mockUser` to bypass the network call entirely:
+
+```tsx
+<AdminShell
+  mockUser={{
+    id: `1`,
+    email: `admin@helemclub.org`,
+    displayName: `הלם אדמין`,
+    role: `admin`,
+    provider: `email`,
+    createdAt: new Date().toISOString(),
+  }}
+/>
+```

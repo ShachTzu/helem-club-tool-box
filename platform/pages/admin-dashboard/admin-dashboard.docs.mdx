@@ -1,0 +1,50 @@
+---
+description: "Admin dashboard page (/admin), protected for moderators and admins, with a metrics overview and all registered admin panels."
+labels: ["admin", "dashboard", "page", "rtl"]
+---
+
+The `AdminDashboard` component renders the `/admin` page of the Helem Club platform. It is protected: only
+signed-in users holding the `moderator` or `admin` role may view it. The page opens with a summary overview
+of key platform metrics, followed by the `admin-shell` listing every admin panel registered by feature
+aspects through the platform's `AdminPanel` slot.
+
+### Basic usage
+
+By default the component uses the built-in demo metrics and the default admin panels registered on the
+platform's `admin-shell`.
+
+```tsx
+<AdminDashboard />
+```
+
+### Custom metrics and panels
+
+Feature aspects can register their own admin panels through the `AdminPanel` slot, and the hosting app can
+pass curated summary metrics for the overview section.
+
+```tsx
+const metrics = [
+  { id: `visitors`, label: `מבקרים החודש`, value: `1,248` },
+  { id: `published-posts`, label: `כתבות שפורסמו`, value: `86` },
+];
+
+<AdminDashboard metrics={metrics} />
+```
+
+### Previewing with a mocked user
+
+For tests and previews, pass `mockUser` to bypass the authentication query. Passing a user without the
+moderator or admin role renders the access-denied state instead of the dashboard content.
+
+```tsx
+const admin = {
+  id: `1`,
+  email: `admin@helemclub.org`,
+  displayName: `הלם אדמין`,
+  role: `admin`,
+  provider: `google`,
+  createdAt: new Date().toISOString(),
+};
+
+<AdminDashboard mockUser={admin} />
+```

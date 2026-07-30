@@ -1,0 +1,30 @@
+---
+title: Knowledge Preview
+description: A home-page preview of the knowledge base project labels, with a link to the full knowledge base.
+labels: ['knowledge-base', 'section', 'home', 'preview']
+---
+
+import { MemoryRouter } from 'react-router-dom';
+import { mockLabels } from '@helemclub/knowledge-base.entities.label';
+import { KnowledgePreview } from './knowledge-preview.js';
+
+The `KnowledgePreview` section shows a compact grid of the knowledge base's project
+labels, with a "see all" link to the full knowledge base. It is registered into the
+platform's `HomeSection` slot by the knowledge-base aspect, so it appears on the home
+page without the platform depending on the knowledge-base scope.
+
+## Default
+
+```jsx live
+<MemoryRouter>
+  <KnowledgePreview mockLabels={mockLabels()} />
+</MemoryRouter>
+```
+
+## Limited to three labels
+
+```jsx live
+<MemoryRouter>
+  <KnowledgePreview mockLabels={mockLabels()} limit={3} />
+</MemoryRouter>
+```

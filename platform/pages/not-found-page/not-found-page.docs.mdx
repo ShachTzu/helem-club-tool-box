@@ -1,0 +1,38 @@
+---
+description: "A calm, RTL Hebrew 404 page with a reassuring message and a button back home."
+labels: ["404", "not-found", "page", "rtl", "hebrew"]
+---
+
+The `NotFoundPage` component is a calm, RTL 404 page shown when a route does not exist.
+It reassures the user with a gentle message and offers a clear path back to the home page.
+
+## Basic usage
+
+```tsx
+<NotFoundPage />
+```
+
+## Custom message
+
+Override the title, message and home button label to fit a specific context, such as a missing domain page:
+
+```tsx
+<NotFoundPage
+  title="לא מצאנו את הדומיין הזה"
+  message="ייתכן שהקישור שגוי או שהתחום הוסר מהמאגר. אפשר לחזור לדף הבית ולנסות שוב מהתפריט."
+  homeLabel="לדף הבית"
+/>
+```
+
+## Handling navigation
+
+The component navigates to `homePath` (defaults to `/`) using `react-router-dom` when the button is clicked.
+You can also pass an `onNavigateHome` callback for additional side effects, such as analytics tracking:
+
+```tsx
+<NotFoundPage
+  title="הדף לא נמצא"
+  homeLabel="קחו אותי הביתה"
+  onNavigateHome={() => console.log(`user navigated home from 404`)}
+/>
+```

@@ -1,0 +1,112 @@
+.dialog {
+  max-width: 760px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+}
+
+.mediaWrapper {
+  position: relative;
+  border-radius: var(--borders-radius-medium);
+  overflow: hidden;
+  background-color: var(--colors-surface-secondary);
+}
+
+.media {
+  display: block;
+  width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  background-color: var(--colors-black);
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--borders-radius-medium);
+  background-color: var(--colors-overlay);
+  color: var(--colors-text-inverse);
+  cursor: var(--interactions-cursor-pointer);
+  transition: background-color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out);
+}
+
+.navButton:hover {
+  background-color: var(--colors-primary-hover);
+}
+
+.navStart {
+  inset-inline-start: var(--spacing-small);
+}
+
+.navEnd {
+  inset-inline-end: var(--spacing-small);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.artist {
+  margin: 0;
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-secondary-default);
+}
+
+.description {
+  margin: 0;
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-body-default);
+  line-height: var(--typography-line-height-base);
+  color: var(--colors-text-default);
+}
+
+.domains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-small);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.domainBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--borders-radius-pill);
+  background-color: var(--colors-surface-secondary);
+  color: var(--colors-secondary-default);
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-caption-default);
+  font-weight: var(--typography-font-weight-bold);
+}
+
+.counter {
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-muted);
+}
+
+@media (max-width: 480px) {
+  .media {
+    max-height: 46vh;
+  }
+
+  .navButton {
+    width: 34px;
+    height: 34px;
+  }
+}

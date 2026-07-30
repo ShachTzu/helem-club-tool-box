@@ -1,0 +1,48 @@
+---
+description: "Save-for-later bookmark toggle for any content object (local per device). RTL."
+labels: ["save", "bookmark", "engagement", "toggle"]
+---
+
+The `SaveButton` component lets visitors bookmark any content object (an app, article, event, gallery item, domain, etc.) for later, without needing an account. The saved state is persisted locally on the visitor's device.
+
+## Basic usage
+
+Attach a `SaveButton` to any piece of content by passing its type and id:
+
+```tsx
+<SaveButton
+  targetType="app"
+  targetId="calm-space"
+  title="Calm Space"
+  url="/app/calm-space"
+/>
+```
+
+## Icon-only button
+
+Hide the label to render a compact icon-only toggle, useful inside cards or lists:
+
+```tsx
+<SaveButton
+  targetType="event"
+  targetId="event-7"
+  title="מפגש קהילתי חודשי"
+  url="/events/event-7"
+  showLabel={false}
+  size="sm"
+/>
+```
+
+## Reacting to state changes
+
+Use the `onToggle` callback to run side effects (e.g. showing a toast) when the save state changes:
+
+```tsx
+<SaveButton
+  targetType="article"
+  targetId="article-42"
+  title="להתמודד עם טריגרים ביום-יום"
+  url="/blog/article-42"
+  onToggle={(isSaved) => console.log('saved:', isSaved)}
+/>
+```

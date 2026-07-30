@@ -1,0 +1,70 @@
+---
+labels: ['comment', 'entity', 'engagement']
+description: "A Comment entity representing a message posted against content, supporting anonymous and member comments."
+---
+
+A `Comment` represents a single message posted against a piece of content (an app, blog post, domain, event, etc).
+Comments support both anonymous, device-scoped commenters and comments posted by authenticated members, and carry
+moderation state (`reportCount`, `hidden`).
+
+## Get started
+
+Install and use the component in your code:
+
+```tsx
+import { Comment } from '@helemclub/engagement.entities.comment';
+
+const comment = Comment.from({
+  id: 'c1',
+  targetType: 'app',
+  targetId: 'app-123',
+  text: 'תודה על השיתוף, ממש עזר לי היום.',
+  displayName: 'מיכל ר.',
+  isAnonymous: false,
+  membersOnly: false,
+  userId: 'user-42',
+  reportCount: 0,
+  hidden: false,
+  createdAt: new Date().toISOString(),
+});
+
+console.log(comment.text);
+```
+
+## Serialization
+
+Use `toObject()` to turn a `Comment` instance into a plain, transferable object (for example, before sending it over
+GraphQL or storing it), and `Comment.from()` to rehydrate it back into an entity instance.
+
+```tsx
+import { Comment } from '@helemclub/engagement.entities.comment';
+
+const comment = Comment.from({
+  id: 'c2',
+  targetType: 'blog',
+  targetId: 'post-7',
+  text: 'רגע, זה בדיוק מה שהייתי צריך לשמוע.',
+  isAnonymous: true,
+  deviceId: 'device-abc',
+  createdAt: new Date().toISOString(),
+});
+
+const plainComment = comment.toObject();
+// { id: 'c2', targetType: 'blog', targetId: 'post-7', text: '...', isAnonymous: true, ... }
+
+const restoredComment = Comment.from(plainComment);
+```
+
+## Mock data
+
+Use `mockComment` and `mockComments` for development and testing purposes.
+
+```tsx
+import { mockComment, mockComments } from '@helemclub/engagement.entities.comment';
+
+const comments = mockComments();
+console.log(comments);
+
+const hiddenComment = mockComment({ hidden: true, reportCount: 4 });
+console.log(hiddenComment.hidden, hiddenComment.reportCount);
+```

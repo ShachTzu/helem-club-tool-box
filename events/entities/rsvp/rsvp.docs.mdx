@@ -1,0 +1,56 @@
+---
+labels: ['rsvp', 'entity', 'events']
+description: "An Rsvp entity representing a user's response to an event, with serialization and factory helpers."
+---
+
+The `Rsvp` entity represents a user's response to an event invitation — whether they are attending or not. It supports serialization and de-serialization, and can be used from both backend and frontend code.
+
+## Get started
+
+Create an `Rsvp` instance from a plain object using the `Rsvp.from()` factory:
+
+```tsx
+import { Rsvp } from '@helemclub/events.entities.rsvp';
+
+const rsvp = Rsvp.from({
+  id: 'rsvp-1',
+  eventId: 'event-42',
+  userId: 'user-7',
+  attending: true,
+  createdAt: new Date().toISOString(),
+});
+
+console.log(rsvp.attending);
+```
+
+## Serializing an Rsvp
+
+Use `toObject()` to convert an `Rsvp` instance back into a plain, serializable object — useful when sending data over the network or storing it.
+
+```tsx
+import { Rsvp } from '@helemclub/events.entities.rsvp';
+
+const rsvp = Rsvp.from({
+  id: 'rsvp-2',
+  eventId: 'event-42',
+  userId: 'user-8',
+  attending: false,
+  createdAt: '2024-05-02T09:00:00.000Z',
+});
+
+const plainRsvp = rsvp.toObject();
+console.log(plainRsvp);
+```
+
+## Mock data
+
+Use `mockRsvp` and `mockRsvps` to generate mock `Rsvp` data for development and testing purposes. `mockRsvp` accepts partial overrides:
+
+```tsx
+import { mockRsvp, mockRsvps } from '@helemclub/events.entities.rsvp';
+
+const rsvp = mockRsvp({ attending: true, userId: 'user-99' });
+const rsvps = mockRsvps();
+
+console.log(rsvp, rsvps);
+```

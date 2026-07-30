@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Rubik:wght@300;400;500;600;700;800&display=swap');
+
+.helamTheme {
+  // Assistant + Rubik, as defined by the Helam Club brand book.
+  font-family: var(--typography-font-family);
+
+  // default page surface + text colors applied to all children.
+  background-color: var(--colors-surface-background);
+  color: var(--colors-text-primary);
+
+  // Helam Club is an RTL-first product by default.
+  direction: var(--layout-direction);
+}
+
+:root {
+  body {
+    margin: 0;
+  }
+}

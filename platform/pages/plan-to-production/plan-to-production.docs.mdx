@@ -1,0 +1,36 @@
+---
+description: A living, prioritized roadmap comparing the Helam Club plan to what is actually built.
+labels: ['page', 'roadmap', 'platform', 'rtl']
+---
+
+The **Plan to Production** page is a living document that compares the original Helam Club plan
+against what is actually implemented today. It groups every capability and gap by area, shows an
+overall progress summary, and lays out the recommended critical path to production.
+
+It serves as strong, shared context for both the team and the AI when completing development. The
+page is gated to `moderator` and `admin` roles and mounted at `/plan-to-production`.
+
+## Usage
+
+```js
+import { PlanToProduction } from '@helemclub/platform.pages.plan-to-production';
+
+<PlanToProduction />;
+```
+
+## Reading the roadmap data
+
+The roadmap content lives in `roadmap-data.ts` as structured, typed data — edit it there to keep the
+page up to date as gaps are closed.
+
+```js
+import { ROADMAP, CRITICAL_PATH, roadmapSummary } from '@helemclub/platform.pages.plan-to-production';
+
+const summary = roadmapSummary(); // { total, done, partial, missing, critical }
+```
+
+## Status legend
+
+- **הושלם (done)** — implemented and matches the plan.
+- **חלקי (partial)** — wired but stubbed, mock-backed, or needs end-to-end verification.
+- **חסר (missing)** — planned but not implemented yet.

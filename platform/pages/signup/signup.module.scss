@@ -1,0 +1,162 @@
+.page {
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--colors-surface-background);
+  padding: var(--spacing-x4) var(--spacing-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-border, var(--colors-border));
+  border-radius: var(--borders-radius-large);
+  box-shadow: var(--effects-shadows-card);
+  padding: var(--spacing-xl);
+}
+
+.emoji {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: var(--spacing-small);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: var(--spacing-small);
+}
+
+.subtitle {
+  color: var(--colors-text-secondary);
+  font-size: var(--typography-sizes-body-default);
+  text-align: center;
+  line-height: var(--typography-line-height-base);
+  margin: 0 0 var(--spacing-large);
+}
+
+.benefits {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  background-color: var(--colors-surface-secondary);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-medium);
+  margin-bottom: var(--spacing-large);
+}
+
+.benefitRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-small);
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-secondary);
+  line-height: var(--typography-line-height-base);
+}
+
+.benefitIcon {
+  flex-shrink: 0;
+}
+
+.googleButton {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-small);
+  padding: 13px;
+  border-radius: var(--borders-radius-pill);
+  font-weight: var(--typography-font-weight-bold);
+  font-size: var(--typography-sizes-body-default);
+  font-family: var(--typography-font-family);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  background-color: var(--colors-white);
+  color: var(--colors-text-primary);
+  cursor: var(--interactions-cursor-pointer);
+  margin-bottom: var(--spacing-medium);
+  transition: background-color var(--interactions-transitions-duration-fast)
+    var(--interactions-transitions-easing-ease-out);
+}
+
+.googleButton:hover:not(:disabled) {
+  background-color: var(--colors-surface-secondary);
+}
+
+.googleButton:disabled {
+  cursor: var(--interactions-cursor-disabled);
+  opacity: var(--effects-opacity-disabled);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  color: var(--colors-text-muted);
+  font-size: var(--typography-sizes-caption-default);
+  margin: 4px 0 var(--spacing-medium);
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background-color: var(--colors-border);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+}
+
+.otpHint {
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-secondary);
+  line-height: var(--typography-line-height-base);
+  margin: 0;
+}
+
+.otpEmail {
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+}
+
+.errorText {
+  color: var(--colors-status-negative-default);
+  font-size: var(--typography-sizes-body-small);
+  margin: 0;
+}
+
+.changeEmailButton {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--colors-secondary-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+  font-size: var(--typography-sizes-body-small);
+  cursor: var(--interactions-cursor-pointer);
+  font-family: var(--typography-font-family);
+  text-align: right;
+}
+
+.footerText {
+  text-align: center;
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-muted);
+  line-height: var(--typography-line-height-base);
+  margin-top: var(--spacing-large);
+}
+
+.loginLink {
+  color: var(--colors-secondary-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+  text-decoration: none;
+}
+
+.loginLink:hover {
+  text-decoration: underline;
+}

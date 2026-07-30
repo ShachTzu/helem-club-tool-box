@@ -1,0 +1,40 @@
+.eventsListing {
+  width: 100%;
+}
+
+.hero {
+  background: linear-gradient(140deg, var(--helam-color-primary, #0b1a30), #12294a);
+  color: #fff;
+  padding: 52px 20px;
+}
+
+.heroContent {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heroEyebrow {
+  color: var(--helam-color-accent, #e89f4b);
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.heroTitle {
+  margin: 0 0 12px;
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 800;
+}
+
+.heroSubtitle {
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 600px;
+}
+
+.domainFilter {
+  margin-bottom: 20px;
+}

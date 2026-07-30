@@ -1,0 +1,75 @@
+---
+description: "Gallery discovery page: masonry grid with media-type and domain filters, and lightbox viewing. RTL, responsive."
+labels: ["page", "gallery", "react", "rtl"]
+---
+
+The `GalleryPage` component is the `/gallery` discovery page in the Helam Club ecosystem. It shows a masonry
+grid of community artwork (images and videos), with filters for media type and coping-domain tags, and opens a
+lightbox for viewing a piece full-size with previous/next navigation.
+
+## Basic usage
+
+Render the page with mock gallery items — useful for previews and tests without a live GraphQL backend.
+
+```tsx
+function Example() {
+  const items = [
+    {
+      id: `1`,
+      slug: `quiet-after-the-storm`,
+      title: `שקט אחרי הסערה`,
+      description: `יצירה שמבטאת את הרוגע שמגיע אחרי גל של הצפה רגשית.`,
+      mediaType: `image` as const,
+      mediaUrl:
+        'https://storage.googleapis.com/bit-generated-images/images/image_calm_abstract_art_piece_symbol_0_1785184760565.png',
+      thumbnailUrl:
+        'https://storage.googleapis.com/bit-generated-images/images/image_calm_abstract_art_piece_symbol_0_1785184760565.png',
+      artistName: `נועה ל.`,
+      domains: [`ויסות רגשי`],
+      createdAt: `2026-01-12T09:00:00.000Z`,
+    },
+  ];
+
+  return <GalleryPage mockItems={items} />;
+}
+```
+
+## Customizing the hero copy
+
+Override the eyebrow, title and subtitle to fit a different framing of the gallery.
+
+```tsx
+function Example() {
+  return (
+    <GalleryPage
+      eyebrow="גלריית הקהילה"
+      title="יצירות שמספרות סיפור"
+      subtitle="כל יצירה מלווה בתיוג לפי תחומי התמודדות, כדי לגלות עוד תוכן קשור."
+      mockItems={[]}
+    />
+  );
+}
+```
+
+## Empty state
+
+When there are no items matching the current filters, the underlying grid renders a friendly empty state.
+
+```tsx
+function Example() {
+  return (
+    <GalleryPage
+      mockItems={[]}
+      title="עדיין אין יצירות"
+      subtitle="ברגע שיצירות חדשות יתווספו לגלריה, הן יופיעו כאן."
+    />
+  );
+}
+```
+
+## Behavior
+
+- Filters items by media type (all / images / videos) using a set of pill buttons above the grid.
+- Filters items by one or more coping-domains via the shared `DomainFilter` component.
+- Clicking a tile opens the `Lightbox` with previous/next navigation across the currently filtered items.
+- Fully RTL and responsive, matching the Helam Club brand book.

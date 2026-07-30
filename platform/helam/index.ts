@@ -1,0 +1,1 @@
+export { helamApp, helamApp as default } from './helam.bit-app.js';

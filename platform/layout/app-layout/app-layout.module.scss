@@ -1,0 +1,18 @@
+.appLayout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--helam-color-surface, #f6f8fa);
+}
+
+.content {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+// leave room for the fixed mobile bottom nav on small screens
+@media (max-width: 900px) {
+  .appLayout {
+    padding-bottom: 68px;
+  }
+}

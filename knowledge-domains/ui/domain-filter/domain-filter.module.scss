@@ -1,0 +1,24 @@
+.domainFilter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  gap: var(--spacing-small);
+  direction: var(--layout-direction);
+}
+
+.empty {
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-muted);
+}
+
+.skeletonChip {
+  display: inline-block;
+  width: 96px;
+  height: 32px;
+  border-radius: var(--borders-radius-pill);
+  background: var(--colors-surface-secondary);
+  opacity: var(--effects-opacity-faint);
+}

@@ -1,0 +1,77 @@
+---
+description: "BlogStats entity: totalPosts, uniqueVisitors, totalViews, topPosts, authors (with nested posts), comments, reactions, saves and verifiedMembers."
+labels: ['entity', 'blog', 'stats']
+---
+
+A `BlogStats` entity represents an aggregated analytics snapshot of the Helam Club blog — total posts,
+unique visitors, total views, the top performing posts, per-author contribution stats (including their
+individual posts), and community engagement metrics like comments, reactions, saves and verified members.
+
+It supports serialization and de-serialization, and can be used from both backend and frontend.
+
+## Get started
+
+Create a `BlogStats` instance from a plain object using the `from()` factory:
+
+```tsx
+import { BlogStats } from '@helemclub/blog.entities.blog-stat';
+
+const stats = BlogStats.from({
+  totalPosts: 42,
+  uniqueVisitors: 8760,
+  totalViews: 15320,
+  topPosts: [{ id: 'shame-and-guilt', title: 'הבושה שאף אחד לא מדבר עליה', views: 3240 }],
+  authors: [
+    {
+      name: 'ד״ר מיכל ברק',
+      postCount: 12,
+      lastPostDate: '12 במאי 2026',
+      posts: [{ title: 'הבושה שאף אחד לא מדבר עליה', date: '12 במאי 2026' }],
+    },
+  ],
+  comments: 486,
+  reactions: 1920,
+  saves: 640,
+  verifiedMembers: 312,
+});
+
+console.log(stats.totalViews); // 15320
+```
+
+## Serialization
+
+Use `toObject()` to serialize a `BlogStats` entity (and its nested authors/posts) back into a plain,
+JSON-friendly object — useful when sending data over the network or storing it.
+
+```tsx
+import { BlogStats } from '@helemclub/blog.entities.blog-stat';
+
+const stats = BlogStats.from({
+  totalPosts: 10,
+  uniqueVisitors: 100,
+  totalViews: 500,
+  comments: 12,
+  reactions: 34,
+  saves: 5,
+  verifiedMembers: 8,
+});
+
+const plainStats = stats.toObject();
+console.log(plainStats);
+// { id: 'current', totalPosts: 10, uniqueVisitors: 100, totalViews: 500, topPosts: [], authors: [], ... }
+```
+
+## Mock data
+
+Use `mockBlogStats` to generate realistic mock data for development and testing, with optional partial
+overrides. `mockEmptyBlogStats` provides an all-zero snapshot for empty states.
+
+```tsx
+import { mockBlogStats, mockEmptyBlogStats } from '@helemclub/blog.entities.blog-stat';
+
+const stats = mockBlogStats({ totalPosts: 99 });
+const emptyStats = mockEmptyBlogStats();
+
+console.log(stats.totalPosts); // 99
+console.log(emptyStats.totalPosts); // 0
+```

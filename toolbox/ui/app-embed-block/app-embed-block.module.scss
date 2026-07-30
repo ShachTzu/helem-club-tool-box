@@ -1,0 +1,116 @@
+.appEmbedBlock {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 420px;
+  direction: rtl;
+  font-family: var(--typography-font-family);
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+}
+
+.iconWrapper {
+  box-sizing: border-box;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--borders-radius-medium);
+  background-color: var(--colors-surface-secondary);
+  overflow: hidden;
+}
+
+.iconImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.iconEmoji {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  margin: 0;
+  font-size: var(--typography-sizes-body-large);
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-primary-default);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.noRating {
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-muted);
+}
+
+.action {
+  flex-shrink: 0;
+}
+
+.stateText {
+  margin: 0;
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-muted);
+  text-align: center;
+}
+
+.skeletonIcon {
+  background-color: var(--colors-surface-secondary);
+  animation: pulse var(--interactions-transitions-duration-slow) ease-in-out infinite;
+}
+
+.skeletonLine {
+  display: block;
+  height: 12px;
+  border-radius: var(--borders-radius-small);
+  background-color: var(--colors-surface-secondary);
+  animation: pulse var(--interactions-transitions-duration-slow) ease-in-out infinite;
+}
+
+.skeletonLineWide {
+  width: 70%;
+}
+
+.skeletonLineNarrow {
+  width: 45%;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .appEmbedBlock {
+    max-width: 100%;
+  }
+
+  .name {
+    font-size: var(--typography-sizes-body-default);
+  }
+}

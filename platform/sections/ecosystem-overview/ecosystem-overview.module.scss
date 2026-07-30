@@ -1,0 +1,54 @@
+.ecosystemOverview {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--spacing-large);
+}
+
+.pillarCard {
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.pillarLink {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.pillarIcon {
+  font-size: 34px;
+  line-height: 1;
+  margin-bottom: var(--spacing-medium);
+}
+
+.pillarTitle {
+  margin: 0 0 var(--spacing-small);
+}
+
+.pillarDescription {
+  margin: 0 0 var(--spacing-medium);
+  flex: 1;
+}
+
+.pillarCta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-secondary-default);
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

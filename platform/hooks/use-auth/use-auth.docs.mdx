@@ -1,0 +1,88 @@
+---
+description: "A React hook exposing the current platform user, auth actions (email OTP, Google sign-in, sign-out) and role helpers."
+labels: ['hook', 'react', 'authentication', 'graphql']
+---
+
+The `useAuth` hook manages authentication state for the Helem Club platform. It exposes the currently signed-in user (or `null` when signed out), a `loading` flag, actions for requesting and verifying an email one-time-password, signing in with Google, signing out, and role helper flags derived from the user's role. It never returns a hardcoded default user — the user is resolved from the GraphQL API, or provided explicitly via mock data for tests and previews.
+
+## Usage
+
+### Displaying the current user
+
+```tsx
+const CurrentUserBadge = () => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <p>טוען פרטי משתמש...</p>;
+  }
+
+  if (!user) {
+    return <p>לא מחובר/ת</p>;
+  }
+
+  return <p>שלום, {user.displayName}!</p>;
+};
+```
+
+This example renders the current user's display name once resolved, a loading message while the query is in flight, and a signed-out message when there is no active session.
+
+### Signing in with an email one-time-password
+
+```tsx
+const EmailOtpSignIn = () => {
+  const { requestEmailOtp, verifyEmailOtp } = useAuth();
+  const [email, setEmail] = React.useState('');
+  const [code, setCode] = React.useState('');
+  const [sent, setSent] = React.useState(false);
+
+  const handleRequestCode = async () => {
+    const wasSent = await requestEmailOtp(email);
+    setSent(wasSent);
+  };
+
+  const handleVerify = async () => {
+    const session = await verifyEmailOtp(email, code);
+    if (session) {
+      console.log('signed in as', session.user.displayName);
+    }
+  };
+
+  return (
+    <div>
+      <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="אימייל" />
+      <button onClick={() => handleRequestCode()}>שלח קוד</button>
+      {sent && (
+        <>
+          <input value={code} onChange={(e) => setCode(e.target.value)} placeholder="קוד אימות" />
+          <button onClick={() => handleVerify()}>אמת והתחבר</button>
+        </>
+      )}
+    </div>
+  );
+};
+```
+
+This example requests an email one-time-password, then verifies it to establish an authenticated session.
+
+### Role-based rendering and sign-out
+
+```tsx
+const AdminActions = () => {
+  const { user, isAdmin, canWrite, signOut } = useAuth();
+
+  if (!user) {
+    return <p>יש להתחבר כדי לצפות באפשרויות אלו.</p>;
+  }
+
+  return (
+    <div>
+      {canWrite && <button>צור פוסט חדש</button>}
+      {isAdmin && <button>ניהול משתמשים</button>}
+      <button onClick={() => signOut()}>התנתקות</button>
+    </div>
+  );
+};
+```
+
+This example conditionally renders actions based on the `canWrite` and `isAdmin` role helpers, and triggers a sign-out.

@@ -1,0 +1,272 @@
+.dashboard {
+  box-sizing: border-box;
+  width: 100%;
+  direction: var(--layout-direction);
+}
+
+.header {
+  box-sizing: border-box;
+  margin-bottom: var(--spacing-large);
+}
+
+.eyebrow {
+  color: var(--colors-accent-default);
+  font-weight: var(--typography-font-weight-bold);
+  font-size: var(--typography-sizes-caption-medium);
+  letter-spacing: var(--typography-letter-spacing-wide);
+  margin-bottom: var(--spacing-small);
+}
+
+.title {
+  margin: 0 0 var(--spacing-small);
+  font-size: var(--typography-sizes-heading-h1);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: var(--typography-sizes-body-large);
+  color: var(--colors-text-secondary);
+  line-height: var(--typography-line-height-base);
+  max-width: 640px;
+}
+
+.filterBar {
+  box-sizing: border-box;
+  margin-bottom: var(--spacing-large);
+}
+
+.customRange {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-default);
+  margin-top: var(--spacing-default);
+}
+
+.customRangeField {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  font-size: var(--typography-sizes-caption-medium);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-secondary);
+}
+
+.customRangeInput {
+  box-sizing: border-box;
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-small);
+  padding: var(--spacing-small) var(--spacing-default);
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-primary);
+  background: var(--colors-surface-primary);
+}
+
+.stateMessage {
+  box-sizing: border-box;
+  padding: var(--spacing-x4);
+  text-align: center;
+  color: var(--colors-text-secondary);
+  font-size: var(--typography-sizes-body-default);
+  background: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-large);
+}
+
+.metricsGrid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-default);
+  margin-bottom: var(--spacing-large);
+}
+
+.metricCard {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-small);
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-default);
+}
+
+.metricValue {
+  font-size: var(--typography-sizes-heading-h1);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+}
+
+.metricLabel {
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--colors-text-secondary);
+}
+
+.sectionsGrid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-default);
+  margin-bottom: var(--spacing-default);
+  align-items: start;
+}
+
+.panelCard {
+  box-sizing: border-box;
+  margin-bottom: var(--spacing-default);
+}
+
+.panelTitle {
+  margin: 0 0 var(--spacing-small);
+  font-size: var(--typography-sizes-heading-h3);
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-primary-default);
+}
+
+.panelSubtitle {
+  margin: 0 0 var(--spacing-default);
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-secondary);
+}
+
+.emptyText {
+  margin: 0;
+  color: var(--colors-text-muted);
+  font-size: var(--typography-sizes-body-default);
+}
+
+.topPostsList {
+  box-sizing: border-box;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.topPostsItem {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-default);
+  padding: var(--spacing-small) 0;
+  border-bottom: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+}
+
+.topPostsItem:last-child {
+  border-bottom: none;
+}
+
+.topPostsRank {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--borders-radius-small);
+  background: var(--colors-surface-secondary);
+  color: var(--colors-primary-default);
+  font-weight: var(--typography-font-weight-bold);
+  font-size: var(--typography-sizes-caption-medium);
+}
+
+.topPostsTitle {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--colors-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topPostsViews {
+  flex: 0 0 auto;
+  font-size: var(--typography-sizes-caption-medium);
+  color: var(--colors-text-secondary);
+  font-weight: var(--typography-font-weight-semi-bold);
+}
+
+.authorName {
+  cursor: var(--interactions-cursor-pointer);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-primary-default);
+  border-bottom: var(--borders-default-width) dashed var(--colors-border);
+}
+
+.authorPostsTooltip {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  min-width: 180px;
+}
+
+.authorPostsTooltipItem {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-small);
+}
+
+.authorPostsTooltipDate {
+  color: var(--colors-text-inverse);
+  opacity: var(--effects-opacity-semi-opaque);
+  white-space: nowrap;
+}
+
+.engagementGrid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-default);
+}
+
+.engagementItem {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-small);
+  text-align: center;
+  padding: var(--spacing-default);
+  background: var(--colors-surface-secondary);
+  border-radius: var(--borders-radius-medium);
+}
+
+.engagementValue {
+  font-size: var(--typography-sizes-heading-h2);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+}
+
+.engagementLabel {
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-secondary);
+  font-weight: var(--typography-font-weight-medium);
+}
+
+@media (max-width: 1024px) {
+  .sectionsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .engagementGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

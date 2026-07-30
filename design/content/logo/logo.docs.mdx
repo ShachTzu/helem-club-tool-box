@@ -1,0 +1,49 @@
+---
+description: "Helam Club wordmark logo linking home, with size prop and light/dark variants."
+labels: ["logo", "brand", "wordmark", "navigation"]
+---
+
+The `Logo` component renders the Helam Club wordmark ("הלם קלאב") as a link to the homepage. It supports multiple sizes and light/dark color variants so it can be used seamlessly in both the header (dark surface) and footer (dark surface), as well as on light surfaces when needed.
+
+## Usage
+
+Render the default logo, linking to the homepage:
+
+```tsx
+<Logo />
+```
+
+## Sizes
+
+The `size` prop controls the wordmark size, useful for adapting the logo to different contexts like a compact mobile header versus a large hero section:
+
+```tsx
+<div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+  <Logo size="small" />
+  <Logo size="medium" />
+  <Logo size="large" />
+</div>
+```
+
+## Light and dark variants
+
+Use `variant="dark"` (the default) for placing the logo on dark surfaces, like the primary-colored header and footer. Use `variant="light"` when placing the logo on light surfaces:
+
+```tsx
+<div style={{ display: 'flex', gap: 24 }}>
+  <div style={{ padding: 16, background: 'var(--colors-primary-default)' }}>
+    <Logo variant="dark" />
+  </div>
+  <div style={{ padding: 16, background: 'var(--colors-surface-background)' }}>
+    <Logo variant="light" />
+  </div>
+</div>
+```
+
+## Custom destination
+
+Pass a custom `href` to change the link destination, for example for admin or partner sub-sites:
+
+```tsx
+<Logo href="/admin" size="small" />
+```

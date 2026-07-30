@@ -1,0 +1,55 @@
+---
+description: "Embedded external media player for YouTube, Vimeo and audio urls with poster and play interaction, RTL-aware."
+labels: ["media", "player", "video", "audio", "embed"]
+---
+
+The `MediaPlayer` component renders a responsive 16:9 stage that shows a poster image with a play button until the viewer chooses to start playback. Once triggered, it resolves the correct embed for the given `mediaUrl` — a YouTube or Vimeo iframe, an HTML `audio` element, or a native `video` element for direct file urls.
+
+## Basic usage
+
+Render a video record backed by a YouTube url, with a poster image and duration badge:
+
+```tsx
+<MediaPlayer
+  mediaUrl="https://www.youtube.com/watch?v=1ZYbU82GVz4"
+  mediaType="video"
+  title="קרקוע ברגע של פלאשבק"
+  posterUrl="https://storage.googleapis.com/bit-generated-images/images/image_calm__professional_video_thumb_0_1785187458374.png"
+  durationSec={504}
+/>
+```
+
+## Audio records
+
+For audio urls (or when `mediaType="audio"`), the component renders a poster image behind a native audio player:
+
+```tsx
+<MediaPlayer
+  mediaUrl="https://example.com/media/panic-breathing.mp3"
+  mediaType="audio"
+  title="נשימה בזמן התקף חרדה"
+  posterUrl="https://storage.googleapis.com/bit-generated-images/images/image_podcast_cover_art_style_image__0_1785187458182.png"
+  durationSec={662}
+/>
+```
+
+## Autoplay
+
+Skip the poster and start playback immediately by setting `autoPlay`:
+
+```tsx
+<MediaPlayer
+  mediaUrl="https://vimeo.com/76979871"
+  mediaType="video"
+  title="החיים שאחרי — שולחן עגול"
+  autoPlay
+/>
+```
+
+## Behavior
+
+- Detects YouTube and Vimeo urls and renders the matching embeddable iframe.
+- Falls back to a native `audio` or `video` element for direct file urls.
+- Shows a poster image with a centered play button until playback starts.
+- Displays a duration badge over the poster when `durationSec` is provided.
+- Fully responsive, RTL-aware layout that fits any page width.

@@ -1,0 +1,74 @@
+---
+description: "Domains lobby: browse the 14 coping domains, and view a cross-sliced feed of all content sharing a selected domain."
+labels: ["domains", "lobby", "page", "knowledge-domains"]
+---
+
+The `DomainsLobby` component renders two views of the same page, driven by the `/domains` and `/domains/:slug` routes:
+
+- At `/domains` it shows a responsive grid of all coping domains, each with an icon, a tagged-content count and a short description.
+- At `/domains/:slug` it shows a cross-sliced feed of every content type across the ecosystem (tools, articles, videos, events, gallery items) tagged with that domain, grouped by content type.
+
+The component is RTL-first and fully responsive, and relies on the `useDomains` and `useDomainContent` hooks to fetch data — pass `mockDomains` / `mockContent` to skip the network request in tests and compositions.
+
+### Browsing all domains
+
+```tsx
+import { MemoryRouter } from 'react-router-dom';
+import { DomainsLobby } from '@helemclub/knowledge-domains.pages.domains-lobby';
+
+export function DomainsBrowseExample() {
+  return (
+    <MemoryRouter initialEntries={['/domains']}>
+      <DomainsLobby />
+    </MemoryRouter>
+  );
+}
+```
+
+### Viewing a selected domain's cross-sliced feed
+
+The component reads the domain slug from the route params, so it must be rendered under a route like `/domains/:slug`:
+
+```tsx
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { DomainsLobby } from '@helemclub/knowledge-domains.pages.domains-lobby';
+
+export function DomainDetailExample() {
+  return (
+    <MemoryRouter initialEntries={['/domains/anxiety']}>
+      <Routes>
+        <Route path="/domains/:slug" element={<DomainsLobby />} />
+      </Routes>
+    </MemoryRouter>
+  );
+}
+```
+
+### Customizing content type sections
+
+Provide `contentTypeMeta` to control which content types are rendered, their order, icon and Hebrew label:
+
+```tsx
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { DomainsLobby } from '@helemclub/knowledge-domains.pages.domains-lobby';
+
+export function CustomContentTypesExample() {
+  return (
+    <MemoryRouter initialEntries={['/domains/anxiety']}>
+      <Routes>
+        <Route
+          path="/domains/:slug"
+          element={
+            <DomainsLobby
+              contentTypeMeta={[
+                { type: 'post', icon: '📝', label: 'כתבות' },
+                { type: 'event', icon: '📅', label: 'אירועים' },
+              ]}
+            />
+          }
+        />
+      </Routes>
+    </MemoryRouter>
+  );
+}
+```

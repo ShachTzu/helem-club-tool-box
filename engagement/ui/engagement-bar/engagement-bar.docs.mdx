@@ -1,0 +1,69 @@
+---
+description: "Composite engagement bar (reactions + save + share + comment count) that any content detail page drops in with targetType/targetId."
+labels: ['engagement', 'reactions', 'comments', 'share', 'save']
+---
+
+`EngagementBar` combines all the engagement primitives — reactions, save-for-later, comment count and social share — into a single row that any content detail page can drop in with a `targetType` and `targetId`. It is RTL by default and follows the Helam Club visual language.
+
+## Usage
+
+Drop the bar into a blog post, toolbox app, event or gallery item page:
+
+```tsx
+import { EngagementBar } from '@helemclub/engagement.ui.engagement-bar';
+
+function BlogPostFooter() {
+  return (
+    <EngagementBar
+      targetType="post"
+      targetId="post-finding-calm-in-the-storm"
+      title="שביל ההחלמה מהתגובתיות"
+      url="https://helam.club/blog/hachlama-mehatgobut"
+    />
+  );
+}
+```
+
+### Scrolling to the comment thread
+
+Pass `onCommentsClick` to control what happens when the comment count is clicked, for example scrolling to a comment thread rendered further down the page:
+
+```tsx
+import { useRef } from 'react';
+import { EngagementBar } from '@helemclub/engagement.ui.engagement-bar';
+
+function ArticlePage() {
+  const commentsRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <div>
+      <EngagementBar
+        targetType="article"
+        targetId="article-42"
+        title="להתמודד עם טריגרים ביום-יום"
+        url="https://helam.club/blog/article-42"
+        onCommentsClick={() => commentsRef.current?.scrollIntoView({ behavior: 'smooth' })}
+      />
+      <div ref={commentsRef}>{/* comment thread renders here */}</div>
+    </div>
+  );
+}
+```
+
+### An app detail page
+
+```tsx
+import { EngagementBar } from '@helemclub/engagement.ui.engagement-bar';
+
+function AppDetailFooter() {
+  return (
+    <EngagementBar
+      targetType="app"
+      targetId="calm-space"
+      title="Calm Space"
+      url="https://helam.club/toolbox/calm-space"
+      saveButtonSize="lg"
+    />
+  );
+}
+```

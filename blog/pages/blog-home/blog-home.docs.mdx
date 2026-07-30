@@ -1,0 +1,68 @@
+---
+description: "Blog home page (/blog): a filterable grid of published posts, free to read, RTL and responsive."
+labels: ['blog', 'page', 'posts']
+---
+
+The `BlogHome` component renders the Helam Club blog home page: a hero band, a domain filter bar showing
+only domains that have a published post, and a responsive grid of post cards. Reading is completely free —
+no sign-in is required to browse or read public posts.
+
+## Basic usage
+
+```tsx
+import { BlogHome } from '@helemclub/blog.pages.blog-home';
+
+function BlogRoute() {
+  return <BlogHome />;
+}
+```
+
+## With mock posts and domains
+
+Useful for tests and previews — bypasses the GraphQL query entirely.
+
+```tsx
+import { BlogHome } from '@helemclub/blog.pages.blog-home';
+import { mockPosts } from '@helemclub/blog.entities.post';
+
+function BlogPreview() {
+  const posts = mockPosts().map((post) => post.toObject());
+
+  return (
+    <BlogHome
+      mockPosts={posts}
+      mockDomains={[
+        { id: 'anxiety', slug: 'anxiety', name: 'חרדה', count: 5 },
+        { id: 'sleep', slug: 'sleep', name: 'שינה', count: 4 },
+      ]}
+    />
+  );
+}
+```
+
+## Customizing the hero and submit link
+
+```tsx
+import { BlogHome } from '@helemclub/blog.pages.blog-home';
+
+function CustomBlogHome() {
+  return (
+    <BlogHome
+      heroEyebrow="Community Voices"
+      heroTitle="הכתבות שלנו"
+      heroSubtitle="תוכן מקצועי וחוויות אישיות מהקהילה, פתוח לכולם."
+      submitHref="/blog/write"
+    />
+  );
+}
+```
+
+## Behavior
+
+- Only posts with `status: 'published'` are shown; members-only posts are gated by the underlying
+  `usePosts` hook based on the visitor's authentication state.
+- The domain filter (`onlyWithContent`) only renders chips for domains that have at least one tagged
+  post, so visitors never see an empty filter option.
+- Selecting one or more domains filters the grid to posts tagged with any of the selected domains.
+- When no posts match the current filter, a friendly empty state is shown with an option to reset the
+  filter.

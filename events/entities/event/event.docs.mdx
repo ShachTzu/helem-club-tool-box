@@ -1,0 +1,91 @@
+---
+description: "An Event entity: round tables, webinars, local meetups and big conferences."
+labels: ['event', 'entity']
+---
+
+An `Event` entity represents a community event in Helem Club — a round table, webinar, local meetup, or a big conference. It supports serialization and de-serialization, and can be used from both backend and frontend.
+
+## Get started
+
+Install and use the component in your code:
+
+```tsx
+import { Event } from '@helemclub/events.entities.event';
+
+const event = Event.from({
+  id: '1',
+  slug: 'webinar-sleep',
+  title: 'וובינר: שינה וטראומה',
+  description: 'הרצאה מקצועית על הקשר בין פוסט-טראומה להפרעות שינה.',
+  type: 'webinar',
+  startAt: '2026-06-18T20:30:00.000Z',
+  isOnline: true,
+  domains: ['שינה', 'חרדה'],
+  rsvpCount: 128,
+});
+
+console.log(event.title);
+```
+
+## Serialization
+
+Use `toObject()` to serialize an `Event` instance into a plain, JSON-friendly object — useful when sending data over the network or storing it.
+
+```tsx
+import { Event } from '@helemclub/events.entities.event';
+
+const event = Event.from({
+  id: '2',
+  slug: 'local-tlv',
+  title: 'מפגש קהילה — תל אביב',
+  description: 'מפגש פנים אל פנים לחברי הקהילה באזור המרכז.',
+  type: 'local',
+  startAt: '2026-07-09T18:00:00.000Z',
+  location: 'תל אביב',
+  isOnline: false,
+  domains: ['בדידות וחיבור חברתי'],
+  rsvpCount: 19,
+});
+
+const plainEvent = event.toObject();
+console.log(plainEvent);
+```
+
+## Derived properties
+
+`Event` exposes a couple of derived getters that are handy for rendering — `isPast` (whether the event already took place) and `hasRecording` (whether a recording was published for it).
+
+```tsx
+import { Event } from '@helemclub/events.entities.event';
+
+const event = Event.from({
+  id: '3',
+  slug: 'big-conference',
+  title: 'כנס הלם קלאב השנתי',
+  description: 'יום שלם של הרצאות, סדנאות ומפגשים.',
+  type: 'big',
+  startAt: '2026-03-02T09:00:00.000Z',
+  endAt: '2026-03-02T17:00:00.000Z',
+  isOnline: false,
+  location: 'מרכז הכנסים, תל אביב',
+  domains: ['בדידות וחיבור חברתי', 'הכרה'],
+  rsvpCount: 340,
+  recordingRecordId: 'life-after-panel',
+});
+
+console.log(event.isPast);
+console.log(event.hasRecording);
+```
+
+## Mock data
+
+Use `mockEvent` and `mockEvents` for development and testing purposes.
+
+```tsx
+import { mockEvent, mockEvents } from '@helemclub/events.entities.event';
+
+const singleEvent = mockEvent({ title: 'כותרת מותאמת אישית', rsvpCount: 5 });
+const allEvents = mockEvents();
+
+console.log(singleEvent, allEvents);
+```

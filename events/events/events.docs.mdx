@@ -1,0 +1,194 @@
+---
+description: "A pluggable Events aspect that manages event listings, RSVP flows, and event administration across the platform"
+labels: ['aspect', 'events', 'graphql']
+---
+
+The Events aspect provides a complete solution for managing community events. It exposes GraphQL operations for listing, fetching, creating, updating and deleting events, along with an RSVP flow that ties into the platform authentication system.
+
+## Listing events with filters
+
+This example shows a simple events listing component that receives a list of events as props and renders them grouped by upcoming or past status. The component accepts filtering options such as type and domain ids as external data, so it never needs to fetch anything itself.
+
+```tsx
+type EventItem = {
+  id: string;
+  slug: string;
+  title: string;
+  startAt: string;
+  type: string;
+  domains: string[];
+};
+
+type EventsListProps = {
+  events: EventItem[];
+  when: 'upcoming' | 'past';
+};
+
+function EventsList(props: EventsListProps) {
+  const filtered = props.events.filter((event) => {
+    const now = new Date().toISOString();
+    if (props.when === 'upcoming') return event.startAt >= now;
+    return event.startAt < now;
+  });
+
+  return (
+    <div>
+      <h3>{props.when === 'upcoming' ? 'Upcoming Events' : 'Past Events'}</h3>
+      <ul>
+        {filtered.map((event) => (
+          <li key={event.id}>
+            <strong>{event.title}</strong> - {event.type}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+const mockEvents: EventItem[] = [
+  {
+    id: '1',
+    slug: 'annual-community-meetup-2025',
+    title: 'Annual Community Meetup 2025',
+    startAt: '2025-10-15T18:00:00Z',
+    type: 'meetup',
+    domains: ['1', '2'],
+  },
+  {
+    id: '2',
+    slug: 'open-source-hackathon',
+    title: 'Open Source Hackathon',
+    startAt: '2024-05-10T09:00:00Z',
+    type: 'hackathon',
+    domains: ['1', '3'],
+  },
+];
+
+export function EventsListExample() {
+  return <EventsList events={mockEvents} when="upcoming" />;
+}
+
+```
+
+## Event detail with RSVP action
+
+This example demonstrates an event detail card that shows the event information along with an RSVP button. The RSVP handler is passed in as a prop function, keeping the component fully decoupled from any networking logic. The current user attending status is also received as a prop.
+
+```tsx
+type EventDetailData = {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  isOnline: boolean;
+  joinUrl: string;
+  rsvpCount: number;
+};
+
+type EventDetailProps = {
+  event: EventDetailData;
+  isAttending: boolean;
+  onRsvp: (eventId: string, attending: boolean) => void;
+};
+
+function EventDetailCard(props: EventDetailProps) {
+  return (
+    <div>
+      <h2>{props.event.title}</h2>
+      <p>{props.event.description}</p>
+      <p>Location: {props.event.isOnline ? 'Online' : props.event.location}</p>
+      <p>Attendees: {props.event.rsvpCount}</p>
+      <button
+        onClick={() => props.onRsvp(props.event.id, !props.isAttending)}
+      >
+        {props.isAttending ? 'Cancel RSVP' : 'RSVP Now'}
+      </button>
+    </div>
+  );
+}
+
+const sampleEvent: EventDetailData = {
+  id: '2',
+  title: 'Web3 and AI Tech Workshop',
+  description: 'A hands on workshop covering the intersection of web3 and artificial intelligence',
+  location: 'Tel Aviv Community Hub',
+  isOnline: false,
+  joinUrl: '',
+  rsvpCount: 42,
+};
+
+export function EventDetailExample() {
+  function handleRsvp(eventId: string, attending: boolean) {
+    console.log('rsvp changed', eventId, attending);
+  }
+
+  return (
+    <EventDetailCard
+      event={sampleEvent}
+      isAttending={false}
+      onRsvp={handleRsvp}
+    />
+  );
+}
+
+```
+
+## Managing events as an admin
+
+This example shows an admin panel component for creating and deleting events. It receives the current list of events and callback functions for create and delete operations as props, allowing the underlying mutation logic to be supplied externally by the consuming application.
+
+```tsx
+type ManagedEvent = {
+  id: string;
+  title: string;
+  type: string;
+};
+
+type ManageEventsProps = {
+  events: ManagedEvent[];
+  onCreate: (title: string, type: string) => void;
+  onDelete: (eventId: string) => void;
+};
+
+function ManageEventsPanel(props: ManageEventsProps) {
+  return (
+    <div>
+      <h3>Manage Events</h3>
+      <ul>
+        {props.events.map((event) => (
+          <li key={event.id}>
+            {event.title} ({event.type})
+            <button onClick={() => props.onDelete(event.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+      <button onClick={() => props.onCreate('New Meetup', 'meetup')}>
+        Add Meetup
+      </button>
+    </div>
+  );
+}
+
+const managedEvents: ManagedEvent[] = [
+  { id: '1', title: 'Annual Community Meetup 2025', type: 'meetup' },
+  { id: '3', title: 'Open Source Hackathon', type: 'hackathon' },
+];
+
+export function ManageEventsExample() {
+  function handleCreate(title: string, type: string) {
+    console.log('creating event', title, type);
+  }
+
+  function handleDelete(eventId: string) {
+    console.log('deleting event', eventId);
+  }
+
+  return (
+    <ManageEventsPanel
+      events={managedEvents}
+      onCreate={handleCreate}
+      onDelete={handleDelete}
+    />
+  );
+}
+```

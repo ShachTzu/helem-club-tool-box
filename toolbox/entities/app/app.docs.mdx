@@ -1,0 +1,69 @@
+---
+description: "An App entity ported from the Helam Club marketplace prototype, representing a coping-app catalog entry in the toolbox."
+labels: ['app', 'entity', 'toolbox']
+---
+
+The `App` entity represents a coping-app catalog entry in the Helam Club toolbox — apps that community members can browse, click through to, and rate. It supports serialization and de-serialization, and can be used from both backend and frontend.
+
+## Get started
+
+Install and use the component in your code:
+
+```tsx
+import { App } from '@helemclub/toolbox.entities.app';
+
+const app = App.from({
+  id: 'breathe-calm',
+  slug: 'breathe-calm',
+  name: 'נשימה רגועה',
+  subtitle: 'תרגילי נשימה מודרכים להרגעה מיידית',
+  fullDescription: 'אפליקציה שמלווה אותך בתרגילי נשימה קצרים ברגעים של הצפה.',
+  externalLink: 'https://example.com/breathe',
+  icon: '🫧',
+  costType: 'חינם לחברי הקהילה',
+  language: 'עברית',
+  requiresSignup: false,
+  developerName: 'דנה לוי',
+});
+
+console.log(app.name);
+```
+
+## Serialization
+
+Use `toObject()` to serialize an `App` instance into a plain, JSON-friendly object — useful for sending data over the network or storing it.
+
+```tsx
+import { App } from '@helemclub/toolbox.entities.app';
+
+const app = App.from({
+  id: 'ground-me',
+  slug: 'ground-me',
+  name: 'קרקוע',
+  subtitle: 'כלים להתמודדות עם טריגרים ופלאשבקים',
+  fullDescription: 'ערכת כלי קרקוע זמינים בלחיצה אחת ברגע של הצפה או פלאשבק.',
+  externalLink: 'https://example.com/ground',
+  icon: '🪨',
+  costType: 'חינם לחברי הקהילה',
+  language: 'עברית',
+  requiresSignup: false,
+  developerName: 'מיכל ברק',
+});
+
+const plainApp = app.toObject();
+console.log(plainApp);
+```
+
+## Mock data
+
+Use `mockApps()` to get the full seed catalog of coping apps ported from the prototype, or `mockApp()` to create a single mock app with optional overrides — useful for development and testing.
+
+```tsx
+import { mockApp, mockApps } from '@helemclub/toolbox.entities.app';
+
+const apps = mockApps();
+console.log(apps.map((app) => app.name));
+
+const customApp = mockApp({ name: 'אפליקציה מותאמת', isFeatured: false });
+console.log(customApp.name, customApp.isFeatured);
+```

@@ -1,0 +1,43 @@
+---
+description: "PWA install banner that listens for beforeinstallprompt and shows a dismissible Hebrew prompt to add Helam Club to the home screen."
+labels: ["pwa", "install", "banner", "hebrew"]
+---
+
+The `InstallPrompt` listens for the browser's native `beforeinstallprompt` event and renders a small, dismissible banner inviting users to add Helam Club to their home screen. It stays hidden when the app already runs installed (standalone mode), and remembers the user's dismissal in `localStorage` so it will not reappear.
+
+## Basic usage
+
+Render the component once, anywhere near the root of the app. It renders nothing until the browser fires `beforeinstallprompt`:
+
+```tsx
+<InstallPrompt />
+```
+
+## Custom app details
+
+Override the app name, description and icon shown in the banner:
+
+```tsx
+<InstallPrompt
+  appName="ארגז הכלים של הלם קלאב"
+  description="התקינו עכשיו וקבלו גישה מיידית לתרגילי נשימה ולתמיכה קהילתית, גם ללא חיבור לאינטרנט."
+  iconUrl="https://storage.googleapis.com/bit-generated-images/images/image_a_minimalist_flat_design_app_i_0_1785193644349.png"
+/>
+```
+
+## Reacting to install decisions
+
+Use `onInstall` and `onDismiss` to track how users respond to the banner, for example for analytics:
+
+```tsx
+<InstallPrompt
+  onInstall={(outcome) => console.log(`user choice: ${outcome}`)}
+  onDismiss={() => console.log(`banner dismissed`)}
+/>
+```
+
+## Behavior notes
+
+- The banner only appears after the browser dispatches `beforeinstallprompt`, which happens on supporting browsers (mostly Chromium-based) once install criteria are met.
+- If the app is already running in standalone/installed mode (detected via `display-mode: standalone` or the iOS `navigator.standalone` flag), the banner never renders.
+- Dismissing the banner persists a flag in `localStorage` (key configurable via `storageKey`) so it will not reappear on future visits.

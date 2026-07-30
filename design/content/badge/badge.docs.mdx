@@ -1,0 +1,44 @@
+---
+description: "Small status/count badge with color variants and pill shape."
+labels: ["badge", "status", "count", "ui"]
+---
+
+The `Badge` component displays a small status label, count, or indicator with a pill shape. It supports five color variants inspired by the Helam Club brand book: `neutral`, `accent`, `success`, `warning`, and `danger`.
+
+## Basic usage
+
+Render a badge with default content and variant:
+
+```tsx
+<Badge>חדש</Badge>
+```
+
+## Color variants
+
+Use the `variant` prop to convey different meanings:
+
+```tsx
+<div style={{ display: 'flex', gap: 12 }}>
+  <Badge variant="neutral">כללי</Badge>
+  <Badge variant="accent">מומלץ</Badge>
+  <Badge variant="success">פעיל</Badge>
+  <Badge variant="warning">ממתין</Badge>
+  <Badge variant="danger">שגוי</Badge>
+</div>
+```
+
+## Status dot and counts
+
+Add a small dot indicator using `showDot`, or use the badge to display a count:
+
+```tsx
+<div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+  <Badge variant="success" showDot>
+    מחובר
+  </Badge>
+  <Badge variant="danger" showDot>
+    לא מקוון
+  </Badge>
+  <Badge variant="accent">12 חדשים</Badge>
+</div>
+```

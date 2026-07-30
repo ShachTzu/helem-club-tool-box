@@ -1,0 +1,38 @@
+---
+description: "Renders one or many domain tags as chips (read-only), linking to the domain lobby."
+labels: ['domain', 'badge', 'chip', 'tag']
+---
+
+The `DomainBadge` component renders one or more knowledge-domain tags as read-only chips, each linking to that domain's lobby page. It is used across the Helam Club ecosystem (blog posts, knowledge records, apps, events, gallery items) to surface the coping domains a piece of content is tagged with. The component is RTL-first, matching the Helam Club design language.
+
+## Basic usage
+
+Render a set of domain chips, each one linking to `/domains/{slug}`:
+
+```tsx
+<DomainBadge
+  domains={[
+    { id: 'anxiety', slug: 'anxiety', name: 'חרדה' },
+    { id: 'sleep', slug: 'sleep', name: 'שינה' },
+  ]}
+/>
+```
+
+## A single domain
+
+Pass a single-item array to render just one chip:
+
+```tsx
+<DomainBadge domains={[{ id: 'sleep', slug: 'sleep', name: 'שינה' }]} />
+```
+
+## Custom link base
+
+Use `domainLinkBase` to link to a different domain lobby route, for example when the domains lobby is nested under another section:
+
+```tsx
+<DomainBadge
+  domainLinkBase="/knowledge/domains"
+  domains={[{ id: 'mindfulness-breathing', slug: 'mindfulness-breathing', name: 'מיינדפולנס ונשימות' }]}
+/>
+```

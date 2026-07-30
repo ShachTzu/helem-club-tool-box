@@ -1,0 +1,89 @@
+---
+description: "Submission review queue: pending tools with approve/reject, protected for moderators/admins."
+labels: ["admin", "toolbox", "moderation", "rtl"]
+---
+
+The `ReviewSubmissions` component renders a moderation queue of pending toolbox apps, letting a
+moderator or admin approve or reject each submission. It is protected — anonymous users and
+members without the `moderator`/`admin` role see a restricted-access message instead of the
+queue. Intended to be registered as an `AdminPanel` in the platform's admin shell.
+
+### Basic usage
+
+Render the queue with mock pending apps for a moderator user:
+
+```tsx
+import { MockProvider } from '@helemclub/platform.testing.mock-provider';
+import { mockPendingAppsData } from '@helemclub/toolbox.hooks.use-apps';
+import { ReviewSubmissions } from '@helemclub/toolbox.admin.review-submissions';
+
+function BasicExample() {
+  const moderator = {
+    id: 'moderator-1',
+    email: 'dana.mod@helemclub.org',
+    displayName: 'דנה מודרטורית',
+    role: 'moderator' as const,
+    provider: 'email' as const,
+    createdAt: new Date('2024-02-01T09:00:00.000Z').toISOString(),
+  };
+
+  return (
+    <MockProvider>
+      <ReviewSubmissions mockUser={moderator} mockPendingData={mockPendingAppsData()} />
+    </MockProvider>
+  );
+}
+```
+
+### Empty queue
+
+When there are no pending submissions, a friendly empty state is shown instead of the table:
+
+```tsx
+import { MockProvider } from '@helemclub/platform.testing.mock-provider';
+import { ReviewSubmissions } from '@helemclub/toolbox.admin.review-submissions';
+
+function EmptyExample() {
+  const admin = {
+    id: 'admin-1',
+    email: 'admin@helemclub.org',
+    displayName: 'הלם אדמין',
+    role: 'admin' as const,
+    provider: 'google' as const,
+    createdAt: new Date('2024-01-10T09:00:00.000Z').toISOString(),
+  };
+
+  return (
+    <MockProvider>
+      <ReviewSubmissions mockUser={admin} mockPendingData={[]} />
+    </MockProvider>
+  );
+}
+```
+
+### Restricted access
+
+Signed-in users without the `moderator` or `admin` role are shown an access-denied message:
+
+```tsx
+import { MockProvider } from '@helemclub/platform.testing.mock-provider';
+import { mockPendingAppsData } from '@helemclub/toolbox.hooks.use-apps';
+import { ReviewSubmissions } from '@helemclub/toolbox.admin.review-submissions';
+
+function RestrictedExample() {
+  const member = {
+    id: 'member-1',
+    email: 'member@helemclub.org',
+    displayName: 'שם דו',
+    role: 'member' as const,
+    provider: 'email' as const,
+    createdAt: new Date('2024-03-05T09:00:00.000Z').toISOString(),
+  };
+
+  return (
+    <MockProvider>
+      <ReviewSubmissions mockUser={member} mockPendingData={mockPendingAppsData()} />
+    </MockProvider>
+  );
+}
+```

@@ -1,0 +1,85 @@
+---
+description: "RTL select / multi-select list with options {value,label}, search, and chip display for multi."
+labels: ["select", "dropdown", "multi-select", "filter", "rtl"]
+---
+
+`SelectList` is an RTL-first select / multi-select control used for domain selection and filters across Helam Club. It supports single or multiple selection, an optional search input, and chip display for selected values in multi mode.
+
+## Basic single select
+
+Use `value` and `onChange` with a plain string for single-selection mode.
+
+```tsx
+function BasicExample() {
+  const [value, setValue] = React.useState('anxiety');
+
+  const options = [
+    { value: 'anxiety', label: 'חרדה' },
+    { value: 'sleep', label: 'שינה' },
+    { value: 'work-career', label: 'עבודה וקריירה' },
+  ];
+
+  return (
+    <SelectList
+      label="בחירת תחום"
+      options={options}
+      value={value}
+      onChange={(next) => setValue(next)}
+    />
+  );
+}
+```
+
+## Multi-select with chips
+
+Set `multiple` to allow selecting several options. Selected options are displayed as chips inside the trigger, each removable individually.
+
+```tsx
+function MultiExample() {
+  const [values, setValues] = React.useState(['anxiety', 'sleep']);
+
+  const options = [
+    { value: 'anxiety', label: 'חרדה' },
+    { value: 'sleep', label: 'שינה' },
+    { value: 'mindfulness-breathing', label: 'מיינדפולנס ונשימות' },
+  ];
+
+  return (
+    <SelectList
+      label="סינון לפי תחומי התמודדות"
+      options={options}
+      value={values}
+      onChange={(next) => setValues(next)}
+      multiple
+    />
+  );
+}
+```
+
+## Search and custom placeholders
+
+Search is enabled by default. You can customize the placeholder texts to fit your context, or disable search entirely with `searchable={false}`.
+
+```tsx
+function SearchExample() {
+  const [values, setValues] = React.useState([]);
+
+  const options = [
+    { value: 'anxiety', label: 'חרדה' },
+    { value: 'sleep', label: 'שינה' },
+    { value: 'guilt-shame', label: 'אשמה, בושה וביקורת עצמית' },
+  ];
+
+  return (
+    <SelectList
+      label="דומיינים רלוונטיים"
+      placeholder="בחרו תחומים..."
+      searchPlaceholder="חיפוש תחום..."
+      options={options}
+      value={values}
+      onChange={(next) => setValues(next)}
+      multiple
+    />
+  );
+}
+```

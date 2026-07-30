@@ -1,0 +1,102 @@
+.installPrompt {
+  position: fixed;
+  bottom: var(--spacing-medium);
+  inset-inline: var(--spacing-medium);
+  z-index: var(--interactions-z-index-modal);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+  box-sizing: border-box;
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  border-radius: var(--borders-radius-large);
+  box-shadow: var(--effects-shadows-x-large);
+  padding: var(--spacing-medium);
+  font-family: var(--typography-font-family);
+  direction: var(--layout-direction);
+  animation: slideUp var(--interactions-transitions-duration-medium) var(--interactions-transitions-easing-ease-out);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--borders-radius-medium);
+  object-fit: cover;
+  box-shadow: var(--effects-shadows-small);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-text-primary);
+}
+
+.description {
+  margin: 0;
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-secondary);
+  line-height: var(--typography-line-height-base);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  flex-shrink: 0;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: var(--borders-radius-small);
+  background: transparent;
+  color: var(--colors-text-secondary);
+  cursor: var(--interactions-cursor-pointer);
+  flex-shrink: 0;
+  transition: background-color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out);
+}
+
+.closeButton:hover {
+  background-color: var(--colors-surface-secondary);
+}
+
+@media (max-width: 480px) {
+  .installPrompt {
+    inset-inline: var(--spacing-small);
+    bottom: var(--spacing-small);
+    flex-wrap: wrap;
+  }
+
+  .description {
+    display: none;
+  }
+}

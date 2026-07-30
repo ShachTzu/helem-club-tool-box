@@ -1,0 +1,84 @@
+---
+description: "A React Hook for listing, filtering and managing community events."
+labels: ['hook', 'react', 'events', 'graphql']
+---
+
+The `useEvents` hook manages community events — round tables, webinars, local meetups and large conferences.
+It lists events with optional type, domain and upcoming/past filters, and exposes create, update, delete
+and publish-recording actions. Use `useEvent` to resolve a single event by its id or slug.
+
+## Usage
+
+### Listing upcoming and past events
+
+```tsx
+const EventsList = () => {
+  const [when, setWhen] = React.useState<'upcoming' | 'past'>('upcoming');
+  const { list } = useEvents({ when });
+
+  if (list.loading) return <p>טוען אירועים...</p>;
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        <button onClick={() => setWhen('upcoming')}>אירועים קרובים</button>
+        <button onClick={() => setWhen('past')}>אירועים שהיו</button>
+      </div>
+      <ul>
+        {list.events.map((event) => (
+          <li key={event.id}>
+            {event.title} — {event.isOnline ? 'מקוון' : event.location}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+```
+
+### Filtering events by type and domain
+
+```tsx
+const RoundTables = () => {
+  const { list } = useEvents({ type: 'round_table', domainIds: ['אשמה, בושה וביקורת עצמית'] });
+
+  return (
+    <ul>
+      {list.events.map((event) => (
+        <li key={event.id}>{event.title}</li>
+      ))}
+    </ul>
+  );
+};
+```
+
+### Resolving a single event and creating a new one
+
+```tsx
+const EventDetails = () => {
+  const { event, loading } = useEvent('round-table-shame');
+  const { createEvent, creating } = useEvents();
+
+  const handleCreate = async () => {
+    await createEvent({
+      title: 'שולחן עגול חדש',
+      description: 'מפגש קהילתי חדש',
+      type: 'round_table',
+      startAt: new Date().toISOString(),
+      isOnline: true,
+      domains: ['ויסות רגשי'],
+    });
+  };
+
+  if (loading) return <p>טוען...</p>;
+
+  return (
+    <div>
+      <h2>{event?.title}</h2>
+      <button onClick={() => handleCreate()} disabled={creating}>
+        צור אירוע דומה
+      </button>
+    </div>
+  );
+};
+```

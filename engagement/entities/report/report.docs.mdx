@@ -1,0 +1,70 @@
+---
+description: "A Report entity representing a single report of a comment by a device."
+labels: ['report', 'entity', 'engagement']
+---
+
+The `Report` entity represents a single report submitted against a comment. Reports are keyed so that
+only **one report per device per comment** can exist, supporting the moderation flow of the engagement
+system. It supports serialization and de-serialization and can be used from both backend and frontend.
+
+## Get started
+
+Install and use the component in your code:
+
+```tsx
+import { Report } from '@helemclub/engagement.entities.report';
+
+const report = Report.from({
+  id: 'comment-1:device-42',
+  commentId: 'comment-1',
+  deviceId: 'device-42',
+  createdAt: '2024-05-01T10:00:00.000Z',
+});
+
+console.log(report.commentId, report.deviceId);
+```
+
+## Creating a new report
+
+Use `Report.create()` to generate a new report for a given comment and device, with the id and
+timestamp derived automatically. This is the pattern used when a device reports a comment for the
+first time — repeating this call for the same comment/device pair yields the same deterministic id,
+which can be used to enforce uniqueness.
+
+```tsx
+import { Report } from '@helemclub/engagement.entities.report';
+
+const report = Report.create('comment-1', 'device-42');
+
+console.log(report.id); // 'comment-1:device-42'
+console.log(report.toObject());
+```
+
+## Serializing a report
+
+Use `toObject()` to serialize a `Report` instance into a plain, transferable object — useful when
+sending data over the network or persisting it to a data store.
+
+```tsx
+import { Report } from '@helemclub/engagement.entities.report';
+
+const report = Report.create('comment-7', 'device-9');
+const plainReport = report.toObject();
+
+console.log(plainReport);
+// { id: 'comment-7:device-9', commentId: 'comment-7', deviceId: 'device-9', createdAt: '...' }
+```
+
+## Mock data
+
+You can use report mock data for development and testing purposes using the `mockReport` and
+`mockReports` APIs.
+
+```tsx
+import { mockReport, mockReports } from '@helemclub/engagement.entities.report';
+
+const singleReport = mockReport({ commentId: 'comment-1' });
+const reports = mockReports();
+
+console.log(singleReport, reports);
+```

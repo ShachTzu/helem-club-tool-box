@@ -1,0 +1,124 @@
+.home {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.greetingSection {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--layout-max-page-width);
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--layout-gutter) 0;
+}
+
+.greetingCard {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-large);
+  flex-wrap: wrap;
+  background: var(--effects-gradients-primary);
+  border-radius: var(--borders-radius-large);
+  padding: var(--spacing-xl);
+  box-shadow: var(--effects-shadows-header);
+  position: relative;
+  overflow: hidden;
+}
+
+.greetingText {
+  position: relative;
+  z-index: var(--interactions-z-index-base);
+  min-width: 0;
+}
+
+.greetingEyebrow {
+  color: var(--colors-accent-default);
+  font-weight: var(--typography-font-weight-bold);
+  font-size: var(--typography-sizes-caption-medium);
+  letter-spacing: var(--typography-letter-spacing-wide);
+  margin-bottom: var(--spacing-small);
+}
+
+.greetingTitle {
+  margin: 0 0 var(--spacing-small);
+  font-size: var(--typography-sizes-heading-h2);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-text-inverse) !important;
+}
+
+.greetingSubtitle {
+  margin: 0;
+  color: var(--colors-text-inverse) !important;
+  opacity: var(--effects-opacity-semi-opaque);
+  max-width: 520px;
+}
+
+.greetingBadge {
+  position: relative;
+  z-index: var(--interactions-z-index-base);
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  background: var(--colors-accent-default);
+  color: var(--colors-primary-default) !important;
+  font-weight: var(--typography-font-weight-bold);
+  font-size: var(--typography-sizes-body-small);
+  padding: var(--spacing-small) var(--spacing-default);
+  border-radius: var(--borders-radius-pill);
+  white-space: nowrap;
+}
+
+.dashboardSection {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--layout-max-page-width);
+  margin: 0 auto;
+  padding: var(--spacing-large) var(--layout-gutter) 0;
+}
+
+.dashboardGrid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-large);
+}
+
+.marketing {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.ecosystemSection {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--layout-max-page-width);
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--layout-gutter) 0;
+}
+
+.homeSection {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .greetingSection {
+    padding: var(--spacing-large) var(--spacing-default) 0;
+  }
+
+  .greetingCard {
+    padding: var(--spacing-large);
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboardSection {
+    padding: var(--spacing-large) var(--spacing-default) 0;
+  }
+
+  .ecosystemSection {
+    padding: var(--spacing-large) var(--spacing-default) var(--spacing-x4);
+  }
+}

@@ -1,0 +1,40 @@
+---
+description: "Author byline: avatar, name, date, and optional bio. RTL."
+labels: ["author", "byline", "blog", "rtl"]
+---
+
+The `AuthorByline` component displays an author's avatar, name, publish date, optional read time, and an optional short bio. It is designed for use above or below blog post content and supports anonymous authors.
+
+## Basic usage
+
+```tsx
+<AuthorByline
+  authorName="ד״ר מיכל ברק"
+  authorPhoto="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80"
+  date="12 במאי 2026"
+  readTime="6 דק׳ קריאה"
+/>
+```
+
+## With a short bio
+
+Pass the `bio` prop to render a short biography line below the name and date, useful at the end of a post.
+
+```tsx
+<AuthorByline
+  authorName="רון אבני"
+  authorPhoto="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80"
+  date="28 באפריל 2026"
+  readTime="4 דק׳ קריאה"
+  bio="מתמודד ופעיל קהילתי, כותב על טריגרים וכלים יומיומיים לוויסות רגשי."
+  size="lg"
+/>
+```
+
+## Anonymous authors
+
+Set `anonymous` to hide the author's name and photo, showing a generic placeholder instead.
+
+```tsx
+<AuthorByline anonymous date="3 במאי 2026" readTime="9 דק׳ קריאה" size="sm" />
+```

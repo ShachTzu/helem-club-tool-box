@@ -1,0 +1,78 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  padding: 7px 14px;
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  border-radius: var(--borders-radius-pill);
+  background: var(--colors-surface-primary);
+  color: var(--colors-secondary-default);
+  font-family: var(--typography-font-family);
+  font-weight: var(--typography-font-weight-semi-bold);
+  font-size: var(--typography-sizes-body-small);
+  line-height: var(--typography-line-height-base);
+  cursor: default;
+  user-select: none;
+  transition: background var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out),
+    border-color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out),
+    color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out);
+}
+
+.interactive {
+  cursor: var(--interactions-cursor-pointer);
+}
+
+.interactive:hover {
+  border-color: var(--colors-secondary-default);
+}
+
+.chip:focus-visible {
+  border-color: var(--borders-focus-color);
+}
+
+.active {
+  border-color: var(--colors-accent-default);
+  background: var(--colors-status-warning-subtle);
+  color: var(--colors-text-primary);
+}
+
+.active.interactive:hover {
+  border-color: var(--colors-accent-hover);
+}
+
+.disabled {
+  opacity: var(--effects-opacity-disabled);
+  cursor: var(--interactions-cursor-disabled);
+  pointer-events: none;
+}
+
+.label {
+  white-space: nowrap;
+}
+
+.count {
+  font-weight: var(--typography-font-weight-regular);
+  font-size: var(--typography-sizes-caption-default);
+  opacity: var(--effects-opacity-semi-opaque);
+}
+
+.removeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-inline-start: 2px;
+  padding: 0;
+  border: none;
+  border-radius: var(--borders-radius-small);
+  background: transparent;
+  color: inherit;
+  cursor: var(--interactions-cursor-pointer);
+  transition: background var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out);
+}
+
+.removeButton:hover {
+  background: var(--colors-surface-secondary);
+}

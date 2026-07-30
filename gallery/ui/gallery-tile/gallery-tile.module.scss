@@ -1,0 +1,103 @@
+.tile {
+  display: block;
+  width: 100%;
+  border: none;
+  padding: 0;
+  background: none;
+  cursor: var(--interactions-cursor-pointer);
+  text-align: start;
+  position: relative;
+  break-inside: avoid;
+  border-radius: var(--borders-radius-medium);
+  overflow: hidden;
+  box-shadow: var(--effects-shadows-card);
+  box-sizing: border-box;
+  transition: box-shadow var(--interactions-transitions-duration-medium)
+    var(--interactions-transitions-easing-ease-out);
+}
+
+.tile:hover,
+.tile:focus-visible {
+  box-shadow: var(--effects-shadows-card-hover);
+}
+
+.mediaWrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--colors-surface-secondary);
+  line-height: 0;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform var(--interactions-transitions-duration-slow)
+    var(--interactions-transitions-easing-ease-out);
+}
+
+.tile:hover .image,
+.tile:focus-visible .image {
+  transform: scale(var(--interactions-hover-effect-scale));
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--spacing-medium);
+  background: linear-gradient(0deg, var(--colors-overlay) 0%, transparent 65%);
+  opacity: 0;
+  transition: opacity var(--interactions-transitions-duration-medium)
+    var(--interactions-transitions-easing-ease-out);
+  box-sizing: border-box;
+}
+
+.tile:hover .overlay,
+.tile:focus-visible .overlay {
+  opacity: 1;
+}
+
+.title {
+  margin: 0;
+  color: var(--colors-text-inverse);
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-body-large);
+  font-weight: var(--typography-font-weight-bold);
+  line-height: var(--typography-line-height-heading);
+}
+
+.artist {
+  margin: 0;
+  margin-top: var(--spacing-small);
+  color: var(--colors-text-inverse);
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-caption-default);
+  font-weight: var(--typography-font-weight-regular);
+  opacity: var(--effects-opacity-semi-opaque);
+}
+
+.playBadge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--borders-radius-large);
+  background: var(--colors-overlay);
+  box-shadow: var(--effects-shadows-small);
+  pointer-events: none;
+}
+
+.playIcon {
+  width: 20px;
+  height: 20px;
+  color: var(--colors-text-inverse);
+}

@@ -1,0 +1,84 @@
+---
+description: "Gallery tile for the masonry grid: image/video thumbnail with hover title/artist overlay, RTL."
+labels: ["gallery", "tile", "masonry", "media"]
+---
+
+The `GalleryTile` component renders a single artwork thumbnail (image or video) for the PTSDART masonry gallery grid.
+On hover (or focus) it reveals an overlay with the artwork title and artist name. Clicking the tile invokes the
+`onOpen` callback with the item's slug, so a parent component can open a lightbox or navigate to a detail page.
+
+## Basic usage
+
+Render a tile with a single gallery item:
+
+```tsx
+import { GalleryTile } from '@helemclub/gallery.ui.gallery-tile';
+import { mockGalleryItem } from '@helemclub/gallery.entities.gallery-item';
+
+const item = mockGalleryItem({
+  title: 'שקט אחרי הסערה',
+  artistName: 'נועה ל.',
+  mediaType: 'image',
+}).toObject();
+
+function Example() {
+  return (
+    <div style={{ maxWidth: 260 }}>
+      <GalleryTile item={item} />
+    </div>
+  );
+}
+```
+
+## Video items
+
+Video items show a small play badge over the thumbnail:
+
+```tsx
+import { GalleryTile } from '@helemclub/gallery.ui.gallery-tile';
+import { mockGalleryItem } from '@helemclub/gallery.entities.gallery-item';
+
+const item = mockGalleryItem({
+  title: 'נשימה והתחלה',
+  artistName: 'דנה כ.',
+  mediaType: 'video',
+}).toObject();
+
+function Example() {
+  return (
+    <div style={{ maxWidth: 260 }}>
+      <GalleryTile item={item} />
+    </div>
+  );
+}
+```
+
+## Masonry grid with click handling
+
+Compose multiple tiles into a CSS columns masonry layout and react to opening a tile:
+
+```tsx
+import { useState } from 'react';
+import { GalleryTile } from '@helemclub/gallery.ui.gallery-tile';
+import { mockGalleryItem } from '@helemclub/gallery.entities.gallery-item';
+
+const items = [
+  mockGalleryItem({ slug: 'g1', title: 'שקט אחרי הסערה', mediaType: 'image' }).toObject(),
+  mockGalleryItem({ slug: 'g2', title: 'נשימה והתחלה', mediaType: 'video' }).toObject(),
+];
+
+function Example() {
+  const [openedSlug, setOpenedSlug] = useState<string | null>(null);
+
+  return (
+    <div style={{ columnWidth: 220, columnGap: 16 }}>
+      {items.map((item) => (
+        <div key={item.slug} style={{ breakInside: 'avoid', marginBottom: 16 }}>
+          <GalleryTile item={item} onOpen={(slug) => setOpenedSlug(slug)} />
+        </div>
+      ))}
+      {openedSlug && <p>נפתח: {openedSlug}</p>}
+    </div>
+  );
+}
+```

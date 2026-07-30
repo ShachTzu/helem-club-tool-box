@@ -1,0 +1,139 @@
+---
+description: "A pluggable knowledge base aspect for managing media records and labels across the platform."
+labels: ['knowledge-base', 'aspect', 'graphql']
+---
+
+The knowledge base aspect maintains a searchable collection of externally hosted media records, organized by labels, and exposes both a GraphQL API and browser routes for the knowledge lobby, label lobby, and record pages.
+
+## List and filter records
+
+This example shows a simple panel that renders a list of knowledge base media records, filtered by label and free text query, similar to what the listRecords query would return.
+
+```tsx
+function KnowledgeRecordsPanel() {
+  const records = [
+    {
+      id: '1',
+      slug: 'intro-to-hebrew-community',
+      labelId: '1',
+      title: 'Intro to Hebrew Community Knowledge Base',
+      mediaUrl: 'https://storage.googleapis.com/bit-generated-images/images/image_high_quality_video_thumbnail_c_0_1785227562952.png',
+      domains: ['community', 'education'],
+      viewCount: 42,
+    },
+    {
+      id: '2',
+      slug: 'digital-archiving-best-practices',
+      labelId: '1',
+      title: 'Digital Archiving Best Practices',
+      mediaUrl: 'https://res.cloudinary.com/ddnr1ptva/image/upload/f_auto,q_auto/ai-images/get/gd389a295dd4453be850c36bee2ddcaccea5ff72693af2e0d464cb3888a889d693b1fa30eaeaeecd077079605ef84f26482d917148618a38597fc0017e178d5ef_1280.jpg',
+      domains: ['archiving', 'technology'],
+      viewCount: 128,
+    },
+    {
+      id: '3',
+      slug: 'media-preservation-guide',
+      labelId: '2',
+      title: 'Media Preservation Guide and Audio Tools',
+      mediaUrl: 'https://res.cloudinary.com/ddnr1ptva/image/upload/f_auto,q_auto/ai-images/get/g7e545b13d34663eef384a3b4bb7aa363a0d9760e33dd0b436a67cb2c17a1caaefdd25693e80379fe299d40bde224da893ae1ff9cd2f43312e8741f9f83e0b137_1280.png',
+      domains: ['audio', 'preservation'],
+      viewCount: 89,
+    },
+  ];
+
+  const filtered = records.filter((record) => record.labelId === '1');
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: 16 }}>
+      <h3>Community Archive Records</h3>
+      {filtered.map((record) => (
+        <div key={record.id} style={{ border: '1px solid #ddd', borderRadius: 8, padding: 12 }}>
+          <img src={record.mediaUrl} alt={record.title} style={{ width: 160, borderRadius: 4 }} />
+          <div style={{ fontWeight: 600, marginTop: 8 }}>{record.title}</div>
+          <div style={{ fontSize: 12, color: '#888' }}>
+            {record.domains.join(', ')} , {record.viewCount} views
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export const KnowledgeRecordsPanelExample = () => <KnowledgeRecordsPanel />;
+
+```
+
+## Single record view with view count
+
+This example demonstrates a record page that displays a single media record and shows how the view count would increment when the record is opened, mirroring the getRecord mutation behavior.
+
+```tsx
+function RecordPagePanel() {
+  const initialRecord = {
+    id: '3',
+    slug: 'media-preservation-guide',
+    title: 'Media Preservation Guide and Audio Tools',
+    mediaUrl: 'https://res.cloudinary.com/ddnr1ptva/image/upload/f_auto,q_auto/ai-images/get/g7e545b13d34663eef384a3b4bb7aa363a0d9760e33dd0b436a67cb2c17a1caaefdd25693e80379fe299d40bde224da893ae1ff9cd2f43312e8741f9f83e0b137_1280.png',
+    domains: ['audio', 'preservation'],
+    viewCount: 89,
+  };
+
+  const displayedRecord = { ...initialRecord, viewCount: initialRecord.viewCount + 1 };
+
+  return (
+    <div style={{ maxWidth: 480, padding: 16, border: '1px solid #eee', borderRadius: 8 }}>
+      <img
+        src={displayedRecord.mediaUrl}
+        alt={displayedRecord.title}
+        style={{ width: '100%', borderRadius: 8 }}
+      />
+      <h2>{displayedRecord.title}</h2>
+      <div style={{ fontSize: 13, color: '#666' }}>
+        Domains, {displayedRecord.domains.join(', ')}
+      </div>
+      <div style={{ fontSize: 13, color: '#666', marginTop: 4 }}>
+        Views, {displayedRecord.viewCount}
+      </div>
+    </div>
+  );
+}
+
+export const RecordPagePanelExample = () => <RecordPagePanel />;
+
+```
+
+## Labels dashboard panel
+
+This example shows a dashboard panel listing the knowledge base labels, which represent the projects or collections used to group media records, useful for building navigation or an admin overview.
+
+```tsx
+function LabelsDashboardPanel() {
+  const labels = [
+    { id: '1', slug: 'community-archive', name: 'מאגר הקהילה' },
+    { id: '2', slug: 'audio-history', name: 'היסטוריה קולית' },
+    { id: '3', slug: 'documentaries', name: 'סרטים תיעודיים' },
+  ];
+
+  return (
+    <div style={{ display: 'flex', gap: 12, padding: 16, flexWrap: 'wrap' }}>
+      {labels.map((label) => (
+        <div
+          key={label.id}
+          style={{
+            padding: '12px 16px',
+            borderRadius: 8,
+            background: '#f5f5f5',
+            fontWeight: 600,
+            minWidth: 140,
+            textAlign: 'center',
+          }}
+        >
+          {label.name}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export const LabelsDashboardPanelExample = () => <LabelsDashboardPanel />;
+```

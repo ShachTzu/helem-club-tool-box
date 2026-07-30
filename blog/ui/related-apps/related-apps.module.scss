@@ -1,0 +1,26 @@
+.relatedApps {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.grid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--spacing-medium);
+}
+
+.statusMessage {
+  box-sizing: border-box;
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-muted);
+  padding: var(--spacing-large) 0;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

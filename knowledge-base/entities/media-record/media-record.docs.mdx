@@ -1,0 +1,69 @@
+---
+description: "A MediaRecord entity representing a video or audio item in the knowledge base."
+labels: ['entity', 'media-record', 'knowledge-base']
+---
+
+A `MediaRecord` represents a single video or audio item in the Helam Club knowledge base — belonging to a label (project), tagged with domains, and pointing to an external media file. It supports serialization and de-serialization, and can be used from both backend and frontend.
+
+## Get started
+
+Install and use the component in your code:
+
+```tsx
+import { MediaRecord } from '@helemclub/knowledge-base.entities.media-record';
+
+const record = MediaRecord.from({
+  id: '1',
+  slug: 'grounding-flashbacks',
+  labelId: 'first-aid',
+  title: 'קרקוע ברגע של פלאשבק',
+  description: 'תרגיל מודרך קצר להחזרת תחושת הביטחון בזמן הצפה או פלאשבק.',
+  mediaType: 'video',
+  mediaUrl: 'https://example.com/media/grounding-flashbacks.mp4',
+  thumbnailUrl: 'https://example.com/thumbs/grounding-flashbacks.jpg',
+  durationSec: 504,
+  domains: ['טריגרים', 'חרדה'],
+  viewCount: 3240,
+  publishedAt: '2026-03-01T09:00:00.000Z',
+});
+
+console.log(record.title);
+```
+
+## Serializing and formatting
+
+`MediaRecord` instances expose a `toObject()` method for serialization, as well as convenience helpers such as `isVideo`, `isAudio` and `formattedDuration`:
+
+```tsx
+import { MediaRecord } from '@helemclub/knowledge-base.entities.media-record';
+
+const record = MediaRecord.from({
+  id: '2',
+  slug: 'panic-breathing',
+  labelId: 'first-aid',
+  title: 'נשימה בזמן התקף חרדה',
+  mediaType: 'audio',
+  mediaUrl: 'https://example.com/media/panic-breathing.mp3',
+  domains: ['חרדה'],
+  viewCount: 2115,
+  publishedAt: '2026-02-18T09:00:00.000Z',
+  durationSec: 662,
+});
+
+console.log(record.isAudio); // true
+console.log(record.formattedDuration); // '11:02'
+console.log(record.toObject());
+```
+
+## Mock data
+
+You can use the media record mock data for development and testing purposes using the `mockMediaRecord` and `mockMediaRecords` APIs.
+
+```tsx
+import { mockMediaRecord, mockMediaRecords } from '@helemclub/knowledge-base.entities.media-record';
+
+const record = mockMediaRecord({ title: 'כותרת מותאמת אישית' });
+const records = mockMediaRecords();
+
+console.log(record, records);
+```

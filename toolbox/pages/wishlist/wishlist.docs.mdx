@@ -1,0 +1,46 @@
+---
+description: Community wishlist of proposed coping tools, votable and sorted by popularity.
+labels: ['toolbox', 'page', 'wishlist', 'community']
+---
+
+import { Wishlist } from './wishlist';
+
+The **Wishlist** page (`/toolbox/wishlist`) lets the Helam Club community propose new coping
+tools and vote on ideas submitted by others. Ideas are sorted by vote count, and the
+top-voted ones get priority in development. It is fully RTL and responsive.
+
+## Basic usage
+
+```js
+<Wishlist />
+```
+
+## Providing custom ideas
+
+Pass your own list of ideas via the `ideas` prop:
+
+```js
+<Wishlist
+  ideas={[
+    {
+      id: '1',
+      title: 'יומן טריגרים',
+      description: 'כלי לתיעוד וזיהוי דפוסים.',
+      domains: ['טריגרים'],
+      votes: 42,
+      status: 'בבדיקה',
+      author: 'רון א.',
+    },
+  ]}
+/>
+```
+
+## Custom hero copy
+
+```js
+<Wishlist
+  heroTitle="מה תרצו שנבנה?"
+  heroSubtitle="הרעיונות שלכם מעצבים את ארגז הכלים."
+  proposeHref="/toolbox/wishlist/new"
+/>
+```

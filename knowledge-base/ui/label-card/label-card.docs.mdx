@@ -1,0 +1,80 @@
+---
+description: "A card presenting a knowledge-base label (project): cover image, name, description and record count."
+labels: ["card", "knowledge-base", "label", "rtl"]
+---
+
+The `LabelCard` component presents a knowledge-base label (a "project" grouping media records), showing its cover image, name, description and record count. The whole card links to the label's lobby page, and is rendered right-to-left (RTL) for Hebrew content.
+
+## Basic usage
+
+Render a card for a single label:
+
+```tsx
+<LabelCard
+  label={{
+    id: `label-first-aid`,
+    slug: `first-aid`,
+    name: `עזרה ראשונה`,
+    description: `כלים מיידיים לרגעי הצפה, חרדה ומשבר — זמינים בכל רגע.`,
+    coverImage:
+      `https://storage.googleapis.com/bit-generated-images/images/image_a_calming_abstract_illustratio_0_1785184760332.png`,
+    recordCount: 12,
+  }}
+/>
+```
+
+## Grid of labels
+
+Use the card inside a responsive grid to present multiple projects:
+
+```tsx
+<div
+  style={{
+    display: `grid`,
+    gridTemplateColumns: `repeat(auto-fill, minmax(240px, 1fr))`,
+    gap: 18,
+  }}
+>
+  <LabelCard
+    label={{
+      id: `label-after`,
+      slug: `after`,
+      name: `אפטר`,
+      description: `סדרת שיחות על החיים שאחרי — התמודדות, צמיחה והחלמה.`,
+      coverImage:
+        `https://storage.googleapis.com/bit-generated-images/images/image_a_serene_sunrise_over_calm_wat_0_1785184760306.png`,
+      recordCount: 18,
+    }}
+  />
+  <LabelCard
+    label={{
+      id: `label-recognition`,
+      slug: `recognition`,
+      name: `הכרה`,
+      description: `הבנה והכרה של תסמיני פוסט-טראומה — ידע מקצועי בגובה העיניים.`,
+      coverImage:
+        `https://storage.googleapis.com/bit-generated-images/images/image_an_abstract_illustration_of_a__0_1785184760710.png`,
+      recordCount: 9,
+    }}
+  />
+</div>
+```
+
+## Custom link destination
+
+Override the default lobby link (`/knowledge/{slug}`) with a custom `href`:
+
+```tsx
+<LabelCard
+  label={{
+    id: `label-talking-therapy`,
+    slug: `talking-therapy`,
+    name: `מדברים טיפול`,
+    description: `סדרה על עולם הטיפול — גישות, כלים ומה שכדאי לדעת לפני שמתחילים.`,
+    coverImage:
+      `https://storage.googleapis.com/bit-generated-images/images/image_two_abstract_chairs_facing_eac_0_1785184760363.png`,
+    recordCount: 15,
+  }}
+  href="/knowledge/talking-therapy"
+/>
+```

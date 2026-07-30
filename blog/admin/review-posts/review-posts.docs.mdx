@@ -1,0 +1,68 @@
+---
+description: "Post review/proofing queue for pending blog submissions, with edit, approve and reject actions. Protected to moderators and admins. RTL."
+labels: ["blog", "admin", "review", "moderation"]
+---
+
+The `ReviewPosts` component renders the moderation queue for blog posts awaiting review. It lists every pending submission, lets a moderator edit the title, excerpt and body before publishing, and exposes approve (publish) and reject actions per post. Access is restricted to users with the `moderator` or `admin` role.
+
+It is intended to be registered as an `AdminPanel` entry in the platform's admin shell.
+
+## Basic usage
+
+Render the queue for the currently signed-in moderator or admin. In production, the component fetches the pending posts list and resolves the current user through the platform's auth hook.
+
+```tsx
+<ReviewPosts />
+```
+
+## With mock data (preview / testing)
+
+Provide mock data for both the pending posts queue and the signed-in user to bypass the network calls entirely.
+
+```tsx
+const adminUser = {
+  id: `admin-1`,
+  email: `admin@helem.club`,
+  displayName: `הלם אדמין`,
+  role: `admin` as const,
+  provider: `email` as const,
+  createdAt: new Date(`2024-01-15T09:30:00.000Z`).toISOString(),
+};
+
+const pendingPosts = [
+  {
+    id: `post-1`,
+    slug: `grounding-toolkit`,
+    title: `5 כלים שעוזרים לי עם טריגרים`,
+    excerpt: `רשימה פרקטית של כלים קטנים שאני משתמש בהם ברגעים של הצפה.`,
+    body: `<p>גוף הכתבה המלא...</p>`,
+    authorName: `רון אבני`,
+    isStaffAuthor: false,
+    domains: [`טריגרים`, `מיינדפולנס ונשימות`],
+    embeddedApps: [],
+    status: `pending` as const,
+    visibility: `public` as const,
+    viewCount: 0,
+    uniqueVisitors: 0,
+  },
+];
+
+<ReviewPosts mockUser={adminUser} mockData={pendingPosts} />;
+```
+
+## Empty queue state
+
+When there are no posts awaiting review, the component shows a friendly confirmation message instead of an empty list.
+
+```tsx
+const adminUser = {
+  id: `admin-2`,
+  email: `admin2@helem.club`,
+  displayName: `אדמין נוסף`,
+  role: `admin` as const,
+  provider: `email` as const,
+  createdAt: new Date(`2024-04-01T09:30:00.000Z`).toISOString(),
+};
+
+<ReviewPosts mockUser={adminUser} mockData={[]} />;
+```

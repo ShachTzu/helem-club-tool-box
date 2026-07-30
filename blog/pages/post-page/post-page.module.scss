@@ -1,0 +1,65 @@
+.postPage {
+  width: 100%;
+}
+
+.loading {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--helam-color-text-muted, #6b7c8f);
+}
+
+.breadcrumbs {
+  font-size: 13.5px;
+  color: var(--helam-color-text-muted, #6b7c8f);
+  margin: 12px 0 20px;
+
+  a {
+    color: var(--helam-color-secondary, #4f6d7a);
+    text-decoration: none;
+  }
+}
+
+.article {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.domains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.domainLink {
+  text-decoration: none;
+}
+
+.title {
+  margin: 0 0 12px;
+  font-size: clamp(28px, 4.5vw, 40px);
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--helam-color-primary, #0b1a30);
+}
+
+.excerpt {
+  margin: 0 0 18px;
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--helam-color-text-muted, #6b7c8f);
+}
+
+.cover {
+  width: 100%;
+  border-radius: 16px;
+  margin-bottom: 28px;
+}
+
+.engagement {
+  margin-top: 32px;
+}

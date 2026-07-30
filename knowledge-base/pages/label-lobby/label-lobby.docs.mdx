@@ -1,0 +1,71 @@
+---
+description: "Label lobby page: a label's header and description, and a grid of its media records with domain filtering."
+labels: ["knowledge-base", "label", "lobby", "page"]
+---
+
+The `LabelLobby` component renders the `/knowledge/:labelSlug` page: a hero section with the label's (project's) name and description, followed by a grid of its media records. Records can be filtered by coping domain using a multi-select chip bar.
+
+The component reads the label slug from the route params, so it must be rendered under a route like `/knowledge/:labelSlug`. It relies on the `useLabel` and `useRecords` hooks to fetch data — pass `mockLabel` / `mockRecords` / `mockDomains` to skip the network request in tests and compositions.
+
+### Basic usage
+
+```tsx
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { LabelLobby } from '@helemclub/knowledge-base.pages.label-lobby';
+
+export function LabelLobbyExample() {
+  return (
+    <MemoryRouter initialEntries={['/knowledge/first-aid']}>
+      <Routes>
+        <Route path="/knowledge/:labelSlug" element={<LabelLobby />} />
+      </Routes>
+    </MemoryRouter>
+  );
+}
+```
+
+### Rendering with mock data
+
+Provide `mockLabel`, `mockRecords` and `mockDomains` to render the page without a network request, useful for previews and tests:
+
+```tsx
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { LabelLobby } from '@helemclub/knowledge-base.pages.label-lobby';
+import { mockLabel } from '@helemclub/knowledge-base.entities.label';
+import { mockMediaRecords } from '@helemclub/knowledge-base.entities.media-record';
+
+export function LabelLobbyWithMockDataExample() {
+  return (
+    <MemoryRouter initialEntries={['/knowledge/first-aid']}>
+      <Routes>
+        <Route
+          path="/knowledge/:labelSlug"
+          element={<LabelLobby mockLabel={mockLabel().toObject()} mockRecords={mockMediaRecords()} />}
+        />
+      </Routes>
+    </MemoryRouter>
+  );
+}
+```
+
+### Customizing link destinations
+
+Use `labelsLinkBase` to control where the "back to all labels" action in the not-found state links to, and `domainLinkBase` to control where domain badges on each record card link to:
+
+```tsx
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { LabelLobby } from '@helemclub/knowledge-base.pages.label-lobby';
+
+export function LabelLobbyCustomLinksExample() {
+  return (
+    <MemoryRouter initialEntries={['/knowledge/first-aid']}>
+      <Routes>
+        <Route
+          path="/knowledge/:labelSlug"
+          element={<LabelLobby labelsLinkBase="/knowledge" domainLinkBase="/domains" />}
+        />
+      </Routes>
+    </MemoryRouter>
+  );
+}
+```

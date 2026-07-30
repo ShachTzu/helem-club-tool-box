@@ -1,0 +1,101 @@
+---
+description: "A plugable Helam Platform aspect used to manage authentication, routing, navigation, and layout across the Helam Club application."
+labels: ['aspect', 'platform', 'composition']
+---
+
+The Helam Platform aspect maintains authentication, navigation, routing and layout slots for the Helam Club application. It exposes registration APIs for routes, navigation items, header actions, admin routes and footer links, and connects the browser runtime to a Node backend that manages users through MongoDB.
+
+## Compose the platform
+
+Compose the Helam Platform aspect into a Symphony platform to enable authentication, routing and layout across the application.
+
+```tsx
+function PlatformComposition() {
+  const platformInfo = {
+    name: 'helam-club',
+    aspectId: 'helemclub.platform/helam-platform',
+  };
+
+  return (
+    <div style={{ padding: 16, fontFamily: 'sans-serif' }}>
+      <h3>{platformInfo.name}</h3>
+      <p>Aspect id, {platformInfo.aspectId}</p>
+    </div>
+  );
+}
+
+```
+
+## Register navigation items and footer links
+
+Feature aspects register navigation items and footer links onto shared slots, which are then rendered by the app layout. This example simulates the registration data and displays it in a simple menu.
+
+```tsx
+function NavigationPreview() {
+  const navigationItems = [
+    { label: 'בית', href: '/', order: 1 },
+    { label: 'פרופיל', href: '/profile', order: 2 },
+    { label: 'ניהול', href: '/admin', order: 3 },
+  ];
+
+  const footerLinks = [
+    { label: 'תנאי שימוש', href: '/terms', group: 'legal' },
+    { label: 'צור קשר', href: '/contact', group: 'support' },
+  ];
+
+  return (
+    <div dir="rtl" style={{ padding: 16, fontFamily: 'sans-serif' }}>
+      <nav>
+        <ul style={{ display: 'flex', gap: 12, listStyle: 'none', padding: 0 }}>
+          {navigationItems
+            .sort((a, b) => (a.order || 0) - (b.order || 0))
+            .map((item) => (
+              <li key={item.href}>
+                <a href={item.href}>{item.label}</a>
+              </li>
+            ))}
+        </ul>
+      </nav>
+      <hr />
+      <footer>
+        <ul style={{ display: 'flex', gap: 12, listStyle: 'none', padding: 0 }}>
+          {footerLinks.map((link) => (
+            <li key={link.href}>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </footer>
+    </div>
+  );
+}
+
+```
+
+## Render an admin dashboard with registered admin routes
+
+Feature aspects can register admin sections that get mounted into the admin dashboard. This example renders a list of admin routes passed in as props, simulating the registered admin slot contents.
+
+```tsx
+function AdminDashboardPreview() {
+  const adminRoutes = [
+    { path: '/admin/users', label: 'ניהול משתמשים' },
+    { path: '/admin/content', label: 'ניהול תוכן' },
+    { path: '/admin/settings', label: 'הגדרות מערכת' },
+  ];
+
+  return (
+    <div dir="rtl" style={{ padding: 16, fontFamily: 'sans-serif' }}>
+      <h4>לוח ניהול</h4>
+      <ul>
+        {adminRoutes.map((route) => (
+          <li key={route.path}>
+            <strong>{route.label}</strong>
+            <span style={{ marginRight: 8, color: '#666' }}>{route.path}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```

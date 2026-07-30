@@ -1,0 +1,52 @@
+---
+description: "A themed, RTL-friendly button with five variants, three sizes, loading/disabled states and icon support."
+labels: ["button", "action", "cta", "rtl"]
+---
+
+The `Button` component is the core call-to-action element of the Helam Club design system. It supports five
+visual variants (`primary`, `accent`, `secondary`, `ghost`, `danger`), three sizes (`sm`, `md`, `lg`), loading
+and disabled states, optional leading/trailing icons, and can render as a link when given an `href`.
+
+## Basic usage
+
+```tsx
+<Button variant="primary">שמור שינויים</Button>
+```
+
+## Variants
+
+Use `accent` (amber) for primary calls to action, `primary` (navy) for standard confirmations, `secondary` for
+outlined actions, `ghost` for low-emphasis actions and `danger` for destructive actions.
+
+```tsx
+<div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+  <Button variant="primary">שמירה</Button>
+  <Button variant="accent">הצטרפו עכשיו</Button>
+  <Button variant="secondary">למדו עוד</Button>
+  <Button variant="ghost">ביטול</Button>
+  <Button variant="danger">מחיקת חשבון</Button>
+</div>
+```
+
+## Sizes
+
+```tsx
+<div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+  <Button size="sm">קטן</Button>
+  <Button size="md">בינוני</Button>
+  <Button size="lg">גדול</Button>
+</div>
+```
+
+## Loading, disabled and icons
+
+Pass `loading` to show a spinner while keeping the button's dimensions, `disabled` to block interaction, and
+`leadingIcon`/`trailingIcon` to render icons alongside the label. Pass `href` to render the button as a link.
+
+```tsx
+<div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+  <Button variant="accent" loading>שולח</Button>
+  <Button variant="secondary" disabled>לא זמין</Button>
+  <Button variant="primary" href="/domains">מעבר לתחומים</Button>
+</div>
+```

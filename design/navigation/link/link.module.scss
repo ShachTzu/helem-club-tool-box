@@ -1,0 +1,83 @@
+.link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  color: var(--colors-text-primary);
+  text-decoration: none;
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-medium);
+  cursor: var(--interactions-cursor-pointer);
+  white-space: nowrap;
+  transition: color var(--interactions-transitions-duration-fast)
+    var(--interactions-transitions-easing-ease-out);
+}
+
+.label {
+  position: relative;
+  display: inline-block;
+}
+
+.block {
+  display: block;
+  width: 100%;
+  white-space: normal;
+}
+
+.block .label {
+  display: block;
+  width: 100%;
+}
+
+.block .label::after {
+  display: none;
+}
+
+.label::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  right: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--colors-accent-default);
+  transition: width var(--interactions-transitions-duration-medium)
+    var(--interactions-transitions-easing-ease-out);
+}
+
+.link:hover {
+  color: var(--colors-accent-default);
+}
+
+.link:hover .label::after {
+  width: 100%;
+}
+
+.active {
+  color: var(--colors-accent-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+}
+
+.active .label::after {
+  width: 100%;
+}
+
+.inverse {
+  color: var(--colors-text-inverse);
+}
+
+.inverse:hover {
+  color: var(--colors-accent-default);
+}
+
+.inverse.active {
+  color: var(--colors-accent-default);
+}
+
+.externalIcon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  color: currentColor;
+}

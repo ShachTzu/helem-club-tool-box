@@ -1,0 +1,134 @@
+---
+description: "A pluggable Blog aspect for managing articles and editorial workflow"
+labels: ['aspect', 'blog', 'content']
+---
+
+The Blog aspect powers articles, community submissions and editorial moderation across the platform. It exposes a GraphQL API for listing posts, fetching a single post by slug and submitting new articles for review.
+
+## List published posts
+
+This example renders a simple list of published blog posts using data passed directly to the component.
+
+```tsx
+function BlogPostList({ posts }) {
+  return (
+    <div>
+      <h2>Latest Posts</h2>
+      <ul>
+        {posts.map((post) => (
+          <li key={post.id}>
+            <strong>{post.title}</strong>
+            <span> in </span>
+            <span>{post.domains.join(', ')}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export function BlogPostListExample() {
+  const mockPosts = [
+    {
+      id: '1',
+      slug: 'welcome-to-helem-club',
+      title: 'Welcome to Helem Club Blog',
+      domains: ['general', 'tech'],
+      status: 'published',
+    },
+    {
+      id: '2',
+      slug: 'community-updates-2025',
+      title: 'Community Updates and Future Plans',
+      domains: ['community'],
+      status: 'published',
+    },
+  ];
+
+  return <BlogPostList posts={mockPosts} />;
+}
+
+```
+
+## Display a single post
+
+This example shows a full article page built from a single post object passed as a prop, useful for the post detail route.
+
+```tsx
+function PostView({ post }) {
+  if (!post) {
+    return <p>Post not found</p>;
+  }
+
+  return (
+    <article>
+      <h1>{post.title}</h1>
+      <p>{post.body}</p>
+      <footer>Status, {post.status}</footer>
+    </article>
+  );
+}
+
+export function PostViewExample() {
+  const mockPost = {
+    id: '3',
+    slug: 'getting-started-with-development',
+    title: 'Getting Started with Development',
+    body: 'A comprehensive guide to starting your development journey.',
+    domains: ['tech', 'tutorials'],
+    status: 'pending',
+  };
+
+  return <PostView post={mockPost} />;
+}
+
+```
+
+## Submit a community article
+
+This example demonstrates a submission form component that collects a title, body and domains, then calls an onSubmit handler passed in through props, representing the community submission flow that creates a pending post.
+
+```tsx
+function SubmitArticleForm({ onSubmit }) {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const title = formData.get('title');
+    const body = formData.get('body');
+    const domains = ['community'];
+
+    onSubmit({ title, body, domains });
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Title
+        <input name="title" type="text" />
+      </label>
+      <label>
+        Body
+        <textarea name="body" />
+      </label>
+      <button type="submit">Submit for review</button>
+    </form>
+  );
+}
+
+export function SubmitArticleFormExample() {
+  const handleCreatePost = (input) => {
+    const submitted = {
+      id: 'new-id',
+      slug: 'new-post',
+      title: input.title,
+      body: input.body,
+      domains: input.domains,
+      status: 'pending',
+    };
+
+    return submitted;
+  };
+
+  return <SubmitArticleForm onSubmit={handleCreatePost} />;
+}
+```

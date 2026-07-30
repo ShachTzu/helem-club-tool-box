@@ -1,0 +1,41 @@
+.wrapper {
+  position: relative;
+  display: inline-flex;
+  isolation: isolate;
+}
+
+.wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  z-index: 0;
+  border-radius: var(--borders-radius-large);
+  background: var(--colors-accent-default);
+  opacity: 0;
+  filter: blur(var(--effects-blur-medium));
+  transition: opacity var(--interactions-transitions-duration-medium)
+    var(--interactions-transitions-easing-ease-out);
+  pointer-events: none;
+}
+
+.wrapper:hover::before {
+  opacity: 0.5;
+}
+
+.fullWidth {
+  display: flex;
+  width: 100%;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  width: 100%;
+  transition: transform var(--interactions-transitions-duration-fast)
+    var(--interactions-transitions-easing-ease-out);
+}
+
+.wrapper:hover .content {
+  transform: translateY(var(--interactions-hover-effect-translate-y));
+}

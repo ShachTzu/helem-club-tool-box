@@ -1,0 +1,60 @@
+---
+description: "Admin CRUD panel for knowledge base labels (name, slug, description, cover image). RTL, registered as an AdminPanel."
+labels: ['admin', 'labels', 'knowledge-base', 'crud']
+---
+
+The `ManageLabels` component is an admin CRUD panel for knowledge base labels ("projects") such as "עזרה ראשונה" or "אפטר". It lists existing labels in a table, and allows an admin to create a new label or edit an existing one — name, slug, description and cover image.
+
+## Usage
+
+Render the panel directly to manage the live list of labels, backed by the `useLabels`/`useUpsertLabel` hooks.
+
+```tsx
+const ManageLabelsPanel = () => {
+  return <ManageLabels />;
+};
+```
+
+### With mock data
+
+Pass `mockLabels` to render the panel with a fixed list of labels, useful for tests and previews without hitting the network.
+
+```tsx
+const MockedManageLabels = () => {
+  const labels = [
+    {
+      id: 'label-first-aid',
+      slug: 'first-aid',
+      name: 'עזרה ראשונה',
+      description: 'כלים מיידיים לרגעי הצפה, חרדה ומשבר.',
+      coverImage: 'https://storage.googleapis.com/bit-generated-images/images/image_a_calming_abstract_illustratio_0_1785194345564.png',
+      recordCount: 12,
+    },
+  ];
+
+  return <ManageLabels mockLabels={labels} />;
+};
+```
+
+### Registering as an AdminPanel
+
+`ManageLabels` is meant to be registered by the knowledge base aspect through the platform's `AdminPanel` slot, so it appears as a tab inside the admin shell alongside other panels (users, toolbox, blog, moderation).
+
+```tsx
+const registerManageLabelsPanel = () => {
+  return {
+    id: 'labels',
+    label: 'ניהול תוויות',
+    path: '/admin/labels',
+    component: ManageLabels,
+    roles: ['admin'],
+  };
+};
+```
+
+## Behavior
+
+- The labels table shows the project name, slug, cover thumbnail, description and content count.
+- Clicking "תווית חדשה" opens a form to create a new label; the slug is auto-derived from the name until manually edited.
+- Clicking "עריכה" on a row opens the same form pre-filled with the selected label's values, and saving upserts it by slug.
+- Validation prevents saving a label without a name or a slug, and a success/error banner reflects the save outcome.

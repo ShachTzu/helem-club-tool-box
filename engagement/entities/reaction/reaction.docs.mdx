@@ -1,0 +1,72 @@
+---
+labels: ['reaction', 'entity', 'engagement']
+description: "A Reaction entity representing a single device's like/emoji reaction to a piece of content."
+---
+
+A component for a `Reaction` entity, supporting serialization and de-serialization of Reaction objects. Used to track lightweight, anonymous engagement (likes and emoji reactions) across posts, knowledge records, events, gallery items, and apps — one reaction per device per object.
+
+## Get started
+
+Install and use the component in your code:
+
+```tsx
+import { Reaction } from '@helemclub/engagement.entities.reaction';
+
+const reaction = Reaction.from({
+  id: 'r1',
+  targetType: 'post',
+  targetId: 'post-finding-calm-in-the-storm',
+  type: 'like',
+  deviceId: 'device-abc123',
+});
+
+console.log(reaction.toObject());
+```
+
+## Serialization
+
+`Reaction` instances can be serialized back into plain, transportable objects using `toObject()` — useful when sending data over the network or storing it.
+
+```tsx
+import { Reaction } from '@helemclub/engagement.entities.reaction';
+
+function ReactionSummary() {
+  const reaction = Reaction.from({
+    id: 'r2',
+    targetType: 'record',
+    targetId: 'record-grounding-technique',
+    type: 'heart',
+    deviceId: 'device-xyz789',
+  });
+
+  const plain = reaction.toObject();
+
+  return (
+    <pre style={{ fontFamily: 'monospace', fontSize: 13 }}>
+      {JSON.stringify(plain, null, 2)}
+    </pre>
+  );
+}
+```
+
+## Mock data
+
+Use the mock helpers for development and testing purposes.
+
+```tsx
+import { mockReactions } from '@helemclub/engagement.entities.reaction';
+
+function ReactionList() {
+  const reactions = mockReactions();
+
+  return (
+    <ul>
+      {reactions.map((reaction) => (
+        <li key={reaction.id}>
+          {reaction.targetType}/{reaction.targetId} — {reaction.type} ({reaction.deviceId})
+        </li>
+      ))}
+    </ul>
+  );
+}
+```

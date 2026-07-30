@@ -1,0 +1,39 @@
+---
+description: "Page inner content layout — max-width container, responsive horizontal padding, and vertical rhythm. RTL."
+labels: ['layout', 'page', 'container', 'rtl']
+---
+
+The `PageLayout` component provides the inner content structure for a page: a centered max-width container, responsive horizontal padding and consistent vertical rhythm between sections. It does not render a header or footer — those are composed around it by the app layout.
+
+## Basic usage
+
+Wrap page sections with `PageLayout` to get a consistent max-width container and spacing between them.
+
+```tsx
+<PageLayout>
+  <div>כותרת העמוד</div>
+  <div>תוכן ראשי</div>
+</PageLayout>
+```
+
+## Controlling vertical rhythm
+
+Use the `spacing` prop to control the gap between sections and the top/bottom padding. Available options are `compact`, `default` and `relaxed`.
+
+```tsx
+<PageLayout spacing="compact">
+  <div>עדכון קצר</div>
+  <div>מידע נוסף</div>
+</PageLayout>
+```
+
+## Rendering a different element
+
+By default the layout renders a `main` element. Use the `as` prop to render a different semantic element, for example when nesting layouts inside a page that already has a `main` element.
+
+```tsx
+<PageLayout as="section" spacing="relaxed">
+  <div>סקציה ראשונה</div>
+  <div>סקציה שנייה</div>
+</PageLayout>
+```

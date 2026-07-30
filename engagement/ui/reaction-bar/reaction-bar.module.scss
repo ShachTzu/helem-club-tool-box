@@ -1,0 +1,98 @@
+.reactionBar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  flex-wrap: wrap;
+  font-family: var(--typography-font-family);
+  direction: var(--layout-direction);
+}
+
+.option {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  background-color: var(--colors-surface-primary);
+  color: var(--colors-text-secondary);
+  font-family: inherit;
+  font-weight: var(--typography-font-weight-semi-bold);
+  font-size: var(--typography-sizes-body-small);
+  padding: 7px 14px;
+  border-radius: var(--borders-radius-pill);
+  cursor: var(--interactions-cursor-pointer);
+  transition: background-color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out),
+    border-color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out),
+    color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out),
+    transform var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out);
+}
+
+.option:hover:not(.disabled) {
+  border-color: var(--colors-accent-default);
+  background-color: var(--colors-surface-secondary);
+}
+
+.option:active:not(.disabled) {
+  transform: scale(0.96);
+}
+
+.active {
+  border-color: var(--colors-accent-default);
+  background-color: var(--colors-accent-default);
+  color: var(--colors-primary-default);
+}
+
+.active:hover:not(.disabled) {
+  background-color: var(--colors-accent-hover);
+}
+
+.disabled {
+  cursor: var(--interactions-cursor-disabled);
+  opacity: var(--effects-opacity-disabled);
+}
+
+.emoji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.bump {
+  animation: bump var(--interactions-transitions-duration-medium) var(--interactions-transitions-easing-spring);
+}
+
+@keyframes bump {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.35);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.count {
+  display: inline-flex;
+  min-width: 12px;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.totalCount {
+  color: var(--colors-text-muted);
+  font-size: var(--typography-sizes-caption-default);
+  margin-inline-start: 4px;
+}
+
+.errorMessage {
+  color: var(--colors-status-negative-default);
+  font-size: var(--typography-sizes-caption-default);
+  width: 100%;
+}

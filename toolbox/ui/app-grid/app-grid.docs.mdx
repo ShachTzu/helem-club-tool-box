@@ -1,0 +1,44 @@
+---
+description: "Responsive grid of app cards with empty state. RTL."
+labels: ["grid", "apps", "toolbox", "rtl"]
+---
+
+The `AppGrid` component renders a responsive grid of toolbox app cards, ported from the Helam Club marketplace prototype's toolbox catalog layout. It shows a friendly empty state when no apps are available, for example after filtering.
+
+## Basic usage
+
+Renders the default mock catalog of toolbox apps as a responsive grid of cards.
+
+```tsx
+<AppGrid />
+```
+
+## Rendering a filtered list of apps
+
+Pass a specific list of apps, for example only the featured ones recommended by the community.
+
+```tsx
+import { mockApps } from '@helemclub/toolbox.entities.app';
+
+function FeaturedApps() {
+  const apps = mockApps()
+    .map((app) => app.toObject())
+    .filter((app) => app.isFeatured);
+
+  return <AppGrid apps={apps} />;
+}
+```
+
+## Empty state
+
+When the `apps` array is empty, the grid renders a friendly empty state with an optional call-to-action, useful after filters return no results.
+
+```tsx
+<AppGrid
+  apps={[]}
+  emptyTitle="לא נמצאו כלים בתחום שבחרתם"
+  emptyDescription="נסו לבחור תחום אחר או לאפס את הסינון כדי לראות את כל הכלים בארגז."
+  emptyActionLabel="איפוס סינון"
+  emptyActionHref="/toolbox"
+/>
+```

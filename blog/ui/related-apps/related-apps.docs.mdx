@@ -1,0 +1,32 @@
+---
+description: "'אפליקציות שיכולות לעזור' section: toolbox apps sharing a domain with the post. RTL, responsive."
+labels: ['blog', 'toolbox', 'related-apps', 'rtl']
+---
+
+The `RelatedApps` component renders a section titled "אפליקציות שיכולות לעזור" at the bottom of a blog post,
+showing toolbox apps that share at least one coping-domain with the post. It hides itself entirely when no
+related apps are found.
+
+## Basic usage
+
+Render the section with the post's coping-domains:
+
+```tsx
+<RelatedApps domains={[`מיינדפולנס ונשימות`, `חרדה`]} />
+```
+
+## Limiting the number of apps
+
+Control how many related apps are shown using `maxApps`:
+
+```tsx
+<RelatedApps domains={[`טריגרים`, `ויסות רגשי`]} maxApps={2} />
+```
+
+## Custom title
+
+Override the section title when needed:
+
+```tsx
+<RelatedApps title="כלים שיכולים לעזור לך" domains={[`שינה`]} />
+```

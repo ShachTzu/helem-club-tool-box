@@ -1,0 +1,68 @@
+---
+description: "A Label entity representing a knowledge base project (id, slug, Hebrew name, description, coverImage, recordCount)."
+labels: ['entity', 'label', 'knowledge-base']
+---
+
+A `Label` groups media records into a project / series within the Helem Club knowledge base — for example
+"עזרה ראשונה" (First Aid) or "אפטר" (After). It supports serialization and de-serialization and can be used
+from both the backend and the frontend.
+
+## Get started
+
+Create a `Label` instance from a plain object using the `Label.from()` factory:
+
+```tsx
+import { Label } from '@helemclub/knowledge-base.entities.label';
+
+const label = Label.from({
+  id: 'label-first-aid',
+  slug: 'first-aid',
+  name: 'עזרה ראשונה',
+  description: 'כלים מיידיים לרגעי הצפה, חרדה ומשבר — זמינים בכל רגע.',
+  coverImage: 'https://storage.googleapis.com/bit-generated-images/images/image_a_calming_abstract_illustratio_0_1785184760332.png',
+  recordCount: 12,
+});
+
+console.log(label.name);
+```
+
+## Serializing a label
+
+Use `toObject()` to convert a `Label` instance back into a plain, serializable object — useful when sending data
+over the network or storing it.
+
+```tsx
+import { Label } from '@helemclub/knowledge-base.entities.label';
+
+const label = Label.from({
+  id: 'label-after',
+  slug: 'after',
+  name: 'אפטר',
+  description: 'סדרת שיחות על החיים שאחרי — התמודדות, צמיחה והחלמה.',
+  recordCount: 18,
+});
+
+const plainLabel = label.toObject();
+console.log(plainLabel);
+```
+
+## Mock data
+
+Use `mockLabels()` to get the 5 seed project labels for development and testing. Each entry can be partially
+overridden by passing an array of overrides aligned by index:
+
+```tsx
+import { mockLabels } from '@helemclub/knowledge-base.entities.label';
+
+const labels = mockLabels();
+labels.forEach((label) => console.log(label.slug, label.name, label.recordCount));
+```
+
+Use `mockLabel()` to get a single mock label, optionally overriding any of its properties:
+
+```tsx
+import { mockLabel } from '@helemclub/knowledge-base.entities.label';
+
+const label = mockLabel({ name: 'תווית לדוגמה', recordCount: 3 });
+console.log(label.name, label.recordCount);
+```

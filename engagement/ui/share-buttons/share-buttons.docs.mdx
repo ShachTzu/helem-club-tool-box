@@ -1,0 +1,51 @@
+---
+description: "Standard social share buttons (WhatsApp, Facebook, X, copy link) for a given url and title."
+labels: ["share", "social", "buttons", "rtl"]
+---
+
+The `ShareButtons` component renders a compact, RTL-ready row of social sharing actions — WhatsApp, Facebook, X and copy-link — for any given `url` and `title`. It is used across the Helam Club platform on blog posts, events, apps and gallery items so members can easily spread content that helped them.
+
+## Basic usage
+
+Render the component with a `url` and `title` describing the shared content:
+
+```tsx
+<ShareButtons
+  url="https://helam.club/blog/hachlama-mehatgobut"
+  title="שביל ההחלמה מהתגובתיות — כתבה מהבלוג של הלם קלאב"
+/>
+```
+
+## Limiting the networks
+
+Pass a `networks` array to control which buttons are rendered, and in which order:
+
+```tsx
+<ShareButtons
+  url="https://helam.club/toolbox/breathe-app"
+  title="אפליקציית תרגול נשימות להרגעה מהירה"
+  networks={['whatsapp', 'copy']}
+/>
+```
+
+## Reacting to a share action
+
+Use the `onShare` callback to track which network was used, for example to log analytics or update UI:
+
+```tsx
+function ShareTracker() {
+  const [lastShared, setLastShared] = React.useState<string | null>(null);
+
+  return (
+    <div>
+      <ShareButtons
+        url="https://helam.club/events/mifgash-tmicha"
+        title="מפגש תמיכה חודשי — הלם קלאב"
+        label="שתפו את המפגש:"
+        onShare={(network) => setLastShared(network)}
+      />
+      {lastShared && <p>שותף לאחרונה דרך: {lastShared}</p>}
+    </div>
+  );
+}
+```

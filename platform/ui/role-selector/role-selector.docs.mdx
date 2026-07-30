@@ -1,0 +1,49 @@
+---
+description: "A dropdown to pick a user role (member/writer/moderator/admin) with Hebrew labels, used in user admin."
+labels: ["dropdown", "role", "admin", "select"]
+---
+
+The `RoleSelector` renders the current role as a colored badge inside a button, and opens a menu listing all roles in the Helem Club hierarchy — חבר קהילה, כותב, מודרטור and אדמין — each with a short Hebrew description.
+
+## Basic usage
+
+Control the selected role from the parent component and react to changes via `onChange`:
+
+```tsx
+function Example() {
+  const [role, setRole] = React.useState('member');
+
+  return <RoleSelector value={role} onChange={(next) => setRole(next)} />;
+}
+```
+
+## Usage in a users table
+
+Render a `RoleSelector` per row to let admins change a user's role inline:
+
+```tsx
+function UsersTable() {
+  const [roles, setRoles] = React.useState({ sam: 'member', noa: 'writer' });
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <span>Sam Doe</span>
+        <RoleSelector value={roles.sam} onChange={(next) => setRoles({ ...roles, sam: next })} />
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <span>Noa Writer</span>
+        <RoleSelector value={roles.noa} onChange={(next) => setRoles({ ...roles, noa: next })} />
+      </div>
+    </div>
+  );
+}
+```
+
+## Disabled state
+
+Prevent role changes, for example when the current admin lacks permission to edit a given user:
+
+```tsx
+<RoleSelector value="admin" disabled />
+```

@@ -1,0 +1,65 @@
+---
+description: "A lightweight tooltip that appears on hover/focus, RTL positioned, for icon buttons and hover popovers."
+labels: ["tooltip", "overlay", "popover", "rtl"]
+---
+
+The `Tooltip` component wraps any trigger element (icon button, link, metric card) and shows a small contextual bubble of text when the user hovers or focuses the trigger. It is positioned for RTL layouts and can flip between `top`, `bottom`, `start` and `end` placements.
+
+## Basic usage
+
+Wrap any element with the `Tooltip` and provide a `content` value:
+
+```tsx
+import { Tooltip } from '@helemclub/design.overlays.tooltip';
+
+function BasicExample() {
+  return (
+    <Tooltip content="שמירה לקריאה מאוחרת">
+      <button type="button">🔖</button>
+    </Tooltip>
+  );
+}
+```
+
+## Placement
+
+Use the `placement` prop to control where the bubble appears relative to the trigger. `start` and `end` are logical directions that respect the RTL layout.
+
+```tsx
+import { Tooltip } from '@helemclub/design.overlays.tooltip';
+
+function PlacementExample() {
+  return (
+    <div style={{ display: 'flex', gap: 24 }}>
+      <Tooltip content="מוצג מלמעלה" placement="top">
+        <button type="button">מעלה</button>
+      </Tooltip>
+      <Tooltip content="מוצג מלמטה" placement="bottom">
+        <button type="button">מטה</button>
+      </Tooltip>
+      <Tooltip content="מוצג בצד ההתחלה" placement="start">
+        <button type="button">התחלה</button>
+      </Tooltip>
+      <Tooltip content="מוצג בצד הסוף" placement="end">
+        <button type="button">סוף</button>
+      </Tooltip>
+    </div>
+  );
+}
+```
+
+## Disabling the tooltip
+
+Set `disabled` to prevent the tooltip from ever appearing, useful when the trigger already communicates its purpose:
+
+```tsx
+import { Tooltip } from '@helemclub/design.overlays.tooltip';
+
+function DisabledExample() {
+  return (
+    <Tooltip content="לא יוצג" disabled>
+      <button type="button">כפתור ללא רמז</button>
+    </Tooltip>
+  );
+}
+```

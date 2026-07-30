@@ -1,0 +1,47 @@
+---
+description: "Renders a post's rich-text body with images and inline app-embed blocks, resolving toolbox app ids. Comfortable Hebrew long-read typography, RTL."
+labels: ["blog", "post", "rich-text", "rtl"]
+---
+
+The `PostBody` component renders a blog post's rich-text body content with comfortable Hebrew long-read typography. It supports inline images and inline toolbox app-embed blocks through simple embed markers inside the HTML body string.
+
+## Usage
+
+Render a post body with plain HTML content:
+
+```tsx
+<PostBody body="<p>פסקת פתיחה של הכתבה.</p><p>פסקה נוספת עם עוד תוכן.</p>" />
+```
+
+## Embed markers
+
+The body string supports two inline embed markers that get resolved into rich components:
+
+- `{{image:URL|ALT_TEXT}}` renders a responsive image block
+- `{{app:APP_ID}}` renders an inline toolbox app-embed card for the given app id
+
+```tsx
+const body = `
+<p>אחד הכלים שעוזרים ברגעי הצפה:</p>
+{{app:ground-me}}
+<p>ותמונה ממפגש קהילתי:</p>
+{{image:https://storage.googleapis.com/bit-generated-images/images/image_a_warm__calming_editorial_phot_0_1785198010549.png|מפגש קהילתי תומך}}
+`;
+
+<PostBody body={body} embeddedApps={['ground-me']} />
+```
+
+## Restricting embedded apps
+
+Pass the post's `embeddedApps` list (the toolbox app ids allowed for this post) to control which `{{app:...}}` markers are actually rendered. Markers referencing ids outside the list are skipped:
+
+```tsx
+const body = `
+<p>כלי מומלץ:</p>
+{{app:breathe-calm}}
+<p>כלי נוסף שלא אושר לכתבה זו:</p>
+{{app:some-other-app}}
+`;
+
+<PostBody body={body} embeddedApps={['breathe-calm']} />
+```

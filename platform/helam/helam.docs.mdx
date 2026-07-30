@@ -1,0 +1,64 @@
+---
+description: "The Helam Club Harmony platform application."
+labels: ['helam', 'harmony', 'platform']
+---
+
+The Helam Club platform composition. Composes the `helam-platform` core aspect together with the cross-cutting feature aspects (`knowledge-domains`, `engagement`) into a unified, executable Harmony application.
+
+The app is configured for a fully Hebrew, right-to-left experience: `dir="rtl"` and `lang="he"` are set on the document, and the platform title is set to **Helam Club**.
+
+## Run the platform
+
+Use the app in your workspace:
+
+```bash
+bit use helam
+```
+
+Then run it:
+
+```bash
+bit run helam
+```
+
+Your platform will be available at the URL printed in the command output.
+
+## Composed aspects
+
+The `helam.bit-app.ts` file composes the following aspects:
+
+```tsx
+import { HelamPlatformAspect } from '@helemclub/platform.helam-platform';
+import { KnowledgeDomainsAspect } from '@helemclub/knowledge-domains.knowledge-domains';
+import { EngagementAspect } from '@helemclub/engagement.engagement';
+
+const aspects = [
+  HelamPlatformAspect,
+  KnowledgeDomainsAspect,
+  EngagementAspect,
+];
+```
+
+- `helam-platform` — the core platform aspect, providing the app shell, layout, routing slots, authentication, and the primary pages (home, login, signup, onboarding, profile, admin dashboard).
+- `knowledge-domains` — cross-cutting feature exposing the community wisdom hub and the coping-domains lobby, along with their admin panel and navigation entries.
+- `engagement` — cross-cutting feature exposing the saved-for-later page and the moderation queue in the admin dashboard.
+
+Additional content aspects — toolbox, blog, knowledge-base, events, and gallery — will be composed into this same `aspects` array in later steps, following the same pattern.
+
+## Extending the composition
+
+To add a new feature aspect to the platform, import its Aspect class and append it to the `aspects` array:
+
+```tsx
+import { HarmonyPlatform } from '@bitdev/harmony.harmony-platform';
+import { ToolboxAspect } from '@helemclub/toolbox.toolbox';
+
+const Helam = HarmonyPlatform.from({
+  name: 'helam',
+  aspects: [
+    ToolboxAspect,
+  ],
+});
+```
+
+Every registered aspect can extend the platform shell by registering routes, navigation items, header actions, admin routes, and footer links through the `helam-platform` aspect's public API.

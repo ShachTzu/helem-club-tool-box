@@ -1,0 +1,106 @@
+.labelLobby {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.hero {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--spacing-x4) var(--spacing-large);
+  margin-bottom: var(--spacing-large);
+  background: var(--effects-gradients-primary);
+  border-radius: var(--borders-radius-large);
+  box-shadow: var(--effects-shadows-header);
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: var(--spacing-small);
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-bold);
+  letter-spacing: var(--typography-letter-spacing-wide);
+  color: var(--colors-accent-default) !important;
+}
+
+.title {
+  margin: 0 0 var(--spacing-small);
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-display-small);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-text-inverse) !important;
+  line-height: var(--typography-line-height-heading);
+}
+
+.subtitle {
+  max-width: 640px;
+  margin: 0 auto;
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-subhead);
+  color: var(--colors-text-inverse) !important;
+  opacity: var(--effects-opacity-semi-opaque);
+  line-height: var(--typography-line-height-base);
+}
+
+.heroSkeleton {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 420px;
+  height: 84px;
+  margin: 0 auto;
+  border-radius: var(--borders-radius-medium);
+  background-color: var(--colors-surface-primary);
+  opacity: var(--effects-opacity-faint);
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+  margin-bottom: var(--spacing-large);
+}
+
+.recordsCount {
+  margin: 0;
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-heading-h3);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+}
+
+.domainFilter {
+  width: 100%;
+}
+
+.recordsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--spacing-large);
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: var(--spacing-x4);
+}
+
+.skeletonCard {
+  box-sizing: border-box;
+  width: 100%;
+  height: 260px;
+  border-radius: var(--borders-radius-medium);
+  background-color: var(--colors-surface-secondary);
+  opacity: var(--effects-opacity-faint);
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: var(--spacing-xl) var(--spacing-medium);
+  }
+
+  .title {
+    font-size: var(--typography-sizes-heading-h1);
+  }
+
+  .recordsGrid {
+    grid-template-columns: 1fr;
+  }
+}

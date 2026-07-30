@@ -1,0 +1,171 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--interactions-z-index-sticky);
+  background-color: var(--colors-primary-default);
+  box-shadow: var(--effects-shadows-header);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.bar {
+  max-width: var(--layout-max-page-width);
+  margin: 0 auto;
+  padding: 0 var(--layout-gutter);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+  box-sizing: border-box;
+}
+
+.logo {
+  flex-shrink: 0;
+}
+
+.desktopNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-default);
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+
+.searchSlot {
+  flex: 0 1 240px;
+  max-width: 240px;
+  min-width: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+  flex-shrink: 0;
+}
+
+.userBar {
+  flex-shrink: 0;
+}
+
+.hamburgerButton {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--colors-text-inverse);
+  cursor: var(--interactions-cursor-pointer);
+  padding: var(--spacing-small);
+  margin-inline-start: auto;
+  flex-shrink: 0;
+}
+
+.drawerOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: var(--colors-overlay);
+  z-index: var(--interactions-z-index-modal);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--interactions-transitions-duration-medium)
+    var(--interactions-transitions-easing-ease-out);
+}
+
+.drawerOverlayOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-start: 0;
+  width: min(320px, 84vw);
+  box-sizing: border-box;
+  background-color: var(--colors-primary-default);
+  box-shadow: var(--effects-shadows-x-large);
+  padding: var(--spacing-large) var(--spacing-large) var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-large);
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform var(--interactions-transitions-duration-medium)
+    var(--interactions-transitions-easing-ease-out);
+}
+
+.drawerOverlayOpen .drawer {
+  transform: translateX(0);
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawerCloseButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--colors-text-inverse);
+  cursor: var(--interactions-cursor-pointer);
+  padding: var(--spacing-small);
+}
+
+.drawerSearch {
+  width: 100%;
+}
+
+.drawerNav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-default);
+}
+
+.drawerNavLink {
+  padding: var(--spacing-small) 0;
+  border-bottom: var(--borders-default-width) var(--borders-default-style) rgba(255, 255, 255, 0.1);
+}
+
+.drawerUserBar {
+  margin-top: auto;
+  padding-top: var(--spacing-medium);
+  border-top: var(--borders-default-width) var(--borders-default-style) rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 1024px) {
+  .desktopNav {
+    display: none;
+  }
+
+  .searchSlot {
+    flex: 1 1 auto;
+    max-width: none;
+  }
+
+  .hamburgerButton {
+    display: flex;
+  }
+
+  .drawerOverlay {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .searchSlot {
+    display: none;
+  }
+
+  .actions {
+    display: none;
+  }
+}

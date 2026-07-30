@@ -1,0 +1,78 @@
+---
+description: "Lists the moderation queue of hidden/reported comments and resolves them by restoring or deleting. Moderator/admin only."
+labels: ['hook', 'react', 'moderation', 'graphql']
+---
+
+The `useModeration` hook lists comments that were hidden or reported and are pending a decision, and lets a moderator or admin resolve each one — either restoring it to public view or deleting it permanently.
+
+Access to the underlying mutation is enforced server-side; callers should still gate rendering of moderation UI based on the current user's role (e.g. using `useAuth`'s `isModerator` / `isAdmin` flags).
+
+## Usage
+
+### Listing the moderation queue
+
+```tsx
+import { useModeration } from '@helemclub/engagement.hooks.use-moderation';
+
+function ModerationQueueList() {
+  const { comments, loading, error } = useModeration();
+
+  if (loading) return <p>טוען את תור הבקרה...</p>;
+  if (error) return <p>שגיאה בטעינת תור הבקרה.</p>;
+  if (comments.length === 0) return <p>אין תגובות הממתינות לבדיקה.</p>;
+
+  return (
+    <ul>
+      {comments.map((comment) => (
+        <li key={comment.id}>
+          {comment.displayName || 'אנונימי/ת'}: {comment.text} (דווחה {comment.reportCount} פעמים)
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+### Restoring or deleting a reported comment
+
+```tsx
+import { useModeration } from '@helemclub/engagement.hooks.use-moderation';
+
+function ModerationActions({ commentId }: { commentId: string }) {
+  const { restoreComment, deleteComment, resolving } = useModeration();
+
+  return (
+    <div>
+      <button disabled={resolving} onClick={() => restoreComment(commentId)}>
+        שחזור תגובה
+      </button>
+      <button disabled={resolving} onClick={() => deleteComment(commentId)}>
+        מחיקת תגובה
+      </button>
+    </div>
+  );
+}
+```
+
+### Providing mock data for previews and tests
+
+```tsx
+import { useModeration } from '@helemclub/engagement.hooks.use-moderation';
+import { mockComments } from '@helemclub/engagement.entities.comment';
+
+function MockedModerationQueue() {
+  const mocked = mockComments()
+    .filter((comment) => comment.hidden || (comment.reportCount ?? 0) > 0)
+    .map((comment) => comment.toObject());
+
+  const { comments } = useModeration({ mockData: mocked });
+
+  return (
+    <ul>
+      {comments.map((comment) => (
+        <li key={comment.id}>{comment.text}</li>
+      ))}
+    </ul>
+  );
+}
+```

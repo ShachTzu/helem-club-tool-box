@@ -1,0 +1,70 @@
+---
+description: "A comment thread for any content object, with anonymous posting, members-only comments and a report action."
+labels: ["comments", "engagement", "rtl"]
+---
+
+The `CommentThread` component renders a full discussion thread bound to any content object (an app, a blog post, a domain, etc.). It lists visible comments, gates members-only comments behind a join placeholder for anonymous viewers, and provides an add-comment form with a prominent "הגב בעילום שם" (reply anonymously) toggle, a members-only visibility toggle for signed-in members, and a report button on every comment.
+
+### Basic usage
+
+Render a comment thread bound to a target type and id. Comments are fetched and posted through the `useComments` hook internally.
+
+```tsx
+<CommentThread targetType="app" targetId="meditation-timer" parentLabel="הכלי" />
+```
+
+### Anonymous viewer
+
+Anonymous viewers can still post comments — the anonymous toggle is forced on, members-only comments are hidden behind a join placeholder, and reassuring microcopy explains that the comment will be posted with no name attached.
+
+```tsx
+<CommentThread
+  targetType="post"
+  targetId="breathing-exercise"
+  parentLabel="הכתבה"
+  mockUser={null}
+  mockComments={[
+    {
+      id: `c1`,
+      targetType: `post`,
+      targetId: `breathing-exercise`,
+      text: `תודה על השיתוף, ממש עזר לי.`,
+      displayName: `מיכל ר.`,
+      isAnonymous: false,
+      membersOnly: false,
+      createdAt: new Date(`2024-01-01`).toISOString(),
+    },
+    {
+      id: `c2`,
+      targetType: `post`,
+      targetId: `breathing-exercise`,
+      text: `תוכן ייחודי לחברי הקהילה בלבד.`,
+      displayName: `רואי כהן`,
+      isAnonymous: false,
+      membersOnly: true,
+      createdAt: new Date(`2024-01-02`).toISOString(),
+    },
+  ]}
+/>
+```
+
+### Signed-in member
+
+Signed-in members can choose to post under their own name or anonymously, and may also mark their comment as visible to members only.
+
+```tsx
+<CommentThread
+  targetType="domain"
+  targetId="anxiety"
+  parentLabel="הדומיין"
+  mockUser={{
+    id: `u1`,
+    email: `roi@helam.club`,
+    displayName: `רואי כהן`,
+    role: `member`,
+    provider: `email`,
+    createdAt: new Date(`2023-01-01`).toISOString(),
+  }}
+  mockComments={[]}
+/>
+```

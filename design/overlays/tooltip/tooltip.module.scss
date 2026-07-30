@@ -1,0 +1,112 @@
+.wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: var(--interactions-z-index-tooltip);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  max-width: 240px;
+  width: max-content;
+  padding: 6px 12px;
+  background-color: var(--colors-primary-default);
+  color: var(--colors-text-inverse);
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-caption-default);
+  font-weight: var(--typography-font-weight-medium);
+  line-height: var(--typography-line-height-base);
+  border-radius: var(--borders-radius-small);
+  box-shadow: var(--effects-shadows-medium);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition:
+    opacity var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out) var(--tooltip-delay),
+    transform var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out) var(--tooltip-delay);
+  box-sizing: border-box;
+}
+
+.tooltip.visible {
+  opacity: 1;
+  pointer-events: none;
+  transform: translateY(0);
+}
+
+.top {
+  bottom: calc(100% + 8px);
+  right: 50%;
+  transform: translate(50%, 4px);
+}
+
+.top.visible {
+  transform: translate(50%, 0);
+}
+
+.bottom {
+  top: calc(100% + 8px);
+  right: 50%;
+  transform: translate(50%, -4px);
+}
+
+.bottom.visible {
+  transform: translate(50%, 0);
+}
+
+.start {
+  top: 50%;
+  right: calc(100% + 8px);
+  transform: translate(4px, -50%);
+}
+
+.start.visible {
+  transform: translate(0, -50%);
+}
+
+.end {
+  top: 50%;
+  left: calc(100% + 8px);
+  transform: translate(-4px, -50%);
+}
+
+.end.visible {
+  transform: translate(0, -50%);
+}
+
+.arrow {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: var(--colors-primary-default);
+  transform: rotate(45deg);
+}
+
+.arrow-top {
+  bottom: -4px;
+  right: calc(50% - 4px);
+}
+
+.arrow-bottom {
+  top: -4px;
+  right: calc(50% - 4px);
+}
+
+.arrow-start {
+  top: calc(50% - 4px);
+  right: -4px;
+}
+
+.arrow-end {
+  top: calc(50% - 4px);
+  left: -4px;
+}

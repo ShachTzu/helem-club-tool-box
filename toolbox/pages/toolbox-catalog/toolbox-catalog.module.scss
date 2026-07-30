@@ -1,0 +1,126 @@
+.toolboxCatalog {
+  width: 100%;
+}
+
+.hero {
+  background: linear-gradient(140deg, var(--helam-color-primary, #0b1a30), #12294a);
+  color: #fff;
+  padding: 56px 20px;
+}
+
+.heroContent {
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heroEyebrow {
+  color: var(--helam-color-accent, #e89f4b);
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.heroTitle {
+  margin: 0 0 12px;
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.heroSubtitle {
+  margin: 0 auto 22px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 620px;
+}
+
+.heroActions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.primaryAction,
+.ghostAction {
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 12px 24px;
+  border-radius: 999px;
+}
+
+.primaryAction {
+  background: var(--helam-color-accent, #e89f4b);
+  color: var(--helam-color-primary, #0b1a30);
+}
+
+.ghostAction {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 8px 0 16px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--helam-color-primary, #0b1a30);
+}
+
+.sortGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.sortButton {
+  cursor: pointer;
+  border: 1px solid var(--helam-color-border, #e2e8ee);
+  background: #fff;
+  color: var(--helam-color-text-muted, #6b7c8f);
+  font-weight: 700;
+  font-size: 13.5px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-family: inherit;
+}
+
+.sortButtonActive {
+  border-color: var(--helam-color-accent, #e89f4b);
+  background: rgba(232, 159, 75, 0.12);
+  color: var(--helam-color-primary, #0b1a30);
+}
+
+.domainFilter {
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.skeletonCard {
+  height: 280px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #eef2f6 25%, #f6f8fa 50%, #eef2f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

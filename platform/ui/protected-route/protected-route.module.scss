@@ -1,0 +1,55 @@
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--colors-surface-background);
+}
+
+.forbiddenContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--spacing-large);
+  background-color: var(--colors-surface-background);
+}
+
+.forbiddenCard {
+  box-sizing: border-box;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  background-color: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-large);
+  box-shadow: var(--effects-shadows-card);
+  padding: var(--spacing-x4) var(--spacing-xl);
+}
+
+.forbiddenIcon {
+  font-size: 48px;
+  margin-bottom: var(--spacing-medium);
+}
+
+.forbiddenTitle {
+  margin: 0 0 var(--spacing-small);
+  font-size: var(--typography-sizes-heading-h3);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+}
+
+.forbiddenSubtitle {
+  margin: 0 0 var(--spacing-large);
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-secondary);
+  line-height: var(--typography-line-height-base);
+}
+
+.forbiddenLink {
+  display: inline-flex;
+}

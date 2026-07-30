@@ -1,0 +1,60 @@
+---
+description: "Knowledge base lobby (/knowledge): the 5 project labels as cards, plus a domain-filtered discovery feed of recent records across labels. RTL, responsive."
+labels: ["knowledge-base", "lobby", "page"]
+---
+
+The `KnowledgeLobby` page presents the Helem Club knowledge base "Mother Ship": the five project labels as cards, followed by a domain-filtered discovery feed of recently published records across every label. Built RTL-first and fully responsive.
+
+## Usage
+
+Render the lobby directly on the `/knowledge` route. It fetches its own data via `useLabels` and `useRecords`, and lets visitors filter the discovery feed by coping domain.
+
+```tsx
+<KnowledgeLobby />
+```
+
+## With mock data
+
+Pass `mockLabels`, `mockRecords` and `mockDomains` to bypass the network requests — useful for previews, tests, or a fully static demo.
+
+```tsx
+const labels = [
+  {
+    id: `label-first-aid`,
+    slug: `first-aid`,
+    name: `עזרה ראשונה`,
+    description: `כלים מיידיים לרגעי הצפה, חרדה ומשבר.`,
+    coverImage: `https://storage.googleapis.com/bit-generated-images/images/image_calming_abstract_illustration__0_1785198300582.png`,
+    recordCount: 12,
+  },
+];
+
+const records = [
+  {
+    id: `record-1`,
+    slug: `grounding-flashbacks`,
+    labelId: `label-first-aid`,
+    title: `קרקוע ברגע של פלאשבק`,
+    mediaType: `video` as const,
+    mediaUrl: `https://example.com/media/grounding-flashbacks.mp4`,
+    thumbnailUrl: `https://storage.googleapis.com/bit-generated-images/images/image_peaceful_grounding_exercise_sc_0_1785198304586.png`,
+    domains: [`anxiety`],
+    viewCount: 3240,
+    publishedAt: `2026-03-01T09:00:00.000Z`,
+  },
+];
+
+const domains = [
+  { id: `anxiety`, slug: `anxiety`, name: `חרדה`, icon: `😰`, count: 1 },
+];
+
+<KnowledgeLobby mockLabels={labels} mockRecords={records} mockDomains={domains} />;
+```
+
+## Customizing link destinations
+
+Use `labelLinkBase` and `domainLinkBase` to point label and domain links at custom routes, for example when embedding the lobby under a different base path.
+
+```tsx
+<KnowledgeLobby labelLinkBase="/kb" domainLinkBase="/topics" />
+```

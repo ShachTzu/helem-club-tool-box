@@ -1,0 +1,94 @@
+---
+description: "useGallery hook: list/filter gallery items by media type, domain and query, fetch a single item, and create/update/delete items."
+labels: ['hook', 'react', 'gallery']
+---
+
+The `useGallery` hook is the primary entry point for working with the PTSDART community gallery. It lists and filters gallery items (by media type, coping-domain and free-text query), fetches a single item on demand, and exposes create/update/delete operations.
+
+## Usage
+
+### Listing and filtering gallery items
+
+```tsx
+const GalleryList = () => {
+  const { items, loading, error } = useGallery({ mediaType: 'image', domainIds: ['ויסות רגשי'] });
+
+  if (loading) {
+    return <p>טוען יצירות...</p>;
+  }
+
+  if (error) {
+    return <p>אירעה שגיאה בטעינת הגלריה.</p>;
+  }
+
+  return (
+    <ul>
+      {items.map((item) => (
+        <li key={item.id}>{item.title}</li>
+      ))}
+    </ul>
+  );
+};
+```
+
+### Searching by free-text query
+
+```tsx
+const GallerySearch = () => {
+  const { items } = useGallery({ query: 'נשימה' });
+
+  return (
+    <div>
+      <p>{items.length} תוצאות</p>
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>{item.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+```
+
+### Fetching a single item and managing it
+
+```tsx
+const GalleryItemManager = () => {
+  const { getItem, item, createItem, updateItem, deleteItem } = useGallery();
+
+  const handleLoad = async () => {
+    await getItem('quiet-after-the-storm');
+  };
+
+  const handleCreate = async () => {
+    await createItem({
+      title: 'יצירה חדשה',
+      mediaType: 'image',
+      mediaUrl: 'https://example.com/art.png',
+      domains: ['חרדה'],
+    });
+  };
+
+  const handleUpdate = async () => {
+    if (item) {
+      await updateItem(item.id, { title: 'כותרת מעודכנת' });
+    }
+  };
+
+  const handleDelete = async () => {
+    if (item) {
+      await deleteItem(item.id);
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={() => handleLoad()}>טען יצירה</button>
+      <button onClick={() => handleCreate()}>צור יצירה</button>
+      <button onClick={() => handleUpdate()}>עדכן יצירה</button>
+      <button onClick={() => handleDelete()}>מחק יצירה</button>
+      {item && <p>{item.title}</p>}
+    </div>
+  );
+};
+```

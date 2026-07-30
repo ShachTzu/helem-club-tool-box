@@ -1,0 +1,77 @@
+---
+description: "A React Hook exposing the current user's RSVP state for an event, a toggle action, and (for admins) the full RSVP list."
+labels: ['hook', 'react', 'events', 'rsvp']
+---
+
+A React Hook that resolves the current user's RSVP state for an event, exposes a function to toggle attendance, and — for admin users — the full list of RSVPs recorded for the event. It relies on `useAuth` internally to identify the current user, so no user information needs to be passed in explicitly.
+
+## Usage
+
+### Showing an RSVP button on an event page
+
+```tsx
+const EventRsvpButton = () => {
+  const { attending, toggleRsvp, toggling, loading, rsvpCount } = useRsvp('event-1');
+
+  if (loading) return <p>טוען נתוני השתתפות...</p>;
+
+  return (
+    <div>
+      <button onClick={() => toggleRsvp()} disabled={toggling}>
+        {attending ? '✅ אני מגיע/ה' : 'אני מגיע/ה (RSVP)'}
+      </button>
+      <p>{rsvpCount} נרשמים לאירוע</p>
+    </div>
+  );
+};
+```
+
+This example toggles the current user's attendance for the event `event-1` and shows the total number of RSVPs recorded.
+
+### Admin view listing every RSVP
+
+```tsx
+const EventRsvpList = () => {
+  const { rsvps, isAdmin, loading } = useRsvp('event-1');
+
+  if (!isAdmin) return <p>רשימת הנרשמים זמינה למנהלים בלבד.</p>;
+  if (loading) return <p>טוען רשימת נרשמים...</p>;
+
+  return (
+    <ul>
+      {rsvps.map((rsvp) => (
+        <li key={rsvp.id}>
+          {rsvp.userId} — {rsvp.attending ? 'מגיע/ה' : 'לא מגיע/ה'}
+        </li>
+      ))}
+    </ul>
+  );
+};
+```
+
+This example only renders the RSVP list for users with the admin role, relying on `isAdmin` resolved internally from `useAuth`.
+
+### Testing and previews with mock data
+
+```tsx
+const MockedEventRsvp = () => {
+  const { attending, rsvpCount, toggleRsvp } = useRsvp('event-1', {
+    mockData: {
+      user: { id: 'user-1', email: 'sam@helemclub.org', displayName: 'Sam Doe', role: 'member', provider: 'email', createdAt: new Date().toISOString() },
+      rsvps: [
+        { id: 'rsvp-1', eventId: 'event-1', userId: 'user-1', attending: true, createdAt: new Date().toISOString() },
+      ],
+    },
+  });
+
+  return (
+    <div>
+      <p>משתתף/ת: {attending ? 'כן' : 'לא'}</p>
+      <p>סה&quot;כ נרשמים: {rsvpCount}</p>
+      <button onClick={() => toggleRsvp()}>שינוי מצב השתתפות</button>
+    </div>
+  );
+};
+```
+
+This example bypasses the network entirely by providing mock user and RSVP data, useful for tests and compositions.

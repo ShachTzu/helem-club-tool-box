@@ -1,0 +1,55 @@
+---
+description: "RSVP toggle button for members: prompts login for anonymous users, shows attending state and count. RTL."
+labels: ["events", "rsvp", "button"]
+---
+
+The `RsvpButton` lets a member confirm attendance for an event. Anonymous visitors are prompted to log in instead of toggling the RSVP, and the button always shows the total number of members attending, in Hebrew RTL layout.
+
+## Usage
+
+```tsx
+<RsvpButton eventId="evt-community-meetup" />
+```
+
+## Prompting login for anonymous visitors
+
+Use `onLoginRequired` to open your login flow (modal, redirect, etc.) when an anonymous visitor tries to RSVP.
+
+```tsx
+<RsvpButton
+  eventId="evt-community-meetup"
+  mockData={{ user: null, rsvps: [] }}
+  onLoginRequired={() => {
+    // open the login modal, e.g. via a parent state setter.
+  }}
+/>
+```
+
+## Attending state and count
+
+Once toggled, the button reflects the current member's attending state (`✓ מגיע/ה` vs `אני מגיע/ה`) alongside the total RSVP count for the event.
+
+```tsx
+<RsvpButton
+  eventId="evt-community-meetup"
+  mockData={{
+    user: {
+      id: 'user-1',
+      email: 'sam.doe@example.com',
+      displayName: 'Sam Doe',
+      role: 'member',
+      provider: 'email',
+      createdAt: new Date('2024-01-15T09:30:00.000Z').toISOString(),
+    },
+    rsvps: [
+      {
+        id: 'rsvp-1',
+        eventId: 'evt-community-meetup',
+        userId: 'user-1',
+        attending: true,
+        createdAt: new Date('2024-05-01T09:00:00.000Z').toISOString(),
+      },
+    ],
+  }}
+/>
+```

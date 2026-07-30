@@ -1,0 +1,19 @@
+.rsvpButton {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+  flex-wrap: wrap;
+  font-family: var(--typography-font-family);
+  direction: var(--layout-direction);
+}
+
+.count {
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-secondary);
+}
+
+.countAttending {
+  color: var(--colors-status-positive-default);
+}

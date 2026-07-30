@@ -1,0 +1,79 @@
+---
+description: "Full CRUD admin panel for toolbox apps: create, edit, delete, feature toggle and domain tagging. Admin-only, RTL."
+labels: ["admin", "apps", "crud", "toolbox"]
+---
+
+The `ManageApps` component is a full CRUD admin panel for the Helam Club toolbox catalog. It lets admins create, edit and delete apps, toggle the featured flag, and tag apps with coping domains. The panel is protected — only users holding the `admin` role can view it — and is designed to be registered as an `AdminPanel` entry inside the platform admin shell.
+
+### Basic usage
+
+Render the panel with mock apps and an admin user for previewing:
+
+```tsx
+import { ManageApps } from '@helemclub/toolbox.admin.manage-apps';
+import { mockAppsData } from '@helemclub/toolbox.hooks.use-apps';
+
+function App() {
+  const adminUser = {
+    id: `admin-1`,
+    email: `admin@helam.club`,
+    displayName: `מנהלת הקהילה`,
+    role: `admin` as const,
+    provider: `email` as const,
+    createdAt: new Date().toISOString(),
+  };
+
+  return <ManageApps mockApps={mockAppsData()} mockUser={adminUser} />;
+}
+```
+
+### Empty catalog
+
+When there are no apps yet, the panel still renders the toolbar and the "add app" action, ready for the first submission:
+
+```tsx
+import { ManageApps } from '@helemclub/toolbox.admin.manage-apps';
+
+function EmptyToolboxAdmin() {
+  const adminUser = {
+    id: `admin-1`,
+    email: `admin@helam.club`,
+    displayName: `מנהלת הקהילה`,
+    role: `admin` as const,
+    provider: `email` as const,
+    createdAt: new Date().toISOString(),
+  };
+
+  return <ManageApps mockApps={[]} mockUser={adminUser} />;
+}
+```
+
+### Restricted access
+
+Non-admin users are blocked from viewing the panel and see an access-denied message instead:
+
+```tsx
+import { ManageApps } from '@helemclub/toolbox.admin.manage-apps';
+import { mockAppsData } from '@helemclub/toolbox.hooks.use-apps';
+
+function RestrictedToolboxAdmin() {
+  const memberUser = {
+    id: `member-1`,
+    email: `member@helam.club`,
+    displayName: `חבר קהילה`,
+    role: `member` as const,
+    provider: `email` as const,
+    createdAt: new Date().toISOString(),
+  };
+
+  return <ManageApps mockApps={mockAppsData()} mockUser={memberUser} />;
+}
+```
+
+## Features
+
+- **Create, edit and delete apps** through an inline form and a confirm-before-delete flow.
+- **Feature toggle** directly from the table, marking an app as recommended by the community.
+- **Domain tagging** using the shared `DomainSelector` control to relate apps to coping domains.
+- **Search** by app name or subtitle.
+- **Protected** — wraps its content with `ProtectedRoute`, restricting access to the `admin` role.

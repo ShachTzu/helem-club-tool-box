@@ -1,0 +1,38 @@
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  vertical-align: middle;
+  transition: color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-in-out);
+}
+
+.color-current {
+  color: currentColor;
+}
+
+.color-primary {
+  color: var(--colors-primary-default);
+}
+
+.color-secondary {
+  color: var(--colors-secondary-default);
+}
+
+.color-accent {
+  color: var(--colors-accent-default);
+}
+
+.color-muted {
+  color: var(--colors-text-muted);
+}
+
+.color-inverse {
+  color: var(--colors-text-inverse);
+}
+
+.color-white {
+  color: var(--colors-white);
+}
+
+.color-black {
+  color: var(--colors-black);
+}

@@ -1,0 +1,51 @@
+---
+description: "Section wrapper with optional eyebrow, title, subtitle, and slot for content; responsive spacing."
+labels: ['layout', 'section', 'rtl']
+---
+
+The `SectionLayout` component renders a section wrapper with an optional eyebrow, title, subtitle and action slot, followed by a content area. It provides responsive vertical spacing and is used to compose home and lobby pages out of consistent, well-spaced sections.
+
+## Basic usage
+
+Render a section with a title, subtitle and content.
+
+```tsx
+<SectionLayout title="האקוסיסטם" subtitle="חמישה רכיבים שנבנים על בסיס ידע מרכזי אחד">
+  <div>תוכן הסקציה</div>
+</SectionLayout>
+```
+
+## Eyebrow and action
+
+Use `eyebrow` to add a small label above the title, and `action` to render an element next to the heading, such as a "see all" link.
+
+```tsx
+<SectionLayout
+  eyebrow="מהבלוג"
+  title="ידע מקצועי ושיתופים אישיים"
+  subtitle="כתבות שנכתבו בשיתוף פסיכולוגים ואנשי מקצוע מהקהילה."
+  action={<a href="/blog">לכל הכתבות ←</a>}
+>
+  <div>רשימת כתבות</div>
+</SectionLayout>
+```
+
+## Controlling spacing
+
+Use the `spacing` prop to control the vertical padding of the section. Available options are `compact`, `default` and `relaxed`.
+
+```tsx
+<SectionLayout spacing="relaxed" title="חוכמת הקהילה">
+  <div>תוכן נדיב במרווחים</div>
+</SectionLayout>
+```
+
+## Rendering without a header
+
+When `eyebrow`, `title`, `subtitle` and `action` are all omitted, only the content area is rendered, useful for free-form sections.
+
+```tsx
+<SectionLayout spacing="compact">
+  <div>תוכן חופשי בתוך עמוד ארוך</div>
+</SectionLayout>
+```

@@ -1,0 +1,26 @@
+.paragraph {
+  box-sizing: border-box;
+  margin: 0;
+  direction: var(--layout-direction);
+  text-align: right;
+  font-family: var(--typography-font-family);
+  font-weight: var(--typography-font-weight-regular);
+  color: var(--colors-text-primary);
+  line-height: 1.85;
+}
+
+.sm {
+  font-size: var(--typography-sizes-body-small);
+}
+
+.md {
+  font-size: var(--typography-sizes-body-default);
+}
+
+.lg {
+  font-size: var(--typography-sizes-body-large);
+}
+
+.muted {
+  color: var(--colors-text-muted);
+}

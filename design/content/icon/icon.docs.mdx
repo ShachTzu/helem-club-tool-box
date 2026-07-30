@@ -1,0 +1,59 @@
+---
+description: "Base icon component that renders an SVG path or children at a themed size and color."
+labels: ["icon", "svg", "design-system"]
+---
+
+The `Icon` component is the foundation for all per-scope icon sets in the Helam Club design system.
+It renders an SVG element sized and colored according to the theme, and accepts either a single
+`path` string or custom `children` for more complex shapes.
+
+## Basic usage
+
+Render an icon from an SVG path string:
+
+```tsx
+import { Icon } from '@helemclub/design.content.icon';
+
+function BookmarkExample() {
+  const bookmarkPath = 'M6 4h12a1 1 0 0 1 1 1v15l-7-4-7 4V5a1 1 0 0 1 1-1Z';
+  return <Icon path={bookmarkPath} size="medium" color="primary" title="שמור" />;
+}
+```
+
+## Sizes and colors
+
+Icons support themed size keywords (`small`, `medium`, `large`) or an explicit pixel number,
+along with themed color tokens:
+
+```tsx
+import { Icon } from '@helemclub/design.content.icon';
+
+function IconGallery() {
+  const heartPath =
+    'M12 21s-7.5-4.6-10-9.1C.4 8.5 2 4.8 5.5 4.2c2-.3 3.8.6 4.9 2.2 1.1-1.6 2.9-2.5 4.9-2.2 3.5.6 5.1 4.3 3.5 7.7-2.5 4.5-10 9.1-10 9.1Z';
+  return (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+      <Icon path={heartPath} size="small" color="primary" title="לב קטן" />
+      <Icon path={heartPath} size="medium" color="accent" title="לב בינוני" />
+      <Icon path={heartPath} size={40} color="secondary" title="לב גדול" />
+    </div>
+  );
+}
+```
+
+## Custom shapes with children
+
+For icons that require more than a single path, pass custom SVG children instead of `path`:
+
+```tsx
+import { Icon } from '@helemclub/design.content.icon';
+
+function CustomShapeIcon() {
+  return (
+    <Icon size="large" color="accent" title="עיגול מותאם">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9 12l2 2 4-4" stroke="var(--colors-white)" strokeWidth={2} fill="none" />
+    </Icon>
+  );
+}
+```

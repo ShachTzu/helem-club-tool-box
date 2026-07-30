@@ -1,0 +1,68 @@
+---
+description: "Fixed bottom navigation bar for mobile/PWA (RTL) with amber active highlight, hidden on desktop."
+labels: ["navigation", "mobile", "pwa", "rtl"]
+---
+
+The `MobileNav` component renders a fixed bottom navigation bar designed for mobile and PWA
+experiences in the Helam Club ecosystem. It highlights the active route in amber, respects the
+device safe-area, and hides itself automatically on desktop screens via CSS.
+
+## Basic usage
+
+Render the component within a router, it will resolve the active item from the current route:
+
+```tsx
+import { MemoryRouter } from 'react-router-dom';
+import { MobileNav } from '@helemclub/platform.layout.mobile-nav';
+
+function BasicExample() {
+  return (
+    <MemoryRouter initialEntries={[`/`]}>
+      <MobileNav />
+    </MemoryRouter>
+  );
+}
+```
+
+## Custom navigation items
+
+Provide a custom set of navigation items, typically collected from the platform's
+`NavigationItem` slot registered by feature aspects:
+
+```tsx
+import { MemoryRouter } from 'react-router-dom';
+import { HomeIcon, DomainsIcon } from '@helemclub/platform.icons.helam-icons';
+import { MobileNav } from '@helemclub/platform.layout.mobile-nav';
+
+function CustomItemsExample() {
+  return (
+    <MemoryRouter initialEntries={[`/domains`]}>
+      <MobileNav
+        items={[
+          { label: `בית`, path: `/`, icon: HomeIcon, order: 0 },
+          { label: `דומיינים`, path: `/domains`, icon: DomainsIcon, order: 1 },
+        ]}
+      />
+    </MemoryRouter>
+  );
+}
+```
+
+## Active route highlighting
+
+The bar reads the current pathname from `react-router-dom` and highlights the matching item in
+amber. The root path (`/`) is matched exactly, while other paths are matched by prefix so nested
+routes stay highlighted:
+
+```tsx
+import { MemoryRouter } from 'react-router-dom';
+import { MobileNav } from '@helemclub/platform.layout.mobile-nav';
+
+function ActiveRouteExample() {
+  return (
+    <MemoryRouter initialEntries={[`/blog`]}>
+      <MobileNav />
+    </MemoryRouter>
+  );
+}
+```

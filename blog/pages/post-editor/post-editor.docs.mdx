@@ -1,0 +1,80 @@
+---
+description: "A protected writer/admin editor for composing and publishing rich blog posts."
+labels: ['blog', 'editor', 'writer', 'rtl']
+---
+
+The `PostEditor` component provides writers and admins with a rich authoring experience for
+Helam Club blog posts: title, excerpt, cover image, a body editor supporting inline image and
+toolbox-app insertion, coping-domain tagging, a members-only visibility toggle, and SEO metadata.
+Publishing happens immediately once the form is submitted. The component is RTL by default and
+is gated behind the `writer` and `admin` roles using the platform's `ProtectedRoute`.
+
+### Basic usage
+
+Render the editor for a signed-in writer. Provide mock domains and apps to preview the
+selectable options without a live server.
+
+```tsx
+import { PostEditor } from '@helemclub/blog.pages.post-editor';
+
+const domains = [
+  { id: `anxiety`, slug: `anxiety`, name: `חרדה`, icon: `😰`, count: 5 },
+  { id: `sleep`, slug: `sleep`, name: `שינה`, icon: `🌙`, count: 4 },
+];
+
+function WriterView() {
+  return (
+    <PostEditor
+      mockDomains={domains}
+      mockUser={{
+        id: `user-1`,
+        email: `writer@helam.club`,
+        displayName: `ד״ר מיכל ברק`,
+        role: `writer`,
+        provider: `email`,
+        createdAt: new Date().toISOString(),
+      }}
+    />
+  );
+}
+```
+
+### Handling publish completion
+
+Use the `onPublished` callback to react once a post has been created, for example to show a
+toast or track an analytics event.
+
+```tsx
+import { PostEditor } from '@helemclub/blog.pages.post-editor';
+
+function WriterViewWithCallback() {
+  return (
+    <PostEditor
+      mockUser={{
+        id: `user-2`,
+        email: `admin@helam.club`,
+        displayName: `רועי אדמין`,
+        role: `admin`,
+        provider: `email`,
+        createdAt: new Date().toISOString(),
+      }}
+      onPublished={(postId) => {
+        console.log(`Post published: ${postId}`);
+      }}
+    />
+  );
+}
+```
+
+### Restricting access
+
+Passing `mockUser={null}` simulates an anonymous visitor, showing the access-denied state
+rendered by the shared `ProtectedRoute` component instead of the editor form.
+
+```tsx
+import { PostEditor } from '@helemclub/blog.pages.post-editor';
+
+function AnonymousView() {
+  return <PostEditor mockUser={null} />;
+}
+```

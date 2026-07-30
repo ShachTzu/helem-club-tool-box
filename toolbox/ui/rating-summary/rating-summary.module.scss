@@ -1,0 +1,85 @@
+.ratingSummary {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-xl);
+  direction: var(--layout-direction);
+  font-family: var(--typography-font-family);
+}
+
+.averageBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 120px;
+}
+
+.averageValue {
+  font-size: 46px;
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+  line-height: 1.1;
+}
+
+.countText {
+  margin-top: var(--spacing-small);
+}
+
+.histogram {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.histogramRow {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+}
+
+.histogramLabel {
+  width: 32px;
+  flex-shrink: 0;
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-muted);
+}
+
+.histogramTrack {
+  box-sizing: border-box;
+  flex: 1;
+  height: 8px;
+  background-color: var(--colors-surface-secondary);
+  border-radius: var(--borders-radius-small);
+  overflow: hidden;
+}
+
+.histogramFill {
+  height: 100%;
+  background-color: var(--colors-accent-default);
+  border-radius: var(--borders-radius-small);
+  transition: width var(--interactions-transitions-duration-medium) var(--interactions-transitions-easing-ease-out);
+}
+
+.histogramCount {
+  width: 28px;
+  flex-shrink: 0;
+  text-align: left;
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-muted);
+}
+
+@media (max-width: 480px) {
+  .ratingSummary {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .averageBlock {
+    align-self: center;
+  }
+}

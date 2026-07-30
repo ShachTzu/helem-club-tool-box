@@ -1,0 +1,69 @@
+---
+description: "Admin CRUD panel for knowledge domains (name, slug, description, icon) with content counts. Protected to admins only. RTL."
+labels: ["admin", "domains", "crud", "rtl"]
+---
+
+`ManageDomains` is an admin-only panel for managing the knowledge domains used to tag content across the Helam Club ecosystem. It supports creating, editing and deleting domains (name, slug, description, icon) and shows the number of content items tagged with each domain. It is designed to be registered as an `AdminPanel` in the platform's admin shell.
+
+## Basic usage
+
+Render the panel for a signed-in admin user, with a data source of domain records:
+
+```tsx
+<ManageDomains
+  mockUser={{
+    id: `user-1`,
+    email: `admin@helam.club`,
+    displayName: `מנהלת הקהילה`,
+    role: `admin`,
+    provider: `email`,
+    createdAt: `2024-01-01T00:00:00.000Z`,
+  }}
+  mockDomains={[
+    {
+      id: `anxiety`,
+      slug: `anxiety`,
+      name: `חרדה`,
+      description: `כלים מיידיים ומתמשכים להתמודדות עם חרדה והתקפי פאניקה.`,
+      icon: `😰`,
+      count: 5,
+    },
+  ]}
+/>
+```
+
+## Access control
+
+The panel is wrapped internally with a `ProtectedRoute` restricted to the `admin` role. Signed-out users are redirected, and signed-in users without the admin role see an access-denied message:
+
+```tsx
+<ManageDomains
+  mockUser={{
+    id: `user-2`,
+    email: `member@helam.club`,
+    displayName: `חבר קהילה`,
+    role: `member`,
+    provider: `email`,
+    createdAt: `2024-02-01T00:00:00.000Z`,
+  }}
+  mockDomains={[]}
+/>
+```
+
+## Empty state
+
+When no domains exist yet, the table shows an empty message while the creation form remains available:
+
+```tsx
+<ManageDomains
+  mockUser={{
+    id: `user-1`,
+    email: `admin@helam.club`,
+    displayName: `מנהלת הקהילה`,
+    role: `admin`,
+    provider: `email`,
+    createdAt: `2024-01-01T00:00:00.000Z`,
+  }}
+  mockDomains={[]}
+/>
+```

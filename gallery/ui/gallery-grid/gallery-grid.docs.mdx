@@ -1,0 +1,76 @@
+---
+description: "Responsive masonry grid of gallery tiles with an empty state. RTL."
+labels: ["gallery", "grid", "masonry", "ui"]
+---
+
+The `GalleryGrid` component renders a responsive, CSS-columns based masonry layout of `GalleryTile` components. It shows a friendly empty state when there are no items to display, and reports which item was opened via the `onOpenItem` callback.
+
+## Basic usage
+
+Render a grid of gallery items:
+
+```tsx
+function Example() {
+  const items = [
+    {
+      id: '1',
+      slug: 'quiet-after-the-storm',
+      title: 'שקט אחרי הסערה',
+      mediaType: 'image',
+      mediaUrl:
+        'https://storage.googleapis.com/bit-generated-images/images/image_calm_abstract_art_piece_symbol_0_1785184760565.png',
+      artistName: 'נועה ל.',
+      domains: ['ויסות רגשי'],
+      createdAt: '2026-01-12T09:00:00.000Z',
+    },
+  ];
+
+  return <GalleryGrid items={items} />;
+}
+```
+
+## Handling tile clicks
+
+Use the `onOpenItem` callback to open a lightbox or navigate to a detail page when a tile is clicked:
+
+```tsx
+function Example() {
+  const [openedSlug, setOpenedSlug] = React.useState(null);
+  const items = [
+    {
+      id: '1',
+      slug: 'breathe-and-begin',
+      title: 'נשימה והתחלה',
+      mediaType: 'video',
+      mediaUrl:
+        'https://storage.googleapis.com/bit-generated-images/images/image_thumbnail_frame_for_a_short_mi_0_1785184760493.png',
+      artistName: 'דנה כ.',
+      domains: ['מיינדפולנס ונשימות'],
+      createdAt: '2026-03-01T09:00:00.000Z',
+    },
+  ];
+
+  return (
+    <div>
+      <GalleryGrid items={items} onOpenItem={(slug) => setOpenedSlug(slug)} />
+      {openedSlug && <p>נפתחה יצירה: {openedSlug}</p>}
+    </div>
+  );
+}
+```
+
+## Empty state
+
+When the `items` array is empty, the grid renders a friendly empty state instead:
+
+```tsx
+function Example() {
+  return (
+    <GalleryGrid
+      items={[]}
+      emptyTitle="לא נמצאו יצירות"
+      emptyDescription="נסו לשנות את הסינון או להוסיף יצירה חדשה לגלריה."
+    />
+  );
+}
+```

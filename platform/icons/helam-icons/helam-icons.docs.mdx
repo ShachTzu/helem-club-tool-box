@@ -1,0 +1,64 @@
+---
+description: "Platform icon set built on the design system's base icon, covering core navigation and feature-specific icons."
+labels: ['icons', 'navigation', 'design-system']
+---
+
+The `helam-icons` package provides the named icon exports used across the Helam Club platform: core navigation icons (home, search, menu, user, logout, admin, bookmark, bell, chevron, close) and feature navigation icons (toolbox, library, blog, events, gallery, domains).
+
+All icons are built on top of the `Icon` component from `@helemclub/design.content.icon`, so they share the same `size` and `color` API and inherit the platform's theming.
+
+## Basic usage
+
+Import the icon you need and render it directly. Icons default to `medium` size and `current` color, which inherits the surrounding text color.
+
+```tsx
+import { HomeIcon, SearchIcon, BellIcon } from '@helemclub/platform.icons.helam-icons';
+
+function TopBarIcons() {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+      <HomeIcon color="primary" title="בית" />
+      <SearchIcon color="primary" title="חיפוש" />
+      <BellIcon color="accent" title="התראות" />
+    </div>
+  );
+}
+```
+
+## Feature navigation icons
+
+Feature icons represent the main ecosystem sections and are typically paired with navigation labels.
+
+```tsx
+import { ToolboxIcon, LibraryIcon, BlogIcon, EventsIcon, GalleryIcon, DomainsIcon } from '@helemclub/platform.icons.helam-icons';
+
+function FeatureNav() {
+  return (
+    <nav style={{ display: 'flex', gap: 16 }}>
+      <ToolboxIcon size="small" color="secondary" title="ארגז כלים" />
+      <LibraryIcon size="small" color="secondary" title="מאגר ידע" />
+      <BlogIcon size="small" color="secondary" title="בלוג" />
+      <EventsIcon size="small" color="secondary" title="אירועים" />
+      <GalleryIcon size="small" color="secondary" title="גלריה" />
+      <DomainsIcon size="small" color="secondary" title="דומיינים" />
+    </nav>
+  );
+}
+```
+
+## Bookmark and chevron variants
+
+`BookmarkIcon` supports a `variant` prop (`stroke` or `fill`), and `ChevronIcon` supports a `direction` prop (`up`, `down`, `left`, `right`) for accordions, dropdowns and carousels.
+
+```tsx
+import { BookmarkIcon, ChevronIcon } from '@helemclub/platform.icons.helam-icons';
+
+function SavedRow() {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+      <BookmarkIcon variant="fill" color="accent" title="שמור" />
+      <ChevronIcon direction="down" color="muted" title="הרחב" />
+    </div>
+  );
+}
+```
