@@ -16,7 +16,8 @@ echo "=== bit workspace? ==="; ls "$HOME/Developer/helemclubmarketplace/workspac
 ## 2. Reload project context
 
 - Read `helam-club-go-live-plan.md` (the source-of-truth spec) — at least §10 (build order) and §11 (open questions).
-- Recall from memory: repo is `github.com/ShachTzu/helem-club-tool-box` (private); `hopeAI` prepped Mongo and reviews PRs; three review circles; build only after her plan sign-off.
+- Recall from memory: repo is `github.com/ShachTzu/helem-club-tool-box` (private) and IS the Bit workspace; `hopeAI` prepped Mongo and reviewed the plan. **hopeAI has NO GitHub access** — she reviews pasted files/diffs and returns text comments; Claude applies. Build only after her plan sign-off.
+- **Not greenfield:** 88 components already exist on lane `helemclub.marketplace/helam-club`. Step 0 is `bit init` + import from the lane BEFORE any build. Reuse/extend existing components — never rebuild design/platform/toolbox.
 
 ## 3. Report back (Hebrew, short)
 
@@ -25,4 +26,4 @@ Tell the user:
 - Where we are in the plan: which build step is next, and whether we're still on hold for hopeAI's sign-off.
 - Then ask: **"מה עושים היום?"** — and wait. If she says hopeAI approved, proceed to the next step as PR; otherwise hold.
 
-Remember: every build step ships as a GitHub PR for hopeAI to review. Never push to `main` directly for feature work — branch → PR.
+Remember: hopeAI reviews by pasted diff (no GitHub access) — Claude produces the diff, Shachar pastes it, hopeAI returns file+line comments, Claude applies. PRs still exist for CI/versioning; never push to `main` directly for feature work — branch → PR. Near-term target is **Milestone A**: registration (OTP+Google) + submission, so hackathon participants submit real apps.
