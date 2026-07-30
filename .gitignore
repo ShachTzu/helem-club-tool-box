@@ -1,0 +1,14 @@
+# deps
+node_modules/
+
+# secrets — never commit
+.env
+.env.*
+
+# bit workspace local state
+.bit/
+node_modules.cache/
+
+# os / editor
+.DS_Store
+*.log
