@@ -1,12 +1,14 @@
 import { useCallback } from 'react';
 import { User, type PlainUser } from '@helemclub/platform.entities.user';
 import { useCurrentUser } from './use-current-user.js';
-import { useRequestEmailOtp } from './use-request-email-otp.js';
+import { useRequestEmailOtp, type RequestOtpResult } from './use-request-email-otp.js';
+import { useAuthConfig } from './use-auth-config.js';
 import { useVerifyEmailOtp, type AuthSession } from './use-verify-email-otp.js';
 import { useSignInWithGoogle } from './use-sign-in-with-google.js';
 import { useSignOut } from './use-sign-out.js';
 
 export type { AuthSession } from './use-verify-email-otp.js';
+export type { RequestOtpResult } from './use-request-email-otp.js';
 
 export type UseAuthOptions = {
   /**
@@ -34,9 +36,11 @@ export type UseAuthValue = {
 
   /**
    * requests a one-time-password to be sent to the given email address.
-   * resolves with whether the code was sent successfully.
+   * resolves with whether the code was sent, and a Hebrew reason when it was
+   * not — an invalid address, or a throttled request. an optional display
+   * name is captured for accounts created on first verification.
    */
-  requestEmailOtp: (email: string) => Promise<boolean>;
+  requestEmailOtp: (email: string, displayName?: string) => Promise<RequestOtpResult>;
 
   /**
    * verifies a one-time-password sent to an email address and signs the user in.
@@ -54,6 +58,13 @@ export type UseAuthValue = {
    * signs the current user out of the platform.
    */
   signOut: () => Promise<void>;
+
+  /**
+   * the Google OAuth client id served by the platform, or undefined when
+   * Google sign-in is not configured. sign-in pages hide the Google button
+   * when this is absent.
+   */
+  googleClientId?: string;
 
   /**
    * whether the current user holds the admin role.
@@ -85,6 +96,7 @@ export function useAuth(options?: UseAuthOptions): UseAuthValue {
   const { verifyEmailOtp: verifyEmailOtpMutation } = useVerifyEmailOtp();
   const { signInWithGoogle: signInWithGoogleMutation } = useSignInWithGoogle();
   const { signOut: signOutMutation } = useSignOut();
+  const { googleClientId } = useAuthConfig();
 
   const verifyEmailOtp = useCallback(
     async (email: string, code: string) => {
@@ -125,6 +137,7 @@ export function useAuth(options?: UseAuthOptions): UseAuthValue {
     verifyEmailOtp,
     signInWithGoogle,
     signOut,
+    googleClientId,
     isAdmin,
     isModerator,
     canWrite,

@@ -283,7 +283,9 @@ export class BlogNode {
       },
     ]);
 
-    helamPlatform.registerOnStart(async () => {
+    // demo posts, authors and stats are invented content. `registerSeed` only
+    // runs while seeding is permitted (see DISABLE_SEED_DATA on the platform).
+    helamPlatform.registerSeed(async () => {
       const existingPosts = await postModel.find().limit(1).exec();
       if (existingPosts.length === 0) {
         await postModel.insertMany(POST_MOCKS);

@@ -234,7 +234,12 @@ export class ToolboxNode {
       // (the `language` field holds Hebrew values that mongo would otherwise
       // try to interpret as a text-search language).
       await appModel.syncIndexes();
+    });
 
+    // demo apps and reviews are invented content — useful for a fresh dev
+    // database, misleading in production. `registerSeed` runs only while
+    // seeding is enabled (see DISABLE_SEED_DATA on the platform aspect).
+    helamPlatform.registerSeed(async () => {
       const existingApps = await appModel.find().limit(1);
       if (!existingApps.length) {
         await appModel.insertMany(APP_MOCKS);

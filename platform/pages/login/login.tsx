@@ -4,15 +4,11 @@ import classNames from 'classnames';
 import { Heading } from '@helemclub/design.typography.heading';
 import { Button } from '@helemclub/design.actions.button';
 import { TextInput } from '@helemclub/design.inputs.text-input';
-import { useAuth } from '@helemclub/platform.hooks.use-auth';
+import { useAuth, useGoogleSignIn } from '@helemclub/platform.hooks.use-auth';
 import { GoogleIcon } from './google-icon.js';
 import styles from './login.module.scss';
 
 type LoginStep = `email` | `code`;
-
-async function defaultGetGoogleIdToken(): Promise<string> {
-  throw new Error(`Google sign-in is not configured in this environment.`);
-}
 
 export type LoginProps = {
   /**
@@ -23,11 +19,11 @@ export type LoginProps = {
   defaultRedirectPath?: string;
 
   /**
-   * resolves a Google ID token used to complete Google sign-in. inject a
-   * real implementation (e.g. backed by Google Identity Services) in the
-   * app; the default rejects, since no Google SDK is wired in by default.
+   * overrides how a Google ID token is obtained. by default the page uses
+   * Google Identity Services, configured from the client id the server
+   * serves. provide a stub in tests and previews.
    */
-  getGoogleIdToken?: () => Promise<string>;
+  getGoogleIdToken?: () => Promise<string | null>;
 
   /**
    * class name for the root container.
@@ -41,20 +37,27 @@ export type LoginProps = {
 };
 
 /**
- * Login page for the Helem Club platform. Members sign in with a
- * one-time-password sent to their email, or with a Google account.
+ * Login page for the Helam Club platform. Members sign in with a
+ * one-time code sent to their email, or with a Google account — the email
+ * route keeps the community open to people who do not use Google.
  * After a successful sign-in, redirects back to the route the user
  * originally intended to visit.
  */
 export function Login({
   defaultRedirectPath = `/`,
-  getGoogleIdToken = defaultGetGoogleIdToken,
+  getGoogleIdToken,
   className,
   style,
 }: LoginProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { requestEmailOtp, verifyEmailOtp, signInWithGoogle } = useAuth();
+  const { requestGoogleIdToken, available: googleAvailable } = useGoogleSignIn();
+
+  // Google is shown only when it can actually complete: either the server has
+  // a client id configured, or a token resolver was injected for previews.
+  const resolveGoogleToken = getGoogleIdToken || requestGoogleIdToken;
+  const showGoogle = Boolean(getGoogleIdToken) || googleAvailable;
 
   const [step, setStep] = useState<LoginStep>(`email`);
   const [email, setEmail] = useState(``);
@@ -74,11 +77,13 @@ export function Login({
     setError(undefined);
     setIsSubmitting(true);
     try {
-      const sent = await requestEmailOtp(email.trim());
+      const { sent, reason } = await requestEmailOtp(email.trim());
       if (sent) {
         setStep(`code`);
       } else {
-        setError(`לא הצלחנו לשלוח את הקוד. בדקו את כתובת המייל ונסו שוב.`);
+        // the server explains throttling and invalid addresses in Hebrew;
+        // pass it through rather than flattening it to a generic failure.
+        setError(reason || `לא הצלחנו לשלוח את הקוד. בדקו את כתובת המייל ונסו שוב.`);
       }
     } catch {
       setError(`משהו השתבש בשליחת הקוד. נסו שוב בעוד רגע.`);
@@ -112,7 +117,12 @@ export function Login({
     setError(undefined);
     setIsGoogleSubmitting(true);
     try {
-      const idToken = await getGoogleIdToken();
+      const idToken = await resolveGoogleToken();
+      if (!idToken) {
+        // the member closed the Google chooser — not an error worth shouting about.
+        setIsGoogleSubmitting(false);
+        return;
+      }
       const session = await signInWithGoogle(idToken);
       if (session) {
         navigate(redirectPath, { replace: true });
@@ -146,24 +156,28 @@ export function Login({
           מתחברים בלי סיסמה — עם קוד חד-פעמי למייל, או עם חשבון Google. בלי לחץ, בקצב שלכם.
         </p>
 
-        <div className={styles.googleButton}>
-          <Button
-            variant="secondary"
-            size="lg"
-            fullWidth
-            leadingIcon={<GoogleIcon />}
-            loading={isGoogleSubmitting}
-            onClick={() => handleGoogleSignIn()}
-          >
-            התחברות עם Google
-          </Button>
-        </div>
+        {showGoogle && (
+          <>
+            <div className={styles.googleButton}>
+              <Button
+                variant="secondary"
+                size="lg"
+                fullWidth
+                leadingIcon={<GoogleIcon />}
+                loading={isGoogleSubmitting}
+                onClick={() => handleGoogleSignIn()}
+              >
+                התחברות עם Google
+              </Button>
+            </div>
 
-        <div className={styles.divider}>
-          <span className={styles.dividerLine} />
-          <span className={styles.dividerLabel}>או</span>
-          <span className={styles.dividerLine} />
-        </div>
+            <div className={styles.divider}>
+              <span className={styles.dividerLine} />
+              <span className={styles.dividerLabel}>או</span>
+              <span className={styles.dividerLine} />
+            </div>
+          </>
+        )}
 
         {step === `email` && (
           <div className={styles.form}>

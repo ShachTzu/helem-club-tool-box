@@ -169,7 +169,9 @@ export class EventsNode {
       },
     ]);
 
-    helamPlatform.registerOnStart(async () => {
+    // demo events are invented content — seeded only when seeding is permitted
+    // (see DISABLE_SEED_DATA on the platform aspect).
+    helamPlatform.registerSeed(async () => {
       const existing = await eventModel.find().limit(1).exec();
       if (existing.length > 0) return;
       await eventModel.insertMany(EVENT_MOCKS);

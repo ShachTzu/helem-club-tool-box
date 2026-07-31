@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Heading } from '@helemclub/design.typography.heading';
 import { Button } from '@helemclub/design.actions.button';
 import { TextInput } from '@helemclub/design.inputs.text-input';
-import { useAuth } from '@helemclub/platform.hooks.use-auth';
+import { useAuth, useGoogleSignIn } from '@helemclub/platform.hooks.use-auth';
 import type { User, PlainUser } from '@helemclub/platform.entities.user';
 import { GoogleIcon } from './google-icon.js';
 import styles from './signup.module.scss';
@@ -25,9 +25,10 @@ export type SignupProps = {
   loginHref?: string;
 
   /**
-   * requests a Google ID token from the host application's Google
-   * Identity integration. resolves with the token, or null when the
-   * user cancelled or the integration is unavailable.
+   * overrides how a Google ID token is obtained. by default the page uses
+   * Google Identity Services, configured from the client id the server
+   * serves. resolves with null when the member cancelled. provide a stub in
+   * tests and previews.
    */
   requestGoogleIdToken?: () => Promise<string | null>;
 
@@ -73,6 +74,12 @@ export function Signup({
   const { requestEmailOtp, verifyEmailOtp, signInWithGoogle } = useAuth(
     hasMockData ? { mockData } : undefined
   );
+  const { requestGoogleIdToken: gsiRequestToken, available: googleAvailable } = useGoogleSignIn();
+
+  // Google is offered only when it can actually complete: either the server
+  // has a client id configured, or a resolver was injected for previews.
+  const resolveGoogleToken = requestGoogleIdToken || gsiRequestToken;
+  const showGoogle = Boolean(requestGoogleIdToken) || googleAvailable;
 
   const [step, setStep] = useState<SignupStep>(`details`);
   const [displayName, setDisplayName] = useState(``);
@@ -105,9 +112,11 @@ export function Signup({
 
     setIsSubmitting(true);
     try {
-      const sent = await requestEmailOtp(email);
+      // the display name travels with the request and is applied to the
+      // account created when the code is verified.
+      const { sent, reason } = await requestEmailOtp(email, displayName.trim());
       if (!sent) {
-        setError(`לא הצלחנו לשלוח קוד למייל הזה. נסו שוב`);
+        setError(reason || `לא הצלחנו לשלוח קוד למייל הזה. נסו שוב`);
         return;
       }
       setStep(`otp`);
@@ -144,14 +153,14 @@ export function Signup({
   const handleGoogleSignup = async () => {
     setError(undefined);
 
-    if (!requestGoogleIdToken) {
+    if (!showGoogle) {
       setError(`ההרשמה עם Google אינה זמינה כרגע. נסו עם מייל`);
       return;
     }
 
     setIsGoogleSubmitting(true);
     try {
-      const idToken = await requestGoogleIdToken();
+      const idToken = await resolveGoogleToken();
       if (!idToken) {
         return;
       }
@@ -188,21 +197,25 @@ export function Signup({
           ))}
         </div>
 
-        <button
-          type="button"
-          className={styles.googleButton}
-          onClick={() => handleGoogleSignup()}
-          disabled={isGoogleSubmitting}
-        >
-          <GoogleIcon />
-          {isGoogleSubmitting ? `מתחברים...` : `הרשמה עם Google`}
-        </button>
+        {showGoogle && (
+          <>
+            <button
+              type="button"
+              className={styles.googleButton}
+              onClick={() => handleGoogleSignup()}
+              disabled={isGoogleSubmitting}
+            >
+              <GoogleIcon />
+              {isGoogleSubmitting ? `מתחברים...` : `הרשמה עם Google`}
+            </button>
 
-        <div className={styles.divider}>
-          <span className={styles.dividerLine} />
-          <span>או</span>
-          <span className={styles.dividerLine} />
-        </div>
+            <div className={styles.divider}>
+              <span className={styles.dividerLine} />
+              <span>או</span>
+              <span className={styles.dividerLine} />
+            </div>
+          </>
+        )}
 
         {step === `details` && (
           <div className={styles.form}>

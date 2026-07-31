@@ -125,7 +125,9 @@ export class GalleryNode {
       },
     ]);
 
-    helamPlatform.registerOnStart(async () => {
+    // demo gallery items are invented content — seeded only when seeding is
+    // permitted (see DISABLE_SEED_DATA on the platform aspect).
+    helamPlatform.registerSeed(async () => {
       const existingDocs = await galleryItemModel.find().limit(1);
       const hasDocs = Boolean(existingDocs.length);
       if (hasDocs) return undefined;

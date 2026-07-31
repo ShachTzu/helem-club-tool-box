@@ -24,8 +24,8 @@ function serializeUser(user: User) {
 /**
  * the platform's GraphQL schema. implements the authentication contract
  * consumed by the use-auth hooks: email one-time-password request/verify,
- * Google sign-in, the current user query, and sign out. sessions are managed
- * with express-session.
+ * Google sign-in, the public auth configuration, the current user query, and
+ * sign out. sessions are managed with express-session.
  */
 export function helamPlatformGqlSchema(helamPlatform: HelamPlatformNode): GqlSchema {
   return {
@@ -46,11 +46,31 @@ export function helamPlatformGqlSchema(helamPlatform: HelamPlatformNode): GqlSch
       }
 
       type RequestEmailOtpResult {
+        """
+        whether a code was issued and sent.
+        """
         sent: Boolean
+
+        """
+        a Hebrew, user-facing explanation when no code was sent — an invalid
+        address, or a throttled request.
+        """
+        reason: String
+      }
+
+      """
+      the public, non-secret configuration the browser needs to start a
+      sign-in. served from the API so the Google client id never has to be
+      baked into the browser bundle at build time.
+      """
+      type AuthConfig {
+        googleClientId: String
+        emailSignInEnabled: Boolean
       }
 
       input RequestEmailOtpOptions {
         email: String!
+        displayName: String
       }
 
       input VerifyEmailOtpOptions {
@@ -64,6 +84,7 @@ export function helamPlatformGqlSchema(helamPlatform: HelamPlatformNode): GqlSch
 
       type Query {
         getCurrentUser: PlatformUser
+        authConfig: AuthConfig
       }
 
       type Mutation {
@@ -79,11 +100,17 @@ export function helamPlatformGqlSchema(helamPlatform: HelamPlatformNode): GqlSch
           const user = await helamPlatform.getCurrentUser(context);
           return user ? serializeUser(user) : null;
         },
+
+        authConfig: async () => {
+          return {
+            googleClientId: helamPlatform.getGoogleClientId() || null,
+            emailSignInEnabled: true,
+          };
+        },
       },
       Mutation: {
         requestEmailOtp: async (_parent: unknown, { options }: any) => {
-          const sent = await helamPlatform.requestEmailOtp(options.email);
-          return { sent };
+          return helamPlatform.requestEmailOtp(options.email, options.displayName);
         },
 
         verifyEmailOtp: async (_parent: unknown, { options }: any, context: any) => {

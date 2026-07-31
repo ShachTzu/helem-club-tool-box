@@ -177,7 +177,9 @@ export class KnowledgeBaseNode {
       },
     ]);
 
-    helamPlatform.registerOnStart(async () => {
+    // demo labels and media records are invented content — seeded only when
+    // seeding is permitted (see DISABLE_SEED_DATA on the platform aspect).
+    helamPlatform.registerSeed(async () => {
       const existingLabels = await labelModel.find().limit(1);
       if (!existingLabels.length) {
         await labelModel.insertMany(LABEL_MOCKS);

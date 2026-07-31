@@ -4,6 +4,15 @@ import { MockProvider } from '@helemclub/platform.testing.mock-provider';
 import { Signup } from './signup.js';
 import styles from './signup.module.scss';
 
+/**
+ * finds the primary submit button by its label, rather than by position —
+ * the Google button is conditional, so positional lookups are brittle.
+ */
+function getSubmitButton(container: HTMLElement) {
+  const buttons = Array.from(container.querySelectorAll('button'));
+  return buttons.find((button) => button.textContent?.includes(`קבלת קוד`)) as HTMLButtonElement;
+}
+
 it('renders the signup headline and benefits', () => {
   const { container } = render(
     <MockProvider>
@@ -33,8 +42,7 @@ it('shows a validation error when submitting without a display name', () => {
     </MockProvider>
   );
 
-  const submitButton = container.querySelectorAll('button')[1] as HTMLButtonElement;
-  fireEvent.click(submitButton);
+  fireEvent.click(getSubmitButton(container));
 
   const errorText = container.querySelector(`.${styles.errorText}`);
   expect(errorText).not.toBeNull();
@@ -53,23 +61,30 @@ it('shows a validation error when the email is invalid', () => {
   const emailInput = container.querySelectorAll('input')[1] as HTMLInputElement;
   fireEvent.change(emailInput, { target: { value: `not-an-email` } });
 
-  const submitButton = container.querySelectorAll('button')[1] as HTMLButtonElement;
-  fireEvent.click(submitButton);
+  fireEvent.click(getSubmitButton(container));
 
   const errorText = container.querySelector(`.${styles.errorText}`);
   expect(errorText?.textContent).toContain(`תקינה`);
 });
 
-it('shows an error when Google signup is triggered without an integration', () => {
+it('hides the Google button when Google sign-in is not configured', () => {
   const { container } = render(
     <MockProvider>
       <Signup />
     </MockProvider>
   );
 
-  const googleButton = container.querySelector(`.${styles.googleButton}`) as HTMLButtonElement;
-  fireEvent.click(googleButton);
+  // rather than offering a button that cannot complete, the page falls back
+  // to email-only signup.
+  expect(container.querySelector(`.${styles.googleButton}`)).toBeNull();
+});
 
-  const errorText = container.querySelector(`.${styles.errorText}`);
-  expect(errorText).not.toBeNull();
+it('offers Google signup when a token resolver is injected', () => {
+  const { container } = render(
+    <MockProvider>
+      <Signup requestGoogleIdToken={() => Promise.resolve(`token`)} />
+    </MockProvider>
+  );
+
+  expect(container.querySelector(`.${styles.googleButton}`)).not.toBeNull();
 });
