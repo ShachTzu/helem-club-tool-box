@@ -74,6 +74,9 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         platform: [String]
         language: String
         domains: [String]
+        developerName: String
+        contactEmail: String
+        submissionSource: String
       }
 
       input ReviewToolboxAppOptions {

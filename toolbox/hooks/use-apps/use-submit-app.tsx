@@ -80,6 +80,22 @@ export type SubmitAppOptions = {
    * coping domains the app is relevant for.
    */
   domains?: string[];
+
+  /**
+   * name of the developer or team submitting the app.
+   */
+  developerName?: string;
+
+  /**
+   * contact email for the submitter. PII — stored for moderators only, never
+   * returned by any public query or included in the mutation response.
+   */
+  contactEmail?: string;
+
+  /**
+   * where the submission originated, e.g. 'hackathon-1'.
+   */
+  submissionSource?: string;
 };
 
 /**

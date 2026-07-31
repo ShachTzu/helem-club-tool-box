@@ -50,7 +50,7 @@ export class AppModel {
   @prop({ type: () => [String], default: [] })
   public domains: string[];
 
-  @prop({ type: String, default: 'approved' })
+  @prop({ type: String, default: 'pending' })
   public status: string;
 
   @prop({ type: Boolean, default: false })
@@ -67,6 +67,20 @@ export class AppModel {
 
   @prop({ type: String, default: '' })
   public developerName: string;
+
+  /**
+   * contact email for the submitter. PII — surfaced only to moderators, never
+   * mapped into the public app shape.
+   */
+  @prop({ type: String, default: '' })
+  public contactEmail: string;
+
+  /**
+   * where the submission originated, e.g. 'hackathon-1'. used to identify and
+   * filter a submission cohort.
+   */
+  @prop({ type: String, default: '' })
+  public submissionSource: string;
 
   @prop({ type: String, default: '' })
   public originatorName: string;

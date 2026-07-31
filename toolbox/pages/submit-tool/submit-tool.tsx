@@ -77,6 +77,12 @@ export type SubmitToolProps = {
   redirectTo?: string;
 
   /**
+   * where this submission originated, tagged on the created app (e.g. the
+   * hackathon cohort). defaults to 'hackathon-1'.
+   */
+  submissionSource?: string;
+
+  /**
    * called after the tool was submitted successfully and is pending review.
    */
   onSubmitted?: () => void;
@@ -96,6 +102,7 @@ export function SubmitTool({
   mockDomains,
   mockUser,
   redirectTo = `/login`,
+  submissionSource = `hackathon-1`,
   onSubmitted = () => {},
 }: SubmitToolProps) {
   const [name, setName] = useState(``);
@@ -106,6 +113,8 @@ export function SubmitTool({
   const [platforms, setPlatforms] = useState<string[]>([]);
   const [language, setLanguage] = useState(``);
   const [domains, setDomains] = useState<string[]>([]);
+  const [developerName, setDeveloperName] = useState(``);
+  const [contactEmail, setContactEmail] = useState(``);
   const [formError, setFormError] = useState<string | undefined>(undefined);
   const [submitted, setSubmitted] = useState(false);
 
@@ -120,6 +129,8 @@ export function SubmitTool({
     setPlatforms([]);
     setLanguage(``);
     setDomains([]);
+    setDeveloperName(``);
+    setContactEmail(``);
     setFormError(undefined);
     setSubmitted(false);
   };
@@ -129,14 +140,30 @@ export function SubmitTool({
     const trimmedSubtitle = subtitle.trim();
     const trimmedDescription = description.trim();
     const trimmedLink = externalLink.trim();
+    const trimmedDeveloper = developerName.trim();
+    const trimmedContact = contactEmail.trim();
 
-    if (!trimmedName || !trimmedSubtitle || !trimmedDescription || !trimmedLink || !costType || !language) {
+    if (
+      !trimmedName ||
+      !trimmedSubtitle ||
+      !trimmedDescription ||
+      !trimmedLink ||
+      !costType ||
+      !language ||
+      !trimmedDeveloper ||
+      !trimmedContact
+    ) {
       setFormError(`נא למלא את כל השדות המסומנים בכוכבית לפני השליחה`);
       return;
     }
 
     if (!/^https?:\/\//.test(trimmedLink)) {
       setFormError(`קישור חיצוני חייב להתחיל ב-http:// או https://`);
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedContact)) {
+      setFormError(`נא להזין כתובת מייל תקינה ליצירת קשר`);
       return;
     }
 
@@ -151,6 +178,9 @@ export function SubmitTool({
       platform: platforms,
       language,
       domains,
+      developerName: trimmedDeveloper,
+      contactEmail: trimmedContact,
+      submissionSource,
     });
 
     if (result) {
@@ -263,6 +293,25 @@ export function SubmitTool({
                   label="תחומי התמודדות רלוונטיים"
                   helperText="בחרו תחום אחד או יותר שהכלי רלוונטי עבורם"
                 />
+
+                <div className={styles.row}>
+                  <TextInput
+                    label="שם המפתח / הצוות"
+                    placeholder="מי בנה את הכלי"
+                    value={developerName}
+                    onChange={(value) => setDeveloperName(value)}
+                    required
+                  />
+                  <TextInput
+                    label="מייל ליצירת קשר"
+                    type="email"
+                    placeholder="name@example.com"
+                    value={contactEmail}
+                    onChange={(value) => setContactEmail(value)}
+                    helperText="לשימוש צוות המנחים בלבד — לא יוצג לציבור"
+                    required
+                  />
+                </div>
 
                 {(formError || submitError) && (
                   <p className={styles.errorBanner}>{formError || `אירעה שגיאה בשליחת הכלי, נסו שוב`}</p>
