@@ -159,6 +159,17 @@ export class ToolboxNode {
   }
 
   /**
+   * list the current member's own submissions across all statuses, for the
+   * "my submissions" page. owner-scoped in the repository query; returns the
+   * public app shape (no PII) plus status.
+   */
+  async listMySubmissions(context: ResolverContext): Promise<PlainApp[]> {
+    const user = await this.requireUser(context);
+    const apps = await this.appRepository.listByOwner(user.id);
+    return apps.map((app) => this.toPlainApp(app)).filter((app): app is PlainApp => Boolean(app));
+  }
+
+  /**
    * list the reviews left for an app.
    */
   async listAppReviews(appId: string): Promise<PlainAppReview[]> {

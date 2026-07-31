@@ -136,6 +136,7 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         listPendingToolboxApps: [PendingToolboxApp]
         listToolboxAppReviews(appId: String!): [ToolboxAppReview]
         getMyToolboxDraft(id: String!): PendingToolboxApp
+        listMyToolboxSubmissions: [ToolboxApp]
       }
 
       type Mutation {
@@ -173,6 +174,13 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
           context: ResolverContext
         ) => {
           return toolboxNode.getMyDraft(id, context);
+        },
+        listMyToolboxSubmissions: async (
+          _parent: unknown,
+          _args: unknown,
+          context: ResolverContext
+        ) => {
+          return toolboxNode.listMySubmissions(context);
         },
       },
       Mutation: {

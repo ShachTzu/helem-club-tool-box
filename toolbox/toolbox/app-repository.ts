@@ -65,6 +65,15 @@ export class AppRepository {
   }
 
   /**
+   * list every submission owned by a member, across all statuses, newest first.
+   * scoped to the member's own records by the submittedBy filter in the query.
+   */
+  async listByOwner(userId: string): Promise<AppModel[]> {
+    const docs = await this.appModel.find({ submittedBy: userId }).sort({ createdAt: -1 }).exec();
+    return docs.map((doc) => doc.toObject());
+  }
+
+  /**
    * the submitter-editable fields of an app, shared by draft save and submit so
    * the same input maps consistently. excludes id/slug/status/metrics/ownership.
    */

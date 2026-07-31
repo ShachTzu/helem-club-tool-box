@@ -125,7 +125,7 @@ importers:
         specifier: 4.28.1
         version: 4.28.1
       classnames:
-        specifier: ^2.5.1
+        specifier: 2.5.1
         version: 2.5.1
       connect-mongo:
         specifier: ^6.0.0
@@ -3599,6 +3599,9 @@ importers:
       '@helemclub/toolbox.pages.app-detail':
         specifier: workspace:*
         version: file:toolbox/pages/app-detail(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
+      '@helemclub/toolbox.pages.my-submissions':
+        specifier: workspace:*
+        version: file:toolbox/pages/my-submissions(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
       '@helemclub/toolbox.pages.submit-tool':
         specifier: workspace:*
         version: file:toolbox/pages/submit-tool(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
@@ -4139,6 +4142,9 @@ importers:
       '@helemclub/toolbox.pages.app-detail':
         specifier: workspace:*
         version: file:toolbox/pages/app-detail(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
+      '@helemclub/toolbox.pages.my-submissions':
+        specifier: workspace:*
+        version: file:toolbox/pages/my-submissions(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
       '@helemclub/toolbox.pages.submit-tool':
         specifier: workspace:*
         version: file:toolbox/pages/submit-tool(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
@@ -4700,6 +4706,9 @@ importers:
       '@helemclub/toolbox.pages.app-detail':
         specifier: workspace:*
         version: file:toolbox/pages/app-detail(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
+      '@helemclub/toolbox.pages.my-submissions':
+        specifier: workspace:*
+        version: file:toolbox/pages/my-submissions(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
       '@helemclub/toolbox.pages.submit-tool':
         specifier: workspace:*
         version: file:toolbox/pages/submit-tool(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
@@ -5294,6 +5303,9 @@ importers:
       '@helemclub/toolbox.pages.app-detail':
         specifier: workspace:*
         version: file:toolbox/pages/app-detail(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
+      '@helemclub/toolbox.pages.my-submissions':
+        specifier: workspace:*
+        version: file:toolbox/pages/my-submissions(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
       '@helemclub/toolbox.pages.submit-tool':
         specifier: workspace:*
         version: file:toolbox/pages/submit-tool(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
@@ -5855,6 +5867,9 @@ importers:
       '@helemclub/toolbox.pages.app-detail':
         specifier: workspace:*
         version: file:toolbox/pages/app-detail(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
+      '@helemclub/toolbox.pages.my-submissions':
+        specifier: workspace:*
+        version: file:toolbox/pages/my-submissions(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
       '@helemclub/toolbox.pages.submit-tool':
         specifier: workspace:*
         version: file:toolbox/pages/submit-tool(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
@@ -6449,6 +6464,9 @@ importers:
       '@helemclub/toolbox.pages.app-detail':
         specifier: workspace:*
         version: file:toolbox/pages/app-detail(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
+      '@helemclub/toolbox.pages.my-submissions':
+        specifier: workspace:*
+        version: file:toolbox/pages/my-submissions(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
       '@helemclub/toolbox.pages.submit-tool':
         specifier: workspace:*
         version: file:toolbox/pages/submit-tool(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
@@ -7056,6 +7074,9 @@ importers:
       '@helemclub/toolbox.pages.app-detail':
         specifier: workspace:*
         version: file:toolbox/pages/app-detail(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
+      '@helemclub/toolbox.pages.my-submissions':
+        specifier: workspace:*
+        version: file:toolbox/pages/my-submissions(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
       '@helemclub/toolbox.pages.submit-tool':
         specifier: workspace:*
         version: file:toolbox/pages/submit-tool(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
@@ -8112,6 +8133,31 @@ importers:
         specifier: ^16.0.0
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3)(@types/react@19.2.14)(react-dom@19.2.4)(react@19.2.4)
 
+  toolbox/pages/my-submissions:
+    dependencies:
+      '@rspack/core':
+        specifier: ^1.7.9
+        version: 1.7.12
+      '@rspack/dev-server':
+        specifier: ^1.2.1
+        version: 1.2.1(@rspack/core@1.7.12)(tslib@2.8.1)(webpack@5.97.1)
+      '@rspack/plugin-react-refresh':
+        specifier: ^1.6.1
+        version: 1.6.2(react-refresh@0.18.0)(webpack-hot-middleware@2.26.1)
+      classnames:
+        specifier: 2.5.1
+        version: 2.5.1
+      react:
+        specifier: ^17.0.0 || ^18.0.0 || ^19.0.0
+        version: 19.2.4
+      react-router-dom:
+        specifier: ^7.13.1
+        version: 7.18.2(react-dom@19.2.4)(react@19.2.4)
+    devDependencies:
+      '@testing-library/react':
+        specifier: ^16.0.0
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3)(@types/react@19.2.14)(react-dom@19.2.4)(react@19.2.4)
+
   toolbox/pages/submit-tool:
     dependencies:
       '@rspack/core':
@@ -8129,6 +8175,9 @@ importers:
       react:
         specifier: ^17.0.0 || ^18.0.0 || ^19.0.0
         version: 19.2.4
+      react-router-dom:
+        specifier: ^7.13.1
+        version: 7.18.2(react-dom@19.2.4)(react@19.2.4)
     devDependencies:
       '@testing-library/react':
         specifier: ^16.0.0
@@ -10839,10 +10888,17 @@ packages:
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
       react-router-dom: ^7.13.1
 
+  '@helemclub/toolbox.pages.my-submissions@file:toolbox/pages/my-submissions':
+    resolution: {directory: toolbox/pages/my-submissions, type: directory}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-router-dom: ^7.13.1
+
   '@helemclub/toolbox.pages.submit-tool@file:toolbox/pages/submit-tool':
     resolution: {directory: toolbox/pages/submit-tool, type: directory}
     peerDependencies:
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-router-dom: ^7.13.1
 
   '@helemclub/toolbox.pages.toolbox-catalog@file:toolbox/pages/toolbox-catalog':
     resolution: {directory: toolbox/pages/toolbox-catalog, type: directory}
@@ -27763,6 +27819,34 @@ snapshots:
       - webpack
       - webpack-hot-middleware
 
+  '@helemclub/toolbox.pages.my-submissions@file:toolbox/pages/my-submissions(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)':
+    dependencies:
+      '@helemclub/platform.entities.user': file:platform/entities/user(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
+      '@helemclub/platform.testing.mock-provider': file:platform/testing/mock-provider(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)
+      '@helemclub/platform.ui.protected-route': file:platform/ui/protected-route(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
+      '@helemclub/toolbox.entities.app': file:toolbox/entities/app(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
+      '@helemclub/toolbox.hooks.use-apps': file:toolbox/hooks/use-apps(@apollo/client@4.2.9)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
+      '@rspack/core': 1.7.12
+      '@rspack/dev-server': 1.2.1(@rspack/core@1.7.12)(tslib@2.8.1)(webpack@5.97.1)
+      '@rspack/plugin-react-refresh': 1.6.2(react-refresh@0.18.0)(webpack-hot-middleware@2.26.1)
+      classnames: 2.5.1
+      react: 19.2.4
+      react-router-dom: 7.18.2(react-dom@19.2.4)(react@19.2.4)
+    transitivePeerDependencies:
+      - '@apollo/client'
+      - '@module-federation/runtime-tools'
+      - '@swc/helpers'
+      - bufferutil
+      - debug
+      - react-dom
+      - react-refresh
+      - selfsigned
+      - supports-color
+      - tslib
+      - utf-8-validate
+      - webpack
+      - webpack-hot-middleware
+
   '@helemclub/toolbox.pages.submit-tool@file:toolbox/pages/submit-tool(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)':
     dependencies:
       '@helemclub/design.actions.button': file:design/actions/button(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
@@ -27773,11 +27857,13 @@ snapshots:
       '@helemclub/platform.testing.mock-provider': file:platform/testing/mock-provider(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)
       '@helemclub/platform.ui.protected-route': file:platform/ui/protected-route(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
       '@helemclub/toolbox.hooks.use-apps': file:toolbox/hooks/use-apps(@apollo/client@4.2.9)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
+      '@helemclub/toolbox.ui.app-card': file:toolbox/ui/app-card(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.97.1)
       '@rspack/core': 1.7.12
       '@rspack/dev-server': 1.2.1(@rspack/core@1.7.12)(tslib@2.8.1)(webpack@5.97.1)
       '@rspack/plugin-react-refresh': 1.6.2(react-refresh@0.18.0)(webpack-hot-middleware@2.26.1)
       classnames: 2.5.1
       react: 19.2.4
+      react-router-dom: 7.18.2(react-dom@19.2.4)(react@19.2.4)
     transitivePeerDependencies:
       - '@apollo/client'
       - '@module-federation/runtime-tools'
@@ -27786,7 +27872,6 @@ snapshots:
       - debug
       - react-dom
       - react-refresh
-      - react-router-dom
       - selfsigned
       - supports-color
       - tslib
