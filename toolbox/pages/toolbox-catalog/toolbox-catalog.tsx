@@ -140,8 +140,14 @@ export function ToolboxCatalog({
           <AppGrid
             apps={visibleApps}
             appLinkBase="/toolbox"
-            emptyActionLabel={selectedDomains.length > 0 ? 'איפוס סינון' : undefined}
-            emptyActionHref={selectedDomains.length > 0 ? '/toolbox' : undefined}
+            emptyTitle={selectedDomains.length > 0 ? undefined : 'עוד רגע מתמלא'}
+            emptyDescription={
+              selectedDomains.length > 0
+                ? undefined
+                : 'האפליקציות הראשונות בדרך — מהאקתון הקהילה. חזרו לבקר בקרוב, או הגישו כלי משלכם.'
+            }
+            emptyActionLabel={selectedDomains.length > 0 ? 'איפוס סינון' : 'הגשת כלי'}
+            emptyActionHref={selectedDomains.length > 0 ? '/toolbox' : submitHref}
           />
         )}
       </PageLayout>
