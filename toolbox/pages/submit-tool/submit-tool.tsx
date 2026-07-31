@@ -7,6 +7,7 @@ import { Textarea } from '@helemclub/design.inputs.textarea';
 import { SelectList, type SelectListOption } from '@helemclub/design.inputs.select-list';
 import { DomainSelector, type DomainOption } from '@helemclub/knowledge-domains.ui.domain-selector';
 import { useApps } from '@helemclub/toolbox.hooks.use-apps';
+import { AppCard } from '@helemclub/toolbox.ui.app-card';
 import styles from './submit-tool.module.scss';
 
 type ProtectedRouteMockUser = React.ComponentProps<typeof ProtectedRoute>['mockData'];
@@ -107,6 +108,7 @@ export function SubmitTool({
 }: SubmitToolProps) {
   const [name, setName] = useState(``);
   const [subtitle, setSubtitle] = useState(``);
+  const [icon, setIcon] = useState(``);
   const [description, setDescription] = useState(``);
   const [externalLink, setExternalLink] = useState(``);
   const [costType, setCostType] = useState(``);
@@ -123,6 +125,7 @@ export function SubmitTool({
   const resetForm = () => {
     setName(``);
     setSubtitle(``);
+    setIcon(``);
     setDescription(``);
     setExternalLink(``);
     setCostType(``);
@@ -171,6 +174,7 @@ export function SubmitTool({
 
     const result = await submitApp({
       name: trimmedName,
+      icon: icon.trim() || undefined,
       subtitle: trimmedSubtitle,
       fullDescription: trimmedDescription,
       externalLink: trimmedLink,
@@ -201,6 +205,19 @@ export function SubmitTool({
               המנחים ותפורסם לאחר אישור.
             </p>
           </div>
+
+          {!submitted && (
+            <div style={{ marginBottom: `1.5rem` }}>
+              <div style={{ marginBottom: `0.5rem`, fontSize: `0.85rem`, opacity: 0.7 }}>
+                תצוגה מקדימה — כך זה ייראה בקטלוג
+              </div>
+              <AppCard
+                icon={icon.trim() || `🧩`}
+                name={name.trim() || `שם הכלי`}
+                subtitle={subtitle.trim() || `כותרת משנה קצרה`}
+              />
+            </div>
+          )}
 
           {submitted ? (
             <div className={styles.successCard}>
@@ -239,6 +256,14 @@ export function SubmitTool({
                     required
                   />
                 </div>
+
+                <TextInput
+                  label="אייקון (אמוג'י)"
+                  placeholder="🧩"
+                  value={icon}
+                  onChange={(value) => setIcon(value)}
+                  helperText="אמוג'י שמייצג את הכלי בקטלוג. אפשר להשאיר ריק."
+                />
 
                 <Textarea
                   label="תיאור מלא"
