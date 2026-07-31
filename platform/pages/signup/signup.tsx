@@ -94,7 +94,7 @@ export function Signup({
       onSignupSuccess(user);
       return;
     }
-    navigate(`/`);
+    void navigate(`/`);
   };
 
   const handleRequestOtp = async () => {

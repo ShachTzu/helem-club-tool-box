@@ -38,7 +38,9 @@ export type ReviewSubmissionsProps = {
  * registered as an AdminPanel in the platform's admin shell.
  */
 export function ReviewSubmissions({ mockPendingData, mockUser, className, style }: ReviewSubmissionsProps) {
-  const { pendingApps, pendingLoading, pendingError, reviewApp } = useApps({ mockPendingData });
+  const { pendingApps, pendingModeratorMeta, pendingLoading, pendingError, reviewApp } = useApps({
+    mockPendingData,
+  });
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [processingAction, setProcessingAction] = useState<ReviewAction | null>(null);
 
@@ -59,6 +61,7 @@ export function ReviewSubmissions({ mockPendingData, mockUser, className, style 
     name: app.name,
     subtitle: app.subtitle,
     developerName: app.developerName,
+    contactEmail: pendingModeratorMeta[app.id]?.contactEmail || ``,
     domains: app.domains.join(`, `),
     costType: app.costType,
   }));
@@ -78,6 +81,15 @@ export function ReviewSubmissions({ mockPendingData, mockUser, className, style 
       ),
     },
     { key: `developerName`, header: `מפתח/ת`, hideOnMobile: true },
+    {
+      key: `contactEmail`,
+      header: `יצירת קשר`,
+      hideOnMobile: true,
+      renderCell: (row) => {
+        const email = String(row.contactEmail || ``);
+        return email ? <a href={`mailto:${email}`}>{email}</a> : <span>—</span>;
+      },
+    },
     { key: `domains`, header: `תחומים`, hideOnMobile: true },
     { key: `costType`, header: `עלות`, hideOnMobile: true },
     {

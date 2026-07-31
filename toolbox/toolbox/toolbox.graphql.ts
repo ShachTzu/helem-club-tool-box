@@ -47,6 +47,40 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         status: String!
       }
 
+      """
+      a pending submission as seen by moderators only. extends the public app
+      shape with submitter contact details (PII) that must never appear on the
+      public ToolboxApp type or in public queries.
+      """
+      type PendingToolboxApp {
+        id: ID!
+        slug: String!
+        name: String!
+        subtitle: String
+        fullDescription: String
+        externalLink: String
+        icon: String
+        screenshots: [String]
+        costType: String
+        platform: [String]
+        language: String
+        requiresSignup: Boolean
+        clickCount: Int
+        helpfulYes: Int
+        helpfulNo: Int
+        isFeatured: Boolean
+        developerName: String
+        originatorName: String
+        domains: [String]
+        avgRating: Float
+        ratingCount: Int
+        ratingHistogram: [Int]
+        status: String!
+        contactEmail: String
+        submittedBy: String
+        submissionSource: String
+      }
+
       type ToolboxAppReview {
         id: ID!
         appId: String!
@@ -99,7 +133,7 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
       type Query {
         listToolboxApps(options: ListToolboxAppsOptions): [ToolboxApp]
         getToolboxApp(idOrSlug: String!): ToolboxApp
-        listPendingToolboxApps: [ToolboxApp]
+        listPendingToolboxApps: [PendingToolboxApp]
         listToolboxAppReviews(appId: String!): [ToolboxAppReview]
       }
 

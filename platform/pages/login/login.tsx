@@ -102,7 +102,7 @@ export function Login({
     try {
       const session = await verifyEmailOtp(email.trim(), code.trim());
       if (session) {
-        navigate(redirectPath, { replace: true });
+        void navigate(redirectPath, { replace: true });
       } else {
         setError(`הקוד שהוזן שגוי או שפג תוקפו. נסו שוב.`);
       }
@@ -125,7 +125,7 @@ export function Login({
       }
       const session = await signInWithGoogle(idToken);
       if (session) {
-        navigate(redirectPath, { replace: true });
+        void navigate(redirectPath, { replace: true });
       } else {
         setError(`ההתחברות עם Google לא הושלמה. נסו שוב.`);
       }
@@ -143,7 +143,8 @@ export function Login({
   };
 
   const handleResendCode = () => {
-    handleRequestOtp();
+    // errors are surfaced by handleRequestOtp itself, into the error banner.
+    void handleRequestOtp();
   };
 
   return (

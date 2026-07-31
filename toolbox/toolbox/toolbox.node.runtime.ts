@@ -30,6 +30,16 @@ type ResolverContext = {
   session?: { userId?: string };
 };
 
+/**
+ * a pending app enriched with moderator-only submitter details (PII). only ever
+ * returned by the moderator-gated pending list — never by public queries.
+ */
+type ModeratorApp = PlainApp & {
+  contactEmail?: string;
+  submittedBy?: string;
+  submissionSource?: string;
+};
+
 const MODERATOR_ROLES = ['admin', 'moderator'];
 
 export class ToolboxNode {
@@ -122,12 +132,30 @@ export class ToolboxNode {
   }
 
   /**
-   * list apps awaiting moderation review. moderators and admins only.
+   * enrich a pending app with moderator-only submitter details. used solely by
+   * the moderator-gated pending list — the public toPlainApp never maps these.
    */
-  async listPendingToolboxApps(context: ResolverContext): Promise<PlainApp[]> {
+  private toModeratorApp(model: AppModel | null): ModeratorApp | null {
+    const base = this.toPlainApp(model);
+    if (!base || !model) return null;
+    return {
+      ...base,
+      contactEmail: model.contactEmail || '',
+      submittedBy: model.submittedBy || '',
+      submissionSource: model.submissionSource || '',
+    };
+  }
+
+  /**
+   * list apps awaiting moderation review. moderators and admins only. includes
+   * submitter contact details so a moderator can follow up.
+   */
+  async listPendingToolboxApps(context: ResolverContext): Promise<ModeratorApp[]> {
     await this.requireModerator(context);
     const apps = await this.appRepository.listPendingApps();
-    return apps.map((app) => this.toPlainApp(app)).filter((app): app is PlainApp => Boolean(app));
+    return apps
+      .map((app) => this.toModeratorApp(app))
+      .filter((app): app is ModeratorApp => Boolean(app));
   }
 
   /**

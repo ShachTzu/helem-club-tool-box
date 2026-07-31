@@ -63,6 +63,7 @@ export function useApps(options?: UseAppsOptions) {
   const { getApp, app, loading: appLoading, error: appError } = useGetApp();
   const {
     apps: pendingApps,
+    moderatorMeta: pendingModeratorMeta,
     loading: pendingLoading,
     error: pendingError,
     refetch: refetchPending,
@@ -110,6 +111,7 @@ export function useApps(options?: UseAppsOptions) {
     reviewing,
     reviewError,
     pendingApps,
+    pendingModeratorMeta,
     pendingLoading,
     pendingError,
     refetchPending,

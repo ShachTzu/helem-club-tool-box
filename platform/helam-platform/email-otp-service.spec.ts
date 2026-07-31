@@ -29,14 +29,19 @@ function createFakeOtpModel() {
     docs,
     findOne(query: any) {
       const found = () => sorted(docs.filter((doc) => matches(doc, query)))[0];
-      const result: any = {
-        sort: () => ({
-          lean: async () => found(),
-          then: (resolve: any) => resolve(found()),
-        }),
-        then: (resolve: any) => resolve(found()),
+
+      // a mongoose query is both awaitable and chainable. building the
+      // stand-in on a real promise gives `await` and `.sort().lean()` for
+      // free, instead of hand-rolling a `then` property — an object that only
+      // looks thenable is easy to await by accident and behaves oddly.
+      const asQuery = () => {
+        const pending: any = Promise.resolve().then(found);
+        pending.lean = () => Promise.resolve().then(found);
+        pending.sort = () => asQuery();
+        return pending;
       };
-      return result;
+
+      return asQuery();
     },
     async countDocuments(query: any) {
       return docs.filter((doc) => matches(doc, query)).length;
