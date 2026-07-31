@@ -85,8 +85,8 @@ export function useApps(options?: UseAppsOptions) {
     return reviewedApp;
   };
 
-  const submit = async (submitOptions: SubmitAppOptions) => {
-    const submittedApp = await submitApp(submitOptions);
+  const submit = async (submitOptions: SubmitAppOptions, draftId?: string) => {
+    const submittedApp = await submitApp(submitOptions, draftId);
 
     if (!options?.mockData) {
       await refetch?.();

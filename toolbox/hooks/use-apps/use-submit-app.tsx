@@ -6,8 +6,8 @@ import { App, type PlainApp } from '@helemclub/toolbox.entities.app';
  * GraphQL mutation submitting a new app to the toolbox for moderation review.
  */
 export const SUBMIT_TOOLBOX_APP_MUTATION = gql`
-  mutation SubmitToolboxApp($options: SubmitToolboxAppOptions!) {
-    submitToolboxApp(options: $options) {
+  mutation SubmitToolboxApp($options: SubmitToolboxAppOptions!, $id: String) {
+    submitToolboxApp(options: $options, id: $id) {
       id
       slug
       name
@@ -105,11 +105,11 @@ export type SubmitAppOptions = {
 export function useSubmitApp() {
   const [submitToolboxAppMutation, { data, loading, error }] = useMutation<
     { submitToolboxApp: PlainApp },
-    { options: SubmitAppOptions }
+    { options: SubmitAppOptions; id?: string }
   >(SUBMIT_TOOLBOX_APP_MUTATION);
 
-  const submitApp = async (options: SubmitAppOptions) => {
-    const result = await submitToolboxAppMutation({ variables: { options } });
+  const submitApp = async (options: SubmitAppOptions, id?: string) => {
+    const result = await submitToolboxAppMutation({ variables: { options, id } });
     const submittedApp = result.data?.submitToolboxApp;
     return submittedApp ? App.from(submittedApp) : undefined;
   };

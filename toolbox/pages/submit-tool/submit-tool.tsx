@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import classNames from 'classnames';
 import { ProtectedRoute } from '@helemclub/platform.ui.protected-route';
 import { Button } from '@helemclub/design.actions.button';
@@ -6,7 +7,7 @@ import { TextInput } from '@helemclub/design.inputs.text-input';
 import { Textarea } from '@helemclub/design.inputs.textarea';
 import { SelectList, type SelectListOption } from '@helemclub/design.inputs.select-list';
 import { DomainSelector, type DomainOption } from '@helemclub/knowledge-domains.ui.domain-selector';
-import { useApps } from '@helemclub/toolbox.hooks.use-apps';
+import { useApps, useSaveDraft, useGetMyDraft } from '@helemclub/toolbox.hooks.use-apps';
 import { AppCard } from '@helemclub/toolbox.ui.app-card';
 import styles from './submit-tool.module.scss';
 
@@ -122,6 +123,84 @@ export function SubmitTool({
 
   const { submitApp, submitting, submitError } = useApps();
 
+  // drafts: autosave to a member-owned record and resume via ?id=. skipped in
+  // mock/test mode, where no Apollo client is wired.
+  const isMock = mockUser !== undefined;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const urlDraftId = searchParams.get(`id`) || undefined;
+  const [draftId, setDraftId] = useState<string | undefined>(isMock ? undefined : urlDraftId);
+  const { saveDraft } = useSaveDraft();
+  const { draft } = useGetMyDraft(isMock ? undefined : urlDraftId);
+  const hydratedRef = useRef(false);
+  const savingRef = useRef(false);
+
+  // resume: populate the form once from a loaded draft (?id=…). the server only
+  // returns a record the current member owns, so this can never load another
+  // member's submission.
+  useEffect(() => {
+    if (isMock || !draft || hydratedRef.current) return;
+    hydratedRef.current = true;
+    setName(draft.name || ``);
+    setSubtitle(draft.subtitle || ``);
+    setIcon(draft.icon && draft.icon !== `🧩` ? draft.icon : ``);
+    setDescription(draft.fullDescription || ``);
+    setExternalLink(draft.externalLink || ``);
+    setCostType(draft.costType || ``);
+    setPlatforms(draft.platform || []);
+    setLanguage(draft.language || ``);
+    setDomains(draft.domains || []);
+    setDeveloperName(draft.developerName || ``);
+    setContactEmail(draft.contactEmail || ``);
+    setDraftId(draft.id);
+  }, [draft, isMock]);
+
+  // autosave: debounced once a name has been entered. an in-flight guard stops
+  // a burst of edits from creating duplicate drafts before the first id lands.
+  useEffect(() => {
+    if (isMock || submitted || !name.trim()) return;
+    const handle = setTimeout(async () => {
+      if (savingRef.current) return;
+      savingRef.current = true;
+      try {
+        const saved = await saveDraft(
+          {
+            name: name.trim(),
+            icon: icon.trim() || undefined,
+            subtitle: subtitle.trim(),
+            fullDescription: description.trim(),
+            externalLink: externalLink.trim(),
+            costType,
+            platform: platforms,
+            language,
+            domains,
+            developerName: developerName.trim(),
+            contactEmail: contactEmail.trim(),
+            submissionSource,
+          },
+          draftId
+        );
+        if (saved && !draftId) {
+          // we already hold this data locally — don't let the ?id= fetch
+          // re-hydrate and clobber the in-progress edits.
+          hydratedRef.current = true;
+          setDraftId(saved.id);
+          setSearchParams(
+            (prev) => {
+              const next = new URLSearchParams(prev);
+              next.set(`id`, saved.id);
+              return next;
+            },
+            { replace: true }
+          );
+        }
+      } finally {
+        savingRef.current = false;
+      }
+    }, 1500);
+    return () => clearTimeout(handle);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name, subtitle, icon, description, externalLink, costType, platforms, language, domains, developerName, contactEmail]);
+
   const resetForm = () => {
     setName(``);
     setSubtitle(``);
@@ -136,6 +215,18 @@ export function SubmitTool({
     setContactEmail(``);
     setFormError(undefined);
     setSubmitted(false);
+    setDraftId(undefined);
+    hydratedRef.current = false;
+    if (!isMock) {
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          next.delete(`id`);
+          return next;
+        },
+        { replace: true }
+      );
+    }
   };
 
   const handleSubmit = async () => {
@@ -185,7 +276,7 @@ export function SubmitTool({
       developerName: trimmedDeveloper,
       contactEmail: trimmedContact,
       submissionSource,
-    });
+    }, draftId);
 
     if (result) {
       setSubmitted(true);
