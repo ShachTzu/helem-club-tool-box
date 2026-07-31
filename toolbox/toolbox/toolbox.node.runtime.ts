@@ -170,10 +170,46 @@ export class ToolboxNode {
    * submit a new app to the catalog with pending status. requires a signed-in
    * community member.
    */
-  async submitApp(input: SubmitAppInput, context: ResolverContext): Promise<PlainApp | null> {
+  async submitApp(
+    input: SubmitAppInput,
+    context: ResolverContext,
+    draftId?: string
+  ): Promise<PlainApp | null> {
     const user = await this.requireUser(context);
+    if (draftId) {
+      const submitted = await this.appRepository.submitDraft(draftId, input, user.id);
+      if (!submitted) throw new NotFound();
+      return this.toPlainApp(submitted);
+    }
     const created = await this.appRepository.createApp(input, user.id);
     return this.toPlainApp(created);
+  }
+
+  /**
+   * create or update the current member's own draft. autosaved as they fill the
+   * form; returns the owner's own record (they may see their own contact email).
+   */
+  async saveDraft(
+    input: SubmitAppInput,
+    draftId: string | undefined,
+    context: ResolverContext
+  ): Promise<ModeratorApp | null> {
+    const user = await this.requireUser(context);
+    const saved = await this.appRepository.saveDraft(input, user.id, draftId);
+    if (!saved) throw new NotFound();
+    return this.toModeratorApp(saved);
+  }
+
+  /**
+   * load one of the current member's own submissions (draft or otherwise) to
+   * resume editing. ownership is enforced in the repository query — a member can
+   * never load another member's record.
+   */
+  async getMyDraft(id: string, context: ResolverContext): Promise<ModeratorApp | null> {
+    const user = await this.requireUser(context);
+    const app = await this.appRepository.getOwnedApp(id, user.id);
+    if (!app) throw new NotFound();
+    return this.toModeratorApp(app);
   }
 
   /**

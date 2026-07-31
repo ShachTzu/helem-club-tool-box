@@ -135,10 +135,12 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         getToolboxApp(idOrSlug: String!): ToolboxApp
         listPendingToolboxApps: [PendingToolboxApp]
         listToolboxAppReviews(appId: String!): [ToolboxAppReview]
+        getMyToolboxDraft(id: String!): PendingToolboxApp
       }
 
       type Mutation {
-        submitToolboxApp(options: SubmitToolboxAppOptions!): ToolboxApp
+        submitToolboxApp(options: SubmitToolboxAppOptions!, id: String): ToolboxApp
+        saveToolboxDraft(options: SubmitToolboxAppOptions!, id: String): PendingToolboxApp
         reviewToolboxApp(options: ReviewToolboxAppOptions!): ToolboxApp
         incrementToolboxAppClick(options: IncrementToolboxAppClickOptions!): Boolean
         rateToolboxApp(options: RateToolboxAppOptions!): ToolboxAppReview
@@ -165,14 +167,28 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         listToolboxAppReviews: async (_parent: unknown, { appId }: { appId: string }) => {
           return toolboxNode.listAppReviews(appId);
         },
+        getMyToolboxDraft: async (
+          _parent: unknown,
+          { id }: { id: string },
+          context: ResolverContext
+        ) => {
+          return toolboxNode.getMyDraft(id, context);
+        },
       },
       Mutation: {
         submitToolboxApp: async (
           _parent: unknown,
-          { options }: { options: SubmitAppInput },
+          { options, id }: { options: SubmitAppInput; id?: string },
           context: ResolverContext
         ) => {
-          return toolboxNode.submitApp(options, context);
+          return toolboxNode.submitApp(options, context, id);
+        },
+        saveToolboxDraft: async (
+          _parent: unknown,
+          { options, id }: { options: SubmitAppInput; id?: string },
+          context: ResolverContext
+        ) => {
+          return toolboxNode.saveDraft(options, id, context);
         },
         reviewToolboxApp: async (
           _parent: unknown,

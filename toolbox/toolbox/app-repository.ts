@@ -65,10 +65,71 @@ export class AppRepository {
   }
 
   /**
-   * create a new app document with pending status, generating a unique slug
-   * from the app name.
+   * the submitter-editable fields of an app, shared by draft save and submit so
+   * the same input maps consistently. excludes id/slug/status/metrics/ownership.
    */
-  async createApp(input: SubmitAppInput, userId?: string): Promise<AppModel> {
+  private editableFields(input: SubmitAppInput) {
+    return {
+      name: input.name,
+      subtitle: input.subtitle || '',
+      fullDescription: input.fullDescription || '',
+      externalLink: input.externalLink || '',
+      icon: input.icon || '🧩',
+      costType: input.costType || '',
+      platform: input.platform || [],
+      language: input.language || 'עברית',
+      domains: input.domains || [],
+      developerName: input.developerName || '',
+      contactEmail: input.contactEmail || '',
+      submissionSource: input.submissionSource || '',
+    };
+  }
+
+  /**
+   * fetch an app only if it belongs to the given user. ownership is enforced in
+   * the query itself, so another member's app can never be returned (no IDOR).
+   */
+  async getOwnedApp(appId: string, userId: string): Promise<AppModel | null> {
+    const doc = await this.appModel.findOne({ id: appId, submittedBy: userId });
+    return doc ? doc.toObject() : null;
+  }
+
+  /**
+   * create or update a draft owned by the user. an update only matches a draft
+   * (or a changes-requested app) that the user owns — the ownership + status
+   * filter lives in the query, so it cannot touch anyone else's record. returns
+   * null when a given draftId does not match an editable app the user owns.
+   */
+  async saveDraft(input: SubmitAppInput, userId: string, draftId?: string): Promise<AppModel | null> {
+    if (draftId) {
+      const updated = await this.appModel.findOneAndUpdate(
+        { id: draftId, submittedBy: userId, status: { $in: ['draft', 'changes_requested'] } },
+        { $set: this.editableFields(input) },
+        { new: true }
+      );
+      return updated ? updated.toObject() : null;
+    }
+    return this.createApp(input, userId, 'draft');
+  }
+
+  /**
+   * submit a draft (or a changes-requested app) the user owns for review,
+   * flipping it to pending. ownership + status are enforced in the query.
+   */
+  async submitDraft(draftId: string, input: SubmitAppInput, userId: string): Promise<AppModel | null> {
+    const updated = await this.appModel.findOneAndUpdate(
+      { id: draftId, submittedBy: userId, status: { $in: ['draft', 'changes_requested'] } },
+      { $set: { ...this.editableFields(input), status: 'pending' } },
+      { new: true }
+    );
+    return updated ? updated.toObject() : null;
+  }
+
+  /**
+   * create a new app document (pending by default; 'draft' for autosaved
+   * drafts), generating a unique slug from the app name.
+   */
+  async createApp(input: SubmitAppInput, userId?: string, status = 'pending'): Promise<AppModel> {
     const id = uuidv4();
     const baseSlug =
       input.name
@@ -92,7 +153,7 @@ export class AppRepository {
       language: input.language || 'עברית',
       requiresSignup: false,
       domains: input.domains || [],
-      status: 'pending',
+      status,
       isFeatured: false,
       clickCount: 0,
       helpfulYes: 0,
