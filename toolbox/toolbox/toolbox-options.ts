@@ -59,6 +59,11 @@ export type SubmitAppInput = {
   icon?: string;
 
   /**
+   * screenshot image urls showcasing the app. capped server-side.
+   */
+  screenshots?: string[];
+
+  /**
    * cost model of the app, e.g. "free", "freemium", "paid".
    */
   costType?: string;

@@ -13,6 +13,7 @@ export type MyDraft = {
   fullDescription?: string;
   externalLink?: string;
   icon?: string;
+  screenshots?: string[];
   costType?: string;
   platform?: string[];
   language?: string;
@@ -35,6 +36,7 @@ export const GET_MY_TOOLBOX_DRAFT_QUERY = gql`
       fullDescription
       externalLink
       icon
+      screenshots
       costType
       platform
       language

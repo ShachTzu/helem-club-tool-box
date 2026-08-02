@@ -74,3 +74,64 @@ it('submitDraft flips an owned draft to pending, ownership-filtered', async () =
   expect(filter.submittedBy).toBe('user-1');
   expect(update.$set.status).toBe('pending');
 });
+
+it('createApp caps screenshots at 5 regardless of how many the client sends', async () => {
+  let createdScreenshots: string[] = [];
+  const model = {
+    findOne: () => Promise.resolve(null), // slug is free
+    create: (doc: { screenshots: string[] }) => {
+      createdScreenshots = doc.screenshots;
+      return Promise.resolve(fakeDoc());
+    },
+  };
+  const repo = new AppRepository(model as never);
+
+  const withTooManyScreenshots: SubmitAppInput = {
+    ...input,
+    screenshots: ['1', '2', '3', '4', '5', '6', '7'].map(
+      (n) => `https://res.cloudinary.com/demo/image/upload/${n}.png`
+    ),
+  };
+  await repo.createApp(withTooManyScreenshots, 'user-1');
+  expect(createdScreenshots).toHaveLength(5);
+});
+
+it('createApp drops icon/screenshots urls not hosted on Cloudinary (the signed upload can never produce them)', async () => {
+  let created: { icon: string; screenshots: string[] } = { icon: '', screenshots: [] };
+  const model = {
+    findOne: () => Promise.resolve(null),
+    create: (doc: { icon: string; screenshots: string[] }) => {
+      created = doc;
+      return Promise.resolve(fakeDoc());
+    },
+  };
+  const repo = new AppRepository(model as never);
+
+  const withOffPlatformUrls: SubmitAppInput = {
+    ...input,
+    icon: 'https://evil.example.com/tracker.png',
+    screenshots: [
+      'https://evil.example.com/tracker2.png',
+      'https://res.cloudinary.com/demo/image/upload/real.png',
+    ],
+  };
+  await repo.createApp(withOffPlatformUrls, 'user-1');
+
+  expect(created.icon).toBe('🧩'); // fell back — the off-platform url was dropped
+  expect(created.screenshots).toEqual(['https://res.cloudinary.com/demo/image/upload/real.png']);
+});
+
+it('createApp keeps an emoji icon as-is', async () => {
+  let created: { icon: string } = { icon: '' };
+  const model = {
+    findOne: () => Promise.resolve(null),
+    create: (doc: { icon: string }) => {
+      created = doc;
+      return Promise.resolve(fakeDoc());
+    },
+  };
+  const repo = new AppRepository(model as never);
+
+  await repo.createApp({ ...input, icon: '🌙' }, 'user-1');
+  expect(created.icon).toBe('🌙');
+});

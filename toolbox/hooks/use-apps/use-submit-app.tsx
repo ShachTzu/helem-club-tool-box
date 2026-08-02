@@ -62,6 +62,11 @@ export type SubmitAppOptions = {
   icon?: string;
 
   /**
+   * screenshot image urls showcasing the app.
+   */
+  screenshots?: string[];
+
+  /**
    * cost model of the app, e.g. "free", "freemium", "paid".
    */
   costType: string;

@@ -81,6 +81,19 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         submissionSource: String
       }
 
+      """
+      signed, time-limited authorization for the current member to upload one
+      image directly to Cloudinary from the browser. the folder is pinned to
+      the member's own submission folder and baked into the signature.
+      """
+      type ToolboxUploadSignature {
+        signature: String!
+        timestamp: Int!
+        apiKey: String!
+        cloudName: String!
+        folder: String!
+      }
+
       type ToolboxAppReview {
         id: ID!
         appId: String!
@@ -104,6 +117,7 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         fullDescription: String
         externalLink: String!
         icon: String
+        screenshots: [String]
         costType: String
         platform: [String]
         language: String
@@ -145,6 +159,7 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         reviewToolboxApp(options: ReviewToolboxAppOptions!): ToolboxApp
         incrementToolboxAppClick(options: IncrementToolboxAppClickOptions!): Boolean
         rateToolboxApp(options: RateToolboxAppOptions!): ToolboxAppReview
+        createToolboxUploadSignature: ToolboxUploadSignature
       }
     `,
     resolvers: {
@@ -216,6 +231,13 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
           { options }: { options: RateAppInput }
         ) => {
           return toolboxNode.rateToolboxApp(options);
+        },
+        createToolboxUploadSignature: async (
+          _parent: unknown,
+          _args: unknown,
+          context: ResolverContext
+        ) => {
+          return toolboxNode.createUploadSignature(context);
         },
       },
     },

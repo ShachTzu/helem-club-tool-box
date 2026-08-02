@@ -18,6 +18,7 @@ import { AppModel, APP_MOCKS } from './app.model.js';
 import { AppReviewModel, APP_REVIEW_MOCKS } from './app-review.model.js';
 import { AppRepository } from './app-repository.js';
 import { AppReviewRepository } from './app-review-repository.js';
+import { parseCloudinaryUrl, signCloudinaryUpload, type CloudinaryConfig } from './cloudinary-signature.js';
 import type {
   ListToolboxAppsOptions,
   SubmitAppInput,
@@ -42,13 +43,28 @@ type ModeratorApp = PlainApp & {
 
 const MODERATOR_ROLES = ['admin', 'moderator'];
 
+/**
+ * the signed parameters a client needs to upload one image directly to
+ * Cloudinary. the folder is fixed server-side to the requesting member's own
+ * namespace and baked into the signature, so a client cannot redirect the
+ * upload into another member's folder — Cloudinary itself rejects a mismatch.
+ */
+type UploadSignature = {
+  signature: string;
+  timestamp: number;
+  apiKey: string;
+  cloudName: string;
+  folder: string;
+};
+
 export class ToolboxNode {
   constructor(
     private toolboxConfig: ToolboxConfig,
     private symphonyPlatform: SymphonyPlatformNode,
     private helamPlatform: HelamPlatformNode,
     private appRepository: AppRepository,
-    private appReviewRepository: AppReviewRepository
+    private appReviewRepository: AppReviewRepository,
+    private cloudinaryConfig: CloudinaryConfig | undefined
   ) {}
 
   /**
@@ -224,6 +240,25 @@ export class ToolboxNode {
   }
 
   /**
+   * issue a signed, time-limited authorization for the current member to
+   * upload one image directly to Cloudinary from the browser (the API secret
+   * never reaches the client). the folder is pinned to the member's own id —
+   * baked into the signature — so it can only ever be used to write into
+   * their own submission folder.
+   */
+  async createUploadSignature(context: ResolverContext): Promise<UploadSignature> {
+    const user = await this.requireUser(context);
+    if (!this.cloudinaryConfig) {
+      throw new Error('Image upload is not configured (CLOUDINARY_URL missing)');
+    }
+    const { cloudName, apiKey, apiSecret } = this.cloudinaryConfig;
+    const folder = `toolbox/submissions/${user.id}`;
+    const timestamp = Math.floor(Date.now() / 1000);
+    const signature = signCloudinaryUpload({ folder, timestamp }, apiSecret);
+    return { signature, timestamp, apiKey, cloudName, folder };
+  }
+
+  /**
    * apply a moderation decision to a pending app. approving makes it public.
    * moderators and admins only.
    */
@@ -287,12 +322,25 @@ export class ToolboxNode {
     const appRepository = new AppRepository(appModel);
     const appReviewRepository = new AppReviewRepository(appReviewModel);
 
+    // image upload is optional at boot — catalog browsing doesn't need it, so
+    // a missing/malformed CLOUDINARY_URL only fails the upload-signature call
+    // itself (createUploadSignature), not the whole toolbox aspect.
+    let cloudinaryConfig: CloudinaryConfig | undefined;
+    try {
+      cloudinaryConfig = parseCloudinaryUrl(process.env.CLOUDINARY_URL);
+    } catch (err) {
+      cloudinaryConfig = undefined;
+      // eslint-disable-next-line no-console
+      console.warn(`[toolbox] image upload disabled: ${(err as Error).message}`);
+    }
+
     const toolbox = new ToolboxNode(
       config,
       symphonyPlatform,
       helamPlatform,
       appRepository,
-      appReviewRepository
+      appReviewRepository,
+      cloudinaryConfig
     );
 
     const gqlSchema = toolboxGqlSchema(toolbox);

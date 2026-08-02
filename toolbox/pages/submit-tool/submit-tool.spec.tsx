@@ -64,3 +64,14 @@ it('should render both name and subtitle inputs', () => {
   const inputs = container.querySelectorAll(`.${styles.row} input`);
   expect(inputs.length).toBeGreaterThanOrEqual(2);
 });
+
+it('should render icon and screenshot image upload buttons for a signed-in member', () => {
+  const { container } = render(
+    <MockProvider>
+      <SubmitTool mockUser={MOCK_MEMBER_USER} mockDomains={MOCK_DOMAINS} />
+    </MockProvider>
+  );
+
+  expect(container.textContent).toContain(`העלאת תמונת אייקון`);
+  expect(container.textContent).toContain(`הוספת צילום מסך`);
+});

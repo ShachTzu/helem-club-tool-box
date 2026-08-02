@@ -81,6 +81,58 @@
   justify-content: flex-end;
 }
 
+.fieldLabel {
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-text-primary);
+  margin-bottom: var(--spacing-small);
+}
+
+.hiddenFileInput {
+  display: none;
+}
+
+.uploadRow {
+  display: flex;
+  margin-top: var(--spacing-small);
+}
+
+.thumbList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-small);
+  margin-bottom: var(--spacing-small);
+}
+
+.thumb {
+  position: relative;
+  width: 72px;
+  height: 72px;
+}
+
+.thumbImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--borders-radius-medium);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+}
+
+.thumbRemove {
+  position: absolute;
+  top: -6px;
+  inset-inline-end: -6px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--colors-status-negative-default);
+  color: var(--colors-surface-primary);
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+}
+
 .successCard {
   box-sizing: border-box;
   width: 100%;

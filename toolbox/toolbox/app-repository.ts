@@ -3,6 +3,30 @@ import { v4 as uuidv4 } from 'uuid';
 import { AppModel } from './app.model.js';
 import type { ListToolboxAppsOptions, SubmitAppInput } from './toolbox-options.js';
 
+// bounds how many screenshots a single submission can carry, regardless of
+// what a client sends — independent of the upload signature's own limits.
+const MAX_SCREENSHOTS = 5;
+
+const CLOUDINARY_HOSTED_PATTERN = /^https:\/\/res\.cloudinary\.com\//;
+
+/**
+ * icon/screenshots may be a short emoji-style string, an image actually
+ * hosted on Cloudinary (the only upload path the server signs for), or
+ * empty — never an arbitrary external url. submitToolboxApp/saveToolboxDraft
+ * accept these as free text, so without this an attacker-controlled url
+ * could ride along as a public <img src> in the catalog (off-platform
+ * tracking pixel, unrelated content) despite never going through the signed
+ * upload flow.
+ */
+function sanitizeImageValue(value: string | undefined): string {
+  const trimmed = (value || '').trim();
+  if (!trimmed) return '';
+  if (trimmed.startsWith('http')) {
+    return CLOUDINARY_HOSTED_PATTERN.test(trimmed) ? trimmed : '';
+  }
+  return trimmed;
+}
+
 /**
  * encapsulates all MongoDB/Typegoose CRUD operations for toolbox apps.
  */
@@ -83,7 +107,8 @@ export class AppRepository {
       subtitle: input.subtitle || '',
       fullDescription: input.fullDescription || '',
       externalLink: input.externalLink || '',
-      icon: input.icon || '🧩',
+      icon: sanitizeImageValue(input.icon) || '🧩',
+      screenshots: (input.screenshots || []).map(sanitizeImageValue).filter(Boolean).slice(0, MAX_SCREENSHOTS),
       costType: input.costType || '',
       platform: input.platform || [],
       language: input.language || 'עברית',
@@ -155,8 +180,8 @@ export class AppRepository {
       subtitle: input.subtitle || '',
       fullDescription: input.fullDescription || '',
       externalLink: input.externalLink,
-      icon: input.icon || '🧩',
-      screenshots: [],
+      icon: sanitizeImageValue(input.icon) || '🧩',
+      screenshots: (input.screenshots || []).map(sanitizeImageValue).filter(Boolean).slice(0, MAX_SCREENSHOTS),
       costType: input.costType || '',
       platform: input.platform || [],
       language: input.language || 'עברית',

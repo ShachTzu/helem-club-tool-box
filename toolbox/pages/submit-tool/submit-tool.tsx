@@ -7,7 +7,7 @@ import { TextInput } from '@helemclub/design.inputs.text-input';
 import { Textarea } from '@helemclub/design.inputs.textarea';
 import { SelectList, type SelectListOption } from '@helemclub/design.inputs.select-list';
 import { DomainSelector, type DomainOption } from '@helemclub/knowledge-domains.ui.domain-selector';
-import { useApps, useSaveDraft, useGetMyDraft } from '@helemclub/toolbox.hooks.use-apps';
+import { useApps, useSaveDraft, useGetMyDraft, useUploadImage } from '@helemclub/toolbox.hooks.use-apps';
 import { AppCard } from '@helemclub/toolbox.ui.app-card';
 import styles from './submit-tool.module.scss';
 
@@ -35,6 +35,8 @@ const DEFAULT_LANGUAGE_OPTIONS: SelectListOption[] = [
   { value: `רוסית`, label: `רוסית` },
   { value: `רב-לשוני`, label: `רב-לשוני` },
 ];
+
+const MAX_SCREENSHOTS = 5;
 
 export type SubmitToolProps = {
   /**
@@ -110,6 +112,7 @@ export function SubmitTool({
   const [name, setName] = useState(``);
   const [subtitle, setSubtitle] = useState(``);
   const [icon, setIcon] = useState(``);
+  const [screenshots, setScreenshots] = useState<string[]>([]);
   const [description, setDescription] = useState(``);
   const [externalLink, setExternalLink] = useState(``);
   const [costType, setCostType] = useState(``);
@@ -122,6 +125,9 @@ export function SubmitTool({
   const [submitted, setSubmitted] = useState(false);
 
   const { submitApp, submitting, submitError } = useApps();
+  const { uploadImage, uploading: uploadingImage, error: uploadError, clearError: clearUploadError } = useUploadImage();
+  const iconFileInputRef = useRef<HTMLInputElement>(null);
+  const screenshotFileInputRef = useRef<HTMLInputElement>(null);
 
   // drafts: autosave to a member-owned record and resume via ?id=. skipped in
   // mock/test mode, where no Apollo client is wired.
@@ -143,6 +149,7 @@ export function SubmitTool({
     setName(draft.name || ``);
     setSubtitle(draft.subtitle || ``);
     setIcon(draft.icon && draft.icon !== `🧩` ? draft.icon : ``);
+    setScreenshots(draft.screenshots || []);
     setDescription(draft.fullDescription || ``);
     setExternalLink(draft.externalLink || ``);
     setCostType(draft.costType || ``);
@@ -166,6 +173,7 @@ export function SubmitTool({
           {
             name: name.trim(),
             icon: icon.trim() || undefined,
+            screenshots,
             subtitle: subtitle.trim(),
             fullDescription: description.trim(),
             externalLink: externalLink.trim(),
@@ -199,12 +207,13 @@ export function SubmitTool({
     }, 1500);
     return () => clearTimeout(handle);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, subtitle, icon, description, externalLink, costType, platforms, language, domains, developerName, contactEmail]);
+  }, [name, subtitle, icon, screenshots, description, externalLink, costType, platforms, language, domains, developerName, contactEmail]);
 
   const resetForm = () => {
     setName(``);
     setSubtitle(``);
     setIcon(``);
+    setScreenshots([]);
     setDescription(``);
     setExternalLink(``);
     setCostType(``);
@@ -214,6 +223,7 @@ export function SubmitTool({
     setDeveloperName(``);
     setContactEmail(``);
     setFormError(undefined);
+    clearUploadError();
     setSubmitted(false);
     setDraftId(undefined);
     hydratedRef.current = false;
@@ -266,6 +276,7 @@ export function SubmitTool({
     const result = await submitApp({
       name: trimmedName,
       icon: icon.trim() || undefined,
+      screenshots,
       subtitle: trimmedSubtitle,
       fullDescription: trimmedDescription,
       externalLink: trimmedLink,
@@ -282,6 +293,26 @@ export function SubmitTool({
       setSubmitted(true);
       onSubmitted();
     }
+  };
+
+  const handleIconFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = ``;
+    if (!file) return;
+    const url = await uploadImage(file);
+    if (url) setIcon(url);
+  };
+
+  const handleScreenshotFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = ``;
+    if (!file) return;
+    const url = await uploadImage(file);
+    if (url) setScreenshots((prev) => [...prev, url].slice(0, MAX_SCREENSHOTS));
+  };
+
+  const removeScreenshot = (index: number) => {
+    setScreenshots((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -348,13 +379,75 @@ export function SubmitTool({
                   />
                 </div>
 
-                <TextInput
-                  label="אייקון (אמוג'י)"
-                  placeholder="🧩"
-                  value={icon}
-                  onChange={(value) => setIcon(value)}
-                  helperText="אמוג'י שמייצג את הכלי בקטלוג. אפשר להשאיר ריק."
-                />
+                <div>
+                  <TextInput
+                    label="אייקון (אמוג'י או תמונה)"
+                    placeholder="🧩"
+                    value={icon}
+                    onChange={(value) => setIcon(value)}
+                    helperText="אמוג'י שמייצג את הכלי, או העלו תמונה. אפשר להשאיר ריק."
+                  />
+                  <input
+                    ref={iconFileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleIconFileChange}
+                    className={styles.hiddenFileInput}
+                  />
+                  <div className={styles.uploadRow}>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      loading={uploadingImage}
+                      onClick={() => iconFileInputRef.current?.click()}
+                    >
+                      העלאת תמונת אייקון
+                    </Button>
+                  </div>
+                </div>
+
+                <div>
+                  <div className={styles.fieldLabel}>צילומי מסך (עד {MAX_SCREENSHOTS})</div>
+                  {screenshots.length > 0 && (
+                    <div className={styles.thumbList}>
+                      {screenshots.map((url, index) => (
+                        // eslint-disable-next-line react/no-array-index-key
+                        <div key={`${url}-${index}`} className={styles.thumb}>
+                          <img src={url} alt="" className={styles.thumbImage} />
+                          <button
+                            type="button"
+                            className={styles.thumbRemove}
+                            onClick={() => removeScreenshot(index)}
+                            aria-label="הסרת צילום מסך"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <input
+                    ref={screenshotFileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleScreenshotFileChange}
+                    className={styles.hiddenFileInput}
+                  />
+                  <div className={styles.uploadRow}>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      loading={uploadingImage}
+                      disabled={screenshots.length >= MAX_SCREENSHOTS}
+                      onClick={() => screenshotFileInputRef.current?.click()}
+                    >
+                      הוספת צילום מסך
+                    </Button>
+                  </div>
+                  {uploadError && <p className={styles.errorBanner}>{uploadError}</p>}
+                </div>
 
                 <Textarea
                   label="תיאור מלא"
