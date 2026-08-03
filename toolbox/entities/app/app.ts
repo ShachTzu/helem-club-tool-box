@@ -5,8 +5,10 @@ export type AppCostType = string;
 
 /**
  * The review/publication status of an app in the toolbox.
+ * 'draft' and 'changes_requested' are owner-only states (autosaved drafts and
+ * submissions sent back for edits); only 'approved' apps are ever public.
  */
-export type AppStatus = 'pending' | 'approved' | 'rejected';
+export type AppStatus = 'pending' | 'approved' | 'rejected' | 'draft' | 'changes_requested';
 
 export type PlainApp = {
   /**
