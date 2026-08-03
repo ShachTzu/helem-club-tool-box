@@ -37,6 +37,8 @@ const DEFAULT_LANGUAGE_OPTIONS: SelectListOption[] = [
 ];
 
 const MAX_SCREENSHOTS = 5;
+const HTTPS_LINK_PATTERN = /^https?:\/\//;
+const LINK_ERROR_MESSAGE = `קישור חיצוני חייב להתחיל ב-http:// או https://`;
 
 export type SubmitToolProps = {
   /**
@@ -122,6 +124,7 @@ export function SubmitTool({
   const [developerName, setDeveloperName] = useState(``);
   const [contactEmail, setContactEmail] = useState(``);
   const [formError, setFormError] = useState<string | undefined>(undefined);
+  const [linkError, setLinkError] = useState<string | undefined>(undefined);
   const [submitted, setSubmitted] = useState(false);
 
   const { submitApp, submitting, submitError } = useApps();
@@ -160,6 +163,21 @@ export function SubmitTool({
     setContactEmail(draft.contactEmail || ``);
     setDraftId(draft.id);
   }, [draft, isMock]);
+
+  // live link validation: debounced so it doesn't flag every half-typed
+  // character, same debounce idiom as autosave below. handleSubmit re-checks
+  // this on submit regardless — this is feedback, not the only gate.
+  useEffect(() => {
+    const trimmedLink = externalLink.trim();
+    if (!trimmedLink) {
+      setLinkError(undefined);
+      return undefined;
+    }
+    const handle = setTimeout(() => {
+      setLinkError(HTTPS_LINK_PATTERN.test(trimmedLink) ? undefined : LINK_ERROR_MESSAGE);
+    }, 500);
+    return () => clearTimeout(handle);
+  }, [externalLink]);
 
   // autosave: debounced once a name has been entered. an in-flight guard stops
   // a burst of edits from creating duplicate drafts before the first id lands.
@@ -261,8 +279,9 @@ export function SubmitTool({
       return;
     }
 
-    if (!/^https?:\/\//.test(trimmedLink)) {
-      setFormError(`קישור חיצוני חייב להתחיל ב-http:// או https://`);
+    if (!HTTPS_LINK_PATTERN.test(trimmedLink)) {
+      setLinkError(LINK_ERROR_MESSAGE);
+      setFormError(LINK_ERROR_MESSAGE);
       return;
     }
 
@@ -465,6 +484,7 @@ export function SubmitTool({
                   placeholder="https://example.com"
                   value={externalLink}
                   onChange={(value) => setExternalLink(value)}
+                  error={linkError}
                   helperText="קישור לחנות האפליקציות, לאתר או לעמוד ההרשמה"
                   required
                 />

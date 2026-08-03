@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import { MockProvider } from '@helemclub/platform.testing.mock-provider';
 import { SubmitTool } from './submit-tool.js';
 import styles from './submit-tool.module.scss';
@@ -74,4 +74,38 @@ it('should render icon and screenshot image upload buttons for a signed-in membe
 
   expect(container.textContent).toContain(`העלאת תמונת אייקון`);
   expect(container.textContent).toContain(`הוספת צילום מסך`);
+});
+
+it('should show a live validation error on an invalid external link, before submit is clicked', async () => {
+  const { container } = render(
+    <MockProvider>
+      <SubmitTool mockUser={MOCK_MEMBER_USER} mockDomains={MOCK_DOMAINS} />
+    </MockProvider>
+  );
+
+  const linkInput = container.querySelector(`input[type="url"]`) as HTMLInputElement;
+  fireEvent.change(linkInput, { target: { value: `not-a-link` } });
+
+  await waitFor(() => {
+    expect(container.textContent).toContain(`קישור חיצוני חייב להתחיל ב-http:// או https://`);
+  });
+});
+
+it('should clear the live link error once the value becomes a valid https url', async () => {
+  const { container } = render(
+    <MockProvider>
+      <SubmitTool mockUser={MOCK_MEMBER_USER} mockDomains={MOCK_DOMAINS} />
+    </MockProvider>
+  );
+
+  const linkInput = container.querySelector(`input[type="url"]`) as HTMLInputElement;
+  fireEvent.change(linkInput, { target: { value: `not-a-link` } });
+  await waitFor(() => {
+    expect(container.textContent).toContain(`קישור חיצוני חייב להתחיל ב-http:// או https://`);
+  });
+
+  fireEvent.change(linkInput, { target: { value: `https://example.com` } });
+  await waitFor(() => {
+    expect(container.textContent).not.toContain(`קישור חיצוני חייב להתחיל ב-http:// או https://`);
+  });
 });
