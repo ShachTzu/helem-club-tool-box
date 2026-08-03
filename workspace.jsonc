@@ -62,6 +62,36 @@
     "policy": {
       "dependencies": {},
       "peerDependencies": {}
+    },
+    /**
+     * dependency-audit 2026-08-03: force patched versions of vulnerable transitive
+     * deps pulled in by Bit's own env/tooling packages (@bitdev/*, @teambit/*).
+     * None of these are direct project deps (see package.json) -- they're build/dev/
+     * test-time tooling (webpack, vite, vitest, babel, etc.), not shipped app code.
+     * Scoped to the vulnerable major/branch only, so already-patched instances
+     * elsewhere in the tree are left alone. See HANDOFF.md for why this goes here
+     * instead of package.json "pnpm.overrides" -- Bit owns the real dep graph.
+     **/
+    "overrides": {
+      "browserslist@4": "^4.28.7",
+      "loader-utils@2": "^2.0.4",
+      "url-parse": "^1.5.10",
+      "minimatch@3": "^3.1.5",
+      "minimatch@5": "^5.1.8",
+      "braces@2": "^3.0.3",
+      "micromatch@3": "^4.0.8",
+      "cross-spawn": "^7.0.6",
+      "shell-quote": "^1.10.0",
+      "serialize-javascript@6": "^7.0.7",
+      "lodash": "^4.18.1",
+      "@babel/core": "^7.29.6",
+      "@babel/runtime@7": "^7.29.7",
+      "http-proxy-middleware@3": "^3.0.7",
+      "webpack@5": "^5.104.1",
+      "esbuild": "^0.28.1",
+      "vite@8": "^8.2.0",
+      "immer@7": "^9.0.6",
+      "turbo-stream": "^3.0.0"
     }
   },
   "teambit.workspace/workspace-config-files": {
