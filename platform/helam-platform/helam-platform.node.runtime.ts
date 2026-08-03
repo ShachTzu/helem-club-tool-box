@@ -42,7 +42,8 @@ export class HelamPlatformNode {
     private googleVerifier: GoogleVerifier | undefined,
     private adminEmails: string[] = [],
     private googleClientId?: string,
-    private seedEnabled: boolean = false
+    private seedEnabled: boolean = false,
+    private mailer?: Mailer
   ) {}
 
   /**
@@ -197,6 +198,24 @@ export class HelamPlatformNode {
     return user.role === 'admin';
   }
 
+  /**
+   * send a plain transactional email through the platform's configured mail
+   * provider (Resend). feature aspects use this for their own notifications —
+   * e.g. a submission-received confirmation — instead of duplicating mail
+   * delivery. falls back to logging to the console when no mail provider is
+   * configured (same behavior as the sign-in code emails).
+   *
+   * @param to recipient email address.
+   * @param subject email subject line.
+   * @param text plain-text body.
+   * @returns whether the message was handed off to the provider (false when
+   * only logged).
+   */
+  async sendEmail(to: string, subject: string, text: string): Promise<boolean> {
+    if (!this.mailer) return false;
+    return this.mailer.send({ to, subject, text, html: `<p>${text}</p>` });
+  }
+
   static dependencies = [SymphonyPlatformAspect];
 
   static defaultConfig: HelamPlatformConfig = {
@@ -281,7 +300,8 @@ export class HelamPlatformNode {
       googleVerifier,
       adminEmails,
       googleClientId,
-      seedEnabled
+      seedEnabled,
+      mailer
     );
 
     const gqlSchema = helamPlatformGqlSchema(helamPlatform);

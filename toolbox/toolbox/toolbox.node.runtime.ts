@@ -44,6 +44,20 @@ type ModeratorApp = PlainApp & {
 const MODERATOR_ROLES = ['admin', 'moderator'];
 
 /**
+ * helamPlatform.sendEmail wraps its `text` param straight into `<p>${text}</p>`
+ * with no escaping. the app name it's built from is free text a member
+ * chose — escape it here so a crafted name can't inject markup into the
+ * confirmation email's HTML body.
+ */
+function escapeHtml(value: string): string {
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function buildSubmissionConfirmationText(appName: string): string {
+  return `היי, קיבלנו את ההגשה שלך "${escapeHtml(appName)}" לארגז הכלים של הלם קלאב. הכלי ממתין כעת לבדיקת צוות המנחים, ותקבלו עדכון נוסף ברגע שיאושר. תודה שתרמת לקהילה!`;
+}
+
+/**
  * the signed parameters a client needs to upload one image directly to
  * Cloudinary. the folder is fixed server-side to the requesting member's own
  * namespace and baked into the signature, so a client cannot redirect the
@@ -203,13 +217,35 @@ export class ToolboxNode {
     draftId?: string
   ): Promise<PlainApp | null> {
     const user = await this.requireUser(context);
+    let submittedApp: AppModel;
     if (draftId) {
       const submitted = await this.appRepository.submitDraft(draftId, input, user.id);
       if (!submitted) throw new NotFound();
-      return this.toPlainApp(submitted);
+      submittedApp = submitted;
+    } else {
+      submittedApp = await this.appRepository.createApp(input, user.id);
     }
-    const created = await this.appRepository.createApp(input, user.id);
-    return this.toPlainApp(created);
+    await this.sendSubmissionConfirmationEmail(submittedApp);
+    return this.toPlainApp(submittedApp);
+  }
+
+  /**
+   * best-effort confirmation email to the submitter. a mail failure must never
+   * fail the submission itself — the app is already saved by the time this
+   * runs, so this only logs and moves on.
+   */
+  private async sendSubmissionConfirmationEmail(app: AppModel): Promise<void> {
+    if (!app.contactEmail) return;
+    try {
+      await this.helamPlatform.sendEmail(
+        app.contactEmail,
+        `הכלי "${app.name}" נשלח לבדיקה — הלם קלאב`,
+        buildSubmissionConfirmationText(app.name)
+      );
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn(`[toolbox] confirmation email failed for app ${app.id}: ${(err as Error).message}`);
+    }
   }
 
   /**
