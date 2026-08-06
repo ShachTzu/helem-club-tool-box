@@ -1,0 +1,244 @@
+.manageKnowledgeLibrary {
+  box-sizing: border-box;
+  width: 100%;
+  font-family: var(--typography-font-family);
+}
+
+.tabContent {
+  margin-top: var(--spacing-large);
+}
+
+.headerRow {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spacing-medium);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-large);
+}
+
+.title {
+  margin: 0 0 var(--spacing-small);
+  font-size: var(--typography-sizes-heading-h3);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-secondary);
+  line-height: var(--typography-line-height-base);
+  max-width: 560px;
+}
+
+.errorBanner {
+  box-sizing: border-box;
+  background: var(--colors-status-negative-subtle);
+  color: var(--colors-status-negative-default);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-default);
+  font-size: var(--typography-sizes-body-small);
+  margin-bottom: var(--spacing-medium);
+}
+
+.loadingState {
+  box-sizing: border-box;
+  background: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-x4);
+  text-align: center;
+  color: var(--colors-text-secondary);
+  font-size: var(--typography-sizes-body-default);
+}
+
+.rowActions {
+  display: inline-flex;
+  gap: var(--spacing-small);
+  justify-content: flex-end;
+}
+
+.formOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--interactions-z-index-modal);
+  background: var(--colors-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-large);
+  box-sizing: border-box;
+}
+
+.formCard {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--colors-surface-primary);
+  border-radius: var(--borders-radius-large);
+  box-shadow: var(--effects-shadows-x-large);
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+}
+
+.confirmCard {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 400px;
+  background: var(--colors-surface-primary);
+  border-radius: var(--borders-radius-large);
+  box-shadow: var(--effects-shadows-x-large);
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+}
+
+.formTitle {
+  margin: 0;
+  font-size: var(--typography-sizes-heading-h4);
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-primary-default);
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.formLabel {
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+}
+
+.formError {
+  box-sizing: border-box;
+  background: var(--colors-status-negative-subtle);
+  color: var(--colors-status-negative-default);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-small) var(--spacing-default);
+  font-size: var(--typography-sizes-body-small);
+}
+
+.formActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-small);
+  margin-top: var(--spacing-small);
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-primary);
+}
+
+.imagePreview {
+  max-width: 160px;
+  max-height: 160px;
+  object-fit: cover;
+  border-radius: var(--borders-radius-medium);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+}
+
+.hiddenFileInput {
+  display: none;
+}
+
+.uploadRow {
+  display: flex;
+  margin-top: var(--spacing-small);
+}
+
+.dropZone {
+  box-sizing: border-box;
+  border: 2px dashed var(--colors-border);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-large);
+  text-align: center;
+  margin-bottom: var(--spacing-medium);
+  transition: border-color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out),
+    background var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out);
+}
+
+.dropZoneActive {
+  border-color: var(--colors-primary-default);
+  background: var(--colors-surface-secondary);
+}
+
+.dropZoneButton {
+  display: inline-block;
+  margin-top: var(--spacing-small);
+  cursor: var(--interactions-cursor-pointer);
+  background: var(--colors-white);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  border-radius: var(--borders-radius-medium);
+  padding: 8px 16px;
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-primary-default);
+}
+
+.fileList {
+  list-style: none;
+  margin: var(--spacing-small) 0 0;
+  padding: 0;
+  text-align: right;
+}
+
+.fileListItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  padding: var(--spacing-small) 0;
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-primary);
+  border-bottom: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+}
+
+.fileListWarning {
+  color: var(--colors-status-negative-default);
+}
+
+.fileRemoveButton {
+  margin-inline-start: auto;
+  background: none;
+  border: none;
+  cursor: var(--interactions-cursor-pointer);
+  color: var(--colors-status-negative-default);
+  font-size: var(--typography-sizes-body-small);
+  text-decoration: underline;
+}
+
+.importSummary {
+  box-sizing: border-box;
+  background: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-large);
+  margin-top: var(--spacing-medium);
+}
+
+@media (max-width: 640px) {
+  .headerRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .formCard {
+    padding: var(--spacing-large);
+  }
+}

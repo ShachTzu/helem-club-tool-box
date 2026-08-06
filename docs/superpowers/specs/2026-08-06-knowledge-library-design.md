@@ -117,5 +117,5 @@ Three content systems now exist for a non-technical admin: `blog` (single dated 
 
 ## Open items
 
-- The Cloudinary avatar/illustration asset needs to be added to the repo (copied from `~/Downloads/לוגואים הלם קלאב/Big plate HC BG image.png`) and cropped/sized appropriately for avatar use — an implementation-time task, not a design blocker.
+- **Avatar needs a real hosted URL.** The illustration is resized and committed at `docs/assets/helem-club-author.png` (480px wide, down from the 4000×2000 source), ready to upload — but this codebase has no local/bundled image assets anywhere; every image everywhere is an externally-hosted URL (mostly Cloudinary). Nobody on this task holds the `CLOUDINARY_URL` credential (same reason Claude never has it for the toolbox uploads), so `HELEM_CLUB_AVATAR_URL` in `knowledge-page-options.ts` is `undefined` until whoever holds that credential uploads the file and the constant is updated. Until then the byline degrades gracefully to initials (the `Avatar` component's existing fallback), not a broken image.
 - Exact admin UI copy/labels (Hebrew) to be written during implementation, following the brand type system (RAG Sans weights) and palette already on file.

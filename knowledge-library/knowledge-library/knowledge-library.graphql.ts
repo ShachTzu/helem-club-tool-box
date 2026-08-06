@@ -24,12 +24,15 @@ const STAFF_ROLES = ['moderator', 'admin'];
  * allowlist check is a DB lookup, so this is async, unlike knowledge-base's
  * role-only assertCanManage.
  */
-async function assertCanManage(context: ResolverContext, knowledgeLibrary: KnowledgeLibraryNode): Promise<void> {
+async function canManage(context: ResolverContext, knowledgeLibrary: KnowledgeLibraryNode): Promise<boolean> {
   const user = context?.session?.user;
-  if (!user) throw new AccessDenied();
-  if (user.role && STAFF_ROLES.includes(user.role)) return;
-  const isEditor = await knowledgeLibrary.isEditor(user.id);
-  if (!isEditor) throw new AccessDenied();
+  if (!user) return false;
+  if (user.role && STAFF_ROLES.includes(user.role)) return true;
+  return knowledgeLibrary.isEditor(user.id);
+}
+
+async function assertCanManage(context: ResolverContext, knowledgeLibrary: KnowledgeLibraryNode): Promise<void> {
+  if (!(await canManage(context, knowledgeLibrary))) throw new AccessDenied();
 }
 
 /**
@@ -146,6 +149,12 @@ export function createKnowledgeLibraryGqlSchema(knowledgeLibrary: KnowledgeLibra
         listKnowledgePages(options: KnowledgeLibraryListPagesOptions): [KnowledgeLibraryPage]
         getKnowledgePage(idOrSlug: String!): KnowledgeLibraryPage
         listKnowledgeLibraryEditors: [KnowledgeLibraryEditor]
+        """
+        whether the signed-in caller may manage knowledge-library content —
+        a self-check only (never exposes the allowlist itself), so the admin
+        UI can gate itself for an allowlisted editor who isn't staff.
+        """
+        meCanManageKnowledgeLibrary: Boolean
       }
 
       type Mutation {
@@ -173,6 +182,9 @@ export function createKnowledgeLibraryGqlSchema(knowledgeLibrary: KnowledgeLibra
         listKnowledgeLibraryEditors: async (_req: unknown, _args: unknown, context: ResolverContext) => {
           assertIsAdmin(context);
           return knowledgeLibrary.listEditors();
+        },
+        meCanManageKnowledgeLibrary: async (_req: unknown, _args: unknown, context: ResolverContext) => {
+          return canManage(context, knowledgeLibrary);
         },
       },
       Mutation: {

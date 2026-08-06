@@ -55,7 +55,11 @@ export class KnowledgePageRepository {
       ];
     }
 
-    const query = this.knowledgePageModel.find(filter).sort({ publishDate: -1, _id: -1 });
+    // same-date tiebreaker is ascending (_id: 1, oldest-created first), not
+    // descending: a CSV batch import creates same-day chapters sequentially,
+    // and they should read back in that original order (chapter 1..N), not
+    // reversed.
+    const query = this.knowledgePageModel.find(filter).sort({ publishDate: -1, _id: 1 });
     if (options?.limit && options.limit > 0) {
       query.limit(options.limit);
     }

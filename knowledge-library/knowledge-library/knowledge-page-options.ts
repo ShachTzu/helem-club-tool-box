@@ -61,6 +61,18 @@ export type ListPagesOptions = {
 export const HELEM_CLUB_AUTHOR_NAME = 'הלם קלאב';
 
 /**
+ * avatar shown next to HELEM_CLUB_AUTHOR_NAME wherever authorship is
+ * displayed. undefined until the brand illustration is uploaded to
+ * Cloudinary (or another host) and this constant is updated with the real
+ * URL — no one on this task has the CLOUDINARY_URL credential, matching how
+ * every other externally-hosted image in this codebase works (this app has
+ * no bundled local image assets anywhere; every image is a URL). Until then,
+ * the byline degrades gracefully to text-only. The resized source file is at
+ * docs/assets/helem-club-author.png, ready for whoever uploads it.
+ */
+export const HELEM_CLUB_AVATAR_URL: string | undefined = undefined;
+
+/**
  * input required to create a new knowledge-library page.
  */
 export type CreatePageOptions = {

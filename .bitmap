@@ -81,6 +81,30 @@
         "onLanesOnly": true,
         "isAvailableOnCurrentLane": true
     },
+    "admin/manage-knowledge-library": {
+        "name": "admin/manage-knowledge-library",
+        "scope": "",
+        "version": "",
+        "defaultScope": "helemclub.knowledge-library",
+        "mainFile": "index.ts",
+        "rootDir": "knowledge-library/admin/manage-knowledge-library",
+        "config": {
+            "helemclub.design/envs/helam-env": {},
+            "teambit.envs/envs": {
+                "env": "helemclub.design/envs/helam-env"
+            },
+            "teambit.dependencies/dependency-resolver": {
+                "policy": {
+                    "dependencies": {
+                        "papaparse": "5"
+                    },
+                    "devDependencies": {
+                        "@types/papaparse": "5"
+                    }
+                }
+            }
+        }
+    },
     "admin/manage-labels": {
         "name": "admin/manage-labels",
         "scope": "helemclub.knowledge-base",
@@ -576,6 +600,20 @@
         "onLanesOnly": true,
         "isAvailableOnCurrentLane": true
     },
+    "hooks/use-knowledge-pages": {
+        "name": "hooks/use-knowledge-pages",
+        "scope": "",
+        "version": "",
+        "defaultScope": "helemclub.knowledge-library",
+        "mainFile": "index.ts",
+        "rootDir": "knowledge-library/hooks/use-knowledge-pages",
+        "config": {
+            "helemclub.design/envs/helam-env": {},
+            "teambit.envs/envs": {
+                "env": "helemclub.design/envs/helam-env"
+            }
+        }
+    },
     "hooks/use-labels": {
         "name": "hooks/use-labels",
         "scope": "helemclub.knowledge-base",
@@ -967,6 +1005,34 @@
         "rootDir": "platform/pages/home",
         "onLanesOnly": true,
         "isAvailableOnCurrentLane": true
+    },
+    "pages/knowledge-library-lobby": {
+        "name": "pages/knowledge-library-lobby",
+        "scope": "",
+        "version": "",
+        "defaultScope": "helemclub.knowledge-library",
+        "mainFile": "index.ts",
+        "rootDir": "knowledge-library/pages/knowledge-library-lobby",
+        "config": {
+            "bitdev.react/react-env@6.0.28": {},
+            "teambit.envs/envs": {
+                "env": "bitdev.react/react-env"
+            }
+        }
+    },
+    "pages/knowledge-library-page": {
+        "name": "pages/knowledge-library-page",
+        "scope": "",
+        "version": "",
+        "defaultScope": "helemclub.knowledge-library",
+        "mainFile": "index.ts",
+        "rootDir": "knowledge-library/pages/knowledge-library-page",
+        "config": {
+            "bitdev.react/react-env@6.0.28": {},
+            "teambit.envs/envs": {
+                "env": "bitdev.react/react-env"
+            }
+        }
     },
     "pages/knowledge-lobby": {
         "name": "pages/knowledge-lobby",

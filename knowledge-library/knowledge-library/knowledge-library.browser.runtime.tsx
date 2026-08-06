@@ -1,13 +1,11 @@
+import React from 'react';
 import { SymphonyPlatformAspect, type SymphonyPlatformBrowser } from '@bitdev/symphony.symphony-platform';
 import { HelamPlatformAspect, type HelamPlatformBrowser } from '@helemclub/platform.helam-platform';
+import { KnowledgeLibraryLobby } from '@helemclub/knowledge-library.pages.knowledge-library-lobby';
+import { KnowledgeLibraryPage } from '@helemclub/knowledge-library.pages.knowledge-library-page';
+import { ManageKnowledgeLibrary } from '@helemclub/knowledge-library.admin.manage-knowledge-library';
 import type { KnowledgeLibraryConfig } from './knowledge-library-config.js';
 
-/**
- * public pages, admin routes and nav registration land here once the page
- * and admin components exist (see docs/superpowers/specs/2026-08-06-knowledge-library-design.md,
- * "Public site" and "Admin capabilities" sections) — this is the same
- * registration pattern knowledge-base.browser.runtime.tsx uses.
- */
 export class KnowledgeLibraryBrowser {
   constructor(
     private config: KnowledgeLibraryConfig,
@@ -24,6 +22,37 @@ export class KnowledgeLibraryBrowser {
     config: KnowledgeLibraryConfig
   ) {
     const knowledgeLibrary = new KnowledgeLibraryBrowser(config, symphonyPlatform, helamPlatform);
+
+    /**
+     * public routes. the generic :slug route is registered after the fixed
+     * lobby path so `/knowledge-library` itself is matched first.
+     */
+    helamPlatform.registerRoute([
+      {
+        path: '/knowledge-library',
+        component: () => <KnowledgeLibraryLobby />,
+      },
+      {
+        path: '/knowledge-library/:slug',
+        component: () => <KnowledgeLibraryPage />,
+      },
+    ]);
+
+    helamPlatform.registerNavigationItem([
+      {
+        label: 'ספריית הידע',
+        href: '/knowledge-library',
+        order: 35,
+      },
+    ]);
+
+    helamPlatform.registerAdminRoute([
+      {
+        path: 'knowledge-library',
+        label: 'ניהול ספריית הידע',
+        component: () => <ManageKnowledgeLibrary />,
+      },
+    ]);
 
     return knowledgeLibrary;
   }
