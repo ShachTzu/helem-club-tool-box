@@ -1,5 +1,5 @@
 import { prop, index } from '@typegoose/typegoose';
-import { HELEM_CLUB_AUTHOR_NAME } from './knowledge-page-options.js';
+import { HELEM_CLUB_AUTHOR_NAME } from '@helemclub/knowledge-library.entities.knowledge-page';
 
 /**
  * typegoose model for a knowledge-library page — a hierarchical text page

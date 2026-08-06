@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 import { useMutation } from '@apollo/client/react';
-import type { PlainKnowledgePage } from '@helemclub/knowledge-library.knowledge-library';
+import type { PlainKnowledgePage } from '@helemclub/knowledge-library.entities.knowledge-page';
 
 export type UpdateKnowledgePageInput = {
   title?: string;

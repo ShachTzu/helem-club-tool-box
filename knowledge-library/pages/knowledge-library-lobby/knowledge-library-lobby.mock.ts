@@ -1,4 +1,4 @@
-import type { PlainKnowledgePage } from '@helemclub/knowledge-library.knowledge-library';
+import type { PlainKnowledgePage } from '@helemclub/knowledge-library.entities.knowledge-page';
 
 function mockPage(overrides: Partial<PlainKnowledgePage>): PlainKnowledgePage {
   return {

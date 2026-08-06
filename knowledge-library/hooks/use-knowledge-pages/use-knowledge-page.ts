@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { gql } from '@apollo/client';
 import { useQuery } from '@apollo/client/react';
-import type { PlainKnowledgePage } from '@helemclub/knowledge-library.knowledge-library';
+import type { PlainKnowledgePage } from '@helemclub/knowledge-library.entities.knowledge-page';
 
 export const GET_KNOWLEDGE_PAGE_QUERY = gql`
   query GetKnowledgePage($idOrSlug: String!) {

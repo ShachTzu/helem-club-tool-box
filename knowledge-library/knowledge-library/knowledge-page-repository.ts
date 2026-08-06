@@ -1,8 +1,8 @@
 import { ReturnModelType } from '@typegoose/typegoose';
 import { KnowledgePageModel } from './knowledge-page.model.js';
 import { validateEmbedHtml } from './embed-allowlist.js';
-import { HELEM_CLUB_AUTHOR_NAME } from './knowledge-page-options.js';
-import type { ListPagesOptions, CreatePageOptions, UpdatePageOptions } from './knowledge-page-options.js';
+import { HELEM_CLUB_AUTHOR_NAME } from '@helemclub/knowledge-library.entities.knowledge-page';
+import type { ListPagesOptions, CreatePageOptions, UpdatePageOptions } from '@helemclub/knowledge-library.entities.knowledge-page';
 
 /**
  * derive a url-friendly slug from an arbitrary string, preserving Hebrew

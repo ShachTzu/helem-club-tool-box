@@ -15,7 +15,7 @@ import type {
   ListPagesOptions,
   CreatePageOptions,
   UpdatePageOptions,
-} from './knowledge-page-options.js';
+} from '@helemclub/knowledge-library.entities.knowledge-page';
 
 type UploadSignature = {
   signature: string;

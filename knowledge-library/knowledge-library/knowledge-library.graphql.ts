@@ -2,7 +2,7 @@ import { GqlSchema } from '@bitdev/symphony.backends.backend-server';
 import { gql } from 'graphql-tag';
 import { AccessDenied } from '@bitdev/symphony.exceptions.access-denied';
 import type { KnowledgeLibraryNode } from './knowledge-library.node.runtime.js';
-import type { ListPagesOptions, CreatePageOptions, UpdatePageOptions } from './knowledge-page-options.js';
+import type { ListPagesOptions, CreatePageOptions, UpdatePageOptions } from '@helemclub/knowledge-library.entities.knowledge-page';
 import type { ImportRow } from './knowledge-library-importer.js';
 
 type SessionUser = {

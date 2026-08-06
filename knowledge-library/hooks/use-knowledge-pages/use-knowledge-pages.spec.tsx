@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import { MockProvider } from '@helemclub/platform.testing.mock-provider';
 import { useKnowledgePages } from './use-knowledge-pages.js';
-import type { PlainKnowledgePage } from '@helemclub/knowledge-library.knowledge-library';
+import type { PlainKnowledgePage } from '@helemclub/knowledge-library.entities.knowledge-page';
 
 function mockPage(overrides: Partial<PlainKnowledgePage> = {}): PlainKnowledgePage {
   return {

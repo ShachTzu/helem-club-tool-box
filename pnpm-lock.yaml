@@ -3159,6 +3159,22 @@ importers:
         specifier: '5'
         version: 5.5.2
 
+  knowledge-library/entities/knowledge-page:
+    dependencies:
+      '@rspack/core':
+        specifier: ^1.7.9
+        version: 1.7.12
+      '@rspack/dev-server':
+        specifier: ^1.2.1
+        version: 1.2.1(@rspack/core@1.7.12)(tslib@2.8.1)(webpack@5.109.2)
+      '@rspack/plugin-react-refresh':
+        specifier: ^1.6.1
+        version: 1.6.2(react-refresh@0.18.0)(webpack-hot-middleware@2.26.1)
+    devDependencies:
+      '@bitdev/node.node-env':
+        specifier: 6.0.22
+        version: 6.0.22(@opentelemetry/api@1.9.1)(esbuild@0.28.1)(eslint-plugin-import@2.32.0)(eslint@10.8.0)(jiti@2.7.0)(jsdom@29.1.1)(less@4.8.1)(react-refresh@0.18.0)(rollup@4.62.3)(rxjs@7.8.2)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(terser@5.49.0)(tslib@2.8.1)(typescript@6.0.3)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)(yaml@2.9.0)
+
   knowledge-library/hooks/use-knowledge-pages:
     dependencies:
       '@apollo/client':
@@ -3663,19 +3679,22 @@ importers:
         version: file:knowledge-domains/ui/domain-selector(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.admin.manage-knowledge-library':
         specifier: workspace:*
-        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page':
+        specifier: workspace:*
+        version: file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.hooks.use-knowledge-pages':
         specifier: workspace:*
-        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.knowledge-library':
         specifier: workspace:*
         version: file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-lobby':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-page':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/marketplace.helam-prototype':
         specifier: workspace:*
         version: file:marketplace/helam-prototype(@apollo/client@4.2.9)(@vitejs/plugin-react@6.0.5)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vite@8.2.0)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
@@ -4221,19 +4240,601 @@ importers:
         version: file:knowledge-domains/ui/domain-selector(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.admin.manage-knowledge-library':
         specifier: workspace:*
-        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page':
+        specifier: workspace:*
+        version: file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.hooks.use-knowledge-pages':
         specifier: workspace:*
-        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.knowledge-library':
         specifier: workspace:*
         version: file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-lobby':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-page':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/marketplace.helam-prototype':
+        specifier: workspace:*
+        version: file:marketplace/helam-prototype(@apollo/client@4.2.9)(@vitejs/plugin-react@6.0.5)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vite@8.2.0)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.admin.manage-users':
+        specifier: workspace:*
+        version: file:platform/admin/manage-users(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.composites.user-bar':
+        specifier: workspace:*
+        version: file:platform/composites/user-bar(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.entities.search-result':
+        specifier: workspace:*
+        version: file:platform/entities/search-result(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.entities.user':
+        specifier: workspace:*
+        version: file:platform/entities/user(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.helam':
+        specifier: workspace:*
+        version: file:platform/helam(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.helam-platform':
+        specifier: workspace:*
+        version: file:platform/helam-platform(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.hooks.use-auth':
+        specifier: workspace:*
+        version: file:platform/hooks/use-auth(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.hooks.use-device-id':
+        specifier: workspace:*
+        version: file:platform/hooks/use-device-id(react-refresh@0.18.0)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.hooks.use-onboarding':
+        specifier: workspace:*
+        version: file:platform/hooks/use-onboarding(react-refresh@0.18.0)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.hooks.use-search':
+        specifier: workspace:*
+        version: file:platform/hooks/use-search(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.icons.helam-icons':
+        specifier: workspace:*
+        version: file:platform/icons/helam-icons(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.layout.app-layout':
+        specifier: workspace:*
+        version: file:platform/layout/app-layout(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.layout.footer':
+        specifier: workspace:*
+        version: file:platform/layout/footer(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.layout.header':
+        specifier: workspace:*
+        version: file:platform/layout/header(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.layout.mobile-nav':
+        specifier: workspace:*
+        version: file:platform/layout/mobile-nav(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.pages.admin-dashboard':
+        specifier: workspace:*
+        version: file:platform/pages/admin-dashboard(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.pages.home':
+        specifier: workspace:*
+        version: file:platform/pages/home(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.pages.login':
+        specifier: workspace:*
+        version: file:platform/pages/login(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.pages.not-found-page':
+        specifier: workspace:*
+        version: file:platform/pages/not-found-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.pages.onboarding-page':
+        specifier: workspace:*
+        version: file:platform/pages/onboarding-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.pages.plan-to-production':
+        specifier: workspace:*
+        version: file:platform/pages/plan-to-production(react-dom@19.2.4)(react-refresh@0.18.0)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.pages.profile':
+        specifier: workspace:*
+        version: file:platform/pages/profile(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.pages.signup':
+        specifier: workspace:*
+        version: file:platform/pages/signup(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.sections.ecosystem-overview':
+        specifier: workspace:*
+        version: file:platform/sections/ecosystem-overview(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.sections.hero':
+        specifier: workspace:*
+        version: file:platform/sections/hero(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.testing.mock-provider':
+        specifier: workspace:*
+        version: file:platform/testing/mock-provider(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)
+      '@helemclub/platform.ui.admin-shell':
+        specifier: workspace:*
+        version: file:platform/ui/admin-shell(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.ui.global-search':
+        specifier: workspace:*
+        version: file:platform/ui/global-search(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.ui.install-prompt':
+        specifier: workspace:*
+        version: file:platform/ui/install-prompt(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.ui.onboarding-wizard':
+        specifier: workspace:*
+        version: file:platform/ui/onboarding-wizard(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.ui.protected-route':
+        specifier: workspace:*
+        version: file:platform/ui/protected-route(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/platform.ui.role-selector':
+        specifier: workspace:*
+        version: file:platform/ui/role-selector(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.admin.manage-apps':
+        specifier: workspace:*
+        version: file:toolbox/admin/manage-apps(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.admin.review-submissions':
+        specifier: workspace:*
+        version: file:toolbox/admin/review-submissions(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.entities.app':
+        specifier: workspace:*
+        version: file:toolbox/entities/app(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.entities.app-review':
+        specifier: workspace:*
+        version: file:toolbox/entities/app-review(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.hooks.use-app-reviews':
+        specifier: workspace:*
+        version: file:toolbox/hooks/use-app-reviews(@apollo/client@4.2.9)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.hooks.use-apps':
+        specifier: workspace:*
+        version: file:toolbox/hooks/use-apps(@apollo/client@4.2.9)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.icons.toolbox-icons':
+        specifier: workspace:*
+        version: file:toolbox/icons/toolbox-icons(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.pages.app-detail':
+        specifier: workspace:*
+        version: file:toolbox/pages/app-detail(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.pages.my-submissions':
+        specifier: workspace:*
+        version: file:toolbox/pages/my-submissions(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.pages.submit-tool':
+        specifier: workspace:*
+        version: file:toolbox/pages/submit-tool(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.pages.toolbox-catalog':
+        specifier: workspace:*
+        version: file:toolbox/pages/toolbox-catalog(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.pages.wishlist':
+        specifier: workspace:*
+        version: file:toolbox/pages/wishlist(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.toolbox':
+        specifier: workspace:*
+        version: file:toolbox/toolbox(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.ui.app-card':
+        specifier: workspace:*
+        version: file:toolbox/ui/app-card(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.ui.app-embed-block':
+        specifier: workspace:*
+        version: file:toolbox/ui/app-embed-block(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.ui.app-grid':
+        specifier: workspace:*
+        version: file:toolbox/ui/app-grid(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/toolbox.ui.rating-summary':
+        specifier: workspace:*
+        version: file:toolbox/ui/rating-summary(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@mdx-js/mdx':
+        specifier: 3.1.1
+        version: 3.1.1
+      '@mdx-js/react':
+        specifier: 3.1.1
+        version: 3.1.1(@types/react@19.2.14)(react@19.2.4)
+      '@rspack/core':
+        specifier: ^1.7.9
+        version: 1.7.12
+      '@rspack/dev-server':
+        specifier: ^1.2.1
+        version: 1.2.1(@rspack/core@1.7.12)(tslib@2.8.1)(webpack@5.109.2)
+      '@rspack/plugin-react-refresh':
+        specifier: ^1.6.1
+        version: 1.6.2(react-refresh@0.18.0)(webpack-hot-middleware@2.26.1)
+      '@teambit/mdx.ui.mdx-scope-context':
+        specifier: 1.1.1
+        version: 1.1.1(react@19.2.4)
+      '@types/find-root':
+        specifier: ^1.1.4
+        version: 1.1.4
+      '@types/node':
+        specifier: 22.13.14
+        version: 22.13.14
+      '@types/react':
+        specifier: 19.2.14
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.14)
+      '@vitest/coverage-istanbul':
+        specifier: ^4.1.0
+        version: 4.1.10(vitest@4.1.10)
+      graphql:
+        specifier: ^16.13.1
+        version: 16.14.2
+      oxlint:
+        specifier: 1.55.0
+        version: 1.55.0(oxlint-tsgolint@0.17.0)
+      oxlint-tsgolint:
+        specifier: 0.17.0
+        version: 0.17.0
+      react:
+        specifier: 19.2.4
+        version: 19.2.4
+      react-dom:
+        specifier: 19.2.4
+        version: 19.2.4(react@19.2.4)
+      vite:
+        specifier: ^8.2.0
+        version: 8.2.0(@types/node@22.13.14)(esbuild@0.28.1)(jiti@2.7.0)(less@4.8.1)(sass-embedded@1.100.0)(sass@1.100.0)(terser@5.49.0)(yaml@2.9.0)
+      vitest:
+        specifier: ^4.1.0
+        version: 4.1.10(@opentelemetry/api@1.9.1)(@types/node@22.13.14)(@vitest/coverage-istanbul@4.1.10)(jsdom@29.1.1)(vite@8.2.0)
+
+  node_modules/.bit_roots/bitdev.node_node-env@6.0.22:
+    dependencies:
+      '@babel/core':
+        specifier: ^7.29.6
+        version: 7.29.7
+      '@bitdev/node.node-env':
+        specifier: 6.0.22
+        version: 6.0.22(@opentelemetry/api@1.9.1)(esbuild@0.28.1)(eslint-plugin-import@2.32.0)(eslint@10.8.0)(jiti@2.7.0)(jsdom@29.1.1)(less@4.8.1)(react-refresh@0.18.0)(rollup@4.62.3)(rxjs@7.8.2)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(terser@5.49.0)(tslib@2.8.1)(typescript@6.0.3)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)(yaml@2.9.0)
+      '@helemclub/blog.admin.blog-dashboard':
+        specifier: workspace:*
+        version: file:blog/admin/blog-dashboard(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.admin.manage-authors':
+        specifier: workspace:*
+        version: file:blog/admin/manage-authors(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.admin.review-posts':
+        specifier: workspace:*
+        version: file:blog/admin/review-posts(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.blog':
+        specifier: workspace:*
+        version: file:blog/blog(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.entities.author':
+        specifier: workspace:*
+        version: file:blog/entities/author(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.entities.blog-stat':
+        specifier: workspace:*
+        version: file:blog/entities/blog-stat(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.entities.post':
+        specifier: workspace:*
+        version: file:blog/entities/post(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.hooks.use-authors':
+        specifier: workspace:*
+        version: file:blog/hooks/use-authors(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.hooks.use-blog-stats':
+        specifier: workspace:*
+        version: file:blog/hooks/use-blog-stats(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.hooks.use-posts':
+        specifier: workspace:*
+        version: file:blog/hooks/use-posts(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.icons.blog-icons':
+        specifier: workspace:*
+        version: file:blog/icons/blog-icons(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.pages.blog-home':
+        specifier: workspace:*
+        version: file:blog/pages/blog-home(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.pages.post-editor':
+        specifier: workspace:*
+        version: file:blog/pages/post-editor(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.pages.post-page':
+        specifier: workspace:*
+        version: file:blog/pages/post-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.pages.submit-article':
+        specifier: workspace:*
+        version: file:blog/pages/submit-article(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.sections.blog-preview':
+        specifier: workspace:*
+        version: file:blog/sections/blog-preview(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.ui.author-byline':
+        specifier: workspace:*
+        version: file:blog/ui/author-byline(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.ui.members-only-gate':
+        specifier: workspace:*
+        version: file:blog/ui/members-only-gate(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.ui.post-body':
+        specifier: workspace:*
+        version: file:blog/ui/post-body(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.ui.post-card':
+        specifier: workspace:*
+        version: file:blog/ui/post-card(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/blog.ui.related-apps':
+        specifier: workspace:*
+        version: file:blog/ui/related-apps(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.actions.button':
+        specifier: workspace:*
+        version: file:design/actions/button(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.actions.cta-button':
+        specifier: workspace:*
+        version: file:design/actions/cta-button(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.content.avatar':
+        specifier: workspace:*
+        version: file:design/content/avatar(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.content.badge':
+        specifier: workspace:*
+        version: file:design/content/badge(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.content.card':
+        specifier: workspace:*
+        version: file:design/content/card(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.content.icon':
+        specifier: workspace:*
+        version: file:design/content/icon(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.content.image':
+        specifier: workspace:*
+        version: file:design/content/image(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.content.logo':
+        specifier: workspace:*
+        version: file:design/content/logo(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.content.star-rating':
+        specifier: workspace:*
+        version: file:design/content/star-rating(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.content.table':
+        specifier: workspace:*
+        version: file:design/content/table(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.content.tag-chip':
+        specifier: workspace:*
+        version: file:design/content/tag-chip(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.envs.helam-env':
+        specifier: workspace:*
+        version: file:design/envs/helam-env(@opentelemetry/api@1.9.1)(esbuild@0.28.1)(eslint-plugin-import@2.32.0)(eslint@10.8.0)(jiti@2.7.0)(less@4.8.1)(react-refresh@0.18.0)(rollup@4.62.3)(rxjs@7.8.2)(sass-embedded@1.100.0)(selfsigned@5.5.0)(terser@5.49.0)(tslib@2.8.1)(typescript@6.0.3)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)(yaml@2.9.0)
+      '@helemclub/design.feedback.empty-state':
+        specifier: workspace:*
+        version: file:design/feedback/empty-state(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.helam-theme':
+        specifier: workspace:*
+        version: file:design/helam-theme(react-dom@19.2.4)(react-refresh@0.18.0)(react@19.2.4)(selfsigned@5.5.0)
+      '@helemclub/design.inputs.select-list':
+        specifier: workspace:*
+        version: file:design/inputs/select-list(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.inputs.text-input':
+        specifier: workspace:*
+        version: file:design/inputs/text-input(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.inputs.textarea':
+        specifier: workspace:*
+        version: file:design/inputs/textarea(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.layouts.page-layout':
+        specifier: workspace:*
+        version: file:design/layouts/page-layout(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.layouts.section-layout':
+        specifier: workspace:*
+        version: file:design/layouts/section-layout(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.loaders.spinner':
+        specifier: workspace:*
+        version: file:design/loaders/spinner(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.navigation.link':
+        specifier: workspace:*
+        version: file:design/navigation/link(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.navigation.tabs':
+        specifier: workspace:*
+        version: file:design/navigation/tabs(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.overlays.dropdown':
+        specifier: workspace:*
+        version: file:design/overlays/dropdown(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.overlays.modal':
+        specifier: workspace:*
+        version: file:design/overlays/modal(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.overlays.tooltip':
+        specifier: workspace:*
+        version: file:design/overlays/tooltip(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.typography.heading':
+        specifier: workspace:*
+        version: file:design/typography/heading(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/design.typography.paragraph':
+        specifier: workspace:*
+        version: file:design/typography/paragraph(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.admin.moderation-queue':
+        specifier: workspace:*
+        version: file:engagement/admin/moderation-queue(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.engagement':
+        specifier: workspace:*
+        version: file:engagement/engagement(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.entities.comment':
+        specifier: workspace:*
+        version: file:engagement/entities/comment(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.entities.reaction':
+        specifier: workspace:*
+        version: file:engagement/entities/reaction(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.entities.report':
+        specifier: workspace:*
+        version: file:engagement/entities/report(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.entities.saved-item':
+        specifier: workspace:*
+        version: file:engagement/entities/saved-item(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.hooks.use-comments':
+        specifier: workspace:*
+        version: file:engagement/hooks/use-comments(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.hooks.use-moderation':
+        specifier: workspace:*
+        version: file:engagement/hooks/use-moderation(@apollo/client@4.2.9)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.hooks.use-reactions':
+        specifier: workspace:*
+        version: file:engagement/hooks/use-reactions(@apollo/client@4.2.9)(react-refresh@0.18.0)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.hooks.use-saved':
+        specifier: workspace:*
+        version: file:engagement/hooks/use-saved(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.pages.saved':
+        specifier: workspace:*
+        version: file:engagement/pages/saved(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.ui.comment-composer':
+        specifier: workspace:*
+        version: file:engagement/ui/comment-composer(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.ui.comment-thread':
+        specifier: workspace:*
+        version: file:engagement/ui/comment-thread(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.ui.engagement-bar':
+        specifier: workspace:*
+        version: file:engagement/ui/engagement-bar(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.ui.reaction-bar':
+        specifier: workspace:*
+        version: file:engagement/ui/reaction-bar(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.ui.save-button':
+        specifier: workspace:*
+        version: file:engagement/ui/save-button(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/engagement.ui.share-buttons':
+        specifier: workspace:*
+        version: file:engagement/ui/share-buttons(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/events.admin.manage-events':
+        specifier: workspace:*
+        version: file:events/admin/manage-events(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/events.entities.event':
+        specifier: workspace:*
+        version: file:events/entities/event(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/events.entities.rsvp':
+        specifier: workspace:*
+        version: file:events/entities/rsvp(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/events.events':
+        specifier: workspace:*
+        version: file:events/events(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/events.hooks.use-events':
+        specifier: workspace:*
+        version: file:events/hooks/use-events(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/events.hooks.use-rsvp':
+        specifier: workspace:*
+        version: file:events/hooks/use-rsvp(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/events.icons.events-icons':
+        specifier: workspace:*
+        version: file:events/icons/events-icons(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/events.pages.event-detail':
+        specifier: workspace:*
+        version: file:events/pages/event-detail(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/events.pages.events-listing':
+        specifier: workspace:*
+        version: file:events/pages/events-listing(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/events.sections.events-preview':
+        specifier: workspace:*
+        version: file:events/sections/events-preview(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/events.ui.event-card':
+        specifier: workspace:*
+        version: file:events/ui/event-card(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/events.ui.event-schedule':
+        specifier: workspace:*
+        version: file:events/ui/event-schedule(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/events.ui.rsvp-button':
+        specifier: workspace:*
+        version: file:events/ui/rsvp-button(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/gallery.admin.manage-gallery':
+        specifier: workspace:*
+        version: file:gallery/admin/manage-gallery(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/gallery.entities.gallery-item':
+        specifier: workspace:*
+        version: file:gallery/entities/gallery-item(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/gallery.gallery':
+        specifier: workspace:*
+        version: file:gallery/gallery(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/gallery.hooks.use-gallery':
+        specifier: workspace:*
+        version: file:gallery/hooks/use-gallery(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/gallery.icons.gallery-icons':
+        specifier: workspace:*
+        version: file:gallery/icons/gallery-icons(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/gallery.pages.gallery-item-page':
+        specifier: workspace:*
+        version: file:gallery/pages/gallery-item-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/gallery.pages.gallery-page':
+        specifier: workspace:*
+        version: file:gallery/pages/gallery-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/gallery.ui.gallery-grid':
+        specifier: workspace:*
+        version: file:gallery/ui/gallery-grid(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/gallery.ui.gallery-tile':
+        specifier: workspace:*
+        version: file:gallery/ui/gallery-tile(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/gallery.ui.lightbox':
+        specifier: workspace:*
+        version: file:gallery/ui/lightbox(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.admin.manage-labels':
+        specifier: workspace:*
+        version: file:knowledge-base/admin/manage-labels(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.admin.manage-records':
+        specifier: workspace:*
+        version: file:knowledge-base/admin/manage-records(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.entities.label':
+        specifier: workspace:*
+        version: file:knowledge-base/entities/label(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.entities.media-record':
+        specifier: workspace:*
+        version: file:knowledge-base/entities/media-record(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.hooks.use-labels':
+        specifier: workspace:*
+        version: file:knowledge-base/hooks/use-labels(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.hooks.use-records':
+        specifier: workspace:*
+        version: file:knowledge-base/hooks/use-records(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.icons.knowledge-base-icons':
+        specifier: workspace:*
+        version: file:knowledge-base/icons/knowledge-base-icons(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.knowledge-base':
+        specifier: workspace:*
+        version: file:knowledge-base/knowledge-base(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.pages.knowledge-lobby':
+        specifier: workspace:*
+        version: file:knowledge-base/pages/knowledge-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.pages.label-lobby':
+        specifier: workspace:*
+        version: file:knowledge-base/pages/label-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.pages.record-page':
+        specifier: workspace:*
+        version: file:knowledge-base/pages/record-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.sections.knowledge-preview':
+        specifier: workspace:*
+        version: file:knowledge-base/sections/knowledge-preview(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.ui.label-card':
+        specifier: workspace:*
+        version: file:knowledge-base/ui/label-card(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.ui.media-player':
+        specifier: workspace:*
+        version: file:knowledge-base/ui/media-player(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-base.ui.record-card':
+        specifier: workspace:*
+        version: file:knowledge-base/ui/record-card(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-domains.admin.manage-domains':
+        specifier: workspace:*
+        version: file:knowledge-domains/admin/manage-domains(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-domains.entities.domain':
+        specifier: workspace:*
+        version: file:knowledge-domains/entities/domain(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-domains.entities.domain-tag':
+        specifier: workspace:*
+        version: file:knowledge-domains/entities/domain-tag(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-domains.hooks.use-domain-content':
+        specifier: workspace:*
+        version: file:knowledge-domains/hooks/use-domain-content(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-domains.hooks.use-domains':
+        specifier: workspace:*
+        version: file:knowledge-domains/hooks/use-domains(@apollo/client@4.2.9)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-domains.hooks.use-wisdom-feed':
+        specifier: workspace:*
+        version: file:knowledge-domains/hooks/use-wisdom-feed(react-refresh@0.18.0)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-domains.knowledge-domains':
+        specifier: workspace:*
+        version: file:knowledge-domains/knowledge-domains(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-domains.pages.domains-lobby':
+        specifier: workspace:*
+        version: file:knowledge-domains/pages/domains-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-domains.pages.wisdom-page':
+        specifier: workspace:*
+        version: file:knowledge-domains/pages/wisdom-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-domains.ui.community-wisdom':
+        specifier: workspace:*
+        version: file:knowledge-domains/ui/community-wisdom(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-domains.ui.domain-badge':
+        specifier: workspace:*
+        version: file:knowledge-domains/ui/domain-badge(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-domains.ui.domain-filter':
+        specifier: workspace:*
+        version: file:knowledge-domains/ui/domain-filter(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-domains.ui.domain-selector':
+        specifier: workspace:*
+        version: file:knowledge-domains/ui/domain-selector(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.admin.manage-knowledge-library':
+        specifier: workspace:*
+        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page':
+        specifier: workspace:*
+        version: file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.hooks.use-knowledge-pages':
+        specifier: workspace:*
+        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.knowledge-library':
+        specifier: workspace:*
+        version: file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.pages.knowledge-library-lobby':
+        specifier: workspace:*
+        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.pages.knowledge-library-page':
+        specifier: workspace:*
+        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/marketplace.helam-prototype':
         specifier: workspace:*
         version: file:marketplace/helam-prototype(@apollo/client@4.2.9)(@vitejs/plugin-react@6.0.5)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vite@8.2.0)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
@@ -4800,19 +5401,22 @@ importers:
         version: file:knowledge-domains/ui/domain-selector(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.admin.manage-knowledge-library':
         specifier: workspace:*
-        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page':
+        specifier: workspace:*
+        version: file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.hooks.use-knowledge-pages':
         specifier: workspace:*
-        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.knowledge-library':
         specifier: workspace:*
         version: file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-lobby':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-page':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/marketplace.helam-prototype':
         specifier: workspace:*
         version: file:marketplace/helam-prototype(@apollo/client@4.2.9)(@vitejs/plugin-react@5.2.0)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vite@8.2.0)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
@@ -5406,19 +6010,22 @@ importers:
         version: file:knowledge-domains/ui/domain-selector(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.admin.manage-knowledge-library':
         specifier: workspace:*
-        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page':
+        specifier: workspace:*
+        version: file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.hooks.use-knowledge-pages':
         specifier: workspace:*
-        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.knowledge-library':
         specifier: workspace:*
         version: file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-lobby':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-page':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/marketplace.helam-prototype':
         specifier: workspace:*
         version: file:marketplace/helam-prototype(@apollo/client@4.2.9)(@vitejs/plugin-react@5.2.0)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vite@8.2.0)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
@@ -6018,19 +6625,22 @@ importers:
         version: file:knowledge-domains/ui/domain-selector(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.admin.manage-knowledge-library':
         specifier: workspace:*
-        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page':
+        specifier: workspace:*
+        version: file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.hooks.use-knowledge-pages':
         specifier: workspace:*
-        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.knowledge-library':
         specifier: workspace:*
         version: file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-lobby':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-page':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/marketplace.helam-prototype':
         specifier: workspace:*
         version: file:marketplace/helam-prototype(@apollo/client@4.2.9)(@vitejs/plugin-react@6.0.5)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vite@8.2.0)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
@@ -6606,19 +7216,22 @@ importers:
         version: file:knowledge-domains/ui/domain-selector(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.admin.manage-knowledge-library':
         specifier: workspace:*
-        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page':
+        specifier: workspace:*
+        version: file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.hooks.use-knowledge-pages':
         specifier: workspace:*
-        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.knowledge-library':
         specifier: workspace:*
         version: file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.15)(@bitdev/harmony.testing.load-aspect@1.0.15)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-lobby':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-page':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/marketplace.helam-prototype':
         specifier: workspace:*
         version: file:marketplace/helam-prototype(@apollo/client@4.2.9)(@vitejs/plugin-react@6.0.5)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vite@8.2.0)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
@@ -7185,19 +7798,22 @@ importers:
         version: file:knowledge-domains/ui/domain-selector(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.admin.manage-knowledge-library':
         specifier: workspace:*
-        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page':
+        specifier: workspace:*
+        version: file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.hooks.use-knowledge-pages':
         specifier: workspace:*
-        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.knowledge-library':
         specifier: workspace:*
         version: file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-lobby':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-page':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/marketplace.helam-prototype':
         specifier: workspace:*
         version: file:marketplace/helam-prototype(@apollo/client@4.2.9)(@vitejs/plugin-react@5.2.0)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vite@8.2.0)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
@@ -7797,19 +8413,22 @@ importers:
         version: file:knowledge-domains/ui/domain-selector(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.admin.manage-knowledge-library':
         specifier: workspace:*
-        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page':
+        specifier: workspace:*
+        version: file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.hooks.use-knowledge-pages':
         specifier: workspace:*
-        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.knowledge-library':
         specifier: workspace:*
         version: file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-lobby':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-page':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/marketplace.helam-prototype':
         specifier: workspace:*
         version: file:marketplace/helam-prototype(@apollo/client@4.2.9)(@vitejs/plugin-react@5.2.0)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vite@8.2.0)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
@@ -8422,19 +9041,22 @@ importers:
         version: file:knowledge-domains/ui/domain-selector(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.admin.manage-knowledge-library':
         specifier: workspace:*
-        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page':
+        specifier: workspace:*
+        version: file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.hooks.use-knowledge-pages':
         specifier: workspace:*
-        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.knowledge-library':
         specifier: workspace:*
         version: file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.15)(@bitdev/harmony.testing.load-aspect@1.0.15)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-lobby':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-library.pages.knowledge-library-page':
         specifier: workspace:*
-        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+        version: file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/marketplace.helam-prototype':
         specifier: workspace:*
         version: file:marketplace/helam-prototype(@apollo/client@4.2.9)(@vitejs/plugin-react@6.0.5)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vite@8.2.0)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
@@ -12183,6 +12805,9 @@ packages:
     resolution: {directory: knowledge-library/admin/manage-knowledge-library, type: directory}
     peerDependencies:
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  '@helemclub/knowledge-library.entities.knowledge-page@file:knowledge-library/entities/knowledge-page':
+    resolution: {directory: knowledge-library/entities/knowledge-page, type: directory}
 
   '@helemclub/knowledge-library.hooks.use-knowledge-pages@file:knowledge-library/hooks/use-knowledge-pages':
     resolution: {directory: knowledge-library/hooks/use-knowledge-pages, type: directory}
@@ -22155,6 +22780,94 @@ snapshots:
       - webpack-hot-middleware
       - yaml
 
+  '@bitdev/node.node-env@6.0.22(@opentelemetry/api@1.9.1)(esbuild@0.28.1)(eslint-plugin-import@2.32.0)(eslint@10.8.0)(jiti@2.7.0)(jsdom@29.1.1)(less@4.8.1)(react-refresh@0.18.0)(rollup@4.62.3)(rxjs@7.8.2)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(terser@5.49.0)(tslib@2.8.1)(typescript@6.0.3)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)(yaml@2.9.0)':
+    dependencies:
+      '@babel/core': 7.29.7
+      '@babel/plugin-proposal-decorators': 7.29.0(@babel/core@7.29.7)
+      '@babel/plugin-transform-class-properties': 7.28.6(@babel/core@7.29.7)
+      '@babel/plugin-transform-object-rest-spread': 7.28.6(@babel/core@7.29.7)
+      '@babel/preset-env': 7.29.7(@babel/core@7.29.7)
+      '@babel/preset-typescript': 7.29.7(@babel/core@7.29.7)
+      '@bitdev/node.generators.node-starters': 1.0.2
+      '@bitdev/node.generators.node-templates': 6.0.6
+      '@bitdev/react.eslint.eslint-config-bit-react': 2.0.2(eslint-plugin-import@2.32.0)(eslint@10.8.0)(typescript@6.0.3)
+      '@bitdev/react.react-env': 6.0.27(@opentelemetry/api@1.9.1)(esbuild@0.28.1)(eslint@10.8.0)(jiti@2.7.0)(less@4.8.1)(react-refresh@0.18.0)(rollup@4.62.3)(rxjs@7.8.2)(sass-embedded@1.100.0)(selfsigned@5.5.0)(terser@5.49.0)(webpack@5.109.2)(yaml@2.9.0)
+      '@eslint/eslintrc': 3.3.6
+      '@mdx-js/mdx': 3.1.1
+      '@mdx-js/react': 3.1.1(@types/react@19.2.14)(react@19.2.4)
+      '@rspack/core': 1.7.12
+      '@rspack/dev-server': 1.2.1(@rspack/core@1.7.12)(tslib@2.8.1)(webpack@5.109.2)
+      '@rspack/plugin-react-refresh': 1.6.2(react-refresh@0.18.0)(webpack-hot-middleware@2.26.1)
+      '@teambit/defender.prettier-formatter': 1.0.24
+      '@teambit/mdx.ui.mdx-scope-context': 1.1.1(react@19.2.4)
+      '@teambit/oxc.linter.oxlint-linter': 2.0.6
+      '@teambit/react.mounter': 1.1.8(@types/react@19.2.14)(react-dom@19.2.4)(react@19.2.4)
+      '@teambit/rspack.dev-services.preview.react-preview': 1.0.15(@babel/core@7.29.7)(@types/react@19.2.14)(eslint@10.8.0)(react-dom@19.2.4)(react-refresh@0.18.0)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(typescript@6.0.3)(webpack@5.109.2)
+      '@teambit/rspack.modules.rspack-config-mutator': 1.0.23(react-refresh@0.18.0)(react@19.2.4)(selfsigned@5.5.0)(webpack@5.109.2)
+      '@teambit/typescript.typescript-compiler': 2.0.68(react@19.2.4)
+      '@teambit/vite.vitest-tester': 0.4.15(@opentelemetry/api@1.9.1)(@types/node@22.13.14)(esbuild@0.28.1)(jiti@2.7.0)(less@4.8.1)(sass-embedded@1.100.0)(sass@1.100.0)(terser@5.49.0)(yaml@2.9.0)
+      '@types/find-root': 1.1.4
+      '@types/node': 22.13.14
+      '@types/react': 19.2.14
+      '@types/react-dom': 19.2.3(@types/react@19.2.14)
+      '@vitest/coverage-istanbul': 4.1.10(vitest@4.1.10)
+      babel-plugin-transform-typescript-metadata: 0.4.0(@babel/core@7.29.7)
+      find-root: 1.1.0
+      graphql: 16.14.2
+      oxlint: 1.55.0(oxlint-tsgolint@0.17.0)
+      oxlint-tsgolint: 0.17.0
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+      vite: 8.2.0(@types/node@22.13.14)(esbuild@0.28.1)(jiti@2.7.0)(less@4.8.1)(sass-embedded@1.100.0)(sass@1.100.0)(terser@5.49.0)(yaml@2.9.0)
+      vitest: 4.1.10(@opentelemetry/api@1.9.1)(@types/node@22.13.14)(@vitest/coverage-istanbul@4.1.10)(jsdom@29.1.1)(vite@8.2.0)
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@module-federation/runtime-tools'
+      - '@noble/hashes'
+      - '@opentelemetry/api'
+      - '@swc/helpers'
+      - '@vitejs/devtools'
+      - '@vitest/browser-playwright'
+      - '@vitest/browser-preview'
+      - '@vitest/browser-webdriverio'
+      - '@vitest/coverage-v8'
+      - '@vitest/ui'
+      - bluebird
+      - bufferutil
+      - canvas
+      - debug
+      - esbuild
+      - eslint
+      - eslint-plugin-import
+      - fibers
+      - graphql-ws
+      - happy-dom
+      - jiti
+      - jsdom
+      - less
+      - msw
+      - node-sass
+      - react-refresh
+      - remark-lint-file-extension
+      - rollup
+      - rxjs
+      - sass
+      - sass-embedded
+      - selfsigned
+      - stylus
+      - subscriptions-transport-ws
+      - sugarss
+      - supports-color
+      - terser
+      - tslib
+      - tsx
+      - typescript
+      - utf-8-validate
+      - vue-template-compiler
+      - webpack
+      - webpack-hot-middleware
+      - yaml
+
   '@bitdev/node.node-env@6.0.22(@opentelemetry/api@1.9.1)(esbuild@0.28.1)(eslint-plugin-import@2.32.0)(eslint@10.8.0)(jiti@2.7.0)(jsdom@29.1.1)(less@4.8.1)(react-refresh@0.18.0)(rollup@4.62.3)(rxjs@7.8.2)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(terser@5.49.0)(tslib@2.8.1)(typescript@6.0.3)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)(yaml@2.9.0)':
     dependencies:
       '@babel/core': 7.29.7
@@ -28656,7 +29369,7 @@ snapshots:
       - webpack
       - webpack-hot-middleware
 
-  '@helemclub/knowledge-library.admin.manage-knowledge-library@file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
+  '@helemclub/knowledge-library.admin.manage-knowledge-library@file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
     dependencies:
       '@helemclub/design.actions.button': file:design/actions/button(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/design.content.table': file:design/content/table(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
@@ -28665,7 +29378,7 @@ snapshots:
       '@helemclub/design.inputs.textarea': file:design/inputs/textarea(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/design.navigation.tabs': file:design/navigation/tabs(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-domains.ui.domain-selector': file:knowledge-domains/ui/domain-selector(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.hooks.use-knowledge-pages': file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.hooks.use-knowledge-pages': file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/platform.entities.user': file:platform/entities/user(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/platform.hooks.use-auth': file:platform/hooks/use-auth(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/platform.testing.mock-provider': file:platform/testing/mock-provider(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)
@@ -28678,131 +29391,59 @@ snapshots:
       react: 19.2.4
     transitivePeerDependencies:
       - '@apollo/client'
-      - '@aws-sdk/credential-providers'
-      - '@babel/core'
-      - '@bitdev/harmony.harmony'
-      - '@bitdev/harmony.testing.load-aspect'
-      - '@minify-html/node'
       - '@module-federation/runtime-tools'
-      - '@mongodb-js/zstd'
-      - '@parcel/css'
-      - '@swc/core'
-      - '@swc/css'
       - '@swc/helpers'
-      - '@swc/html'
-      - '@testing-library/react'
-      - '@types/react'
-      - '@types/webpack'
-      - browserslist
       - bufferutil
-      - clean-css
-      - cssnano
-      - csso
       - debug
-      - encoding
-      - eslint
-      - gcp-metadata
-      - graphql
-      - html-minifier-terser
-      - kerberos
-      - less
-      - lightningcss
-      - mongodb
-      - mongodb-client-encryption
-      - mongoose
-      - node-sass
-      - postcss
       - react-dom
       - react-refresh
-      - react-router
       - react-router-dom
-      - rollup
-      - sass
-      - sass-embedded
       - selfsigned
-      - snappy
-      - sockjs-client
-      - socks
       - supports-color
       - tslib
-      - type-fest
-      - typescript
-      - uglify-js
       - utf-8-validate
-      - vitest
-      - vue-template-compiler
       - webpack
-      - webpack-cli
       - webpack-hot-middleware
-      - webpack-plugin-serve
 
-  '@helemclub/knowledge-library.hooks.use-knowledge-pages@file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
+  '@helemclub/knowledge-library.entities.knowledge-page@file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
+    dependencies:
+      '@rspack/core': 1.7.12
+      '@rspack/dev-server': 1.2.1(@rspack/core@1.7.12)(tslib@2.8.1)(webpack@5.109.2)
+      '@rspack/plugin-react-refresh': 1.6.2(react-refresh@0.18.0)(webpack-hot-middleware@2.26.1)
+    transitivePeerDependencies:
+      - '@swc/helpers'
+      - bufferutil
+      - debug
+      - react-refresh
+      - supports-color
+      - tslib
+      - utf-8-validate
+      - webpack
+      - webpack-hot-middleware
+
+  '@helemclub/knowledge-library.hooks.use-knowledge-pages@file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
     dependencies:
       '@apollo/client': 4.2.9(graphql@16.14.2)(react-dom@19.2.4)(react@19.2.4)(rxjs@7.8.2)
-      '@helemclub/knowledge-library.knowledge-library': file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page': file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/platform.testing.mock-provider': file:platform/testing/mock-provider(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)
       '@rspack/core': 1.7.12
       '@rspack/dev-server': 1.2.1(@rspack/core@1.7.12)(tslib@2.8.1)(webpack@5.109.2)
       '@rspack/plugin-react-refresh': 1.6.2(react-refresh@0.18.0)(webpack-hot-middleware@2.26.1)
       react: 19.2.4
     transitivePeerDependencies:
-      - '@aws-sdk/credential-providers'
-      - '@babel/core'
-      - '@bitdev/harmony.harmony'
-      - '@bitdev/harmony.testing.load-aspect'
-      - '@minify-html/node'
       - '@module-federation/runtime-tools'
-      - '@mongodb-js/zstd'
-      - '@parcel/css'
-      - '@swc/core'
-      - '@swc/css'
       - '@swc/helpers'
-      - '@swc/html'
-      - '@testing-library/react'
-      - '@types/react'
-      - '@types/webpack'
-      - browserslist
       - bufferutil
-      - clean-css
-      - cssnano
-      - csso
       - debug
-      - encoding
-      - eslint
-      - gcp-metadata
-      - graphql
-      - html-minifier-terser
-      - kerberos
-      - less
-      - lightningcss
-      - mongodb
-      - mongodb-client-encryption
-      - mongoose
-      - node-sass
-      - postcss
       - react-dom
       - react-refresh
-      - react-router
       - react-router-dom
-      - rollup
-      - sass
-      - sass-embedded
       - selfsigned
-      - snappy
-      - sockjs-client
-      - socks
       - supports-color
       - tslib
-      - type-fest
-      - typescript
-      - uglify-js
       - utf-8-validate
-      - vitest
-      - vue-template-compiler
       - webpack
-      - webpack-cli
       - webpack-hot-middleware
-      - webpack-plugin-serve
 
   '@helemclub/knowledge-library.knowledge-library@file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
     dependencies:
@@ -28811,9 +29452,10 @@ snapshots:
       '@bitdev/symphony.backends.backend-server': 2.0.15(graphql@16.14.2)
       '@bitdev/symphony.exceptions.access-denied': 1.0.15
       '@bitdev/symphony.symphony-platform': 3.0.18(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@rspack/core@1.7.12)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(postcss@8.5.25)(react-dom@19.2.4)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(webpack@5.109.2)
-      '@helemclub/knowledge-library.admin.manage-knowledge-library': file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.pages.knowledge-library-lobby': file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.pages.knowledge-library-page': file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.admin.manage-knowledge-library': file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page': file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.pages.knowledge-library-lobby': file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.pages.knowledge-library-page': file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/platform.helam-platform': file:platform/helam-platform(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@rspack/core': 1.7.12
       '@rspack/dev-server': 1.2.1(@rspack/core@1.7.12)(tslib@2.8.1)(webpack@5.109.2)
@@ -28886,9 +29528,10 @@ snapshots:
       '@bitdev/symphony.backends.backend-server': 2.0.15(graphql@16.14.2)
       '@bitdev/symphony.exceptions.access-denied': 1.0.15
       '@bitdev/symphony.symphony-platform': 3.0.18(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.15)(@bitdev/harmony.testing.load-aspect@1.0.15)(@rspack/core@1.7.12)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(postcss@8.5.25)(react-dom@19.2.4)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(webpack@5.109.2)
-      '@helemclub/knowledge-library.admin.manage-knowledge-library': file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.pages.knowledge-library-lobby': file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.pages.knowledge-library-page': file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.admin.manage-knowledge-library': file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page': file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.pages.knowledge-library-lobby': file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.pages.knowledge-library-page': file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/platform.helam-platform': file:platform/helam-platform(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.15)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@rspack/core': 1.7.12
       '@rspack/dev-server': 1.2.1(@rspack/core@1.7.12)(tslib@2.8.1)(webpack@5.109.2)
@@ -28961,9 +29604,10 @@ snapshots:
       '@bitdev/symphony.backends.backend-server': 2.0.15(graphql@16.14.2)
       '@bitdev/symphony.exceptions.access-denied': 1.0.15
       '@bitdev/symphony.symphony-platform': 3.0.18(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@rspack/core@1.7.12)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(postcss@8.5.25)(react-dom@19.2.4)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(webpack@5.109.2)
-      '@helemclub/knowledge-library.admin.manage-knowledge-library': file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.pages.knowledge-library-lobby': file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.pages.knowledge-library-page': file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.admin.manage-knowledge-library': file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page': file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.pages.knowledge-library-lobby': file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.pages.knowledge-library-page': file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/platform.helam-platform': file:platform/helam-platform(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@rspack/core': 1.7.12
       '@rspack/dev-server': 1.2.1(@rspack/core@1.7.12)(tslib@2.8.1)(webpack@5.109.2)
@@ -29036,9 +29680,10 @@ snapshots:
       '@bitdev/symphony.backends.backend-server': 2.0.15(graphql@16.14.2)
       '@bitdev/symphony.exceptions.access-denied': 1.0.15
       '@bitdev/symphony.symphony-platform': 3.0.18(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@rspack/core@1.7.12)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(postcss@8.5.25)(react-dom@19.2.4)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(webpack@5.109.2)
-      '@helemclub/knowledge-library.admin.manage-knowledge-library': file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.pages.knowledge-library-lobby': file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.pages.knowledge-library-page': file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.admin.manage-knowledge-library': file:knowledge-library/admin/manage-knowledge-library(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page': file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.pages.knowledge-library-lobby': file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.pages.knowledge-library-page': file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/platform.helam-platform': file:platform/helam-platform(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@rspack/core': 1.7.12
       '@rspack/dev-server': 1.2.1(@rspack/core@1.7.12)(tslib@2.8.1)(webpack@5.109.2)
@@ -29104,11 +29749,11 @@ snapshots:
       - webpack-hot-middleware
       - webpack-plugin-serve
 
-  '@helemclub/knowledge-library.pages.knowledge-library-lobby@file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
+  '@helemclub/knowledge-library.pages.knowledge-library-lobby@file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
     dependencies:
       '@helemclub/design.content.card': file:design/content/card(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.hooks.use-knowledge-pages': file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.knowledge-library': file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page': file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.hooks.use-knowledge-pages': file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/platform.testing.mock-provider': file:platform/testing/mock-provider(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)
       '@rspack/core': 2.1.7
       '@rspack/dev-server': 2.1.0(@rspack/core@2.1.7)(selfsigned@5.5.0)
@@ -29117,141 +29762,27 @@ snapshots:
       react-router-dom: 7.18.2(react-dom@19.2.4)(react@19.2.4)
     transitivePeerDependencies:
       - '@apollo/client'
-      - '@aws-sdk/credential-providers'
-      - '@babel/core'
-      - '@bitdev/harmony.harmony'
-      - '@bitdev/harmony.testing.load-aspect'
-      - '@minify-html/node'
       - '@module-federation/runtime-tools'
-      - '@mongodb-js/zstd'
-      - '@parcel/css'
-      - '@swc/core'
-      - '@swc/css'
       - '@swc/helpers'
-      - '@swc/html'
-      - '@testing-library/react'
-      - '@types/react'
-      - '@types/webpack'
-      - browserslist
       - bufferutil
-      - clean-css
-      - cssnano
-      - csso
       - debug
-      - encoding
-      - eslint
-      - gcp-metadata
-      - graphql
-      - html-minifier-terser
-      - kerberos
-      - less
-      - lightningcss
-      - mongodb
-      - mongodb-client-encryption
-      - mongoose
-      - node-sass
-      - postcss
       - react-dom
       - react-refresh
-      - react-router
-      - rollup
-      - sass
-      - sass-embedded
       - selfsigned
-      - snappy
-      - sockjs-client
-      - socks
       - supports-color
       - tslib
-      - type-fest
-      - typescript
-      - uglify-js
       - utf-8-validate
-      - vitest
-      - vue-template-compiler
       - webpack
-      - webpack-cli
       - webpack-hot-middleware
-      - webpack-plugin-serve
 
-  '@helemclub/knowledge-library.pages.knowledge-library-lobby@file:knowledge-library/pages/knowledge-library-lobby(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
-    dependencies:
-      '@helemclub/design.content.card': file:design/content/card(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.hooks.use-knowledge-pages': file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.knowledge-library': file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/platform.testing.mock-provider': file:platform/testing/mock-provider(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)
-      '@rspack/core': 2.1.7
-      '@rspack/dev-server': 2.1.0(@rspack/core@2.1.7)(selfsigned@5.5.0)
-      '@rspack/plugin-react-refresh': 2.0.2(@rspack/core@2.1.7)(react-refresh@0.18.0)
-      react: 19.2.4
-      react-router-dom: 7.18.2(react-dom@19.2.4)(react@19.2.4)
-    transitivePeerDependencies:
-      - '@apollo/client'
-      - '@aws-sdk/credential-providers'
-      - '@babel/core'
-      - '@bitdev/harmony.harmony'
-      - '@bitdev/harmony.testing.load-aspect'
-      - '@minify-html/node'
-      - '@module-federation/runtime-tools'
-      - '@mongodb-js/zstd'
-      - '@parcel/css'
-      - '@swc/core'
-      - '@swc/css'
-      - '@swc/helpers'
-      - '@swc/html'
-      - '@testing-library/react'
-      - '@types/react'
-      - '@types/webpack'
-      - browserslist
-      - bufferutil
-      - clean-css
-      - cssnano
-      - csso
-      - debug
-      - encoding
-      - eslint
-      - gcp-metadata
-      - graphql
-      - html-minifier-terser
-      - kerberos
-      - less
-      - lightningcss
-      - mongodb
-      - mongodb-client-encryption
-      - mongoose
-      - node-sass
-      - postcss
-      - react-dom
-      - react-refresh
-      - react-router
-      - rollup
-      - sass
-      - sass-embedded
-      - selfsigned
-      - snappy
-      - sockjs-client
-      - socks
-      - supports-color
-      - tslib
-      - type-fest
-      - typescript
-      - uglify-js
-      - utf-8-validate
-      - vitest
-      - vue-template-compiler
-      - webpack
-      - webpack-cli
-      - webpack-hot-middleware
-      - webpack-plugin-serve
-
-  '@helemclub/knowledge-library.pages.knowledge-library-page@file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
+  '@helemclub/knowledge-library.pages.knowledge-library-page@file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
     dependencies:
       '@helemclub/design.content.avatar': file:design/content/avatar(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/design.content.card': file:design/content/card(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/design.content.tag-chip': file:design/content/tag-chip(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/knowledge-base.ui.media-player': file:knowledge-base/ui/media-player(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.hooks.use-knowledge-pages': file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.knowledge-library': file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.11)(@bitdev/harmony.testing.load-aspect@1.0.11)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.entities.knowledge-page': file:knowledge-library/entities/knowledge-page(react-refresh@0.18.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
+      '@helemclub/knowledge-library.hooks.use-knowledge-pages': file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
       '@helemclub/platform.testing.mock-provider': file:platform/testing/mock-provider(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)
       '@rspack/core': 2.1.7
       '@rspack/dev-server': 2.1.0(@rspack/core@2.1.7)(selfsigned@5.5.0)
@@ -29260,208 +29791,18 @@ snapshots:
       react-router-dom: 7.18.2(react-dom@19.2.4)(react@19.2.4)
     transitivePeerDependencies:
       - '@apollo/client'
-      - '@aws-sdk/credential-providers'
-      - '@babel/core'
-      - '@bitdev/harmony.harmony'
-      - '@bitdev/harmony.testing.load-aspect'
-      - '@minify-html/node'
       - '@module-federation/runtime-tools'
-      - '@mongodb-js/zstd'
-      - '@parcel/css'
-      - '@swc/core'
-      - '@swc/css'
       - '@swc/helpers'
-      - '@swc/html'
-      - '@testing-library/react'
-      - '@types/react'
-      - '@types/webpack'
-      - browserslist
       - bufferutil
-      - clean-css
-      - cssnano
-      - csso
       - debug
-      - encoding
-      - eslint
-      - gcp-metadata
-      - graphql
-      - html-minifier-terser
-      - kerberos
-      - less
-      - lightningcss
-      - mongodb
-      - mongodb-client-encryption
-      - mongoose
-      - node-sass
-      - postcss
       - react-dom
       - react-refresh
-      - react-router
-      - rollup
-      - sass
-      - sass-embedded
       - selfsigned
-      - snappy
-      - sockjs-client
-      - socks
       - supports-color
       - tslib
-      - type-fest
-      - typescript
-      - uglify-js
       - utf-8-validate
-      - vitest
-      - vue-template-compiler
       - webpack
-      - webpack-cli
       - webpack-hot-middleware
-      - webpack-plugin-serve
-
-  '@helemclub/knowledge-library.pages.knowledge-library-page@file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
-    dependencies:
-      '@helemclub/design.content.avatar': file:design/content/avatar(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/design.content.card': file:design/content/card(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/design.content.tag-chip': file:design/content/tag-chip(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-base.ui.media-player': file:knowledge-base/ui/media-player(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.hooks.use-knowledge-pages': file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.knowledge-library': file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/platform.testing.mock-provider': file:platform/testing/mock-provider(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)
-      '@rspack/core': 2.1.7
-      '@rspack/dev-server': 2.1.0(@rspack/core@2.1.7)(selfsigned@5.5.0)
-      '@rspack/plugin-react-refresh': 2.0.2(@rspack/core@2.1.7)(react-refresh@0.18.0)
-      react: 19.2.4
-      react-router-dom: 7.18.2(react-dom@19.2.4)(react@19.2.4)
-    transitivePeerDependencies:
-      - '@apollo/client'
-      - '@aws-sdk/credential-providers'
-      - '@babel/core'
-      - '@bitdev/harmony.harmony'
-      - '@bitdev/harmony.testing.load-aspect'
-      - '@minify-html/node'
-      - '@module-federation/runtime-tools'
-      - '@mongodb-js/zstd'
-      - '@parcel/css'
-      - '@swc/core'
-      - '@swc/css'
-      - '@swc/helpers'
-      - '@swc/html'
-      - '@testing-library/react'
-      - '@types/react'
-      - '@types/webpack'
-      - browserslist
-      - bufferutil
-      - clean-css
-      - cssnano
-      - csso
-      - debug
-      - encoding
-      - eslint
-      - gcp-metadata
-      - graphql
-      - html-minifier-terser
-      - kerberos
-      - less
-      - lightningcss
-      - mongodb
-      - mongodb-client-encryption
-      - mongoose
-      - node-sass
-      - postcss
-      - react-dom
-      - react-refresh
-      - react-router
-      - rollup
-      - sass
-      - sass-embedded
-      - selfsigned
-      - snappy
-      - sockjs-client
-      - socks
-      - supports-color
-      - tslib
-      - type-fest
-      - typescript
-      - uglify-js
-      - utf-8-validate
-      - vitest
-      - vue-template-compiler
-      - webpack
-      - webpack-cli
-      - webpack-hot-middleware
-      - webpack-plugin-serve
-
-  '@helemclub/knowledge-library.pages.knowledge-library-page@file:knowledge-library/pages/knowledge-library-page(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
-    dependencies:
-      '@helemclub/design.content.avatar': file:design/content/avatar(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/design.content.card': file:design/content/card(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/design.content.tag-chip': file:design/content/tag-chip(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-base.ui.media-player': file:knowledge-base/ui/media-player(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.hooks.use-knowledge-pages': file:knowledge-library/hooks/use-knowledge-pages(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/knowledge-library.knowledge-library': file:knowledge-library/knowledge-library(@apollo/client@4.2.9)(@babel/core@7.29.7)(@bitdev/harmony.harmony@2.0.16)(@bitdev/harmony.testing.load-aspect@1.0.16)(@testing-library/react@16.3.2)(@types/react@19.2.14)(browserslist@4.28.7)(eslint@10.8.0)(graphql@16.14.2)(less@4.8.1)(mongodb@7.5.0)(mongoose@9.9.0)(postcss@8.5.25)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(socks@2.8.9)(tslib@2.8.1)(type-fest@4.41.0)(typescript@6.0.3)(vitest@4.1.10)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)
-      '@helemclub/platform.testing.mock-provider': file:platform/testing/mock-provider(@apollo/client@4.2.9)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react@19.2.4)(selfsigned@5.5.0)
-      '@rspack/core': 2.1.7
-      '@rspack/dev-server': 2.1.0(@rspack/core@2.1.7)(selfsigned@5.5.0)
-      '@rspack/plugin-react-refresh': 2.0.2(@rspack/core@2.1.7)(react-refresh@0.18.0)
-      react: 19.2.4
-      react-router-dom: 7.18.2(react-dom@19.2.4)(react@19.2.4)
-    transitivePeerDependencies:
-      - '@apollo/client'
-      - '@aws-sdk/credential-providers'
-      - '@babel/core'
-      - '@bitdev/harmony.harmony'
-      - '@bitdev/harmony.testing.load-aspect'
-      - '@minify-html/node'
-      - '@module-federation/runtime-tools'
-      - '@mongodb-js/zstd'
-      - '@parcel/css'
-      - '@swc/core'
-      - '@swc/css'
-      - '@swc/helpers'
-      - '@swc/html'
-      - '@testing-library/react'
-      - '@types/react'
-      - '@types/webpack'
-      - browserslist
-      - bufferutil
-      - clean-css
-      - cssnano
-      - csso
-      - debug
-      - encoding
-      - eslint
-      - gcp-metadata
-      - graphql
-      - html-minifier-terser
-      - kerberos
-      - less
-      - lightningcss
-      - mongodb
-      - mongodb-client-encryption
-      - mongoose
-      - node-sass
-      - postcss
-      - react-dom
-      - react-refresh
-      - react-router
-      - rollup
-      - sass
-      - sass-embedded
-      - selfsigned
-      - snappy
-      - sockjs-client
-      - socks
-      - supports-color
-      - tslib
-      - type-fest
-      - typescript
-      - uglify-js
-      - utf-8-validate
-      - vitest
-      - vue-template-compiler
-      - webpack
-      - webpack-cli
-      - webpack-hot-middleware
-      - webpack-plugin-serve
 
   '@helemclub/marketplace.helam-prototype@file:marketplace/helam-prototype(@apollo/client@4.2.9)(@vitejs/plugin-react@5.2.0)(react-dom@19.2.4)(react-refresh@0.18.0)(react-router-dom@7.18.2)(react-router@7.18.2)(react@19.2.4)(selfsigned@5.5.0)(tslib@2.8.1)(vite@8.2.0)(webpack-hot-middleware@2.26.1)(webpack@5.109.2)':
     dependencies:
@@ -33415,6 +33756,37 @@ snapshots:
       - vue-template-compiler
       - webpack
 
+  '@teambit/rspack.dev-services.preview.react-preview@1.0.15(@babel/core@7.29.7)(@types/react@19.2.14)(eslint@10.8.0)(react-dom@19.2.4)(react-refresh@0.18.0)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(typescript@6.0.3)(webpack@5.109.2)':
+    dependencies:
+      '@bitdev/react.preview.react-docs-template': 1.0.14(react-dom@19.2.4)(react@19.2.4)
+      '@rspack/core': 2.1.7
+      '@rspack/dev-server': 2.1.0(@rspack/core@2.1.7)(selfsigned@5.5.0)
+      '@teambit/react.mounter': 1.1.9(@types/react@19.2.14)(react-dom@19.2.4)(react@19.2.4)
+      '@teambit/rspack.modules.rspack-config-mutator': 1.0.23(react-refresh@0.18.0)(react@19.2.4)(selfsigned@5.5.0)(webpack@5.109.2)
+      '@teambit/rspack.rspack-bundler': 1.0.10(@babel/core@7.29.7)(react-dom@19.2.4)(react-refresh@0.18.0)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(webpack@5.109.2)
+      '@teambit/rspack.rspack-dev-server': 0.1.50(@babel/core@7.29.7)(eslint@10.8.0)(react-dom@19.2.4)(react@19.2.4)(rollup@4.62.3)(sass@1.100.0)(selfsigned@5.5.0)(typescript@6.0.3)(webpack@5.109.2)
+      '@teambit/ui-foundation.ui.rendering.html': 0.0.95(react-dom@19.2.4)(react@19.2.4)
+      object-hash: 3.0.0
+      react: 19.2.4
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@module-federation/runtime-tools'
+      - '@swc/helpers'
+      - '@types/react'
+      - eslint
+      - fibers
+      - node-sass
+      - react-dom
+      - react-refresh
+      - rollup
+      - sass
+      - sass-embedded
+      - selfsigned
+      - supports-color
+      - typescript
+      - vue-template-compiler
+      - webpack
+
   '@teambit/rspack.dev-services.preview.react-preview@1.0.15(@babel/core@7.29.7)(@types/react@19.2.14)(eslint@10.8.0)(react-dom@19.2.4)(react-refresh@0.18.0)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(typescript@5.9.3)(webpack@5.109.2)':
     dependencies:
       '@bitdev/react.preview.react-docs-template': 1.0.14(react-dom@19.2.4)(react@19.2.4)
@@ -33515,6 +33887,44 @@ snapshots:
       - selfsigned
       - webpack
 
+  '@teambit/rspack.rspack-bundler@1.0.10(@babel/core@7.29.7)(react-dom@19.2.4)(react-refresh@0.14.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(webpack@5.109.2)':
+    dependencies:
+      '@babel/preset-env': 7.29.7(@babel/core@7.29.7)
+      '@babel/preset-react': 7.29.7(@babel/core@7.29.7)
+      '@mdx-js/loader': 3.1.1(webpack@5.109.2)
+      '@rspack/core': 2.1.7
+      '@rspack/dev-server': 2.1.0(@rspack/core@2.1.7)(selfsigned@5.5.0)
+      '@rspack/plugin-react-refresh': 2.0.2(@rspack/core@2.1.7)(react-refresh@0.14.2)
+      '@teambit/bit-error': 0.0.404
+      '@teambit/component-id': 1.2.4
+      '@teambit/mdx.modules.mdx-pre-loader': 0.0.1
+      '@teambit/mdx.modules.mdx-v3-options': 0.0.3(rollup@4.62.3)
+      '@teambit/react.babel.bit-react-transformer': 1.0.34(react-dom@19.2.4)(react@19.2.4)
+      '@teambit/rspack.modules.rspack-config-mutator': 1.0.23(react-refresh@0.14.2)(react@19.2.4)(selfsigned@5.5.0)(webpack@5.109.2)
+      babel-loader: 9.1.3(@babel/core@7.29.7)(webpack@5.109.2)
+      compression-webpack-plugin: 11.1.0(webpack@5.109.2)
+      lodash: 4.18.1
+      node-polyfill-webpack-plugin: 4.1.0(webpack@5.109.2)
+      p-map-series: 2.1.0
+      process: 0.11.10
+      rspack-manifest-plugin: 5.2.2(@rspack/core@2.1.7)
+      sass-loader: 13.3.3(sass-embedded@1.100.0)(sass@1.100.0)(webpack@5.109.2)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@module-federation/runtime-tools'
+      - '@swc/helpers'
+      - fibers
+      - node-sass
+      - react
+      - react-dom
+      - react-refresh
+      - rollup
+      - sass
+      - sass-embedded
+      - selfsigned
+      - supports-color
+      - webpack
+
   '@teambit/rspack.rspack-bundler@1.0.10(@babel/core@7.29.7)(react-dom@19.2.4)(react-refresh@0.14.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.98.0)(selfsigned@5.5.0)(webpack@5.109.2)':
     dependencies:
       '@babel/preset-env': 7.29.7(@babel/core@7.29.7)
@@ -33537,6 +33947,44 @@ snapshots:
       process: 0.11.10
       rspack-manifest-plugin: 5.2.2(@rspack/core@2.1.7)
       sass-loader: 13.3.3(sass-embedded@1.100.0)(sass@1.98.0)(webpack@5.109.2)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@module-federation/runtime-tools'
+      - '@swc/helpers'
+      - fibers
+      - node-sass
+      - react
+      - react-dom
+      - react-refresh
+      - rollup
+      - sass
+      - sass-embedded
+      - selfsigned
+      - supports-color
+      - webpack
+
+  '@teambit/rspack.rspack-bundler@1.0.10(@babel/core@7.29.7)(react-dom@19.2.4)(react-refresh@0.18.0)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(webpack@5.109.2)':
+    dependencies:
+      '@babel/preset-env': 7.29.7(@babel/core@7.29.7)
+      '@babel/preset-react': 7.29.7(@babel/core@7.29.7)
+      '@mdx-js/loader': 3.1.1(webpack@5.109.2)
+      '@rspack/core': 2.1.7
+      '@rspack/dev-server': 2.1.0(@rspack/core@2.1.7)(selfsigned@5.5.0)
+      '@rspack/plugin-react-refresh': 2.0.2(@rspack/core@2.1.7)(react-refresh@0.18.0)
+      '@teambit/bit-error': 0.0.404
+      '@teambit/component-id': 1.2.4
+      '@teambit/mdx.modules.mdx-pre-loader': 0.0.1
+      '@teambit/mdx.modules.mdx-v3-options': 0.0.3(rollup@4.62.3)
+      '@teambit/react.babel.bit-react-transformer': 1.0.34(react-dom@19.2.4)(react@19.2.4)
+      '@teambit/rspack.modules.rspack-config-mutator': 1.0.23(react-refresh@0.18.0)(react@19.2.4)(selfsigned@5.5.0)(webpack@5.109.2)
+      babel-loader: 9.1.3(@babel/core@7.29.7)(webpack@5.109.2)
+      compression-webpack-plugin: 11.1.0(webpack@5.109.2)
+      lodash: 4.18.1
+      node-polyfill-webpack-plugin: 4.1.0(webpack@5.109.2)
+      p-map-series: 2.1.0
+      process: 0.11.10
+      rspack-manifest-plugin: 5.2.2(@rspack/core@2.1.7)
+      sass-loader: 13.3.3(sass-embedded@1.100.0)(sass@1.100.0)(webpack@5.109.2)
     transitivePeerDependencies:
       - '@babel/core'
       - '@module-federation/runtime-tools'
@@ -33846,6 +34294,46 @@ snapshots:
       rspack-manifest-plugin: 5.2.2(@rspack/core@2.1.7)
       sass-embedded: 1.100.0
       sass-loader: 16.0.5(@rspack/core@2.1.7)(sass-embedded@1.100.0)(sass@1.98.0)(webpack@5.109.2)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@module-federation/runtime-tools'
+      - '@swc/helpers'
+      - eslint
+      - fibers
+      - node-sass
+      - react
+      - react-dom
+      - rollup
+      - sass
+      - selfsigned
+      - supports-color
+      - typescript
+      - vue-template-compiler
+      - webpack
+
+  '@teambit/rspack.rspack-dev-server@0.1.50(@babel/core@7.29.7)(eslint@10.8.0)(react-dom@19.2.4)(react@19.2.4)(rollup@4.62.3)(sass@1.100.0)(selfsigned@5.5.0)(typescript@6.0.3)(webpack@5.109.2)':
+    dependencies:
+      '@babel/preset-env': 7.29.7(@babel/core@7.29.7)
+      '@babel/preset-react': 7.29.7(@babel/core@7.29.7)
+      '@mdx-js/loader': 3.1.1(webpack@5.109.2)
+      '@rspack/core': 2.1.7
+      '@rspack/dev-server': 2.1.0(@rspack/core@2.1.7)(selfsigned@5.5.0)
+      '@rspack/plugin-react-refresh': 2.0.2(@rspack/core@2.1.7)(react-refresh@0.14.2)
+      '@teambit/component-id': 1.2.4
+      '@teambit/mdx.modules.mdx-pre-loader': 0.0.1
+      '@teambit/mdx.modules.mdx-v3-options': 0.0.3(rollup@4.62.3)
+      '@teambit/react.babel.bit-react-transformer': 1.0.34(react-dom@19.2.4)(react@19.2.4)
+      '@teambit/rspack.modules.rspack-config-mutator': 1.0.23(react-refresh@0.14.2)(react@19.2.4)(selfsigned@5.5.0)(webpack@5.109.2)
+      '@teambit/rspack.rspack-bundler': 1.0.10(@babel/core@7.29.7)(react-dom@19.2.4)(react-refresh@0.14.2)(react@19.2.4)(rollup@4.62.3)(sass-embedded@1.100.0)(sass@1.100.0)(selfsigned@5.5.0)(webpack@5.109.2)
+      babel-loader: 9.1.3(@babel/core@7.29.7)(webpack@5.109.2)
+      find-root: 1.1.0
+      node-polyfill-webpack-plugin: 4.1.0(webpack@5.109.2)
+      object-hash: 3.0.0
+      react-dev-utils: 12.0.1(eslint@10.8.0)(typescript@6.0.3)(webpack@5.109.2)
+      react-refresh: 0.14.2
+      rspack-manifest-plugin: 5.2.2(@rspack/core@2.1.7)
+      sass-embedded: 1.100.0
+      sass-loader: 16.0.5(@rspack/core@2.1.7)(sass-embedded@1.100.0)(sass@1.100.0)(webpack@5.109.2)
     transitivePeerDependencies:
       - '@babel/core'
       - '@module-federation/runtime-tools'
@@ -34586,7 +35074,7 @@ snapshots:
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 8.2.0(@types/node@22.13.14)(esbuild@0.28.1)(jiti@2.7.0)(less@4.8.1)(sass-embedded@1.100.0)(sass@1.100.0)(terser@5.49.0)(yaml@2.9.0)
+      vite: 8.2.0(@types/node@22.13.14)(esbuild@0.28.1)(jiti@2.7.0)(less@4.8.1)(sass-embedded@1.100.0)(sass@1.98.0)(terser@5.49.0)(yaml@2.9.0)
 
   '@vitest/mocker@4.1.10(vite@8.2.0)':
     dependencies:

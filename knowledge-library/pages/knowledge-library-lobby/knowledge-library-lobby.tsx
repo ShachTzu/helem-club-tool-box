@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from '@helemclub/design.content.card';
 import { useKnowledgePages } from '@helemclub/knowledge-library.hooks.use-knowledge-pages';
-import type { PlainKnowledgePage } from '@helemclub/knowledge-library.knowledge-library';
+import type { PlainKnowledgePage } from '@helemclub/knowledge-library.entities.knowledge-page';
 import styles from './knowledge-library-lobby.module.scss';
 
 export type KnowledgeLibraryLobbyProps = {

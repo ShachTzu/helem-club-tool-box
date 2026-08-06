@@ -348,6 +348,20 @@
         "onLanesOnly": true,
         "isAvailableOnCurrentLane": true
     },
+    "entities/knowledge-page": {
+        "name": "entities/knowledge-page",
+        "scope": "",
+        "version": "",
+        "defaultScope": "helemclub.knowledge-library",
+        "mainFile": "index.ts",
+        "rootDir": "knowledge-library/entities/knowledge-page",
+        "config": {
+            "bitdev.node/node-env@6.0.22": {},
+            "teambit.envs/envs": {
+                "env": "bitdev.node/node-env"
+            }
+        }
+    },
     "entities/label": {
         "name": "entities/label",
         "scope": "helemclub.knowledge-base",

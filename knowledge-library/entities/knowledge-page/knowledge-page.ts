@@ -1,6 +1,15 @@
 /**
- * plain, serializable shape of a knowledge-library page, returned by the
- * repository and served over GraphQL.
+ * plain, serializable shape of a knowledge-library page. deliberately kept
+ * as a plain type with no wrapper class (no instance methods are needed
+ * anywhere this is used) — see the design doc's ponytail notes.
+ *
+ * this type (and the options types below) live in their own dependency-free
+ * component rather than inside the aspect package: the aspect's browser
+ * runtime depends on the pages/admin components (to register routes), and
+ * those components need this type — keeping it in the aspect package would
+ * create a real circular dependency between the aspect and its own
+ * pages/admin components (confirmed via `bit deps circular`). mirrors
+ * knowledge-base/entities/media-record's role in that scope.
  */
 export type PlainKnowledgePage = {
   id: string;
@@ -17,7 +26,8 @@ export type PlainKnowledgePage = {
   image?: string;
   videoUrl?: string;
   /**
-   * only ever a value that has passed `validateEmbedHtml` — see embed-allowlist.ts.
+   * only ever a value that has passed `validateEmbedHtml` — see
+   * knowledge-library/knowledge-library/embed-allowlist.ts.
    */
   videoEmbedHtml?: string;
   publishDate: string;
