@@ -1,0 +1,27 @@
+---
+description: Admin queue for approving new community members.
+labels: ['admin', 'membership', 'rtl']
+---
+
+The approval queue for new community members. Everyone who registers to the site
+lands here, grouped by membership state:
+
+- **ממתינים לאישור** — completed onboarding, waiting for a decision.
+- **חברי קהילה** — approved members.
+- **טרם מילאו פרטים** — registered but never finished onboarding.
+- **נדחו** — declined, or had membership revoked.
+
+Opening a row reveals the applicant's onboarding answers, including the injury
+note and disability-recognition status. That is health data: the panel is admin
+only, and the server re-checks the admin role on every query and mutation — the
+route registration is navigation, not authorization.
+
+```tsx
+<ApproveMembers />
+```
+
+Pass `mockProfiles` / `mockCurrentUser` to render it without a backend.
+
+```tsx
+<ApproveMembers mockCurrentUser={admin} mockProfiles={MOCK_MEMBER_PROFILES} />
+```
