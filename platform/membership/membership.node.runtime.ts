@@ -149,6 +149,20 @@ export class MembershipNode {
   }
 
   /**
+   * whether an account is an approved community member.
+   *
+   * this is the cross-aspect authorization primitive: feature aspects that
+   * gate member-only actions (submitting a tool, and later commenting and
+   * rating) call it with the id of the user they already authenticated.
+   * returns false for every other state, including a member whose approval
+   * was revoked.
+   */
+  async isApprovedMember(userId: string): Promise<boolean> {
+    const profile = await this.profileRepository.getProfile(userId);
+    return profile?.status === 'approved';
+  }
+
+  /**
    * store the signed-in member's onboarding answers and put them in the
    * approval queue. the owner comes from the session, so this cannot be
    * pointed at another member's profile.

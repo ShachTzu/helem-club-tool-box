@@ -74,7 +74,7 @@ bit add platform/admin/approve-members --id admin/approve-members --scope helemc
 bit install
 bit compile
 bit check-types helemclub.platform/membership helemclub.platform/admin/approve-members
-bit test helemclub.platform/membership helemclub.platform/admin/approve-members helemclub.platform/hooks/use-onboarding helemclub.platform/ui/onboarding-wizard helemclub.platform/pages/onboarding-page
+bit test helemclub.platform/membership helemclub.platform/admin/approve-members helemclub.platform/hooks/use-onboarding helemclub.platform/ui/onboarding-wizard helemclub.platform/pages/onboarding-page helemclub.toolbox/toolbox
 ```
 
 ⚠️ לוודא שגרסת ה‑`helam-env` תואמת לשאר הקומפוננטות (`bit envs`) — פין שגוי שובר את
@@ -85,13 +85,21 @@ bit test helemclub.platform/membership helemclub.platform/admin/approve-members 
 
 ---
 
-## מה שנשאר להחלטה שלך
+## חברות מאושרת חוסמת הגשה לארגז הכלים — מחובר
 
-**האם חברות מאושרת חוסמת הגשה לארגז הכלים?**
-כרגע **לא** — `/toolbox/submit` עדיין דורש רק התחברות, כמו היום. לא שיניתי את זה
-כי משתתפי האקתון 1 כבר בזרימה, ונעילה פתאומית תחסום אותם באמצע.
-זה מתג של שורה אחת (`useOnboarding().isMember` כבר קיים ומחזיר את התשובה).
-תגידי מילה ואני מחבר.
+**בשרת (זה מה שאוכף):** `submitToolboxApp` ו‑`createToolboxUploadSignature` עברו
+מ‑`requireUser` ל‑`requireMember` — חשבון מחובר שאינו חבר מאושר מקבל `AccessDenied`.
+מודרטורים ואדמינים עוברים בלי פרופיל מאושר, אחרת הצוות נועל את עצמו החוצה מהכלים שלו.
+
+**בדפדפן (זו נימוס):** `/toolbox/submit` מציג "ממתין לאישור" או "רגע לפני שמגישים" עם
+קישור לאונבורדינג, במקום לתת למלא טופס שלם ולסרב בסוף.
+
+**טיוטות נשארו פתוחות** (`saveToolboxDraft`) — זה מידע פרטי של החבר עצמו, בלי השפעה
+ציבורית, ומי שמאושר באמצע התהליך לא מאבד את מה שכתב.
+
+3 בדיקות חדשות מכסות את זה: לא‑חבר נחסם, מודרטור עובר, חבר מאושר מגיש כרגיל.
+
+## מה שנשאר להחלטה שלך
 
 **שאלות 10‑11 (מקצוע, עולמות תוכן)** — לא נכללו, ביקשת 1‑9 ו‑12. שדה של דקה להוסיף.
 
