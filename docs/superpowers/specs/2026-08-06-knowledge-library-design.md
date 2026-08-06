@@ -33,7 +33,7 @@ This is requested directly by the organization (עמותה), not a speculative f
 
 **Hierarchy: adjacency list (`parentId`)** rather than a nested-set/materialized-path structure. Simplest correct representation of an unlimited-depth tree; a cached `ancestorIds: string[]` (recomputed on save) avoids recursive queries for breadcrumbs/nav without the complexity of a full materialized-path scheme.
 
-**Access control: new dedicated permission flag** (`canManageKnowledgeLibrary: boolean` on the user record) rather than reusing the existing global `writer` role. Rejected reusing `writer` because it also grants blog-authoring rights — the user explicitly wants access scoped only to this feature, not bundled with unrelated permissions.
+**Access control: a small editor-allowlist owned inside `knowledge-library` itself** (a `KnowledgeLibraryEditor` collection storing just granted user IDs) rather than a `canManageKnowledgeLibrary` flag on the shared `User` entity, and rather than reusing the existing global `writer` role. Rejected reusing `writer` because it also grants blog-authoring rights. Rejected a flag on `User` because `platform/entities/user` and `platform/helam-platform/user.model.ts` are hopeAI's exclusive-ownership files (per the established auth-hardening ownership split) — this keeps the new feature's authorization data entirely inside its own scope, checked by user ID against the existing session (`id`/`role` already flow through the GraphQL context today), with zero edits to platform/auth files and no cross-team coordination needed for this piece.
 
 ## Data model — `KnowledgePage`
 
@@ -75,7 +75,7 @@ The original ask included "paste raw HTML to embed media." This is narrowed, wit
 
 ## Admin capabilities
 
-Two entry points under a new admin section (`admin/manage-knowledge-pages`), gated by `canManageKnowledgeLibrary` (or existing `moderator`/`admin` roles):
+Two entry points under a new admin section (`admin/manage-knowledge-pages`), gated by membership in the `KnowledgeLibraryEditor` allowlist (or existing `moderator`/`admin` roles). An `admin`-only screen manages the allowlist (add/remove a user by ID) within `knowledge-library`'s own admin section — no changes to the platform's shared user-management screen.
 
 ### 1. Manual form
 Title, date (defaults today, editable/backdatable), body (plain textarea), parent-page picker (searchable dropdown of existing pages, or "none" = top-level), domain tag selector, image (upload or URL), video (URL or restricted embed code), publish toggle.
