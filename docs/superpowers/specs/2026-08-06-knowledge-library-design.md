@@ -29,7 +29,7 @@ This is requested directly by the organization (עמותה), not a speculative f
 
 **Rejected: extend `knowledge-base`** to add a text body + `parentId` to its existing `MediaRecord`/`Label` entities. Rejected because `knowledge-base` is a fully-built, already-shipped video/audio catalog with its own admin panels in active use; bolting an unrelated content shape (hierarchical text pages) onto it risks destabilizing working code for no shared benefit — the two content types don't actually share fields beyond "has a title."
 
-**Data model borrowed from `blog`'s `Post` entity** (title, body, domains, publishDate, isStaffAuthor) rather than invented fresh — it's the closest existing shape in the codebase to what's needed here, closer even than `knowledge-base`.
+**Data model borrowed from `blog`'s `Post` entity** (title, body, domains, publishDate, isStaffAuthor) rather than invented fresh — it's the closest existing shape in the codebase to what's needed here, closer even than `knowledge-base`. Not reusing `Post` directly, though: it carries a moderation pipeline (`status: draft|pending|published|rejected`), a `members_only` visibility gate, an `excerpt`, and `embeddedApps` (toolbox-app references) — none of which apply to a chapter tree, and bolting tree semantics (`parentId`/`ancestorIds`) onto `blog`'s own entity would drag hierarchy concepts into a flat blog feed that never needed them. A new entity with the same shape, minus the blog-specific baggage, is cleaner than repurposing `Post`.
 
 **Hierarchy: adjacency list (`parentId`)** rather than a nested-set/materialized-path structure. Simplest correct representation of an unlimited-depth tree; a cached `ancestorIds: string[]` (recomputed on save) avoids recursive queries for breadcrumbs/nav without the complexity of a full materialized-path scheme.
 
@@ -91,7 +91,7 @@ Per row:
 - `Video URL` → `videoUrl` (used if no valid embed HTML)
 - `Date` → `publishDate`
 - `Current page URL` → stored nowhere / ignored for routing (legacy site reference only — the new site generates its own slugs)
-- `Parent page title` → resolved by exact-title match against existing pages. If no match exists, an empty series/landing page is auto-created with that title, anchored under the batch's chosen top-anchor parent.
+- `Parent page title` → resolved by trimmed, whitespace-collapsed, case-insensitive title match against existing pages (not raw exact-string match — real CSV exports carry stray whitespace/quoting noise, as the sample file does). If no match exists, an empty series/landing page is auto-created with that title, anchored under the batch's chosen top-anchor parent. The import summary lists which parent titles matched an existing page vs. were newly created, so a near-miss (typo producing an unwanted duplicate) is visible immediately rather than silent.
 
 **First real content batch** (already scoped): admin manually creates "עזרה ראשונה" as a top-level landing page once; the sample CSV (`מה זה פוסט טראומה והאם יש לי כזו?`, 6 chapters) is imported with "עזרה ראשונה" selected as the top-anchor, auto-creating the series page as its child and the 6 chapters as the series' children.
 
@@ -105,6 +105,10 @@ Per row:
 ## Authorship display
 
 No real user record for "הלם קלאב." Wherever authorship is shown (chapter pages, series listings), render the fixed `authorName` + a fixed avatar image asset (the existing brand illustration — night-mountain silhouettes carrying a boulder, `Big plate HC BG image.png`, cropped/sized for avatar use) as a static constant, not a database-backed profile.
+
+## Which system does content go in?
+
+Three content systems now exist for a non-technical admin: `blog` (single dated posts/announcements), `knowledge-base` (single video/audio recordings), `knowledge-library` (hierarchical text series). The admin dashboard's "content" section groups all three "create content" entry points together with a one-line rule of thumb next to each: "פוסט בודד ← בלוג · הקלטת וידאו/שמע בודדת ← מאגר הידע · סדרת פרקים עם טקסט ← ספריית הידע." This isn't a new system, just shared placement + copy so the choice isn't left implicit.
 
 ## Testing
 
