@@ -173,11 +173,22 @@ export function createKnowledgeLibraryGqlSchema(knowledgeLibrary: KnowledgeLibra
     `,
     resolvers: {
       Query: {
-        listKnowledgePages: async (_req: unknown, { options }: { options?: ListPagesOptions }) => {
-          return knowledgeLibrary.listPages(options);
+        listKnowledgePages: async (
+          _req: unknown,
+          { options }: { options?: ListPagesOptions },
+          context: ResolverContext
+        ) => {
+          // isPublished:false must be enforced here, from the session — a
+          // client-side-only filter would still let anyone read a hidden
+          // page's full content straight from the public API.
+          const includeUnpublished = await canManage(context, knowledgeLibrary);
+          return knowledgeLibrary.listPages(options, includeUnpublished);
         },
-        getKnowledgePage: async (_req: unknown, { idOrSlug }: { idOrSlug: string }) => {
-          return knowledgeLibrary.getPage(idOrSlug);
+        getKnowledgePage: async (_req: unknown, { idOrSlug }: { idOrSlug: string }, context: ResolverContext) => {
+          const page = await knowledgeLibrary.getPage(idOrSlug);
+          if (!page) return null;
+          if (!page.isPublished && !(await canManage(context, knowledgeLibrary))) return null;
+          return page;
         },
         listKnowledgeLibraryEditors: async (_req: unknown, _args: unknown, context: ResolverContext) => {
           assertIsAdmin(context);

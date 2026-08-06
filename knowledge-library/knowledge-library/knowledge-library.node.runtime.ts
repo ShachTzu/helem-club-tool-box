@@ -40,8 +40,8 @@ export class KnowledgeLibraryNode {
    * list and filter knowledge-library pages by parent, coping domains and
    * free text.
    */
-  async listPages(options?: ListPagesOptions): Promise<PlainKnowledgePage[]> {
-    return this.knowledgePageRepository.listPages(options);
+  async listPages(options?: ListPagesOptions, includeUnpublished = false): Promise<PlainKnowledgePage[]> {
+    return this.knowledgePageRepository.listPages(options, includeUnpublished);
   }
 
   /**

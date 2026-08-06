@@ -152,6 +152,34 @@ it('updatePage re-parenting cascades ancestorIds to every descendant, not just t
   ]);
 });
 
+it('listPages excludes unpublished pages by default (public read path)', async () => {
+  let capturedFilter: Record<string, unknown> = {};
+  const model = {
+    find: (filter: Record<string, unknown>) => {
+      capturedFilter = filter;
+      return { sort: () => ({ exec: () => Promise.resolve([]) }) };
+    },
+  };
+  const repo = new KnowledgePageRepository(model as never);
+
+  await repo.listPages();
+  expect(capturedFilter.isPublished).toBe(true);
+});
+
+it('listPages includes unpublished pages only when explicitly told to (admin read path)', async () => {
+  let capturedFilter: Record<string, unknown> = {};
+  const model = {
+    find: (filter: Record<string, unknown>) => {
+      capturedFilter = filter;
+      return { sort: () => ({ exec: () => Promise.resolve([]) }) };
+    },
+  };
+  const repo = new KnowledgePageRepository(model as never);
+
+  await repo.listPages(undefined, true);
+  expect(capturedFilter.isPublished).toBeUndefined();
+});
+
 it('findByNormalizedTitle looks up by the normalized form', async () => {
   let queried: Record<string, unknown> = {};
   const model = {

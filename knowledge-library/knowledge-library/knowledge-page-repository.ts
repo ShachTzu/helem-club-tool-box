@@ -34,9 +34,19 @@ export class KnowledgePageRepository {
    * free text, ordered by publish date (newest first) — publishDate is the
    * one field that drives chronological order everywhere, including for a
    * backdated page.
+   *
+   * `includeUnpublished` must be derived from the caller's session by the
+   * resolver (canManage), never taken from client input — this is the
+   * actual enforcement of the "hide without deleting" flag. Without it, a
+   * hidden page's full content is still readable by anyone querying the
+   * public API directly, regardless of what the UI chooses to render.
    */
-  async listPages(options?: ListPagesOptions): Promise<KnowledgePageModel[]> {
+  async listPages(options?: ListPagesOptions, includeUnpublished = false): Promise<KnowledgePageModel[]> {
     const filter: Record<string, unknown> = {};
+
+    if (!includeUnpublished) {
+      filter.isPublished = true;
+    }
 
     if (options?.parentId !== undefined) {
       filter.parentId = options.parentId;
@@ -224,6 +234,10 @@ export class KnowledgePageRepository {
     const children = await this.knowledgePageModel.find({ parentId: parentPageId });
     const childAncestorIds = [...parentAncestorIds, parentPageId];
     for (const child of children) {
+      // guards against infinite recursion if the tree ever contained a cycle
+      // despite assertNotCyclicParent (e.g. a manual DB edit) — not reachable
+      // through this API today, but the cost of the check is one .includes().
+      if (childAncestorIds.includes(child.id)) continue;
       // eslint-disable-next-line no-await-in-loop
       await this.knowledgePageModel.updateOne({ id: child.id }, { $set: { ancestorIds: childAncestorIds } });
       // eslint-disable-next-line no-await-in-loop
