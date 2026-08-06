@@ -8,6 +8,8 @@ import { KnowledgePageRepository } from './knowledge-page-repository.js';
 import { KnowledgeLibraryEditorModel } from './knowledge-library-editor.model.js';
 import { KnowledgeLibraryEditorRepository } from './knowledge-library-editor-repository.js';
 import { parseCloudinaryUrl, signCloudinaryUpload, type CloudinaryConfig } from './cloudinary-signature.js';
+import { KnowledgeLibraryImporter } from './knowledge-library-importer.js';
+import type { ImportRow, ImportSummary } from './knowledge-library-importer.js';
 import type {
   PlainKnowledgePage,
   ListPagesOptions,
@@ -30,6 +32,7 @@ export class KnowledgeLibraryNode {
     private helamPlatform: HelamPlatformNode,
     private knowledgePageRepository: KnowledgePageRepository,
     private editorRepository: KnowledgeLibraryEditorRepository,
+    private importer: KnowledgeLibraryImporter,
     private cloudinaryConfig: CloudinaryConfig | undefined
   ) {}
 
@@ -76,6 +79,19 @@ export class KnowledgeLibraryNode {
    */
   async findByNormalizedTitle(title: string): Promise<PlainKnowledgePage | null> {
     return this.knowledgePageRepository.findByNormalizedTitle(title);
+  }
+
+  /**
+   * import a CSV-derived batch of rows as pages, anchored under an optional
+   * top-level parent for the whole batch. see KnowledgeLibraryImporter for
+   * the row-mapping and parent-resolution rules.
+   */
+  async importPages(
+    rows: ImportRow[],
+    imagesByFilename: Record<string, string>,
+    topAnchorParentId: string | null
+  ): Promise<ImportSummary> {
+    return this.importer.importRows(rows, imagesByFilename, topAnchorParentId);
   }
 
   /**
@@ -129,6 +145,8 @@ export class KnowledgeLibraryNode {
     const editorModel = getModelForClass(KnowledgeLibraryEditorModel);
     const editorRepository = new KnowledgeLibraryEditorRepository(editorModel);
 
+    const importer = new KnowledgeLibraryImporter(knowledgePageRepository);
+
     // image upload is optional at boot — browsing the library doesn't need
     // it, so a missing/malformed CLOUDINARY_URL only fails the
     // upload-signature call itself, not the whole aspect.
@@ -147,6 +165,7 @@ export class KnowledgeLibraryNode {
       helamPlatform,
       knowledgePageRepository,
       editorRepository,
+      importer,
       cloudinaryConfig
     );
 

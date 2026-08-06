@@ -3,6 +3,7 @@ import { gql } from 'graphql-tag';
 import { AccessDenied } from '@bitdev/symphony.exceptions.access-denied';
 import type { KnowledgeLibraryNode } from './knowledge-library.node.runtime.js';
 import type { ListPagesOptions, CreatePageOptions, UpdatePageOptions } from './knowledge-page-options.js';
+import type { ImportRow } from './knowledge-library-importer.js';
 
 type SessionUser = {
   id: string;
@@ -81,6 +82,34 @@ export function createKnowledgeLibraryGqlSchema(knowledgeLibrary: KnowledgeLibra
         folder: String!
       }
 
+      input KnowledgeLibraryImportRow {
+        text: String
+        imageFilename: String
+        videoHtmlEmbed: String
+        videoUrl: String
+        date: String
+        currentPageTitle: String!
+        currentPageUrl: String
+        parentPageTitle: String
+      }
+
+      input KnowledgeLibraryImageMapping {
+        filename: String!
+        url: String!
+      }
+
+      type KnowledgeLibraryImportRejection {
+        currentPageTitle: String!
+        reason: String!
+      }
+
+      type KnowledgeLibraryImportSummary {
+        createdPageIds: [String]
+        matchedExistingParents: [String]
+        createdParents: [String]
+        rejected: [KnowledgeLibraryImportRejection]
+      }
+
       input KnowledgeLibraryListPagesOptions {
         parentId: String
         domainIds: [String!]
@@ -126,6 +155,11 @@ export function createKnowledgeLibraryGqlSchema(knowledgeLibrary: KnowledgeLibra
         grantKnowledgeLibraryEditor(userId: String!): Boolean
         revokeKnowledgeLibraryEditor(userId: String!): Boolean
         createKnowledgeLibraryUploadSignature: KnowledgeLibraryUploadSignature
+        importKnowledgeLibraryPages(
+          rows: [KnowledgeLibraryImportRow!]!
+          images: [KnowledgeLibraryImageMapping!]
+          topAnchorParentId: String
+        ): KnowledgeLibraryImportSummary
       }
     `,
     resolvers: {
@@ -174,6 +208,19 @@ export function createKnowledgeLibraryGqlSchema(knowledgeLibrary: KnowledgeLibra
         createKnowledgeLibraryUploadSignature: async (_req: unknown, _args: unknown, context: ResolverContext) => {
           await assertCanManage(context, knowledgeLibrary);
           return knowledgeLibrary.createUploadSignature(context.session!.user!.id);
+        },
+        importKnowledgeLibraryPages: async (
+          _req: unknown,
+          {
+            rows,
+            images,
+            topAnchorParentId,
+          }: { rows: ImportRow[]; images?: { filename: string; url: string }[]; topAnchorParentId?: string },
+          context: ResolverContext
+        ) => {
+          await assertCanManage(context, knowledgeLibrary);
+          const imagesByFilename = Object.fromEntries((images || []).map((image) => [image.filename, image.url]));
+          return knowledgeLibrary.importPages(rows, imagesByFilename, topAnchorParentId || null);
         },
       },
     },
