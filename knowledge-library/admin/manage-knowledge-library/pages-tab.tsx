@@ -56,6 +56,7 @@ export function PagesTab() {
   const [formValues, setFormValues] = useState<FormValues>(emptyForm());
   const [formError, setFormError] = useState<string | undefined>(undefined);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | undefined>(undefined);
+  const [deleteError, setDeleteError] = useState<string | undefined>(undefined);
 
   const pageTitleById = useMemo(() => {
     const map: Record<string, string> = {};
@@ -69,7 +70,11 @@ export function PagesTab() {
     () => [
       { value: '', label: 'ללא (עמוד עליון)' },
       ...pages
-        .filter((page) => page.id !== editingId)
+        // exclude the page itself and any of its own descendants — picking
+        // either would always be rejected server-side (cyclic parent) since
+        // the repository's assertNotCyclicParent blocks it; filtering here
+        // means an editor never hits that error in the first place.
+        .filter((page) => page.id !== editingId && !(editingId && page.ancestorIds.includes(editingId)))
         .map((page) => ({ value: page.id, label: page.title })),
     ],
     [pages, editingId]
@@ -105,7 +110,14 @@ export function PagesTab() {
             <Button variant="secondary" size="sm" onClick={() => openEditForm(String(row.id))}>
               עריכה
             </Button>
-            <Button variant="danger" size="sm" onClick={() => setPendingDeleteId(String(row.id))}>
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={() => {
+                setDeleteError(undefined);
+                setPendingDeleteId(String(row.id));
+              }}
+            >
               מחיקה
             </Button>
           </div>
@@ -202,9 +214,13 @@ export function PagesTab() {
 
   const handleConfirmDelete = async () => {
     if (!pendingDeleteId) return;
-    await deletePage(pendingDeleteId);
-    setPendingDeleteId(undefined);
-    refetch();
+    try {
+      await deletePage(pendingDeleteId);
+      setPendingDeleteId(undefined);
+      refetch();
+    } catch (err) {
+      setDeleteError((err as Error).message || 'אירעה שגיאה במחיקת העמוד.');
+    }
   };
 
   return (
@@ -347,8 +363,15 @@ export function PagesTab() {
             <p className={styles.subtitle}>
               פעולה זו תמחק את העמוד לצמיתות. עמודי-ילד לא יימחקו — יישארו ללא עמוד אב. להמשיך?
             </p>
+            {deleteError && <div className={styles.formError}>{deleteError}</div>}
             <div className={styles.formActions}>
-              <Button variant="ghost" onClick={() => setPendingDeleteId(undefined)}>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setDeleteError(undefined);
+                  setPendingDeleteId(undefined);
+                }}
+              >
                 ביטול
               </Button>
               <Button variant="danger" onClick={() => handleConfirmDelete()}>
