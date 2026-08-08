@@ -269,7 +269,6 @@
   color: var(--colors-text-secondary);
 }
 
-.textInput,
 .textArea {
   box-sizing: border-box;
   width: 100%;
@@ -280,14 +279,10 @@
   border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
   border-radius: var(--borders-radius-medium);
   padding: 10px 14px;
-}
-
-.textArea {
   resize: vertical;
   min-height: 90px;
 }
 
-.textInput:focus,
 .textArea:focus {
   outline: none;
   border-color: var(--colors-accent-default);

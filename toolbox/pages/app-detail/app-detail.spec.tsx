@@ -116,3 +116,51 @@ it('should render the credits section with the developer name', () => {
   const metaValue = container.querySelector(`.${styles.metaValue}`);
   expect(metaValue?.textContent).toBe(app.developerName);
 });
+
+/**
+ * rating requires a signed-in member (rateToolboxApp enforces this server-side
+ * too) — a signed-out visitor sees a sign-in prompt instead of the review
+ * form, and a signed-in member no longer gets to type a free-text display
+ * name (it comes from their session on the server).
+ */
+
+it('should show a sign-in prompt instead of the review form for a signed-out visitor', () => {
+  const app = mockAppDetailData();
+
+  const { container, getByText } = render(
+    <MockProvider>
+      <AppDetail app={app} reviews={[]} mockUser={null} />
+    </MockProvider>
+  );
+
+  const writeReviewButton = container.querySelector(`.${styles.writeReviewButton}`) as HTMLButtonElement;
+  fireEvent.click(writeReviewButton);
+
+  expect(container.querySelector(`.${styles.reviewForm}`)).toBeTruthy();
+  expect(container.querySelector(`.${styles.starPicker}`)).toBeFalsy();
+  expect(getByText(`צריך להיות מחוברים כדי לכתוב ביקורת.`)).toBeTruthy();
+});
+
+it('should render the review form (without a display-name field) for a signed-in member', () => {
+  const app = mockAppDetailData();
+  const signedInUser = {
+    id: `member-1`,
+    email: `member@helemclub.org`,
+    displayName: `שם דו`,
+    role: `member` as const,
+    provider: `email` as const,
+    createdAt: new Date(`2024-03-05T09:00:00.000Z`).toISOString(),
+  };
+
+  const { container } = render(
+    <MockProvider>
+      <AppDetail app={app} reviews={[]} mockUser={signedInUser} />
+    </MockProvider>
+  );
+
+  const writeReviewButton = container.querySelector(`.${styles.writeReviewButton}`) as HTMLButtonElement;
+  fireEvent.click(writeReviewButton);
+
+  expect(container.querySelector(`.${styles.starPicker}`)).toBeTruthy();
+  expect(container.querySelector(`input[type="text"]`)).toBeFalsy();
+});

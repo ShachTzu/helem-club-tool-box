@@ -84,3 +84,24 @@ it(`should disable the approve button while processing a review`, async () => {
     expect(approveButton.disabled).toBe(false);
   });
 });
+
+it(`should render a "changes requested" action alongside approve/reject`, () => {
+  const { container } = render(
+    <MockProvider>
+      <ReviewSubmissions mockUser={moderatorUser} mockPendingData={mockPendingAppsData()} />
+    </MockProvider>
+  );
+  const labels = Array.from(container.querySelectorAll(`button`)).map((button) => button.textContent);
+  expect(labels).toContain(`דורש תיקון`);
+});
+
+it(`should let a moderator type a note that will accompany the decision`, () => {
+  const { getAllByPlaceholderText } = render(
+    <MockProvider>
+      <ReviewSubmissions mockUser={moderatorUser} mockPendingData={mockPendingAppsData()} />
+    </MockProvider>
+  );
+  const noteInput = getAllByPlaceholderText(/הערה אופציונלית/)[0] as HTMLTextAreaElement;
+  fireEvent.change(noteInput, { target: { value: `תקנו את האייקון` } });
+  expect(noteInput.value).toBe(`תקנו את האייקון`);
+});

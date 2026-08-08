@@ -135,3 +135,65 @@ it('createApp keeps an emoji icon as-is', async () => {
   await repo.createApp({ ...input, icon: '🌙' }, 'user-1');
   expect(created.icon).toBe('🌙');
 });
+
+it('applyModerationDecision sets the status and appends an entry to the append-only history', async () => {
+  let filter: Record<string, unknown> = {};
+  let update: Record<string, unknown> = {};
+  const model = {
+    findOneAndUpdate: (f: Record<string, unknown>, u: Record<string, unknown>) => {
+      filter = f;
+      update = u;
+      return Promise.resolve(fakeDoc());
+    },
+  };
+  const repo = new AppRepository(model as never);
+
+  await repo.applyModerationDecision(
+    'a1',
+    'changes_requested',
+    'changes_requested',
+    { id: 'mod-1', name: 'Dana' },
+    'fix the icon'
+  );
+
+  expect(filter).toEqual({ id: 'a1', status: 'pending' });
+  expect(update.$set).toEqual({ status: 'changes_requested' });
+  const pushed = (update.$push as { moderationHistory: Record<string, unknown> }).moderationHistory;
+  expect(pushed.action).toBe('changes_requested');
+  expect(pushed.note).toBe('fix the icon');
+  expect(pushed.moderatorId).toBe('mod-1');
+  expect(pushed.moderatorName).toBe('Dana');
+});
+
+it('applyModerationDecision only matches an app that is currently pending (no re-deciding an already-approved app)', async () => {
+  let filter: Record<string, unknown> = {};
+  const model = {
+    findOneAndUpdate: (f: Record<string, unknown>) => {
+      filter = f;
+      return Promise.resolve(null);
+    },
+  };
+  const repo = new AppRepository(model as never);
+
+  const result = await repo.applyModerationDecision('a1', 'rejected', 'reject', { id: 'mod-1', name: 'Dana' });
+
+  expect(filter.status).toBe('pending');
+  expect(result).toBeNull();
+});
+
+it('applyModerationDecision defaults the note to an empty string when omitted (never overwrites prior history entries)', async () => {
+  let update: Record<string, unknown> = {};
+  const model = {
+    findOneAndUpdate: (_f: Record<string, unknown>, u: Record<string, unknown>) => {
+      update = u;
+      return Promise.resolve(fakeDoc());
+    },
+  };
+  const repo = new AppRepository(model as never);
+
+  await repo.applyModerationDecision('a1', 'approved', 'approve', { id: 'mod-1', name: 'Dana' });
+
+  const pushed = (update.$push as { moderationHistory: Record<string, unknown> }).moderationHistory;
+  expect(pushed.note).toBe('');
+  expect((update.$set as { status: string }).status).toBe('approved');
+});

@@ -1,7 +1,7 @@
 import type { ReturnModelType } from '@typegoose/typegoose';
 import { v4 as uuidv4 } from 'uuid';
 import { AppModel } from './app.model.js';
-import type { ListToolboxAppsOptions, SubmitAppInput } from './toolbox-options.js';
+import type { ListToolboxAppsOptions, SubmitAppInput, ReviewAction } from './toolbox-options.js';
 
 // bounds how many screenshots a single submission can carry, regardless of
 // what a client sends — independent of the upload signature's own limits.
@@ -207,13 +207,36 @@ export class AppRepository {
   }
 
   /**
-   * update an app's status after a moderation decision. approving also makes
-   * the app public (featured stays as-is).
+   * apply a moderation decision to an app: flips the status and appends an
+   * entry to the append-only moderation history in the same atomic update.
+   * approving also makes the app public (featured stays as-is); a prior
+   * decision is never overwritten, only added to. only matches an app
+   * currently pending review — an already-decided app (approved, rejected,
+   * or sent back for changes) can't be silently re-decided by pointing a
+   * second call at its id; a moderator revisits it only after the submitter
+   * resubmits and it's pending again.
    */
-  async updateAppStatus(appId: string, status: string): Promise<AppModel | null> {
+  async applyModerationDecision(
+    appId: string,
+    status: string,
+    action: ReviewAction,
+    moderator: { id: string; name: string },
+    note?: string
+  ): Promise<AppModel | null> {
     const updated = await this.appModel.findOneAndUpdate(
-      { id: appId },
-      { $set: { status } },
+      { id: appId, status: 'pending' },
+      {
+        $set: { status },
+        $push: {
+          moderationHistory: {
+            action,
+            note: note || '',
+            moderatorId: moderator.id,
+            moderatorName: moderator.name,
+            createdAt: new Date(),
+          },
+        },
+      },
       { new: true }
     );
     return updated ? updated.toObject() : null;

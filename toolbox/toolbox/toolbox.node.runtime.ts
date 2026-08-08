@@ -23,6 +23,7 @@ import type {
   ListToolboxAppsOptions,
   SubmitAppInput,
   ReviewAppInput,
+  ReviewAction,
   IncrementClickInput,
   RateAppInput,
 } from './toolbox-options.js';
@@ -55,6 +56,38 @@ function escapeHtml(value: string): string {
 
 function buildSubmissionConfirmationText(appName: string): string {
   return `היי, קיבלנו את ההגשה שלך "${escapeHtml(appName)}" לארגז הכלים של הלם קלאב. הכלי ממתין כעת לבדיקת צוות המנחים, ותקבלו עדכון נוסף ברגע שיאושר. תודה שתרמת לקהילה!`;
+}
+
+/**
+ * maps a moderation action to the status it applies to the app.
+ */
+const REVIEW_ACTION_TO_STATUS: Record<ReviewAction, string> = {
+  approve: 'approved',
+  reject: 'rejected',
+  changes_requested: 'changes_requested',
+};
+
+function buildModerationDecisionSubject(action: ReviewAction, appName: string): string {
+  if (action === 'approve') return `הכלי "${appName}" אושר ופורסם! — הלם קלאב`;
+  if (action === 'changes_requested') return `נדרשים תיקונים בהגשה "${appName}" — הלם קלאב`;
+  return `עדכון לגבי ההגשה "${appName}" — הלם קלאב`;
+}
+
+/**
+ * note and appName are both free text the moderator/submitter chose — escape
+ * both before interpolating into the email HTML body (see escapeHtml above).
+ */
+function buildModerationDecisionText(action: ReviewAction, appName: string, note?: string): string {
+  const safeName = escapeHtml(appName);
+  const noteSuffix = note ? ` הערת הצוות: ${escapeHtml(note)}` : '';
+
+  if (action === 'approve') {
+    return `היי, יש חדשות טובות: הכלי שלך "${safeName}" אושר ופורסם בארגז הכלים של הלם קלאב!${noteSuffix} תודה שתרמת לקהילה.`;
+  }
+  if (action === 'changes_requested') {
+    return `היי, צוות המנחים ביקש כמה תיקונים בהגשה "${safeName}" לפני שהיא תפורסם.${noteSuffix} אפשר לערוך ולהגיש שוב מ"ההגשות שלי".`;
+  }
+  return `היי, ההגשה "${safeName}" לא אושרה לפרסום בארגז הכלים הפעם.${noteSuffix} תודה שניסית לתרום לקהילה.`;
 }
 
 /**
@@ -249,6 +282,26 @@ export class ToolboxNode {
   }
 
   /**
+   * best-effort email telling the submitter about a moderation decision
+   * (approved / rejected / changes requested), including the moderator's note
+   * when one was left. a mail failure must never fail the review mutation
+   * itself — the decision is already saved by the time this runs.
+   */
+  private async sendModerationDecisionEmail(app: AppModel, action: ReviewAction, note?: string): Promise<void> {
+    if (!app.contactEmail) return;
+    try {
+      await this.helamPlatform.sendEmail(
+        app.contactEmail,
+        buildModerationDecisionSubject(action, app.name),
+        buildModerationDecisionText(action, app.name, note)
+      );
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn(`[toolbox] moderation decision email failed for app ${app.id}: ${(err as Error).message}`);
+    }
+  }
+
+  /**
    * create or update the current member's own draft. autosaved as they fill the
    * form; returns the owner's own record (they may see their own contact email).
    */
@@ -295,14 +348,24 @@ export class ToolboxNode {
   }
 
   /**
-   * apply a moderation decision to a pending app. approving makes it public.
-   * moderators and admins only.
+   * apply a moderation decision to a pending app: approve (public), reject, or
+   * send back for changes (editable, resumable by the submitter). appends to
+   * the app's append-only moderation history and best-effort emails the
+   * submitter. moderators and admins only.
    */
   async reviewToolboxApp(input: ReviewAppInput, context: ResolverContext): Promise<PlainApp | null> {
-    await this.requireModerator(context);
-    const status = input.action === 'approve' ? 'approved' : 'rejected';
-    const updated = await this.appRepository.updateAppStatus(input.appId, status);
+    const moderator = await this.requireModerator(context);
+    const status = REVIEW_ACTION_TO_STATUS[input.action];
+    if (!status) throw new Error(`Unknown moderation action: ${input.action}`);
+    const updated = await this.appRepository.applyModerationDecision(
+      input.appId,
+      status,
+      input.action,
+      { id: moderator.id, name: moderator.displayName },
+      input.note
+    );
     if (!updated) throw new NotFound();
+    await this.sendModerationDecisionEmail(updated, input.action, input.note);
     return this.toPlainApp(updated);
   }
 
@@ -316,16 +379,20 @@ export class ToolboxNode {
 
   /**
    * create a review for an app and recompute the app's aggregate rating
-   * metrics (average, count and histogram).
+   * metrics (average, count and histogram). requires a signed-in member — the
+   * reviewer's display name and id come from their session, never from
+   * client input, so a caller can't rate as anyone else.
    */
-  async rateToolboxApp(input: RateAppInput): Promise<PlainAppReview> {
+  async rateToolboxApp(input: RateAppInput, context: ResolverContext): Promise<PlainAppReview> {
+    const user = await this.requireUser(context);
     const boundedStars = Math.max(1, Math.min(5, Math.round(input.stars)));
 
     const review = await this.appReviewRepository.createReview(
       input.appId,
       boundedStars,
       input.comment,
-      input.displayName
+      user.displayName,
+      user.id
     );
 
     const allReviews = await this.appReviewRepository.listReviewsByAppId(input.appId);

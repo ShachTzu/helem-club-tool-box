@@ -9,6 +9,8 @@ import { EngagementBar } from '@helemclub/engagement.ui.engagement-bar';
 import { RatingSummary } from '@helemclub/toolbox.ui.rating-summary';
 import { App, type PlainApp } from '@helemclub/toolbox.entities.app';
 import type { PlainAppReview } from '@helemclub/toolbox.entities.app-review';
+import type { PlainUser } from '@helemclub/platform.entities.user';
+import { useAuth } from '@helemclub/platform.hooks.use-auth';
 import { useApps } from '@helemclub/toolbox.hooks.use-apps';
 import { useAppReviews } from '@helemclub/toolbox.hooks.use-app-reviews';
 import type { AppDetailDomain } from './app-detail-domain-type.js';
@@ -69,6 +71,17 @@ export type AppDetailProps = {
   domainLinkBase?: string;
 
   /**
+   * provide mock data for the current user, bypassing the auth query. pass
+   * null to simulate a signed-out state. useful for tests and previews.
+   */
+  mockUser?: PlainUser | null;
+
+  /**
+   * path the "sign in to rate" prompt links to.
+   */
+  loginHref?: string;
+
+  /**
    * path the "back to toolbox" link points to.
    */
   backHref?: string;
@@ -96,6 +109,8 @@ export function AppDetail({
   reviews: reviewsProp,
   domains,
   domainLinkBase = `/domains`,
+  mockUser,
+  loginHref = `/login`,
   backHref = `/toolbox`,
   className,
   style,
@@ -117,11 +132,11 @@ export function AppDetail({
   const { reviews, rateApp, submitting, submitError } = useAppReviews(resolvedApp?.id || ``, {
     mockData: reviewsProp || (appProp ? undefined : DEFAULT_REVIEWS_DATA.filter((review) => review.appId === resolvedApp?.id)),
   });
+  const { user: currentUser } = useAuth(mockUser !== undefined ? { mockData: mockUser } : undefined);
 
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [selectedStars, setSelectedStars] = useState(5);
   const [reviewComment, setReviewComment] = useState(``);
-  const [reviewerName, setReviewerName] = useState(``);
   const [reviewFormError, setReviewFormError] = useState<string | undefined>(undefined);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
@@ -131,7 +146,7 @@ export function AppDetail({
   };
 
   const handleSubmitReview = async () => {
-    if (!resolvedApp) return;
+    if (!resolvedApp || !currentUser) return;
 
     if (selectedStars < 1) {
       setReviewFormError(`נא לבחור דירוג בין 1 ל-5 כוכבים`);
@@ -143,13 +158,11 @@ export function AppDetail({
     const createdReview = await rateApp({
       stars: selectedStars,
       comment: reviewComment.trim() || undefined,
-      displayName: reviewerName.trim() || undefined,
     });
 
     if (createdReview) {
       setReviewSubmitted(true);
       setReviewComment(``);
-      setReviewerName(``);
       setSelectedStars(5);
     }
   };
@@ -297,7 +310,16 @@ export function AppDetail({
           </button>
         </div>
 
-        {showReviewForm && (
+        {showReviewForm && !currentUser && (
+          <div className={styles.reviewForm}>
+            <p className={styles.formError}>צריך להיות מחוברים כדי לכתוב ביקורת.</p>
+            <Link to={loginHref} className={styles.submitButton}>
+              התחברות
+            </Link>
+          </div>
+        )}
+
+        {showReviewForm && currentUser && (
           <form
             className={styles.reviewForm}
             onSubmit={(event) => {
@@ -317,16 +339,6 @@ export function AppDetail({
                 </button>
               ))}
             </div>
-            <label className={styles.fieldLabel}>
-              שם לתצוגה (אופציונלי)
-              <input
-                className={styles.textInput}
-                type="text"
-                value={reviewerName}
-                onChange={(event) => setReviewerName(event.target.value)}
-                placeholder="אנונימי"
-              />
-            </label>
             <label className={styles.fieldLabel}>
               ביקורת (אופציונלי)
               <textarea

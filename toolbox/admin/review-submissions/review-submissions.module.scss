@@ -102,6 +102,21 @@
   justify-content: flex-end;
 }
 
+.noteInput {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 180px;
+  min-height: 44px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-primary);
+  background-color: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-small);
+}
+
 .stateCard {
   box-sizing: border-box;
   text-align: center;
