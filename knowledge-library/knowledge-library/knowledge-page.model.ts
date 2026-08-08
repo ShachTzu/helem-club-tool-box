@@ -28,7 +28,10 @@ export class KnowledgePageModel {
   @prop({ required: true, type: String })
   public normalizedTitle: string;
 
-  @prop({ required: true, type: String, default: '' })
+  // not `required: true`: mongoose's required validator rejects an empty
+  // string too, and an empty body is legitimate (e.g. a pure landing page
+  // like "עזרה ראשונה" that only exists to hold child pages).
+  @prop({ type: String, default: '' })
   public body: string;
 
   @prop({ type: String, default: null })
