@@ -11,6 +11,7 @@ import { BlogAspect } from '@helemclub/blog.blog';
 import { KnowledgeBaseAspect } from '@helemclub/knowledge-base.knowledge-base';
 import { EventsAspect } from '@helemclub/events.events';
 import { GalleryAspect } from '@helemclub/gallery.gallery';
+import { KnowledgeLibraryAspect } from '@helemclub/knowledge-library.knowledge-library';
 
 /**
  * The Helam Club Harmony application. Composes the symphony platform gateway,
@@ -39,6 +40,7 @@ export const helamApp = HarmonyPlatform.from({
     KnowledgeBaseAspect,
     EventsAspect,
     GalleryAspect,
+    KnowledgeLibraryAspect,
   ] as unknown as Aspect[],
 });
 
