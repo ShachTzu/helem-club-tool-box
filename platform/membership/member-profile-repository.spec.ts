@@ -25,6 +25,7 @@ it('ensureProfile matches on the session user id and defaults to status none', a
   let filter: Record<string, unknown> = {};
   let update: any = {};
   const model = {
+    findOne: () => Promise.resolve(null), // first sight — no row yet
     findOneAndUpdate: (f: Record<string, unknown>, u: any) => {
       filter = f;
       update = u;
@@ -123,4 +124,44 @@ it('listProfiles filters by status when one is given', async () => {
   await new MemberProfileRepository(model as never).listProfiles({ status: 'pending' });
 
   expect(filter.status).toBe('pending');
+});
+
+it('ensureProfile does not write when the row already matches the account', async () => {
+  let writes = 0;
+  const model = {
+    findOne: async () => ({
+      accountEmail: 'member@example.com',
+      accountDisplayName: 'רותם',
+      provider: 'google',
+      toObject: () => ({ userId: 'user-1', status: 'approved' }),
+    }),
+    findOneAndUpdate: async () => {
+      writes += 1;
+      return fakeDoc();
+    },
+  };
+
+  const result = await new MemberProfileRepository(model as never).ensureProfile(owner);
+
+  expect(writes).toBe(0);
+  expect(result.status).toBe('approved');
+});
+
+it('ensureProfile writes when the account details have changed', async () => {
+  let writes = 0;
+  const model = {
+    findOne: async () => ({
+      accountEmail: 'member@example.com',
+      accountDisplayName: 'שם ישן',
+      provider: 'google',
+      toObject: () => ({ userId: 'user-1', status: 'approved' }),
+    }),
+    findOneAndUpdate: async () => {
+      writes += 1;
+      return fakeDoc({ status: 'approved' });
+    },
+  };
+
+  await new MemberProfileRepository(model as never).ensureProfile(owner);
+  expect(writes).toBe(1);
 });

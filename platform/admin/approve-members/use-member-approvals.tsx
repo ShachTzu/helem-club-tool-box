@@ -11,10 +11,10 @@ import { useMutation, useQuery } from '@apollo/client/react';
 export type MembershipStatus = 'none' | 'pending' | 'approved' | 'rejected';
 
 /**
- * a member's application as the approval queue receives it. carries the
- * sensitive onboarding answers, and is only ever served to admins.
+ * one row of the approval queue. no health answers — the server does not put
+ * them in the list, so they cannot arrive here in bulk.
  */
-export type AdminMemberProfile = {
+export type MemberProfileSummary = {
   userId: string;
   status: MembershipStatus;
   accountEmail: string;
@@ -23,18 +23,25 @@ export type AdminMemberProfile = {
   fullName: string;
   phone: string;
   contactEmail: string;
-  age: number;
   city: string;
+  submittedAt?: string;
+  decidedAt?: string;
+  createdAt?: string;
+};
+
+/**
+ * one applicant's full application, health answers included. fetched one
+ * member at a time, only when an admin opens that applicant.
+ */
+export type AdminMemberProfile = MemberProfileSummary & {
+  age: number;
   communityRoles: string;
   gender: string;
   injuryNote: string;
   recognitionStatus: string;
   welcomeCallsOptIn: boolean;
   interests: string[];
-  submittedAt?: string;
-  decidedAt?: string;
   decisionNote: string;
-  createdAt?: string;
 };
 
 const LIST_MEMBER_PROFILES_QUERY = gql`
@@ -48,8 +55,27 @@ const LIST_MEMBER_PROFILES_QUERY = gql`
       fullName
       phone
       contactEmail
-      age
       city
+      submittedAt
+      decidedAt
+      createdAt
+    }
+  }
+`;
+
+const GET_MEMBER_PROFILE_QUERY = gql`
+  query GetMemberProfile($userId: ID!) {
+    getMemberProfile(userId: $userId) {
+      userId
+      status
+      accountEmail
+      accountDisplayName
+      provider
+      fullName
+      phone
+      contactEmail
+      city
+      age
       communityRoles
       gender
       injuryNote
@@ -88,7 +114,7 @@ function useDebouncedValue(value: string, delayMs: number): string {
   return debouncedValue;
 }
 
-function matchesQuery(profile: AdminMemberProfile, query: string): boolean {
+function matchesQuery(profile: MemberProfileSummary, query: string): boolean {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return true;
   return [profile.fullName, profile.accountDisplayName, profile.accountEmail, profile.contactEmail]
@@ -118,7 +144,7 @@ export type UseMemberApprovalsValue = {
   /**
    * the member applications matching the current filters.
    */
-  profiles: AdminMemberProfile[];
+  profiles: MemberProfileSummary[];
 
   /**
    * per-state counts across the whole queue, ignoring the current filters.
@@ -153,11 +179,34 @@ const EMPTY_COUNTS: Record<MembershipStatus, number> = {
   rejected: 0,
 };
 
-function countByStatus(profiles: AdminMemberProfile[]): Record<MembershipStatus, number> {
+function countByStatus(profiles: MemberProfileSummary[]): Record<MembershipStatus, number> {
   return profiles.reduce(
     (acc, profile) => ({ ...acc, [profile.status]: (acc[profile.status] || 0) + 1 }),
     { ...EMPTY_COUNTS }
   );
+}
+
+/**
+ * fetch one applicant's full application, health answers included.
+ *
+ * kept separate from the queue listing on purpose: an admin scanning the queue
+ * has no need for anyone's medical details, so those are only requested for the
+ * one applicant they actually opened. pass `null` to fetch nothing.
+ */
+export function useMemberProfile(
+  userId: string | null,
+  mockData?: AdminMemberProfile[]
+): { profile?: AdminMemberProfile; loading: boolean } {
+  const hasMock = mockData !== undefined;
+  const result = useQuery<{ getMemberProfile: AdminMemberProfile | null }>(
+    GET_MEMBER_PROFILE_QUERY,
+    { variables: { userId }, skip: hasMock || !userId }
+  );
+
+  if (hasMock) {
+    return { profile: mockData.find((item) => item.userId === userId), loading: false };
+  }
+  return { profile: result.data?.getMemberProfile || undefined, loading: result.loading };
 }
 
 /**
@@ -172,7 +221,7 @@ export function useMemberApprovals(options?: UseMemberApprovalsOptions): UseMemb
 
   const [mockProfiles, setMockProfiles] = useState<AdminMemberProfile[]>(mockData || []);
 
-  const queryResult = useQuery<{ listMemberProfiles: AdminMemberProfile[] }>(
+  const queryResult = useQuery<{ listMemberProfiles: MemberProfileSummary[] }>(
     LIST_MEMBER_PROFILES_QUERY,
     {
       variables: { options: { status, query: debouncedQuery } },

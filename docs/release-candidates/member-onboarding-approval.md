@@ -1,107 +1,107 @@
-# RC — אונבורדינג חברי קהילה + פלטפורמת אישור
+RELEASE CANDIDATE — אונבורדינג חברי קהילה + פלטפורמת אישור
 
-ענף: `claude/form-member-onboarding-451813` (worktree נפרד, לא נגע ב‑`main`)
-
+ענף: `claude/form-member-onboarding-451813`, מבוסס על Step 5 (`3fe37b5`).
 מבוסס על שאלות 1‑9 ו‑12 בטופס המונדיי "בניית ארגון המתנדבים של הלם קלאב".
 
----
-
-## מה נבנה
-
-**זרימת חבר:** נרשם (מייל או גוגל) → מופנה ל‑`/onboarding` → ממלא 4 מסכים →
-עובר לסטטוס "ממתין לאישור" → אדמין מאשר ב‑`/admin/members` → מקבל מייל → חבר קהילה.
-
-**שלושת הסטטוסים** (בדיוק כפי שביקשת, פלוס הבחנה פנימית):
-
-| סטטוס | מה זה | תווית |
-|-------|-------|-------|
-| `none` | נרשם לאתר, לא מילא את השאלון | לא חבר קהילה |
-| `pending` | מילא, מחכה להחלטה | חבר קהילה ממתין לאישור |
-| `approved` | אושר | חבר קהילה |
-| `rejected` | נדחה או שבוטלה חברותו | לא חבר קהילה |
-
-`none` ו‑`rejected` נראים אותו דבר כלפי חוץ, אבל אדמין חייב להבדיל ביניהם —
-"עוד לא מילא" זה לא "החלטנו שלא".
-
-**מייל וגוגל — אותו מסלול בדיוק.** האשף אחד, וכל מה שכבר ידוע על החשבון מולא מראש:
-מגוגל מגיעים שם ומייל, ממייל מגיע רק מייל. שום דבר בקוד לא מתפצל לפי דרך ההרשמה.
+Ponytail mode used: full
+Experts run: data-migration (על הדאטה האמיתי), self-review על הדיפ
+Skipped on purpose: red-team-engineering, housekeep-max, a11y-review, user-onboarding,
+  uat-desktop — כולם דורשים אפליקציה שרצה, ואי אפשר להריץ אותה (ראו BLOCKER).
+  להריץ אותם על קוד שלא הורץ = לחתום על משהו שלא ראיתי.
+Blocking: 1 (BLOCKER למטה)   Non-blocking: 0
+**לא מוכן למיזוג** — לא הצלחתי לקמפל, לבדוק או להריץ את הקומפוננטות הקיימות ששיניתי.
 
 ---
 
-## הקבצים
+## BLOCKER — Bit מנותק
 
-**קומפוננטה חדשה — `helemclub.platform/membership`** (`platform/membership/`)
-אוסף `memberprofiles` נפרד + GraphQL + החלטות האדמין.
+`bit whoami` מחזיר "not logged in", **גם בתיקייה הראשית**. זה לא בעיה של ה‑worktree.
 
-**קומפוננטה חדשה — `helemclub.platform/admin/approve-members`** (`platform/admin/approve-members/`)
-פאנל האישור, נרשם אוטומטית ל‑`/admin/members` בדשבורד הקיים.
+מה שזה שובר:
+- אי אפשר למשוך גרסאות מהליין → `bit check-types`/`test` על toolbox ועל שלוש
+  קומפוננטות ה‑UI נכשלים ב"outdated objects".
+- `bit run helam` נופל על אותו דבר — **האפליקציה לא עולה מקומית.**
+- `bit export` בכלל לא אפשרי. כלומר שום דבר לא יכול להגיע לליין כרגע, לא זה ולא Step 5.
 
-**קבצים ששונו:**
-- `platform/hooks/use-onboarding` — היה localStorage, עכשיו GraphQL.
-- `platform/ui/onboarding-wizard` — שאלות אמיתיות במקום ה‑placeholder.
-- `platform/pages/onboarding-page` — מסך "ממתין לאישור" אחרי שליחה.
-- `platform/helam/helam.bit-app.ts` — רישום ה‑aspect.
-
-**לא נגעתי** באף קובץ של hopeAI (`user.model.ts`, `user-repository.ts`,
-`helam-platform.node.runtime.ts`, `helam-platform.graphql.ts`, `hooks/use-auth`,
-`onboarding-gate.tsx`). ה‑gate שלה ממשיך לעבוד כמו שהוא — `useOnboarding().completed`
-נשאר אותו חוזה, רק המקור השתנה.
+צריך `bit login` ממך (נפתח דפדפן, אני לא יכול). זה חוסם את כל נתיב האספקה, לא רק אותי.
 
 ---
 
-## פרטיות
+## WHAT SHIPPED
 
-שאלות 8 ו‑9 (פציעה, הכרה בביטוח לאומי) הן **מידע רפואי**. לכן:
+מי שנרשם לאתר — במייל או בגוגל — ממלא פעם אחת שאלון הצטרפות בן 4 מסכים, ועובר
+לסטטוס "ממתין לאישור". אדמין רואה אותו ב‑`/admin/members`, פותח את הפרטים, ומאשר או
+דוחה. באישור נשלח מייל והחברות נפתחת.
+
+מייל וגוגל הם אותו מסלול. מה שהחשבון כבר יודע ממולא מראש.
+
+## PLATFORMS
+touched: web (RTL) · UAT already run on: **אף אחד**
+
+## DATA
+נוצר אוסף חדש `memberprofiles`. שדה לכל שאלה מ‑1‑9 ו‑12.
+**שאלות 8 ו‑9 (פציעה, הכרה בביטוח לאומי) הן מידע רפואי** — מידע רגיש לפי חוק הגנת הפרטיות.
 
 - אוסף נפרד, לא שדות על רשומת המשתמש.
-- שני טיפוסי GraphQL בלבד: `MyMembership` (הסטטוס והשם של עצמך) ו‑`AdminMemberProfile`
-  (הכול, אדמין בלבד). אין שאילתה ציבורית שמגיעה לשם.
-- הבעלים של פרופיל נלקח תמיד מה‑session, אף פעם לא מהקלט — אין דרך לכתוב על פרופיל של
-  מישהו אחר (אותו דפוס IDOR‑safe כמו בטיוטות של ארגז הכלים).
-- הפאנל מוגבל ל‑`admin` בלבד — מחמיר יותר מתור המודרציה של ארגז הכלים, שגם מודרטור נכנס אליו.
-- אין `registerSeed` — לזרוע פרופילים מומצאים זה להמציא פציעות ומספרי טלפון.
+- שלוש צורות GraphQL: `MyMembership` (הסטטוס שלך), `MemberProfileSummary` (שורת תור,
+  **בלי** שדות רפואיים), `AdminMemberProfile` (הכול — נשלף לחבר אחד בכל פעם).
+- רשימת התור לא מביאה מידע רפואי בכלל. הוא נשלף רק כשאדמין פותח מועמד מסוים.
+- הבעלים של פרופיל תמיד מה‑session, אף פעם לא מהקלט.
+- retention: אין מדיניות מחיקה. **פער ידוע** — אין היום מסלול "מחקו אותי".
 
----
+## MIGRATION
+אוסף חדש, בלי שינוי סכימה קיימת. הפיך: מוחקים את האוסף וחוזרים.
+לכל חשבון קיים נוצרת שורה בסטטוס `none` בכניסה הראשונה, ואז הוא מופנה לאונבורדינג.
+**כלומר משתמשים קיימים יעברו אונבורדינג בפעם הבאה שייכנסו.**
 
-## מה צריך להריץ (בתיקיית העבודה הראשית, לא ב‑worktree)
+בדקתי מול הדאטה האמיתי ב‑`helam_dev`: 5 משתמשים, 11 כלים. ארבעה מהמשתמשים הם
+`@example.com` (זרעים), ושלושה מארבעת מגישי הכלים הם **לא משתמשים בכלל** — כלומר
+`helam_dev` היא סביבת פיתוח עם דאטה מומצא. אף אחד אמיתי לא ננעל בגללי שם.
+`onboardingCompleted` שכבר יושב על UserModel לא מיובא — הוא נכתב על ידי זרעים ולא
+אומר כלום; לייבא ממנו זה לתת "ממתין לאישור" למי שלא מילא כלום.
 
-הקומפוננטות החדשות עדיין לא רשומות ב‑Bit — אין `node_modules` ב‑worktree אז לא יכולתי.
+## BREAKING
+`ToolboxNode` קיבל ארגומנט קונסטרקטור רביעי (`membership`). כל מי שבונה אותו ידנית
+צריך לעדכן — עדכנתי את `toolbox.node.runtime.spec.ts`.
+`useOnboarding` שינה חוזה: `completeOnboarding` מחזיר Promise, `resetOnboarding` נמחק,
+`mockCompleted` הפך ל‑`mockStatus`. הוא נצרך רק ב‑`onboarding-gate.tsx` וב‑`onboarding-page`.
 
-```bash
-export PATH="$HOME/bin:$PATH"
-bit add platform/membership --id membership --scope helemclub.platform --env bitdev.symphony/envs/symphony-env
-bit add platform/admin/approve-members --id admin/approve-members --scope helemclub.platform --env helemclub.design/envs/helam-env
-bit install
-bit compile
-bit check-types helemclub.platform/membership helemclub.platform/admin/approve-members
-bit test helemclub.platform/membership helemclub.platform/admin/approve-members helemclub.platform/hooks/use-onboarding helemclub.platform/ui/onboarding-wizard helemclub.platform/pages/onboarding-page helemclub.toolbox/toolbox
-```
+## CONFIG
+אין משתני סביבה חדשים. מייל האישור רוכב על `RESEND_API_KEY` הקיים.
+**אבל** באתר החי חסרים כרגע `GOOGLE_CLIENT_ID` (הוכחה: `authConfig` מחזיר `null` →
+אין כפתור גוגל) ו‑`RESEND_API_KEY` תקין (שגיאת שליחת הקוד). בלעדיהם האונבורדינג
+לא שווה כלום, כי אי אפשר בכלל להירשם.
 
-⚠️ לוודא שגרסת ה‑`helam-env` תואמת לשאר הקומפוננטות (`bit envs`) — פין שגוי שובר את
-בניית הקפסולה.
+## ROLLBACK
+להסיר `MembershipAspect` מ‑`helam.bit-app.ts` ולהחזיר `requireMember` ל‑`requireUser`
+בשני מקומות ב‑toolbox. האוסף יכול להישאר, הוא לא מפריע לאף אחד.
 
-**מה שכן נבדק כאן:** typecheck מלא (strict) על כל הקבצים החדשים והמשונים — נקי.
-**מה שלא:** הרצה חיה. אין `MONGO_URL` אצלי, כרגיל — זה עובר ל‑hopeAI.
+## WATCH
+כמה חשבונות תקועים ב‑`none` — אם רבים נרשמים ולא מסיימים, האונבורדינג ארוך מדי.
+כמה תקועים ב‑`pending` יותר מכמה ימים — אם התור מצטבר, אין מי שמאשר.
+מספר שאומר לבטל: אם אחוז המסיימים מתוך הנרשמים יורד מתחת ל‑50%.
 
----
+## KNOWN OPEN
+- אין מחיקת פרופיל / "מחקו אותי". צריך להיכתב לפני שיש חברים אמיתיים. (Claude)
+- דירוג ותגובות עדיין לא דורשים חברות מאושרת — רק הגשה דורשת. (Claude)
+- שאלות 10‑11 לא נכללו, לפי בקשה מפורשת. (Shachar)
+- Step 5 שמתחתיי מעולם לא נבדק חי ולא נסקר על ידי אף אחד. (Step 5 session)
 
-## חברות מאושרת חוסמת הגשה לארגז הכלים — מחובר
+## NOT TESTED
+**זה החלק החשוב.**
 
-**בשרת (זה מה שאוכף):** `submitToolboxApp` ו‑`createToolboxUploadSignature` עברו
-מ‑`requireUser` ל‑`requireMember` — חשבון מחובר שאינו חבר מאושר מקבל `AccessDenied`.
-מודרטורים ואדמינים עוברים בלי פרופיל מאושר, אחרת הצוות נועל את עצמו החוצה מהכלים שלו.
+- **האפליקציה מעולם לא רצה עם הקוד הזה.** לא מקומית, לא בשום מקום. אף מסך לא נראה בעיניים.
+- כל הזרימה מקצה לקצה — הרשמה, אונבורדינג, אישור, פתיחת ארגז הכלים — **לא נבדקה.**
+- מייל האישור/הדחייה מעולם לא נשלח.
+- `bit check-types`/`test` **לא רצו** על: `helemclub.toolbox/toolbox`,
+  `admin/approve-members`, `hooks/use-onboarding`, `ui/onboarding-wizard`,
+  `pages/onboarding-page`. כולם חסומים ב‑bit login.
+- הבדיקות של Step 5 שאיתן התמזגתי — לא רצו אצלי.
+- גוגל וגם מייל כמסלולי הרשמה — לא נבדקו מול הקוד הזה.
+- נגישות ו‑RTL — לא נבדקו.
+- **לא ידוע לאיזה מסד נתונים האתר החי מחובר.** בדקתי מול `helam_dev`. אם ה‑production
+  הוא מסד אחר עם אנשים אמיתיים, ניתוח ה‑MIGRATION למעלה לא חל עליו.
 
-**בדפדפן (זו נימוס):** `/toolbox/submit` מציג "ממתין לאישור" או "רגע לפני שמגישים" עם
-קישור לאונבורדינג, במקום לתת למלא טופס שלם ולסרב בסוף.
-
-**טיוטות נשארו פתוחות** (`saveToolboxDraft`) — זה מידע פרטי של החבר עצמו, בלי השפעה
-ציבורית, ומי שמאושר באמצע התהליך לא מאבד את מה שכתב.
-
-3 בדיקות חדשות מכסות את זה: לא‑חבר נחסם, מודרטור עובר, חבר מאושר מגיש כרגיל.
-
-## מה שנשאר להחלטה שלך
-
-**שאלות 10‑11 (מקצוע, עולמות תוכן)** — לא נכללו, ביקשת 1‑9 ו‑12. שדה של דקה להוסיף.
-
-**מסך "תחומי עניין"** נשאר כמסך רביעי — הוא כבר היה שם והפלטפורמה מתאימה תוכן לפיו,
-למחוק אותו זה שינוי גדול יותר מלהשאיר. אם הוא מיותר, אומרים ומורידים.
+מה שכן רץ ועבר: `bit check-types` על `helemclub.platform/membership` (נקי),
+8/8 בדיקות היחידה של `member-profile-repository`, ו‑typecheck מלא בעצמי על כל
+הקבצים החדשים והמשונים.

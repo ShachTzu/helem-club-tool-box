@@ -27,10 +27,17 @@ const RECOGNITION_OPTIONS = [
 /**
  * a phone number is the one answer the community's intake requires, because
  * welcome calls happen on the phone. accepts Israeli mobile and landline
- * formats with or without separators.
+ * numbers written the way people actually write them — with or without
+ * separators, and with the +972 / 00972 international prefix, which a member
+ * whose phone is set to international format would otherwise be stuck on.
  */
+export function normalizePhone(value: string): string {
+  const digitsOnly = value.replace(/[\s()-]/g, '');
+  return digitsOnly.replace(/^(\+972|00972|972)/, '0');
+}
+
 function isValidPhone(value: string): boolean {
-  return /^0\d{1,2}-?\d{7}$/.test(value.replace(/[\s()]/g, ''));
+  return /^0\d{8,9}$/.test(normalizePhone(value));
 }
 
 export type OnboardingAccount = {
@@ -149,7 +156,9 @@ export function OnboardingWizard({
     const parsedAge = Number.parseInt(age, 10);
     onComplete?.({
       fullName: fullName.trim(),
-      phone: phone.trim(),
+      // store one canonical shape, so the admin queue and any future dialler
+      // never have to guess which of five formats a member typed.
+      phone: normalizePhone(phone),
       contactEmail: contactEmail.trim() || undefined,
       age: Number.isFinite(parsedAge) ? parsedAge : undefined,
       city: city.trim() || undefined,

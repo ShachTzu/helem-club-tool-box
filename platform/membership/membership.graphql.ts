@@ -26,8 +26,28 @@ export function membershipGqlSchema(membership: MembershipNode): GqlSchema {
       }
 
       """
-      a member's application as shown to an admin in the approval queue.
-      admin-only — includes health data.
+      one row of the admin approval queue. admin-only, and deliberately without
+      the health answers: the queue lists everyone at once, so these fields are
+      the most that may travel in bulk.
+      """
+      type MemberProfileSummary {
+        userId: ID!
+        status: String!
+        accountEmail: String
+        accountDisplayName: String
+        provider: String
+        fullName: String
+        phone: String
+        contactEmail: String
+        city: String
+        submittedAt: String
+        decidedAt: String
+        createdAt: String
+      }
+
+      """
+      one member's full application, health answers included. admin-only, and
+      fetched one member at a time — never as a list.
       """
       type AdminMemberProfile {
         userId: ID!
@@ -38,8 +58,8 @@ export function membershipGqlSchema(membership: MembershipNode): GqlSchema {
         fullName: String
         phone: String
         contactEmail: String
-        age: Int
         city: String
+        age: Int
         communityRoles: String
         gender: String
         injuryNote: String
@@ -91,9 +111,14 @@ export function membershipGqlSchema(membership: MembershipNode): GqlSchema {
         myMembership: MyMembership
 
         """
-        the admin approval queue. admins only.
+        the admin approval queue. admins only. queue rows carry no health data.
         """
-        listMemberProfiles(options: ListMemberProfilesOptions): [AdminMemberProfile]
+        listMemberProfiles(options: ListMemberProfilesOptions): [MemberProfileSummary]
+
+        """
+        one applicant's full application, health answers included. admins only.
+        """
+        getMemberProfile(userId: ID!): AdminMemberProfile
 
         """
         per-state counts for the approval queue tabs. admins only.
@@ -122,6 +147,10 @@ export function membershipGqlSchema(membership: MembershipNode): GqlSchema {
 
         listMemberProfiles: async (_parent: unknown, { options }: any, context: any) => {
           return membership.listMemberProfiles(options, context);
+        },
+
+        getMemberProfile: async (_parent: unknown, { userId }: any, context: any) => {
+          return membership.getMemberProfile(userId, context);
         },
 
         countMemberProfiles: async (_parent: unknown, _args: unknown, context: any) => {

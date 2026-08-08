@@ -94,11 +94,15 @@ export type MyMembership = {
 };
 
 /**
- * a member profile as shown to an admin in the approval queue. this is the
- * only shape that carries the sensitive answers, and it is returned solely by
- * admin-gated resolvers.
+ * one row of the admin approval queue: enough to find a person, sort the queue
+ * and make contact — and deliberately nothing more.
+ *
+ * the health answers are NOT here. the queue lists every registered member at
+ * once, so putting them in this shape would ship the community's medical
+ * details to a browser in bulk to display none of them. an admin who opens a
+ * specific applicant fetches {@link AdminMemberProfile} for that one person.
  */
-export type AdminMemberProfile = {
+export type MemberProfileSummary = {
   userId: string;
   status: MembershipStatus;
   accountEmail: string;
@@ -107,18 +111,25 @@ export type AdminMemberProfile = {
   fullName: string;
   phone: string;
   contactEmail: string;
-  age: number;
   city: string;
+  submittedAt?: string;
+  decidedAt?: string;
+  createdAt?: string;
+};
+
+/**
+ * one member's full application, including the sensitive answers. returned by
+ * a single admin-gated lookup, one person at a time — never in a list.
+ */
+export type AdminMemberProfile = MemberProfileSummary & {
+  age: number;
   communityRoles: string;
   gender: string;
   injuryNote: string;
   recognitionStatus: string;
   welcomeCallsOptIn: boolean;
   interests: string[];
-  submittedAt?: string;
-  decidedAt?: string;
   decisionNote: string;
-  createdAt?: string;
 };
 
 /**

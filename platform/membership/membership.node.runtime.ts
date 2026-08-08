@@ -16,6 +16,7 @@ import { MemberProfileModel } from './member-profile.model.js';
 import { MemberProfileRepository, type ProfileOwner } from './member-profile-repository.js';
 import type {
   AdminMemberProfile,
+  MemberProfileSummary,
   ListMemberProfilesOptions,
   MembershipStatus,
   MyMembership,
@@ -104,11 +105,11 @@ export class MembershipNode {
   }
 
   /**
-   * project a stored profile onto the admin queue shape. this is the only
-   * mapping that carries `injuryNote` and `recognitionStatus`, and it is
-   * reachable exclusively from the admin-gated resolvers below.
+   * project a stored profile onto the queue-row shape — identity and contact
+   * details only. carries none of the health answers, because this is what the
+   * bulk listing returns.
    */
-  private static toAdminProfile(model: MemberProfileModel): AdminMemberProfile {
+  private static toSummary(model: MemberProfileModel): MemberProfileSummary {
     return {
       userId: model.userId,
       status: (model.status || 'none') as MembershipStatus,
@@ -118,18 +119,29 @@ export class MembershipNode {
       fullName: model.fullName || '',
       phone: model.phone || '',
       contactEmail: model.contactEmail || '',
-      age: model.age || 0,
       city: model.city || '',
+      submittedAt: model.submittedAt,
+      decidedAt: model.decidedAt,
+      createdAt: model.createdAt,
+    };
+  }
+
+  /**
+   * project a stored profile onto the full admin shape. this is the only
+   * mapping that carries `injuryNote` and `recognitionStatus`, and the only
+   * resolver using it looks up one member at a time.
+   */
+  private static toAdminProfile(model: MemberProfileModel): AdminMemberProfile {
+    return {
+      ...MembershipNode.toSummary(model),
+      age: model.age || 0,
       communityRoles: model.communityRoles || '',
       gender: model.gender || '',
       injuryNote: model.injuryNote || '',
       recognitionStatus: model.recognitionStatus || '',
       welcomeCallsOptIn: Boolean(model.welcomeCallsOptIn),
       interests: model.interests || [],
-      submittedAt: model.submittedAt,
-      decidedAt: model.decidedAt,
       decisionNote: model.decisionNote || '',
-      createdAt: model.createdAt,
     };
   }
 
@@ -199,15 +211,30 @@ export class MembershipNode {
   }
 
   /**
-   * the admin approval queue. admins only.
+   * the admin approval queue. admins only. returns queue rows without the
+   * health answers — see {@link getMemberProfile} for one applicant's full
+   * application.
    */
   async listMemberProfiles(
     options: ListMemberProfilesOptions | undefined,
     context: ResolverContext
-  ): Promise<AdminMemberProfile[]> {
+  ): Promise<MemberProfileSummary[]> {
     await this.requireAdmin(context);
     const profiles = await this.profileRepository.listProfiles(options || {});
-    return profiles.map((profile) => MembershipNode.toAdminProfile(profile));
+    return profiles.map((profile) => MembershipNode.toSummary(profile));
+  }
+
+  /**
+   * one applicant's full application, health answers included. admins only,
+   * one member per call — the deliberate counterpart to the list above.
+   */
+  async getMemberProfile(
+    userId: string,
+    context: ResolverContext
+  ): Promise<AdminMemberProfile | null> {
+    await this.requireAdmin(context);
+    const profile = await this.profileRepository.getProfile(userId);
+    return profile ? MembershipNode.toAdminProfile(profile) : null;
   }
 
   /**

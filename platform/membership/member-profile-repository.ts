@@ -43,6 +43,16 @@ export class MemberProfileRepository {
    * platform's user collection.
    */
   async ensureProfile(owner: ProfileOwner): Promise<MemberProfileModel> {
+    // read first. this runs on every page load of every signed-in member, and
+    // for all but the first one the row already exists and is unchanged — an
+    // unconditional upsert would turn a read into a write on every navigation.
+    const existing = await this.profileModel.findOne({ userId: owner.userId });
+    if (existing && existing.accountEmail === owner.email.toLowerCase()
+      && existing.accountDisplayName === owner.displayName
+      && existing.provider === owner.provider) {
+      return existing.toObject() as MemberProfileModel;
+    }
+
     const now = new Date().toISOString();
     const doc = await this.profileModel.findOneAndUpdate(
       { userId: owner.userId },

@@ -27,6 +27,14 @@
         "onLanesOnly": true,
         "isAvailableOnCurrentLane": true
     },
+    "admin/approve-members": {
+        "name": "admin/approve-members",
+        "scope": "",
+        "version": "",
+        "defaultScope": "helemclub.platform",
+        "mainFile": "index.ts",
+        "rootDir": "platform/admin/approve-members"
+    },
     "admin/blog-dashboard": {
         "name": "admin/blog-dashboard",
         "scope": "helemclub.blog",
@@ -827,6 +835,20 @@
         "rootDir": "design/loaders/spinner",
         "onLanesOnly": true,
         "isAvailableOnCurrentLane": true
+    },
+    "membership": {
+        "name": "membership",
+        "scope": "",
+        "version": "",
+        "defaultScope": "helemclub.platform",
+        "mainFile": "index.ts",
+        "rootDir": "platform/membership",
+        "config": {
+            "bitdev.symphony/envs/symphony-env@5.0.22": {},
+            "teambit.envs/envs": {
+                "env": "bitdev.symphony/envs/symphony-env"
+            }
+        }
     },
     "navigation/link": {
         "name": "navigation/link",

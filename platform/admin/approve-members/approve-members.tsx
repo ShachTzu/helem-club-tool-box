@@ -6,6 +6,7 @@ import { TextInput } from '@helemclub/design.inputs.text-input';
 import { ProtectedRoute, type ProtectedRouteProps } from '@helemclub/platform.ui.protected-route';
 import {
   useMemberApprovals,
+  useMemberProfile,
   type AdminMemberProfile,
   type MembershipStatus,
 } from './use-member-approvals.js';
@@ -99,6 +100,10 @@ function ApproveMembersContent({
     [profiles]
   );
 
+  // the health answers are fetched for the opened applicant only — never for
+  // the whole queue. see useMemberProfile.
+  const { profile: expanded, loading: expandedLoading } = useMemberProfile(expandedId, mockProfiles);
+
   const columns: TableColumn[] = useMemo(
     () => [
       {
@@ -181,8 +186,6 @@ function ApproveMembersContent({
     [expandedId, profileById, deciding, setStatus]
   );
 
-  const expanded = expandedId ? profileById[expandedId] : undefined;
-
   return (
     <div className={classNames(styles.approveMembers, className)} style={style}>
       <div className={styles.card}>
@@ -231,6 +234,10 @@ function ApproveMembersContent({
           <div className={styles.stateMessage}>טוען רשימה...</div>
         ) : (
           <Table columns={columns} rows={rows} emptyMessage="אין רשומות בסטטוס הזה" />
+        )}
+
+        {expandedId && expandedLoading && (
+          <div className={styles.stateMessage}>טוען פרטי מועמד...</div>
         )}
 
         {expanded && (

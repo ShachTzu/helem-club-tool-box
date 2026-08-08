@@ -7,6 +7,7 @@ export type {
   Gender,
   MyMembership,
   AdminMemberProfile,
+  MemberProfileSummary,
   SubmitMemberProfileInput,
   ListMemberProfilesOptions,
   SetMembershipStatusInput,
