@@ -1,11 +1,6 @@
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-small);
-  text-decoration: none;
-  font-family: var(--typography-font-family);
-  font-weight: var(--typography-font-weight-extra-bold);
-  white-space: nowrap;
   cursor: var(--interactions-cursor-pointer);
   transition: opacity var(--interactions-transitions-duration-fast)
     var(--interactions-transitions-easing-ease-out);
@@ -15,31 +10,19 @@
   opacity: var(--effects-opacity-hover);
 }
 
-.dot {
-  color: var(--colors-accent-default);
-  line-height: 1;
+.mark {
+  display: block;
+  width: auto;
 }
 
-.wordmark {
-  line-height: 1;
+.sizeSmall .mark {
+  height: 24px;
 }
 
-.dark {
-  color: var(--colors-text-inverse);
+.sizeMedium .mark {
+  height: 32px;
 }
 
-.light {
-  color: var(--colors-text-primary);
-}
-
-.sizeSmall {
-  font-size: var(--typography-sizes-body-large);
-}
-
-.sizeMedium {
-  font-size: var(--typography-sizes-heading-h5);
-}
-
-.sizeLarge {
-  font-size: var(--typography-sizes-heading-h3);
+.sizeLarge .mark {
+  height: 44px;
 }

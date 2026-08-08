@@ -42,6 +42,11 @@ const sizeClassMap: Record<LogoSize, string> = {
   large: styles.sizeLarge,
 };
 
+const markSrcMap: Record<LogoVariant, string> = {
+  dark: `/logo-horizontal-white.png`,
+  light: `/logo-horizontal-dark.png`,
+};
+
 /**
  * the Helam Club wordmark logo, linking to the homepage.
  * supports light/dark color variants and multiple sizes for the header, footer and other surfaces.
@@ -59,8 +64,7 @@ export function Logo({ href = `/`, size = `medium`, variant = `dark`, className,
       style={style}
       aria-label="הלם קלאב"
     >
-      <span className={styles.dot}>●</span>
-      <span className={styles.wordmark}>הלם קלאב</span>
+      <img src={markSrcMap[variant]} alt="" className={styles.mark} />
     </RouterLink>
   );
 }
