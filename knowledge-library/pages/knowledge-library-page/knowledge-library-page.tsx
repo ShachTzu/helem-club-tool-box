@@ -1,10 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Card } from '@helemclub/design.content.card';
 import { TagChip } from '@helemclub/design.content.tag-chip';
 import { Avatar } from '@helemclub/design.content.avatar';
-import { MediaPlayer } from '@helemclub/knowledge-base.ui.media-player';
-import { useKnowledgePage, useKnowledgePages } from '@helemclub/knowledge-library.hooks.use-knowledge-pages';
+import { MediaPlayer, formatDurationSec } from '@helemclub/knowledge-base.ui.media-player';
+import {
+  useKnowledgePage,
+  useKnowledgePages,
+  useIncrementKnowledgePageView,
+} from '@helemclub/knowledge-library.hooks.use-knowledge-pages';
 import { HELEM_CLUB_AVATAR_URL } from '@helemclub/knowledge-library.entities.knowledge-page';
 import type { PlainKnowledgePage } from '@helemclub/knowledge-library.entities.knowledge-page';
 import styles from './knowledge-library-page.module.scss';
@@ -45,6 +49,18 @@ export function KnowledgeLibraryPage({ mockPage, mockPages, className, style }: 
   const hasMockPage = mockPage !== undefined;
   const { page, loading } = useKnowledgePage(slug || '', hasMockPage ? { mockData: mockPage } : undefined);
   const { pages: allPages } = useKnowledgePages(mockPages ? { mockData: mockPages } : undefined);
+  const { incrementView } = useIncrementKnowledgePageView();
+
+  // count a view once per resolved page. the ref guards React's double-invoke
+  // in strict mode and re-renders from unrelated state, so a single visit
+  // never counts twice.
+  const countedIdRef = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    if (hasMockPage || !page?.id) return;
+    if (countedIdRef.current === page.id) return;
+    countedIdRef.current = page.id;
+    incrementView(page.id);
+  }, [hasMockPage, page?.id, incrementView]);
 
   const pageById = useMemo(() => {
     const map: Record<string, PlainKnowledgePage> = {};
@@ -101,6 +117,18 @@ export function KnowledgeLibraryPage({ mockPage, mockPages, className, style }: 
         <span>{page.authorName}</span>
         <span className={styles.bylineSeparator}>·</span>
         <time dateTime={page.publishDate}>{new Date(page.publishDate).toLocaleDateString('he-IL')}</time>
+        {page.durationSec ? (
+          <>
+            <span className={styles.bylineSeparator}>·</span>
+            <span>{formatDurationSec(page.durationSec)}</span>
+          </>
+        ) : null}
+        {page.viewCount > 0 ? (
+          <>
+            <span className={styles.bylineSeparator}>·</span>
+            <span>{`${page.viewCount.toLocaleString('he-IL')} צפיות`}</span>
+          </>
+        ) : null}
       </div>
 
       {page.domains.length > 0 && (
@@ -113,7 +141,15 @@ export function KnowledgeLibraryPage({ mockPage, mockPages, className, style }: 
 
       {page.image && <img className={styles.image} src={page.image} alt={page.title} />}
 
-      {page.videoUrl && <MediaPlayer mediaUrl={page.videoUrl} mediaType="video" title={page.title} />}
+      {page.videoUrl && (
+        <MediaPlayer
+          mediaUrl={page.videoUrl}
+          mediaType={page.mediaType === 'audio' ? 'audio' : 'video'}
+          durationSec={page.durationSec}
+          posterUrl={page.image}
+          title={page.title}
+        />
+      )}
 
       {/* safe: videoEmbedHtml only ever holds a value that already passed the
           server-side embed-allowlist (a single YouTube/Spotify iframe) — see

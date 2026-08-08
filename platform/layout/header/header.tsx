@@ -17,7 +17,7 @@ const DEFAULT_NAVIGATION_ITEMS: HeaderNavigationItem[] = [
   { label: `בית`, path: `/` },
   { label: `חוכמת הקהילה`, path: `/wisdom` },
   { label: `ארגז כלים`, path: `/toolbox` },
-  { label: `מאגר ידע`, path: `/knowledge` },
+  { label: `ספריית הידע`, path: `/knowledge-library` },
   { label: `בלוג`, path: `/blog` },
   { label: `אירועים`, path: `/events` },
   { label: `גלריית PTSDART`, path: `/gallery` },

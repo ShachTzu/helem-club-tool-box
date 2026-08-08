@@ -11,6 +11,8 @@ export type { UpdateKnowledgePageInput } from './use-update-knowledge-page.js';
 
 export { useDeleteKnowledgePage } from './use-delete-knowledge-page.js';
 
+export { useIncrementKnowledgePageView } from './use-increment-knowledge-page-view.js';
+
 export { useImportKnowledgePages } from './use-import-knowledge-pages.js';
 export type { ImportRowInput, ImageMappingInput, ImportSummaryResult } from './use-import-knowledge-pages.js';
 

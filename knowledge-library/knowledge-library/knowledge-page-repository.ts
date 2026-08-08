@@ -123,6 +123,9 @@ export class KnowledgePageRepository {
       image: options.image,
       videoUrl: options.videoUrl,
       videoEmbedHtml,
+      mediaType: options.mediaType,
+      durationSec: options.durationSec,
+      viewCount: 0,
       publishDate: options.publishDate || now,
       authorName: HELEM_CLUB_AUTHOR_NAME,
       isStaffAuthor: true,
@@ -154,6 +157,8 @@ export class KnowledgePageRepository {
     if (options.image !== undefined) update.image = options.image;
     if (options.videoUrl !== undefined) update.videoUrl = options.videoUrl;
     if (options.videoEmbedHtml !== undefined) update.videoEmbedHtml = this.resolveEmbedHtml(options.videoEmbedHtml);
+    if (options.mediaType !== undefined) update.mediaType = options.mediaType;
+    if (options.durationSec !== undefined) update.durationSec = options.durationSec;
     if (options.publishDate !== undefined) update.publishDate = options.publishDate;
     if (options.isPublished !== undefined) update.isPublished = options.isPublished;
 
@@ -185,6 +190,16 @@ export class KnowledgePageRepository {
   async deletePage(id: string): Promise<boolean> {
     const result = await this.knowledgePageModel.deleteOne({ id });
     return result.deletedCount > 0;
+  }
+
+  /**
+   * atomically bump a page's view counter. deliberately NOT gated by
+   * isPublished/auth: an unpublished page is already unreachable through the
+   * read resolvers, so there is nothing to count against it.
+   */
+  async incrementView(id: string): Promise<boolean> {
+    const result = await this.knowledgePageModel.updateOne({ id }, { $inc: { viewCount: 1 } });
+    return result.modifiedCount > 0;
   }
 
   /**

@@ -74,6 +74,13 @@ export class KnowledgeLibraryNode {
   }
 
   /**
+   * atomically bump a page's view counter.
+   */
+  async incrementView(id: string): Promise<boolean> {
+    return this.knowledgePageRepository.incrementView(id);
+  }
+
+  /**
    * find an existing page by a normalized title match — used by the CSV
    * importer to resolve a "Parent page title" cell.
    */

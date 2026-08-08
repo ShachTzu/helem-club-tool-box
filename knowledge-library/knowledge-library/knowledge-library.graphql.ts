@@ -64,6 +64,9 @@ export function createKnowledgeLibraryGqlSchema(knowledgeLibrary: KnowledgeLibra
         image: String
         videoUrl: String
         videoEmbedHtml: String
+        mediaType: String
+        durationSec: Int
+        viewCount: Int
         publishDate: String!
         authorName: String!
         isStaffAuthor: Boolean!
@@ -128,6 +131,8 @@ export function createKnowledgeLibraryGqlSchema(knowledgeLibrary: KnowledgeLibra
         image: String
         videoUrl: String
         videoEmbedHtml: String
+        mediaType: String
+        durationSec: Int
         slug: String
         publishDate: String
         isPublished: Boolean
@@ -141,6 +146,8 @@ export function createKnowledgeLibraryGqlSchema(knowledgeLibrary: KnowledgeLibra
         image: String
         videoUrl: String
         videoEmbedHtml: String
+        mediaType: String
+        durationSec: Int
         publishDate: String
         isPublished: Boolean
       }
@@ -161,6 +168,7 @@ export function createKnowledgeLibraryGqlSchema(knowledgeLibrary: KnowledgeLibra
         createKnowledgePage(options: KnowledgeLibraryCreatePageOptions!): KnowledgeLibraryPage
         updateKnowledgePage(id: String!, options: KnowledgeLibraryUpdatePageOptions!): KnowledgeLibraryPage
         deleteKnowledgePage(id: String!): Boolean
+        incrementKnowledgePageView(id: String!): Boolean
         grantKnowledgeLibraryEditor(userId: String!): Boolean
         revokeKnowledgeLibraryEditor(userId: String!): Boolean
         createKnowledgeLibraryUploadSignature: KnowledgeLibraryUploadSignature
@@ -218,6 +226,12 @@ export function createKnowledgeLibraryGqlSchema(knowledgeLibrary: KnowledgeLibra
         deleteKnowledgePage: async (_req: unknown, { id }: { id: string }, context: ResolverContext) => {
           await assertCanManage(context, knowledgeLibrary);
           return knowledgeLibrary.deletePage(id);
+        },
+        // intentionally unauthenticated, same as knowledge-base's
+        // incrementRecordView: a view is a view. it only ever bumps a counter
+        // and cannot read or change page content.
+        incrementKnowledgePageView: async (_req: unknown, { id }: { id: string }) => {
+          return knowledgeLibrary.incrementView(id);
         },
         grantKnowledgeLibraryEditor: async (_req: unknown, { userId }: { userId: string }, context: ResolverContext) => {
           assertIsAdmin(context);

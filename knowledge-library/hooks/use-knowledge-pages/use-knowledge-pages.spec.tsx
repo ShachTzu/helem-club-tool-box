@@ -12,6 +12,7 @@ function mockPage(overrides: Partial<PlainKnowledgePage> = {}): PlainKnowledgePa
     parentId: null,
     ancestorIds: [],
     domains: [],
+    viewCount: 0,
     publishDate: '2024-01-01T00:00:00.000Z',
     authorName: 'הלם קלאב',
     isStaffAuthor: true,

@@ -16,6 +16,9 @@ export const GET_KNOWLEDGE_PAGE_QUERY = gql`
       image
       videoUrl
       videoEmbedHtml
+      mediaType
+      durationSec
+      viewCount
       publishDate
       authorName
       isStaffAuthor

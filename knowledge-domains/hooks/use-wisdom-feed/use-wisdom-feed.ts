@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { mockApps } from '@helemclub/toolbox.entities.app';
 import { mockPosts } from '@helemclub/blog.entities.post';
-import { mockMediaRecords } from '@helemclub/knowledge-base.entities.media-record';
+import { mockKnowledgePages } from '@helemclub/knowledge-library.entities.knowledge-page';
 import { mockEvents } from '@helemclub/events.entities.event';
 import { mockGalleryItems } from '@helemclub/gallery.entities.gallery-item';
 
@@ -95,7 +95,7 @@ export type WisdomFeedFilters = {
 export function buildWisdomFeed(): WisdomItem[] {
   const apps = mockApps().map((a) => a.toObject());
   const posts = mockPosts().map((p) => p.toObject());
-  const records = mockMediaRecords().map((r) => r.toObject());
+  const records = mockKnowledgePages();
   const events = mockEvents().map((e) => e.toObject());
   const gallery = mockGalleryItems().map((g) => g.toObject());
 
@@ -122,15 +122,18 @@ export function buildWisdomFeed(): WisdomItem[] {
       meta: `${p.authorName} · ${(p.viewCount ?? 0).toLocaleString('he-IL')} צפיות`,
       score: p.viewCount ?? 0,
     })),
+    // the 'record' channel key is kept for compatibility with existing
+    // domain-tag targetTypes; it now sources from the knowledge library,
+    // which absorbed the retired knowledge-base scope.
     ...records.map((r) => ({
       id: `rec-${r.id}`,
       channel: 'record' as const,
       title: r.title,
-      description: r.description ?? '',
-      image: r.thumbnailUrl,
-      to: `/knowledge/record/${r.slug}`,
+      description: r.body,
+      image: r.image,
+      to: `/knowledge-library/${r.slug}`,
       domains: r.domains ?? [],
-      meta: `${r.mediaType === 'video' ? '🎬' : '🎧'} ${(r.viewCount ?? 0).toLocaleString('he-IL')} צפיות`,
+      meta: `${r.mediaType === 'audio' ? '🎧' : '🎬'} ${(r.viewCount ?? 0).toLocaleString('he-IL')} צפיות`,
       score: r.viewCount ?? 0,
     })),
     ...events.map((e) => ({
@@ -162,7 +165,7 @@ export function buildWisdomFeed(): WisdomItem[] {
 
 /**
  * aggregates content from every feature channel (toolbox apps, blog posts,
- * knowledge-base records, events, gallery works) into a single normalized,
+ * knowledge-library pages, events, gallery works) into a single normalized,
  * ranked feed, then applies channel/domain/query filters and sorting. this is
  * the cross-cutting aggregation that powers the "חוכמת הקהילה" hub.
  */

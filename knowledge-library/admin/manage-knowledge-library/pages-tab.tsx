@@ -1,4 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react';
+import classNames from 'classnames';
 import { Button } from '@helemclub/design.actions.button';
 import { TextInput } from '@helemclub/design.inputs.text-input';
 import { Textarea } from '@helemclub/design.inputs.textarea';
@@ -25,6 +26,8 @@ type FormValues = {
   image: string;
   videoUrl: string;
   videoEmbedHtml: string;
+  mediaType: '' | 'video' | 'audio';
+  durationSec: string;
   publishDate: string;
   isPublished: boolean;
 };
@@ -38,6 +41,8 @@ function emptyForm(): FormValues {
     image: '',
     videoUrl: '',
     videoEmbedHtml: '',
+    mediaType: '',
+    durationSec: '',
     publishDate: TODAY(),
     isPublished: true,
   };
@@ -159,6 +164,8 @@ export function PagesTab() {
       image: page.image || '',
       videoUrl: page.videoUrl || '',
       videoEmbedHtml: page.videoEmbedHtml || '',
+      mediaType: (page.mediaType as '' | 'video' | 'audio') || '',
+      durationSec: page.durationSec ? String(page.durationSec) : '',
       publishDate: page.publishDate.slice(0, 10),
       isPublished: page.isPublished,
     });
@@ -195,6 +202,8 @@ export function PagesTab() {
       image: formValues.image || undefined,
       videoUrl: formValues.videoUrl || undefined,
       videoEmbedHtml: formValues.videoEmbedHtml || undefined,
+      mediaType: formValues.mediaType || undefined,
+      durationSec: formValues.durationSec ? Number(formValues.durationSec) : undefined,
       publishDate: formValues.publishDate ? new Date(formValues.publishDate).toISOString() : undefined,
       isPublished: formValues.isPublished,
     };
@@ -324,6 +333,39 @@ export function PagesTab() {
               value={formValues.videoUrl}
               onChange={(value) => setFormValues({ ...formValues, videoUrl: value })}
             />
+
+            <div className={styles.formField}>
+              <span className={styles.formLabel}>סוג המדיה</span>
+              <div className={styles.mediaTypeToggle}>
+                {([
+                  { value: '', label: 'ללא / טקסט בלבד' },
+                  { value: 'video', label: '🎬 וידאו' },
+                  { value: 'audio', label: '🎧 אודיו' },
+                ] as const).map((option) => (
+                  <button
+                    key={option.value || 'none'}
+                    type="button"
+                    className={classNames(
+                      styles.mediaTypeOption,
+                      formValues.mediaType === option.value && styles.mediaTypeOptionActive
+                    )}
+                    onClick={() => setFormValues({ ...formValues, mediaType: option.value })}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {formValues.mediaType && (
+              <TextInput
+                label="אורך ההקלטה בשניות (אופציונלי)"
+                type="number"
+                placeholder="למשל 504"
+                value={formValues.durationSec}
+                onChange={(value) => setFormValues({ ...formValues, durationSec: value })}
+              />
+            )}
 
             <Textarea
               label="קוד הטמעה (iframe מ-YouTube/Spotify בלבד)"

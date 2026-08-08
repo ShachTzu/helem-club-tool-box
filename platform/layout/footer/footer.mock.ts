@@ -3,7 +3,7 @@ import type { EmergencyContact } from './emergency-contact-type.js';
 
 export const DEFAULT_FOOTER_LINKS: FooterLink[] = [
   { label: `ארגז כלים`, href: `/toolbox`, group: `האקוסיסטם` },
-  { label: `מאגר ידע`, href: `/knowledge`, group: `האקוסיסטם` },
+  { label: `ספריית הידע`, href: `/knowledge-library`, group: `האקוסיסטם` },
   { label: `בלוג`, href: `/blog`, group: `האקוסיסטם` },
   { label: `אירועים`, href: `/events`, group: `האקוסיסטם` },
   { label: `גלריית PTSDART`, href: `/gallery`, group: `האקוסיסטם` },

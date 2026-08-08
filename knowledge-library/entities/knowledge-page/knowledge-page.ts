@@ -11,6 +11,13 @@
  * pages/admin components (confirmed via `bit deps circular`). mirrors
  * knowledge-base/entities/media-record's role in that scope.
  */
+/**
+ * the kind of media a page carries, when it carries any. absorbed from the
+ * retired knowledge-base scope so a single library can hold both written
+ * chapters and recorded video/audio.
+ */
+export type KnowledgePageMediaType = 'video' | 'audio';
+
 export type PlainKnowledgePage = {
   id: string;
   slug: string;
@@ -30,6 +37,19 @@ export type PlainKnowledgePage = {
    * knowledge-library/knowledge-library/embed-allowlist.ts.
    */
   videoEmbedHtml?: string;
+  /**
+   * video vs audio, when the page carries a recording. undefined for a
+   * text-only page.
+   */
+  mediaType?: KnowledgePageMediaType;
+  /**
+   * length of the recording in seconds, when known.
+   */
+  durationSec?: number;
+  /**
+   * how many times the page has been viewed.
+   */
+  viewCount: number;
   publishDate: string;
   authorName: string;
   isStaffAuthor: boolean;
@@ -98,6 +118,8 @@ export type CreatePageOptions = {
    * silently dropped.
    */
   videoEmbedHtml?: string;
+  mediaType?: KnowledgePageMediaType;
+  durationSec?: number;
   /**
    * optional slug. when omitted, a slug is derived from the title.
    */
@@ -122,6 +144,8 @@ export type UpdatePageOptions = {
   image?: string;
   videoUrl?: string;
   videoEmbedHtml?: string;
+  mediaType?: KnowledgePageMediaType;
+  durationSec?: number;
   publishDate?: string;
   isPublished?: boolean;
 };

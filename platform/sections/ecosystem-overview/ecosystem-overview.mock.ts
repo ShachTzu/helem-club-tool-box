@@ -8,9 +8,9 @@ export const DEFAULT_PILLARS: EcosystemPillar[] = [
   {
     slug: `knowledge`,
     icon: `📚`,
-    title: `מאגר ידע`,
-    description: `סדרות וידאו, הקלטות והרצאות לפי נושא — ידע מקצועי שנבנה עם אנשי מקצוע.`,
-    href: `/knowledge`,
+    title: `ספריית הידע`,
+    description: `סדרות, פרקים, וידאו והקלטות לפי נושא — ידע מקצועי שנבנה עם אנשי מקצוע.`,
+    href: `/knowledge-library`,
   },
   {
     slug: `toolbox`,

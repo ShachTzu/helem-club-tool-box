@@ -14,6 +14,9 @@ const PAGE_FIELDS = `
   image
   videoUrl
   videoEmbedHtml
+  mediaType
+  durationSec
+  viewCount
   publishDate
   authorName
   isStaffAuthor

@@ -52,6 +52,19 @@ export class KnowledgePageModel {
   @prop({ type: String })
   public videoEmbedHtml?: string;
 
+  /**
+   * 'video' | 'audio' when the page carries a recording; undefined for a
+   * text-only page. absorbed from the retired knowledge-base scope.
+   */
+  @prop({ type: String })
+  public mediaType?: string;
+
+  @prop({ type: Number })
+  public durationSec?: number;
+
+  @prop({ type: Number, default: 0 })
+  public viewCount?: number;
+
   @prop({ required: true, type: String })
   public publishDate: string;
 
