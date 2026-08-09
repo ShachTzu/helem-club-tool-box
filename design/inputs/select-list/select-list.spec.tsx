@@ -78,6 +78,35 @@ describe(`SelectList`, () => {
     expect(handleChange).toHaveBeenCalledWith([`sleep`]);
   });
 
+  it(`is keyboard operable: focusable trigger, opens and selects without a mouse`, () => {
+    const handleChange = vi.fn();
+    const { container } = render(
+      <MemoryRouter>
+        <SelectList options={OPTIONS} onChange={handleChange} searchable={false} label="מגדר" />
+      </MemoryRouter>
+    );
+
+    const trigger = container.querySelector(`.${styles.trigger}`) as HTMLDivElement;
+    expect(trigger.getAttribute(`role`)).toBe(`combobox`);
+    expect(trigger.tabIndex).toBe(0);
+    expect(trigger.getAttribute(`aria-expanded`)).toBe(`false`);
+
+    fireEvent.keyDown(trigger, { key: `Enter` });
+    expect(trigger.getAttribute(`aria-expanded`)).toBe(`true`);
+    expect(container.querySelector(`[role="listbox"]`)).toBeTruthy();
+
+    fireEvent.keyDown(trigger, { key: `ArrowDown` });
+    fireEvent.keyDown(trigger, { key: `Enter` });
+    expect(handleChange).toHaveBeenCalledWith(`sleep`);
+
+    // the trigger points the screen reader at the active option while arrowing.
+    fireEvent.keyDown(trigger, { key: `ArrowDown` });
+    expect(trigger.getAttribute(`aria-activedescendant`)).toBeTruthy();
+
+    fireEvent.keyDown(trigger, { key: `Escape` });
+    expect(trigger.getAttribute(`aria-expanded`)).toBe(`false`);
+  });
+
   it(`filters options based on the search query`, () => {
     const { container } = render(
       <MemoryRouter>

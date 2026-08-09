@@ -29,6 +29,11 @@
   transition: border-color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out);
 }
 
+.trigger:focus-visible {
+  outline: 2px solid var(--colors-secondary-default);
+  outline-offset: 2px;
+}
+
 .triggerOpen {
   border-color: var(--colors-secondary-default);
   box-shadow: var(--effects-shadows-small);
@@ -146,10 +151,8 @@
   gap: var(--spacing-small);
   width: 100%;
   box-sizing: border-box;
-  background: transparent;
-  border: none;
   padding: 10px var(--spacing-medium);
-  font-family: var(--typography-font-family);
+  border-inline-start: 2px solid transparent;
   font-size: var(--typography-sizes-body-default);
   color: var(--colors-text-primary);
   text-align: right;
@@ -159,6 +162,12 @@
 
 .option:hover {
   background-color: var(--colors-surface-secondary);
+}
+
+/* the keyboard-active option, pointed at by aria-activedescendant. */
+.optionActive {
+  background-color: var(--colors-surface-secondary);
+  border-inline-start-color: var(--colors-secondary-default);
 }
 
 .optionSelected {
