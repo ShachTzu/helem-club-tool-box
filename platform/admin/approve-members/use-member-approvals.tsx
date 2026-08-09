@@ -90,6 +90,17 @@ const GET_MEMBER_PROFILE_QUERY = gql`
   }
 `;
 
+const COUNT_MEMBER_PROFILES_QUERY = gql`
+  query CountMemberProfiles {
+    countMemberProfiles {
+      none
+      pending
+      approved
+      rejected
+    }
+  }
+`;
+
 const SET_MEMBERSHIP_STATUS_MUTATION = gql`
   mutation SetMembershipStatus($options: SetMembershipStatusOptions!) {
     setMembershipStatus(options: $options) {
@@ -229,6 +240,13 @@ export function useMemberApprovals(options?: UseMemberApprovalsOptions): UseMemb
     }
   );
 
+  // the tab counts must span the whole queue, not the rows the active filter
+  // happened to load — otherwise every tab you are not looking at reads 0.
+  const countsResult = useQuery<{ countMemberProfiles: Record<MembershipStatus, number> }>(
+    COUNT_MEMBER_PROFILES_QUERY,
+    { skip: hasMock }
+  );
+
   const [mutate, { loading: deciding }] = useMutation(SET_MEMBERSHIP_STATUS_MUTATION);
 
   const loaded = queryResult.data?.listMemberProfiles;
@@ -244,14 +262,13 @@ export function useMemberApprovals(options?: UseMemberApprovalsOptions): UseMemb
       .filter((profile) => matchesQuery(profile, debouncedQuery));
   }, [hasMock, allProfiles, status, debouncedQuery]);
 
-  // the counts come from the unfiltered mock list, or from the loaded page.
-  // ponytail: good enough while the community is in the hundreds — swap in the
-  // countMemberProfiles query if the queue ever outgrows a single page.
-  const counts = useMemo(() => countByStatus(hasMock ? mockProfiles : allProfiles), [
-    hasMock,
-    mockProfiles,
-    allProfiles,
-  ]);
+  const counts = useMemo(
+    () =>
+      hasMock
+        ? countByStatus(mockProfiles)
+        : countsResult.data?.countMemberProfiles || EMPTY_COUNTS,
+    [hasMock, mockProfiles, countsResult.data]
+  );
 
   const setStatus = async (userId: string, nextStatus: MembershipStatus, note?: string) => {
     if (hasMock) {
@@ -265,7 +282,8 @@ export function useMemberApprovals(options?: UseMemberApprovalsOptions): UseMemb
 
     const result = await mutate({ variables: { options: { userId, status: nextStatus, note } } });
     if (!result.data) return false;
-    await queryResult.refetch();
+    // a decision moves someone between tabs, so the totals move with them.
+    await Promise.all([queryResult.refetch(), countsResult.refetch()]);
     return true;
   };
 
