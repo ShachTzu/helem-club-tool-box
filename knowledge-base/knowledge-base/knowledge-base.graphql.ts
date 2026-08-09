@@ -57,6 +57,11 @@ export function knowledgeBaseGqlSchema(knowledgeBase: KnowledgeBaseNode): GqlSch
         publishedAt: String!
       }
 
+      type KnowledgeBaseViewStats {
+        totalViews: Int!
+        registeredViews: Int!
+      }
+
       type KnowledgeBaseLabel {
         id: String!
         slug: String!
@@ -109,6 +114,7 @@ export function knowledgeBaseGqlSchema(knowledgeBase: KnowledgeBaseNode): GqlSch
         getRecord(idOrSlug: String!): KnowledgeBaseMediaRecord
         listLabels: [KnowledgeBaseLabel]
         getLabel(idOrSlug: String!): KnowledgeBaseLabel
+        getKnowledgeBaseViewStats: KnowledgeBaseViewStats
       }
 
       type Mutation {
@@ -134,6 +140,10 @@ export function knowledgeBaseGqlSchema(knowledgeBase: KnowledgeBaseNode): GqlSch
         },
         getLabel: async (_req: unknown, { idOrSlug }: { idOrSlug: string }) => {
           return knowledgeBase.getLabel(idOrSlug);
+        },
+        getKnowledgeBaseViewStats: async (_req: unknown, _args: unknown, context: ResolverContext) => {
+          assertCanManage(context);
+          return knowledgeBase.getViewStats();
         },
       },
       Mutation: {
@@ -163,8 +173,12 @@ export function knowledgeBaseGqlSchema(knowledgeBase: KnowledgeBaseNode): GqlSch
           assertCanManage(context);
           return knowledgeBase.deleteRecord(id);
         },
-        incrementRecordView: async (_req: unknown, { recordId }: { recordId: string }) => {
-          return knowledgeBase.incrementView(recordId);
+        incrementRecordView: async (
+          _req: unknown,
+          { recordId }: { recordId: string },
+          context: ResolverContext
+        ) => {
+          return knowledgeBase.incrementView(recordId, context);
         },
         upsertLabel: async (
           _req: unknown,

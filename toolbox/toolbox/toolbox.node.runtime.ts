@@ -25,6 +25,8 @@ import type {
   ReviewAppInput,
   IncrementClickInput,
   RateAppInput,
+  RatingStats,
+  ToolboxViewStats,
 } from './toolbox-options.js';
 
 type ResolverContext = {
@@ -315,6 +317,15 @@ export class ToolboxNode {
   }
 
   /**
+   * record a view of an app's detail page. whether the view counts as
+   * "registered" is resolved from the session here, never from the client.
+   */
+  async incrementToolboxAppView(appId: string, context: ResolverContext): Promise<boolean> {
+    const user = await this.helamPlatform.getCurrentUser(context || {});
+    return this.appRepository.incrementView(appId, Boolean(user));
+  }
+
+  /**
    * create a review for an app and recompute the app's aggregate rating
    * metrics (average, count and histogram).
    */
@@ -342,6 +353,26 @@ export class ToolboxNode {
     await this.appRepository.updateAppRating(input.appId, avgRating, count, histogram);
 
     return this.toPlainReview(review);
+  }
+
+  /**
+   * aggregate rating counters for the toolbox admin engagement dashboard.
+   * moderators and admins only.
+   */
+  async getToolboxRatingStats(context: ResolverContext): Promise<RatingStats> {
+    await this.requireModerator(context);
+    return this.appReviewRepository.getRatingStats();
+  }
+
+  /**
+   * aggregate view counters (total + registered split) across every approved
+   * app, for the toolbox admin engagement dashboard. moderators and admins
+   * only.
+   */
+  async getToolboxViewStats(context: ResolverContext): Promise<ToolboxViewStats> {
+    await this.requireModerator(context);
+    const totals = await this.appRepository.getViewTotals();
+    return { totalViews: totals.totalViews, registeredViews: totals.registeredViews };
   }
 
   static dependencies = [SymphonyPlatformAspect, HelamPlatformAspect];

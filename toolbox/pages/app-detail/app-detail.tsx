@@ -5,6 +5,7 @@ import { PageLayout } from '@helemclub/design.layouts.page-layout';
 import { Image } from '@helemclub/design.content.image';
 import { CtaButton } from '@helemclub/design.actions.cta-button';
 import { DomainBadge } from '@helemclub/knowledge-domains.ui.domain-badge';
+import { useTrackViewOnce } from '@helemclub/platform.hooks.use-track-view-once';
 import { EngagementBar } from '@helemclub/engagement.ui.engagement-bar';
 import { RatingSummary } from '@helemclub/toolbox.ui.rating-summary';
 import { App, type PlainApp } from '@helemclub/toolbox.entities.app';
@@ -103,7 +104,7 @@ export function AppDetail({
   const params = useParams<{ slug?: string }>();
   const resolvedSlug = slug || params.slug || DEFAULT_APP_DATA.slug;
 
-  const { getApp, app: fetchedApp, appLoading, appError, incrementClick } = useApps();
+  const { getApp, app: fetchedApp, appLoading, appError, incrementClick, incrementView } = useApps();
 
   useEffect(() => {
     if (appProp) return;
@@ -113,6 +114,8 @@ export function AppDetail({
   const resolvedApp = appProp ? App.from(appProp) : fetchedApp;
   const isLoading = !appProp && appLoading;
   const hasError = !appProp && Boolean(appError);
+
+  useTrackViewOnce(resolvedApp?.id, (id) => incrementView(id).catch(() => undefined), { skip: Boolean(appProp) });
 
   const { reviews, rateApp, submitting, submitError } = useAppReviews(resolvedApp?.id || ``, {
     mockData: reviewsProp || (appProp ? undefined : DEFAULT_REVIEWS_DATA.filter((review) => review.appId === resolvedApp?.id)),

@@ -1,5 +1,6 @@
 import { SymphonyPlatformAspect, type SymphonyPlatformNode } from '@bitdev/symphony.symphony-platform';
 import { HelamPlatformAspect, type HelamPlatformNode } from '@helemclub/platform.helam-platform';
+import { EngagementAspect, type EngagementNode } from '@helemclub/engagement.engagement';
 import { getModelForClass } from '@typegoose/typegoose';
 import { Post } from '@helemclub/blog.entities.post';
 import { Author } from '@helemclub/blog.entities.author';
@@ -44,6 +45,7 @@ export class BlogNode {
     private blogConfig: BlogConfig,
     private symphonyPlatform: SymphonyPlatformNode,
     private helamPlatform: HelamPlatformNode,
+    private engagementNode: EngagementNode,
     private postRepository: PostRepository
   ) {}
 
@@ -174,10 +176,12 @@ export class BlogNode {
 
   /**
    * record a view for a post, keyed by an anonymous device id so unique
-   * visitors can be tracked without authentication.
+   * visitors can be tracked without authentication. whether the view counts
+   * as "registered" is resolved from the session here, never from the client.
    */
-  async incrementView(postId: string, deviceId: string): Promise<boolean> {
-    return this.postRepository.incrementView(postId, deviceId);
+  async incrementView(postId: string, deviceId: string, context?: BlogContext): Promise<boolean> {
+    const user = await this.currentUser(context);
+    return this.postRepository.incrementView(postId, deviceId, Boolean(user));
   }
 
   /**
@@ -211,17 +215,25 @@ export class BlogNode {
 
   /**
    * compute aggregated blog dashboard metrics for the given time range.
-   * headline metrics (posts, views, unique visitors, top posts, authors) are
-   * derived live from the posts collection; engagement counters (comments,
-   * reactions, saves, verified members) are read from the persisted stat doc.
+   * headline metrics (posts, views, unique visitors, top posts, authors) and
+   * comments are derived live (posts collection + the engagement aspect's
+   * real comment count); reactions, saves and verified members are not yet
+   * tracked for real, so they still fall back to the persisted stat doc.
+   * restricted to moderators and admins.
    */
-  async getBlogStats(_range?: BlogTimeRange): Promise<BlogStats> {
+  async getBlogStats(_range?: BlogTimeRange, context?: BlogContext): Promise<BlogStats> {
+    const user = await this.currentUser(context);
+    if (!user) throw new Unauthorized();
+    if (!this.hasRole(user, 'moderator')) throw new AccessDenied();
+
     const posts = await this.postRepository.listAllPublishedPosts();
     const counters = await this.postRepository.getEngagementCounters();
+    const commentStats = await this.engagementNode.getCommentStats('post', context || {});
 
     const totalPosts = posts.length;
     const totalViews = posts.reduce((sum, post) => sum + (post.viewCount || 0), 0);
     const uniqueVisitors = posts.reduce((sum, post) => sum + (post.uniqueVisitors || 0), 0);
+    const registeredViews = posts.reduce((sum, post) => sum + (post.registeredViewCount || 0), 0);
 
     const topPosts = [...posts]
       .sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0))
@@ -250,29 +262,30 @@ export class BlogNode {
       id: 'current',
       totalPosts,
       totalViews,
+      registeredViews,
       uniqueVisitors,
       topPosts,
       authors,
-      comments: counters?.comments ?? BLOG_STAT_MOCK.comments,
+      comments: commentStats.total,
       reactions: counters?.reactions ?? BLOG_STAT_MOCK.reactions,
       saves: counters?.saves ?? BLOG_STAT_MOCK.saves,
       verifiedMembers: counters?.verifiedMembers ?? BLOG_STAT_MOCK.verifiedMembers,
     });
   }
 
-  static dependencies = [SymphonyPlatformAspect, HelamPlatformAspect];
+  static dependencies = [SymphonyPlatformAspect, HelamPlatformAspect, EngagementAspect];
 
   static defaultConfig: BlogConfig = {};
 
   static async provider(
-    [symphonyPlatform, helamPlatform]: [SymphonyPlatformNode, HelamPlatformNode],
+    [symphonyPlatform, helamPlatform, engagementNode]: [SymphonyPlatformNode, HelamPlatformNode, EngagementNode],
     config: BlogConfig
   ) {
     const postModel = getModelForClass(PostModel);
     const authorModel = getModelForClass(AuthorModel);
     const blogStatModel = getModelForClass(BlogStatModel);
     const postRepository = new PostRepository(postModel, authorModel, blogStatModel);
-    const blog = new BlogNode(config, symphonyPlatform, helamPlatform, postRepository);
+    const blog = new BlogNode(config, symphonyPlatform, helamPlatform, engagementNode, postRepository);
 
     const gqlSchema = blogGqlSchema(blog);
 

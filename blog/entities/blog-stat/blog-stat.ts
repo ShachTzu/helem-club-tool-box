@@ -222,6 +222,11 @@ export type PlainBlogStats = {
   totalViews: number;
 
   /**
+   * of totalViews, how many came from signed-in users.
+   */
+  registeredViews?: number;
+
+  /**
    * top performing posts, ranked by views.
    */
   topPosts?: PlainBlogTopPost[];
@@ -274,6 +279,11 @@ export class BlogStats {
     readonly totalViews: number,
 
     /**
+     * of totalViews, how many came from signed-in users.
+     */
+    readonly registeredViews: number = 0,
+
+    /**
      * top performing posts, ranked by views.
      */
     readonly topPosts: BlogTopPost[] = [],
@@ -318,6 +328,7 @@ export class BlogStats {
       totalPosts: this.totalPosts,
       uniqueVisitors: this.uniqueVisitors,
       totalViews: this.totalViews,
+      registeredViews: this.registeredViews,
       topPosts: this.topPosts.map((post) => post.toObject()),
       authors: this.authors.map((author) => author.toObject()),
       comments: this.comments,
@@ -336,6 +347,7 @@ export class BlogStats {
       totalPosts = 0,
       uniqueVisitors = 0,
       totalViews = 0,
+      registeredViews = 0,
       topPosts = [],
       authors = [],
       comments = 0,
@@ -348,6 +360,7 @@ export class BlogStats {
       totalPosts,
       uniqueVisitors,
       totalViews,
+      registeredViews,
       topPosts.map((post) => BlogTopPost.from(post)),
       authors.map((author) => BlogAuthorStats.from(author)),
       comments,

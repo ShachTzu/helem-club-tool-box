@@ -59,6 +59,18 @@ export class AppModel {
   @prop({ type: Number, default: 0 })
   public clickCount: number;
 
+  /**
+   * total number of times the app's detail page was viewed.
+   */
+  @prop({ type: Number, default: 0 })
+  public viewCount: number;
+
+  /**
+   * of viewCount, how many views came from a signed-in user (vs. anonymous).
+   */
+  @prop({ type: Number, default: 0 })
+  public registeredViewCount: number;
+
   @prop({ type: Number, default: 0 })
   public helpfulYes: number;
 

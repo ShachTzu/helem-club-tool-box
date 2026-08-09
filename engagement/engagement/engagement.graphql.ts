@@ -53,6 +53,11 @@ export function engagementGqlSchema(engagementNode: EngagementNode): GqlSchema {
         hidden: Boolean
       }
 
+      type EngagementCommentStats {
+        total: Int!
+        registered: Int!
+      }
+
       input AddCommentOptions {
         targetType: String!
         targetId: String!
@@ -84,6 +89,7 @@ export function engagementGqlSchema(engagementNode: EngagementNode): GqlSchema {
         listComments(targetType: String!, targetId: String!): [EngagementComment]
         getReactions(targetType: String!, targetId: String!, deviceId: String!): EngagementReactionSummary
         listModerationQueue: [EngagementComment]
+        getCommentStats(targetType: String): EngagementCommentStats
       }
 
       type Mutation {
@@ -110,6 +116,13 @@ export function engagementGqlSchema(engagementNode: EngagementNode): GqlSchema {
         },
         listModerationQueue: async (_: unknown, __: unknown, context: GqlContext) => {
           return engagementNode.listModerationQueue(context);
+        },
+        getCommentStats: async (
+          _: unknown,
+          { targetType }: { targetType?: string },
+          context: GqlContext
+        ) => {
+          return engagementNode.getCommentStats(targetType, context);
         },
       },
       Mutation: {

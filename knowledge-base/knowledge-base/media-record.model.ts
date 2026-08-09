@@ -42,6 +42,12 @@ export class MediaRecordModel {
   @prop({ type: Number, default: 0 })
   public viewCount?: number;
 
+  /**
+   * of viewCount, how many views came from a signed-in user (vs. anonymous).
+   */
+  @prop({ type: Number, default: 0 })
+  public registeredViewCount?: number;
+
   @prop({ required: true, type: String })
   public publishedAt: string;
 }

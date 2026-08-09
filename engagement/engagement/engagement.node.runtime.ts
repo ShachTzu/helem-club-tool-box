@@ -21,6 +21,7 @@ import type {
   AddCommentInput,
   ReactionInput,
   ReactionSummary,
+  CommentStats,
 } from './engagement-options.js';
 
 type EngagementContext = {
@@ -139,6 +140,15 @@ export class EngagementNode {
    */
   async toggleReaction(input: ReactionInput): Promise<ReactionSummary> {
     return this.engagementRepository.toggleReaction(input);
+  }
+
+  /**
+   * aggregate comment counters for the admin engagement dashboards. restricted
+   * to moderator/admin roles, same as the moderation queue.
+   */
+  async getCommentStats(targetType: string | undefined, context: EngagementContext): Promise<CommentStats> {
+    await this.assertModerator(context);
+    return this.engagementRepository.getCommentStats(targetType);
   }
 
   private async assertModerator(context: EngagementContext): Promise<void> {
