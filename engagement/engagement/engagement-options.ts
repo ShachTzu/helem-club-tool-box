@@ -49,3 +49,14 @@ export type ReactionSummary = {
 export type ReportResult = {
   hidden: boolean;
 };
+
+/**
+ * aggregate comment counters used by the admin engagement dashboards. total
+ * includes every comment (hidden or not) so admins see the real volume.
+ * anonymous is total minus registered — callers derive it themselves, same
+ * as every other view/comment stat in the codebase.
+ */
+export type CommentStats = {
+  total: number;
+  registered: number;
+};

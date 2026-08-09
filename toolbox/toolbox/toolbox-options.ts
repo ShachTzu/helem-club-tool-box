@@ -154,3 +154,29 @@ export type RateAppInput = {
    */
   displayName?: string;
 };
+
+/**
+ * a single week's new-review count, keyed by the ISO date the week starts on.
+ */
+export type RatingWeeklyTrendPoint = {
+  weekStart: string;
+  count: number;
+};
+
+/**
+ * aggregate rating counters used by the toolbox admin engagement dashboard.
+ */
+export type RatingStats = {
+  reviewCount: number;
+  averageStars: number;
+  weeklyTrend: RatingWeeklyTrendPoint[];
+};
+
+/**
+ * aggregate view counters for the toolbox admin engagement dashboard, summed
+ * across every approved (public) app.
+ */
+export type ToolboxViewStats = {
+  totalViews: number;
+  registeredViews: number;
+};

@@ -9,7 +9,9 @@ import { AuthorByline } from '@helemclub/blog.ui.author-byline';
 import { PostBody } from '@helemclub/blog.ui.post-body';
 import { RelatedApps } from '@helemclub/blog.ui.related-apps';
 import { MembersOnlyGate } from '@helemclub/blog.ui.members-only-gate';
-import { useGetPost, type UseGetPostOptions } from '@helemclub/blog.hooks.use-posts';
+import { useGetPost, useIncrementView, type UseGetPostOptions } from '@helemclub/blog.hooks.use-posts';
+import { useDeviceId } from '@helemclub/platform.hooks.use-device-id';
+import { useTrackViewOnce } from '@helemclub/platform.hooks.use-track-view-once';
 import { EngagementBar } from '@helemclub/engagement.ui.engagement-bar';
 import { CommentThread } from '@helemclub/engagement.ui.comment-thread';
 import styles from './post-page.module.scss';
@@ -50,6 +52,10 @@ export function PostPage({ slug, mockPost, className, style }: PostPageProps) {
 
   const hasMock = mockPost !== undefined;
   const { post, loading } = useGetPost(activeSlug, hasMock ? { mockData: mockPost } : undefined);
+
+  const deviceId = useDeviceId();
+  const { incrementView } = useIncrementView();
+  useTrackViewOnce(post?.id, (id) => incrementView(id, deviceId).catch(() => undefined), { skip: hasMock });
 
   if (!loading && !post) {
     return (

@@ -9,6 +9,7 @@ import { MySubmissions } from '@helemclub/toolbox.pages.my-submissions';
 import { Wishlist } from '@helemclub/toolbox.pages.wishlist';
 import { ManageApps } from '@helemclub/toolbox.admin.manage-apps';
 import { ReviewSubmissions } from '@helemclub/toolbox.admin.review-submissions';
+import { ToolboxDashboard } from '@helemclub/toolbox.admin.toolbox-dashboard';
 import type { ToolboxConfig } from './toolbox-config.js';
 
 function AppDetailRoute() {
@@ -75,6 +76,11 @@ export class ToolboxBrowser {
         path: '/admin/toolbox/submissions',
         label: 'אישור הגשות',
         component: () => <ReviewSubmissions />,
+      },
+      {
+        path: '/admin/toolbox/dashboard',
+        label: 'דשבורד ארגז הכלים',
+        component: () => <ToolboxDashboard />,
       },
     ]);
 

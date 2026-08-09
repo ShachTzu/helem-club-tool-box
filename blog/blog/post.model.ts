@@ -112,6 +112,12 @@ export class PostModel {
   public uniqueVisitors!: number;
 
   /**
+   * of viewCount, how many views came from a signed-in user (vs. anonymous).
+   */
+  @prop({ type: Number, default: 0 })
+  public registeredViewCount!: number;
+
+  /**
    * anonymous device ids that have viewed the post, used to compute the
    * unique visitor count. never exposed over the public API.
    */

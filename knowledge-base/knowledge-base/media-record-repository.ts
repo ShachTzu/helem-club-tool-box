@@ -66,10 +66,14 @@ export class MediaRecordRepository {
   }
 
   /**
-   * atomically increment the view count of a record by its id.
+   * atomically increment the view count of a record by its id. isRegistered
+   * marks whether the viewer was signed in, resolved server-side from the
+   * session — never client-supplied.
    */
-  async incrementView(id: string): Promise<boolean> {
-    const result = await this.mediaRecordModel.updateOne({ id }, { $inc: { viewCount: 1 } });
+  async incrementView(id: string, isRegistered: boolean): Promise<boolean> {
+    const inc: Record<string, number> = { viewCount: 1 };
+    if (isRegistered) inc.registeredViewCount = 1;
+    const result = await this.mediaRecordModel.updateOne({ id }, { $inc: inc });
     return result.modifiedCount > 0;
   }
 
@@ -140,6 +144,21 @@ export class MediaRecordRepository {
    */
   async countByLabel(labelId: string): Promise<number> {
     return this.mediaRecordModel.countDocuments({ labelId });
+  }
+
+  /**
+   * sum the view counters across every record, for the knowledge-base admin
+   * engagement dashboard.
+   */
+  async getViewTotals(): Promise<{ totalViews: number; registeredViews: number }> {
+    const records = await this.mediaRecordModel.find().exec();
+    return records.reduce(
+      (acc, record) => ({
+        totalViews: acc.totalViews + (record.viewCount || 0),
+        registeredViews: acc.registeredViews + (record.registeredViewCount || 0),
+      }),
+      { totalViews: 0, registeredViews: 0 }
+    );
   }
 
   private async ensureUniqueSlug(baseSlug: string): Promise<string> {

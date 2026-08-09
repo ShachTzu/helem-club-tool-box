@@ -8,7 +8,7 @@ import { Login } from '@helemclub/platform.pages.login';
 import { Signup } from '@helemclub/platform.pages.signup';
 import { OnboardingPage } from '@helemclub/platform.pages.onboarding-page';
 import { Profile } from '@helemclub/platform.pages.profile';
-import { AdminDashboard } from '@helemclub/platform.pages.admin-dashboard';
+import { AdminDashboard, useAdminOverviewMetrics } from '@helemclub/platform.pages.admin-dashboard';
 import { PlanToProduction } from '@helemclub/platform.pages.plan-to-production';
 import { NotFoundPage } from '@helemclub/platform.pages.not-found-page';
 import type { HelamPlatformConfig } from './helam-platform-config.js';
@@ -230,7 +230,11 @@ export class HelamPlatformBrowser {
             path: route.path,
             component: route.component,
           }));
-          return <AdminDashboard panels={panels.length > 0 ? panels : undefined} />;
+          // ponytail: while the overview query is loading/erroring we show no
+          // metrics rather than falling back to AdminDashboard's built-in
+          // placeholder numbers, so admins never see fabricated data.
+          const { metrics } = useAdminOverviewMetrics();
+          return <AdminDashboard panels={panels.length > 0 ? panels : undefined} metrics={metrics || []} />;
         },
       },
       {

@@ -6,6 +6,7 @@ import type {
   AddCommentInput,
   ReactionInput,
   ReactionSummary,
+  CommentStats,
 } from './engagement-options.js';
 
 /**
@@ -157,6 +158,19 @@ export class EngagementRepository {
     }
 
     return this.getReactions(targetType, targetId, deviceId);
+  }
+
+  /**
+   * aggregate comment counters for the admin engagement dashboards: total
+   * (including hidden) and a registered-vs-anonymous split. optionally
+   * scoped to a single target type (e.g. only "post").
+   */
+  async getCommentStats(targetType?: string): Promise<CommentStats> {
+    const filter: Record<string, unknown> = targetType ? { targetType } : {};
+    const total = await this.commentModel.countDocuments(filter);
+    const registered = await this.commentModel.countDocuments({ ...filter, userId: { $nin: [null, ''] } });
+
+    return { total, registered };
   }
 
   /**

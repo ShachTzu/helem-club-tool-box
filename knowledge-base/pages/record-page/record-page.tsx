@@ -5,7 +5,8 @@ import { PageLayout } from '@helemclub/design.layouts.page-layout';
 import { EmptyState } from '@helemclub/design.feedback.empty-state';
 import { TagChip } from '@helemclub/design.content.tag-chip';
 import { MediaPlayer } from '@helemclub/knowledge-base.ui.media-player';
-import { useRecord, type UseRecordOptions } from '@helemclub/knowledge-base.hooks.use-records';
+import { useRecord, useIncrementView, type UseRecordOptions } from '@helemclub/knowledge-base.hooks.use-records';
+import { useTrackViewOnce } from '@helemclub/platform.hooks.use-track-view-once';
 import { EngagementBar } from '@helemclub/engagement.ui.engagement-bar';
 import { CommentThread } from '@helemclub/engagement.ui.comment-thread';
 import styles from './record-page.module.scss';
@@ -45,6 +46,9 @@ export function RecordPage({ slug, mockRecord, className, style }: RecordPagePro
 
   const hasMock = mockRecord !== undefined;
   const { record, loading } = useRecord(activeSlug, hasMock ? { mockData: mockRecord } : undefined);
+
+  const { incrementView } = useIncrementView();
+  useTrackViewOnce(record?.id, (id) => incrementView(id).catch(() => undefined), { skip: hasMock });
 
   if (!loading && !record) {
     return (

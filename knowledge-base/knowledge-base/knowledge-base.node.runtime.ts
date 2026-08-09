@@ -28,6 +28,20 @@ export type PlainKnowledgeBaseLabel = {
   recordCount: number;
 };
 
+/**
+ * the shape of the GraphQL resolver context this runtime reads the session
+ * from, used only to tell registered from anonymous viewers when recording a
+ * view. matches the broader ResolverContext shape the GraphQL layer already
+ * passes around in this aspect (session.user), plus the session.userId shape
+ * helamPlatform.getCurrentUser expects elsewhere in the codebase.
+ */
+export type KnowledgeBaseContext = {
+  session?: {
+    userId?: string;
+    user?: { id: string; role?: string };
+  };
+};
+
 export class KnowledgeBaseNode {
   constructor(
     private knowledgeBaseConfig: KnowledgeBaseConfig,
@@ -86,10 +100,12 @@ export class KnowledgeBaseNode {
   }
 
   /**
-   * atomically increment the view count of a record.
+   * atomically increment the view count of a record. whether the view counts
+   * as "registered" is resolved from the session here, never from the client.
    */
-  async incrementView(id: string): Promise<boolean> {
-    return this.mediaRecordRepository.incrementView(id);
+  async incrementView(id: string, context?: KnowledgeBaseContext): Promise<boolean> {
+    const user = await this.helamPlatform.getCurrentUser(context || {});
+    return this.mediaRecordRepository.incrementView(id, Boolean(user));
   }
 
   /**
@@ -115,6 +131,16 @@ export class KnowledgeBaseNode {
    */
   async deleteRecord(id: string): Promise<boolean> {
     return this.mediaRecordRepository.deleteRecord(id);
+  }
+
+  /**
+   * sum the view counters (total + registered split) across every record,
+   * for the knowledge-base admin engagement dashboard. authorization is
+   * enforced by the GraphQL layer (assertCanManage), matching every other
+   * management operation in this aspect.
+   */
+  async getViewStats(): Promise<{ totalViews: number; registeredViews: number }> {
+    return this.mediaRecordRepository.getViewTotals();
   }
 
   /**

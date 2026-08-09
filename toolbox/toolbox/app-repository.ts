@@ -190,6 +190,8 @@ export class AppRepository {
       status,
       isFeatured: false,
       clickCount: 0,
+      viewCount: 0,
+      registeredViewCount: 0,
       helpfulYes: 0,
       helpfulNo: 0,
       developerName: input.developerName || '',
@@ -229,6 +231,19 @@ export class AppRepository {
   }
 
   /**
+   * atomically increment the view count of an app's detail page. isRegistered
+   * marks whether the viewer was signed in, resolved server-side from the
+   * session — never client-supplied.
+   */
+  async incrementView(appId: string, isRegistered: boolean): Promise<boolean> {
+    const inc: Record<string, number> = { viewCount: 1 };
+    if (isRegistered) inc.registeredViewCount = 1;
+
+    const result = await this.appModel.updateOne({ id: appId }, { $inc: inc });
+    return result.modifiedCount > 0;
+  }
+
+  /**
    * persist recomputed rating metrics for an app.
    */
   async updateAppRating(
@@ -243,6 +258,21 @@ export class AppRepository {
       { new: true }
     );
     return updated ? updated.toObject() : null;
+  }
+
+  /**
+   * sum the view counters across every approved (public) app, for the
+   * toolbox admin engagement dashboard.
+   */
+  async getViewTotals(): Promise<{ totalViews: number; registeredViews: number }> {
+    const apps = await this.appModel.find({ status: 'approved' }).exec();
+    return apps.reduce(
+      (acc, app) => ({
+        totalViews: acc.totalViews + (app.viewCount || 0),
+        registeredViews: acc.registeredViews + (app.registeredViewCount || 0),
+      }),
+      { totalViews: 0, registeredViews: 0 }
+    );
   }
 
   private async ensureUniqueSlug(baseSlug: string): Promise<string> {

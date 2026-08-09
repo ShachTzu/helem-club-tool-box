@@ -69,6 +69,7 @@ export function blogGqlSchema(blog: BlogNode): GqlSchema {
         totalPosts: Int
         uniqueVisitors: Int
         totalViews: Int
+        registeredViews: Int
         comments: Int
         reactions: Int
         saves: Int
@@ -164,8 +165,8 @@ export function blogGqlSchema(blog: BlogNode): GqlSchema {
           const authors = await blog.listAuthors();
           return authors.map((author) => author.toObject());
         },
-        getBlogStats: async (_req: unknown, { options }: { options?: any }) => {
-          const stats = await blog.getBlogStats(options?.range);
+        getBlogStats: async (_req: unknown, { options }: { options?: any }, context: any) => {
+          const stats = await blog.getBlogStats(options?.range, context);
           return stats.toObject();
         },
       },
@@ -196,9 +197,10 @@ export function blogGqlSchema(blog: BlogNode): GqlSchema {
         },
         incrementPostView: async (
           _req: unknown,
-          { postId, deviceId }: { postId: string; deviceId: string }
+          { postId, deviceId }: { postId: string; deviceId: string },
+          context: any
         ) => {
-          return blog.incrementView(postId, deviceId);
+          return blog.incrementView(postId, deviceId, context);
         },
         setWritePermission: async (
           _req: unknown,

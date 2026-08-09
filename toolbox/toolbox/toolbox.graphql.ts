@@ -104,6 +104,22 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         createdAt: String
       }
 
+      type ToolboxRatingWeeklyTrendPoint {
+        weekStart: String!
+        count: Int!
+      }
+
+      type ToolboxRatingStats {
+        reviewCount: Int!
+        averageStars: Float!
+        weeklyTrend: [ToolboxRatingWeeklyTrendPoint!]!
+      }
+
+      type ToolboxViewStats {
+        totalViews: Int!
+        registeredViews: Int!
+      }
+
       input ListToolboxAppsOptions {
         domainIds: [String]
         sort: String
@@ -151,6 +167,8 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         listToolboxAppReviews(appId: String!): [ToolboxAppReview]
         getMyToolboxDraft(id: String!): PendingToolboxApp
         listMyToolboxSubmissions: [ToolboxApp]
+        getToolboxRatingStats: ToolboxRatingStats
+        getToolboxViewStats: ToolboxViewStats
       }
 
       type Mutation {
@@ -158,6 +176,7 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         saveToolboxDraft(options: SubmitToolboxAppOptions!, id: String): PendingToolboxApp
         reviewToolboxApp(options: ReviewToolboxAppOptions!): ToolboxApp
         incrementToolboxAppClick(options: IncrementToolboxAppClickOptions!): Boolean
+        incrementToolboxAppView(appId: ID!): Boolean
         rateToolboxApp(options: RateToolboxAppOptions!): ToolboxAppReview
         createToolboxUploadSignature: ToolboxUploadSignature
       }
@@ -197,6 +216,12 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         ) => {
           return toolboxNode.listMySubmissions(context);
         },
+        getToolboxRatingStats: async (_parent: unknown, _args: unknown, context: ResolverContext) => {
+          return toolboxNode.getToolboxRatingStats(context);
+        },
+        getToolboxViewStats: async (_parent: unknown, _args: unknown, context: ResolverContext) => {
+          return toolboxNode.getToolboxViewStats(context);
+        },
       },
       Mutation: {
         submitToolboxApp: async (
@@ -225,6 +250,13 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
           { options }: { options: IncrementClickInput }
         ) => {
           return toolboxNode.incrementToolboxAppClick(options);
+        },
+        incrementToolboxAppView: async (
+          _parent: unknown,
+          { appId }: { appId: string },
+          context: ResolverContext
+        ) => {
+          return toolboxNode.incrementToolboxAppView(appId, context);
         },
         rateToolboxApp: async (
           _parent: unknown,

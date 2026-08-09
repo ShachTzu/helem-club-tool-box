@@ -6,6 +6,7 @@ import { LabelLobby } from '@helemclub/knowledge-base.pages.label-lobby';
 import { RecordPage } from '@helemclub/knowledge-base.pages.record-page';
 import { ManageLabels } from '@helemclub/knowledge-base.admin.manage-labels';
 import { ManageRecords } from '@helemclub/knowledge-base.admin.manage-records';
+import { KnowledgeBaseDashboard } from '@helemclub/knowledge-base.admin.knowledge-base-dashboard';
 import { KnowledgePreview } from '@helemclub/knowledge-base.sections.knowledge-preview';
 import type { KnowledgeBaseConfig } from './knowledge-base-config.js';
 
@@ -77,6 +78,11 @@ export class KnowledgeBaseBrowser {
         path: 'knowledge-records',
         label: 'ניהול תכני מאגר הידע',
         component: () => <ManageRecords />,
+      },
+      {
+        path: 'knowledge-dashboard',
+        label: 'דשבורד מאגר הידע',
+        component: () => <KnowledgeBaseDashboard />,
       },
     ]);
 

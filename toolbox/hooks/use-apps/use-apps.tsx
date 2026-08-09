@@ -5,6 +5,7 @@ import { useListPendingApps } from './use-list-pending-apps.js';
 import { useSubmitApp, type SubmitAppOptions } from './use-submit-app.js';
 import { useReviewApp, type ReviewAppOptions } from './use-review-app.js';
 import { useIncrementAppClick, type IncrementAppClickOptions } from './use-increment-app-click.js';
+import { useIncrementAppView } from './use-increment-app-view.js';
 
 export type { AppSort } from './use-list-apps.js';
 export type { SubmitAppOptions } from './use-submit-app.js';
@@ -71,6 +72,7 @@ export function useApps(options?: UseAppsOptions) {
   const { submitApp, loading: submitting, error: submitError } = useSubmitApp();
   const { reviewApp: reviewAppMutation, loading: reviewing, error: reviewError } = useReviewApp();
   const { incrementClick, loading: incrementing, error: incrementError } = useIncrementAppClick();
+  const { incrementView } = useIncrementAppView();
 
   const reviewApp = async (reviewOptions: ReviewAppOptions) => {
     // in mock mode (tests/previews) no Apollo mutation is wired, so resolve
@@ -118,5 +120,6 @@ export function useApps(options?: UseAppsOptions) {
     incrementClick,
     incrementing,
     incrementError,
+    incrementView,
   };
 }

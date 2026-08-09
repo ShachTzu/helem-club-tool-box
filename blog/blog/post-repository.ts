@@ -115,6 +115,7 @@ export class PostRepository {
       publishDate: new Date().toISOString(),
       viewCount: 0,
       uniqueVisitors: 0,
+      registeredViewCount: 0,
       viewedDeviceIds: [],
     });
 
@@ -141,6 +142,7 @@ export class PostRepository {
       visibility: 'public',
       viewCount: 0,
       uniqueVisitors: 0,
+      registeredViewCount: 0,
       viewedDeviceIds: [],
       submitterName: input.submitterName,
       submitterEmail: input.submitterEmail,
@@ -192,17 +194,22 @@ export class PostRepository {
 
   /**
    * atomically increment the view count of a post, and track the unique
-   * visitor count by only counting each device id once.
+   * visitor count by only counting each device id once. isRegistered marks
+   * whether the viewer was signed in, resolved server-side from the session
+   * — never client-supplied.
    */
-  async incrementView(id: string, deviceId: string): Promise<boolean> {
+  async incrementView(id: string, deviceId: string, isRegistered: boolean): Promise<boolean> {
     const existing = await this.postModel.findOne({ id }).exec();
     if (!existing) return false;
 
     const isNewDevice = deviceId ? !existing.viewedDeviceIds.includes(deviceId) : false;
-    const update: Record<string, unknown> = { $inc: { viewCount: 1 } };
+    const inc: Record<string, number> = { viewCount: 1 };
+    if (isRegistered) inc.registeredViewCount = 1;
+
+    const update: Record<string, unknown> = { $inc: inc };
 
     if (isNewDevice) {
-      update.$inc = { viewCount: 1, uniqueVisitors: 1 };
+      inc.uniqueVisitors = 1;
       update.$addToSet = { viewedDeviceIds: deviceId };
     }
 
