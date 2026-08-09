@@ -4,6 +4,7 @@ import { BrowserRuntime } from '@bitdev/harmony.runtimes.browser-runtime';
 import { NodeJSRuntime } from '@bitdev/harmony.runtimes.nodejs-runtime';
 import { SymphonyPlatformAspect } from '@bitdev/symphony.symphony-platform';
 import { HelamPlatformAspect } from '@helemclub/platform.helam-platform';
+import { MembershipAspect } from '@helemclub/platform.membership';
 import { KnowledgeDomainsAspect } from '@helemclub/knowledge-domains.knowledge-domains';
 import { EngagementAspect } from '@helemclub/engagement.engagement';
 import { ToolboxAspect } from '@helemclub/toolbox.toolbox';
@@ -32,6 +33,7 @@ export const helamApp = HarmonyPlatform.from({
   // The cast bridges the nominal type gap between the two harmony copies.
   aspects: [
     HelamPlatformAspect,
+    MembershipAspect,
     KnowledgeDomainsAspect,
     EngagementAspect,
     ToolboxAspect,

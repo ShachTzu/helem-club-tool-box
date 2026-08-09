@@ -78,6 +78,29 @@
   display: block;
 }
 
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.fieldError {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--helam-color-danger, #c2334d);
+}
+
+.privacyNote {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--helam-color-surface-muted, #f6f8fa);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--helam-color-text-muted, #6b7c8f);
+}
+
 .fieldLabel {
   display: block;
   font-weight: 700;
@@ -99,30 +122,6 @@
   font-size: 14px;
   color: var(--helam-color-secondary, #4f6d7a);
   cursor: pointer;
-}
-
-.roles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.roleButton {
-  cursor: pointer;
-  border: 1px solid var(--helam-color-border, #e2e8ee);
-  background: #fff;
-  color: var(--helam-color-secondary, #4f6d7a);
-  font-weight: 700;
-  font-size: 14px;
-  padding: 10px 18px;
-  border-radius: 999px;
-  font-family: inherit;
-}
-
-.roleButtonActive {
-  border-color: var(--helam-color-secondary, #4f6d7a);
-  background: var(--helam-color-secondary, #4f6d7a);
-  color: #fff;
 }
 
 .interests {
@@ -154,4 +153,10 @@
   font-size: 13px;
   color: var(--helam-color-text-muted, #6b7c8f);
   margin-top: 18px;
+}
+
+@media (max-width: 520px) {
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
 }

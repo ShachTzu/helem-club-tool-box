@@ -9,3 +9,54 @@
   margin: 0 auto;
   padding: 40px 20px 64px;
 }
+
+.error {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--helam-color-danger-surface, #fdecef);
+  color: var(--helam-color-danger, #c2334d);
+  font-size: 14px;
+  text-align: center;
+}
+
+.pendingCard {
+  background: #fff;
+  border: 1px solid var(--helam-color-border, #e2e8ee);
+  border-radius: 20px;
+  padding: 40px 28px;
+  text-align: center;
+}
+
+.pendingIcon {
+  font-size: 44px;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.pendingTitle {
+  margin: 0 0 12px;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--helam-color-primary, #0b1a30);
+}
+
+.pendingText {
+  margin: 0 auto 24px;
+  max-width: 460px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--helam-color-text-muted, #6b7c8f);
+}
+
+.pendingButton {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 28px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--helam-color-secondary, #4f6d7a);
+  cursor: pointer;
+}

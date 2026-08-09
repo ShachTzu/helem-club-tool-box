@@ -6,6 +6,7 @@ import {
   HelamPlatformAspect,
   type HelamPlatformNode,
 } from '@helemclub/platform.helam-platform';
+import { MembershipAspect, type MembershipNode } from '@helemclub/platform.membership';
 import { getModelForClass } from '@typegoose/typegoose';
 import { Unauthorized } from '@bitdev/symphony.exceptions.unauthorized';
 import { AccessDenied } from '@bitdev/symphony.exceptions.access-denied';
@@ -109,6 +110,7 @@ export class ToolboxNode {
     private toolboxConfig: ToolboxConfig,
     private symphonyPlatform: SymphonyPlatformNode,
     private helamPlatform: HelamPlatformNode,
+    private membership: MembershipNode,
     private appRepository: AppRepository,
     private appReviewRepository: AppReviewRepository,
     private cloudinaryConfig: CloudinaryConfig | undefined
@@ -175,6 +177,22 @@ export class ToolboxNode {
   private async requireModerator(context: ResolverContext) {
     const user = await this.requireUser(context);
     if (!MODERATOR_ROLES.includes(user.role)) throw new AccessDenied();
+    return user;
+  }
+
+  /**
+   * require an approved community member. publishing into the catalog is a
+   * member-only act: signing in makes you an account, an admin approving your
+   * onboarding makes you a member.
+   *
+   * moderators and admins pass regardless — they are staff, and requiring them
+   * to also hold an approved profile would lock the team out of its own tools.
+   */
+  private async requireMember(context: ResolverContext) {
+    const user = await this.requireUser(context);
+    if (MODERATOR_ROLES.includes(user.role)) return user;
+    const approved = await this.membership.isApprovedMember(user.id);
+    if (!approved) throw new AccessDenied();
     return user;
   }
 
@@ -249,7 +267,7 @@ export class ToolboxNode {
     context: ResolverContext,
     draftId?: string
   ): Promise<PlainApp | null> {
-    const user = await this.requireUser(context);
+    const user = await this.requireMember(context);
     let submittedApp: AppModel;
     if (draftId) {
       const submitted = await this.appRepository.submitDraft(draftId, input, user.id);
@@ -336,7 +354,9 @@ export class ToolboxNode {
    * their own submission folder.
    */
   async createUploadSignature(context: ResolverContext): Promise<UploadSignature> {
-    const user = await this.requireUser(context);
+    // member-gated as well as the submission itself: this hands out write
+    // authorization to a paid external bucket, and only members can publish.
+    const user = await this.requireMember(context);
     if (!this.cloudinaryConfig) {
       throw new Error('Image upload is not configured (CLOUDINARY_URL missing)');
     }
@@ -411,12 +431,16 @@ export class ToolboxNode {
     return this.toPlainReview(review);
   }
 
-  static dependencies = [SymphonyPlatformAspect, HelamPlatformAspect];
+  static dependencies = [SymphonyPlatformAspect, HelamPlatformAspect, MembershipAspect];
 
   static defaultConfig: ToolboxConfig = {};
 
   static async provider(
-    [symphonyPlatform, helamPlatform]: [SymphonyPlatformNode, HelamPlatformNode],
+    [symphonyPlatform, helamPlatform, membership]: [
+      SymphonyPlatformNode,
+      HelamPlatformNode,
+      MembershipNode
+    ],
     config: ToolboxConfig
   ) {
     const appModel = getModelForClass(AppModel);
@@ -441,6 +465,7 @@ export class ToolboxNode {
       config,
       symphonyPlatform,
       helamPlatform,
+      membership,
       appRepository,
       appReviewRepository,
       cloudinaryConfig

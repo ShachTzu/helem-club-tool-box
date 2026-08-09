@@ -1,0 +1,36 @@
+---
+description: Community membership — onboarding profiles and admin approval.
+labels: ['aspect', 'membership', 'privacy']
+---
+
+Owns the step between "registered an account" and "is a community member".
+
+Every account that signs up — by email one-time code or by Google, it makes no
+difference here — gets a `MemberProfile` row on its first authenticated page
+load. The member fills the onboarding form once, which moves them to `pending`,
+and an admin approves or declines them from `/admin/members`.
+
+## States
+
+| state | meaning | in Hebrew |
+| --- | --- | --- |
+| `none` | registered, onboarding not completed | לא חבר קהילה |
+| `pending` | onboarding submitted, awaiting a decision | חבר קהילה ממתין לאישור |
+| `approved` | an approved member | חבר קהילה |
+| `rejected` | declined or revoked | לא חבר קהילה |
+
+## Why a separate collection
+
+The onboarding answers include an injury description and disability-recognition
+status — health data, which is sensitive personal information under
+חוק הגנת הפרטיות. Keeping it in its own collection with its own GraphQL types
+means no public query, serializer or cache on the platform's `User` can leak it
+by accident.
+
+Two shapes, and only two:
+
+- `MyMembership` — the state and the member's own name, readable by that member.
+- `AdminMemberProfile` — the full answers, admin-gated on every resolver.
+
+The owner of a profile always comes from the session, never from resolver input,
+so a member cannot write onto anyone else's row.

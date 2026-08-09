@@ -1,0 +1,298 @@
+import { useEffect, useMemo, useState } from 'react';
+import { gql } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client/react';
+
+/**
+ * the membership states a registered account can be in. mirrors the membership
+ * aspect's own type, declared here rather than imported: the membership aspect
+ * mounts this panel, so importing back from it would close a dependency cycle.
+ * the GraphQL schema is the contract between them.
+ */
+export type MembershipStatus = 'none' | 'pending' | 'approved' | 'rejected';
+
+/**
+ * one row of the approval queue. no health answers — the server does not put
+ * them in the list, so they cannot arrive here in bulk.
+ */
+export type MemberProfileSummary = {
+  userId: string;
+  status: MembershipStatus;
+  accountEmail: string;
+  accountDisplayName: string;
+  provider: string;
+  fullName: string;
+  phone: string;
+  contactEmail: string;
+  city: string;
+  submittedAt?: string;
+  decidedAt?: string;
+  createdAt?: string;
+};
+
+/**
+ * one applicant's full application, health answers included. fetched one
+ * member at a time, only when an admin opens that applicant.
+ */
+export type AdminMemberProfile = MemberProfileSummary & {
+  age: number;
+  communityRoles: string;
+  gender: string;
+  injuryNote: string;
+  recognitionStatus: string;
+  welcomeCallsOptIn: boolean;
+  interests: string[];
+  decisionNote: string;
+};
+
+const LIST_MEMBER_PROFILES_QUERY = gql`
+  query ListMemberProfiles($options: ListMemberProfilesOptions) {
+    listMemberProfiles(options: $options) {
+      userId
+      status
+      accountEmail
+      accountDisplayName
+      provider
+      fullName
+      phone
+      contactEmail
+      city
+      submittedAt
+      decidedAt
+      createdAt
+    }
+  }
+`;
+
+const GET_MEMBER_PROFILE_QUERY = gql`
+  query GetMemberProfile($userId: ID!) {
+    getMemberProfile(userId: $userId) {
+      userId
+      status
+      accountEmail
+      accountDisplayName
+      provider
+      fullName
+      phone
+      contactEmail
+      city
+      age
+      communityRoles
+      gender
+      injuryNote
+      recognitionStatus
+      welcomeCallsOptIn
+      interests
+      submittedAt
+      decidedAt
+      decisionNote
+      createdAt
+    }
+  }
+`;
+
+const COUNT_MEMBER_PROFILES_QUERY = gql`
+  query CountMemberProfiles {
+    countMemberProfiles {
+      none
+      pending
+      approved
+      rejected
+    }
+  }
+`;
+
+const SET_MEMBERSHIP_STATUS_MUTATION = gql`
+  mutation SetMembershipStatus($options: SetMembershipStatusOptions!) {
+    setMembershipStatus(options: $options) {
+      userId
+      status
+      decidedAt
+      decisionNote
+    }
+  }
+`;
+
+const DEFAULT_DEBOUNCE_MS = 300;
+
+function useDebouncedValue(value: string, delayMs: number): string {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => setDebouncedValue(value), delayMs);
+    return () => clearTimeout(timeoutId);
+  }, [value, delayMs]);
+
+  return debouncedValue;
+}
+
+function matchesQuery(profile: MemberProfileSummary, query: string): boolean {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) return true;
+  return [profile.fullName, profile.accountDisplayName, profile.accountEmail, profile.contactEmail]
+    .filter(Boolean)
+    .some((field) => field.toLowerCase().includes(normalized));
+}
+
+export type UseMemberApprovalsOptions = {
+  /**
+   * restrict the queue to a single membership state.
+   */
+  status?: MembershipStatus;
+
+  /**
+   * free-text search across name and email.
+   */
+  query?: string;
+
+  /**
+   * mock profiles, bypassing the network entirely. decisions are applied
+   * locally when provided. useful for tests and previews.
+   */
+  mockData?: AdminMemberProfile[];
+};
+
+export type UseMemberApprovalsValue = {
+  /**
+   * the member applications matching the current filters.
+   */
+  profiles: MemberProfileSummary[];
+
+  /**
+   * per-state counts across the whole queue, ignoring the current filters.
+   */
+  counts: Record<MembershipStatus, number>;
+
+  /**
+   * whether the queue is loading.
+   */
+  loading: boolean;
+
+  /**
+   * error message raised while loading the queue, if any.
+   */
+  error?: string;
+
+  /**
+   * record a decision on a member's application.
+   */
+  setStatus: (userId: string, status: MembershipStatus, note?: string) => Promise<boolean>;
+
+  /**
+   * whether a decision is currently in flight.
+   */
+  deciding: boolean;
+};
+
+const EMPTY_COUNTS: Record<MembershipStatus, number> = {
+  none: 0,
+  pending: 0,
+  approved: 0,
+  rejected: 0,
+};
+
+function countByStatus(profiles: MemberProfileSummary[]): Record<MembershipStatus, number> {
+  return profiles.reduce(
+    (acc, profile) => ({ ...acc, [profile.status]: (acc[profile.status] || 0) + 1 }),
+    { ...EMPTY_COUNTS }
+  );
+}
+
+/**
+ * fetch one applicant's full application, health answers included.
+ *
+ * kept separate from the queue listing on purpose: an admin scanning the queue
+ * has no need for anyone's medical details, so those are only requested for the
+ * one applicant they actually opened. pass `null` to fetch nothing.
+ */
+export function useMemberProfile(
+  userId: string | null,
+  mockData?: AdminMemberProfile[]
+): { profile?: AdminMemberProfile; loading: boolean } {
+  const hasMock = mockData !== undefined;
+  const result = useQuery<{ getMemberProfile: AdminMemberProfile | null }>(
+    GET_MEMBER_PROFILE_QUERY,
+    { variables: { userId }, skip: hasMock || !userId }
+  );
+
+  if (hasMock) {
+    return { profile: mockData.find((item) => item.userId === userId), loading: false };
+  }
+  return { profile: result.data?.getMemberProfile || undefined, loading: result.loading };
+}
+
+/**
+ * lists member applications for the admin approval queue and exposes the
+ * decision mutation. the server re-checks the admin role on every call — this
+ * hook is a client of that check, not a substitute for it.
+ */
+export function useMemberApprovals(options?: UseMemberApprovalsOptions): UseMemberApprovalsValue {
+  const { status, query = ``, mockData } = options || {};
+  const hasMock = mockData !== undefined;
+  const debouncedQuery = useDebouncedValue(query, DEFAULT_DEBOUNCE_MS);
+
+  const [mockProfiles, setMockProfiles] = useState<AdminMemberProfile[]>(mockData || []);
+
+  const queryResult = useQuery<{ listMemberProfiles: MemberProfileSummary[] }>(
+    LIST_MEMBER_PROFILES_QUERY,
+    {
+      variables: { options: { status, query: debouncedQuery } },
+      skip: hasMock,
+    }
+  );
+
+  // the tab counts must span the whole queue, not the rows the active filter
+  // happened to load — otherwise every tab you are not looking at reads 0.
+  const countsResult = useQuery<{ countMemberProfiles: Record<MembershipStatus, number> }>(
+    COUNT_MEMBER_PROFILES_QUERY,
+    { skip: hasMock }
+  );
+
+  const [mutate, { loading: deciding }] = useMutation(SET_MEMBERSHIP_STATUS_MUTATION);
+
+  const loaded = queryResult.data?.listMemberProfiles;
+  const allProfiles = useMemo(
+    () => (hasMock ? mockProfiles : loaded || []),
+    [hasMock, mockProfiles, loaded]
+  );
+
+  const profiles = useMemo(() => {
+    if (!hasMock) return allProfiles;
+    return allProfiles
+      .filter((profile) => (status ? profile.status === status : true))
+      .filter((profile) => matchesQuery(profile, debouncedQuery));
+  }, [hasMock, allProfiles, status, debouncedQuery]);
+
+  const counts = useMemo(
+    () =>
+      hasMock
+        ? countByStatus(mockProfiles)
+        : countsResult.data?.countMemberProfiles || EMPTY_COUNTS,
+    [hasMock, mockProfiles, countsResult.data]
+  );
+
+  const setStatus = async (userId: string, nextStatus: MembershipStatus, note?: string) => {
+    if (hasMock) {
+      setMockProfiles((previous) =>
+        previous.map((profile) =>
+          profile.userId === userId ? { ...profile, status: nextStatus } : profile
+        )
+      );
+      return true;
+    }
+
+    const result = await mutate({ variables: { options: { userId, status: nextStatus, note } } });
+    if (!result.data) return false;
+    // a decision moves someone between tabs, so the totals move with them.
+    await Promise.all([queryResult.refetch(), countsResult.refetch()]);
+    return true;
+  };
+
+  return {
+    profiles,
+    counts,
+    loading: hasMock ? false : queryResult.loading,
+    error: hasMock ? undefined : queryResult.error?.message,
+    setStatus,
+    deciding,
+  };
+}

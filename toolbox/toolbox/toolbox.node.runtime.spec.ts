@@ -6,20 +6,32 @@ import type { SubmitAppInput } from './toolbox-options.js';
  * a mail failure must never fail the submission itself, and a member-chosen
  * app name must never be able to inject markup into the email (helamPlatform's
  * sendEmail wraps its text straight into `<p>${text}</p>` with no escaping).
+ *
+ * plus the membership gate: publishing into the catalog requires an approved
+ * community member, enforced server-side and not only by the route.
  */
 
 const FAKE_USER = { id: 'user-1', role: 'member' };
 const FAKE_MODERATOR = { id: 'mod-1', role: 'moderator', displayName: 'Dana Mod' };
 
+const APPROVED = { isApprovedMember: async () => true };
+const NOT_APPROVED = { isApprovedMember: async () => false };
+
 function fakeApp(overrides: Partial<{ id: string; name: string; contactEmail: string }> = {}) {
   return { id: 'a1', slug: 'a1', name: 'Test Tool', contactEmail: '', ...overrides };
 }
 
-function buildToolbox(helamPlatform: unknown, appRepository: unknown, appReviewRepository: unknown = {}) {
+function buildToolbox(
+  helamPlatform: unknown,
+  appRepository: unknown,
+  appReviewRepository: unknown = {},
+  membership: unknown = APPROVED
+) {
   return new ToolboxNode(
     {},
     {} as never,
     helamPlatform as never,
+    membership as never,
     appRepository as never,
     appReviewRepository as never,
     undefined
@@ -225,4 +237,37 @@ it("rateToolboxApp uses the authed user's own id and display name", async () => 
   expect(captured[0]).toBe('a1');
   expect(captured[3]).toBe('שם אמיתי');
   expect(captured[4]).toBe('user-9');
+});
+
+/**
+ * these tests pin the membership gate on publishing: an account that signed in
+ * but has not been approved as a community member cannot put anything in the
+ * catalog, and that is enforced here in the resolver, not only by the route.
+ */
+
+it('submitApp refuses a signed-in account that is not an approved member', async () => {
+  const helamPlatform = { getCurrentUser: async () => FAKE_USER, sendEmail: async () => true };
+  const appRepository = {
+    createApp: async () => {
+      throw new Error('must not reach the repository');
+    },
+  };
+
+  const input: SubmitAppInput = { name: 'Tool', externalLink: 'https://example.com' };
+  const toolbox = buildToolbox(helamPlatform, appRepository, {}, NOT_APPROVED);
+
+  await expect(toolbox.submitApp(input, {})).rejects.toThrow();
+});
+
+it('submitApp lets a moderator through without an approved member profile', async () => {
+  const helamPlatform = {
+    getCurrentUser: async () => ({ id: 'mod-1', role: 'moderator' }),
+    sendEmail: async () => true,
+  };
+  const appRepository = { createApp: async () => fakeApp() };
+
+  const input: SubmitAppInput = { name: 'Tool', externalLink: 'https://example.com' };
+  const result = await buildToolbox(helamPlatform, appRepository, {}, NOT_APPROVED).submitApp(input, {});
+
+  expect(result?.id).toBe('a1');
 });
