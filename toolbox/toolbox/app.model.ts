@@ -1,6 +1,28 @@
 import { prop, index } from '@typegoose/typegoose';
 
 /**
+ * one append-only entry in an app's moderation history. every moderation
+ * decision (approve/reject/changes_requested) pushes a new entry rather than
+ * overwriting the last one, so the full review trail survives resubmission.
+ */
+export class ModerationHistoryEntry {
+  @prop({ required: true, type: String })
+  public action: string;
+
+  @prop({ type: String, default: '' })
+  public note: string;
+
+  @prop({ required: true, type: String })
+  public moderatorId: string;
+
+  @prop({ type: String, default: '' })
+  public moderatorName: string;
+
+  @prop({ type: Date, default: Date.now })
+  public createdAt: Date;
+}
+
+/**
  * a typegoose model backing a coping-app catalog entry in the toolbox.
  * mirrors the PlainApp shape consumed by the toolbox hooks, so every field
  * selected by the GraphQL contract is persisted here.
@@ -96,6 +118,14 @@ export class AppModel {
 
   @prop({ type: String, default: '' })
   public submittedBy: string;
+
+  /**
+   * append-only moderation trail — approve/reject/changes_requested, each with
+   * the moderator's note. never overwritten, so re-review after a
+   * changes_requested cycle keeps the earlier decisions on record.
+   */
+  @prop({ type: () => [ModerationHistoryEntry], default: [] })
+  public moderationHistory: ModerationHistoryEntry[];
 
   @prop({ type: Date, default: Date.now })
   public createdAt: Date;

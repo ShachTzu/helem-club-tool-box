@@ -43,9 +43,14 @@ export type ReviewAppOptions = {
   appId: string;
 
   /**
-   * moderation action to apply, e.g. "approve" or "reject".
+   * moderation action to apply: "approve", "reject", or "changes_requested".
    */
   action: string;
+
+  /**
+   * optional note from the moderator to the submitter.
+   */
+  note?: string;
 };
 
 /**

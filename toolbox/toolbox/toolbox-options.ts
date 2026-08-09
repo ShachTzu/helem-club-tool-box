@@ -101,6 +101,13 @@ export type SubmitAppInput = {
 };
 
 /**
+ * moderation action applied to a pending app. "changes_requested" sends the
+ * app back to the submitter (editable, resumable from their draft) instead
+ * of a terminal approve/reject.
+ */
+export type ReviewAction = 'approve' | 'reject' | 'changes_requested';
+
+/**
  * payload used to apply a moderation decision to a pending app.
  */
 export type ReviewAppInput = {
@@ -110,9 +117,16 @@ export type ReviewAppInput = {
   appId: string;
 
   /**
-   * moderation action to apply, either "approve" or "reject".
+   * moderation action to apply.
    */
-  action: 'approve' | 'reject';
+  action: ReviewAction;
+
+  /**
+   * optional note from the moderator to the submitter, e.g. what to fix.
+   * appended to the app's moderation history and included in the
+   * decision email.
+   */
+  note?: string;
 };
 
 /**
@@ -149,8 +163,4 @@ export type RateAppInput = {
    */
   comment?: string;
 
-  /**
-   * optional display name of the reviewer.
-   */
-  displayName?: string;
 };

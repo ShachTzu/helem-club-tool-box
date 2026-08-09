@@ -9,13 +9,21 @@ import type { SubmitAppInput } from './toolbox-options.js';
  */
 
 const FAKE_USER = { id: 'user-1', role: 'member' };
+const FAKE_MODERATOR = { id: 'mod-1', role: 'moderator', displayName: 'Dana Mod' };
 
 function fakeApp(overrides: Partial<{ id: string; name: string; contactEmail: string }> = {}) {
   return { id: 'a1', slug: 'a1', name: 'Test Tool', contactEmail: '', ...overrides };
 }
 
-function buildToolbox(helamPlatform: unknown, appRepository: unknown) {
-  return new ToolboxNode({}, {} as never, helamPlatform as never, appRepository as never, {} as never, undefined);
+function buildToolbox(helamPlatform: unknown, appRepository: unknown, appReviewRepository: unknown = {}) {
+  return new ToolboxNode(
+    {},
+    {} as never,
+    helamPlatform as never,
+    appRepository as never,
+    appReviewRepository as never,
+    undefined
+  );
 }
 
 it('submitApp sends a confirmation email with the app name html-escaped', async () => {
@@ -73,4 +81,148 @@ it('submitApp still returns the submitted app even when the confirmation email f
   const result = await buildToolbox(helamPlatform, appRepository).submitApp(input, {});
 
   expect(result?.id).toBe('a1');
+});
+
+/**
+ * these tests pin reviewToolboxApp's lifecycle behavior: a moderator-only
+ * gate, the changes_requested action reaching the repository (not just
+ * approve/reject), and the moderator's note being html-escaped in the
+ * decision email for the same reason as the confirmation email above.
+ */
+
+it('reviewToolboxApp rejects a caller who is not a moderator or admin', async () => {
+  const helamPlatform = { getCurrentUser: async () => FAKE_USER };
+  const appRepository = {
+    applyModerationDecision: async () => {
+      throw new Error('should not be called for a non-moderator');
+    },
+  };
+
+  await expect(
+    buildToolbox(helamPlatform, appRepository).reviewToolboxApp({ appId: 'a1', action: 'approve' }, {})
+  ).rejects.toThrow();
+});
+
+it('reviewToolboxApp with changes_requested passes the action and note through to the repository', async () => {
+  const helamPlatform = { getCurrentUser: async () => FAKE_MODERATOR, sendEmail: async () => true };
+  let captured: unknown[] = [];
+  const appRepository = {
+    applyModerationDecision: async (...args: unknown[]) => {
+      captured = args;
+      return fakeApp({ contactEmail: '' });
+    },
+  };
+
+  await buildToolbox(helamPlatform, appRepository).reviewToolboxApp(
+    { appId: 'a1', action: 'changes_requested', note: 'fix the icon' },
+    {}
+  );
+
+  expect(captured).toEqual([
+    'a1',
+    'changes_requested',
+    'changes_requested',
+    { id: 'mod-1', name: 'Dana Mod' },
+    'fix the icon',
+  ]);
+});
+
+it('reviewToolboxApp emails the submitter with the moderator note html-escaped', async () => {
+  const sentEmails: Array<{ to: string; subject: string; text: string }> = [];
+  const helamPlatform = {
+    getCurrentUser: async () => FAKE_MODERATOR,
+    sendEmail: async (to: string, subject: string, text: string) => {
+      sentEmails.push({ to, subject, text });
+      return true;
+    },
+  };
+  const appRepository = {
+    applyModerationDecision: async () =>
+      fakeApp({ name: 'Test Tool', contactEmail: 'submitter@example.com' }),
+  };
+
+  await buildToolbox(helamPlatform, appRepository).reviewToolboxApp(
+    { appId: 'a1', action: 'changes_requested', note: '<b>fix the icon</b>' },
+    {}
+  );
+
+  expect(sentEmails).toHaveLength(1);
+  expect(sentEmails[0].to).toBe('submitter@example.com');
+  expect(sentEmails[0].text).not.toContain('<b>fix');
+  expect(sentEmails[0].text).toContain('&lt;b&gt;fix the icon&lt;/b&gt;');
+});
+
+it('reviewToolboxApp sends no email and still returns the app when there is no contact email', async () => {
+  const sentEmails: unknown[] = [];
+  const helamPlatform = {
+    getCurrentUser: async () => FAKE_MODERATOR,
+    sendEmail: async (...args: unknown[]) => {
+      sentEmails.push(args);
+      return true;
+    },
+  };
+  const appRepository = {
+    applyModerationDecision: async () => fakeApp({ contactEmail: '' }),
+  };
+
+  const result = await buildToolbox(helamPlatform, appRepository).reviewToolboxApp(
+    { appId: 'a1', action: 'approve' },
+    {}
+  );
+
+  expect(sentEmails).toHaveLength(0);
+  expect(result?.id).toBe('a1');
+});
+
+/**
+ * these tests pin rateToolboxApp's auth requirement: rating must require a
+ * signed-in member, and the reviewer identity (name + id) must always come
+ * from the session, never from client-supplied input — closing the "rate as
+ * anyone" gap the field had before.
+ */
+
+it('rateToolboxApp rejects an anonymous caller', async () => {
+  const helamPlatform = { getCurrentUser: async () => null };
+  const appReviewRepository = {
+    createReview: async () => {
+      throw new Error('should not be called for an anonymous caller');
+    },
+  };
+
+  await expect(
+    buildToolbox(helamPlatform, {}, appReviewRepository).rateToolboxApp({ appId: 'a1', stars: 5 }, {})
+  ).rejects.toThrow();
+});
+
+it("rateToolboxApp uses the authed user's own id and display name", async () => {
+  const helamPlatform = {
+    getCurrentUser: async () => ({ id: 'user-9', role: 'member', displayName: 'שם אמיתי' }),
+  };
+  let captured: unknown[] = [];
+  const appReviewRepository = {
+    createReview: async (...args: unknown[]) => {
+      captured = args;
+      return {
+        id: 'r1',
+        appId: 'a1',
+        stars: 5,
+        comment: '',
+        displayName: 'שם אמיתי',
+        helpfulCount: 0,
+        userId: 'user-9',
+        createdAt: new Date(),
+      };
+    },
+    listReviewsByAppId: async () => [],
+  };
+  const appRepository = { updateAppRating: async () => null };
+
+  await buildToolbox(helamPlatform, appRepository, appReviewRepository).rateToolboxApp(
+    { appId: 'a1', stars: 5, comment: 'great' },
+    {}
+  );
+
+  expect(captured[0]).toBe('a1');
+  expect(captured[3]).toBe('שם אמיתי');
+  expect(captured[4]).toBe('user-9');
 });
