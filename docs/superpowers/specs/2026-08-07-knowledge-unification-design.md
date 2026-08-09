@@ -3,6 +3,22 @@
 **Status:** implemented (2026-08-07), commit `22e5081`.
 **Supersedes** parts of [`2026-08-06-knowledge-library-design.md`](./2026-08-06-knowledge-library-design.md) — specifically its "keep the two scopes separate" decision.
 
+## Scope boundary (explicit)
+
+**In scope** — `knowledge-library` absorbs `knowledge-base`: content model,
+routes, navigation, admin panels, home section, demo seeding.
+
+**Out of scope, deliberately untouched** — the community-wisdom feed
+(`knowledge-domains/hooks/use-wisdom-feed`, `ui/community-wisdom`). It keeps
+its existing data source, its internal `'record'` key, its link targets and
+its `מאגר ידע` display label. It is a different feature with a different
+owner, and this work does not get to reshape it.
+
+An earlier draft of this change *did* migrate the feed onto the library. That
+was scope creep and was reverted; `knowledge-domains` is byte-identical to its
+pre-merge state. If the feed should ever move to the library as its source,
+that is its own feature with its own decision — not a side effect of this one.
+
 ## Why this reverses yesterday's decision
 
 The original design explicitly asked the question "separate or merged?" and chose
@@ -42,8 +58,12 @@ Three facts, all verified against the live database rather than assumed:
 2. **`knowledge-library` was already a near-superset.** It had hierarchy (vs. flat
    labels), text bodies, images, video URLs, validated embeds, domain tagging and
    backdatable publish dates. Only three capabilities were missing.
-3. **The coupling was weaker than it looked.** The wisdom feed consumed
-   `knowledge-base`'s *mock* exports, not live queries.
+3. **Nothing else read `knowledge-base` from the database.** The one other
+   consumer, the community-wisdom feed, uses `knowledge-base`'s in-code *mock*
+   exports rather than live queries — so deleting the seeded rows and stopping
+   the seed could not break it. (That feed is out of scope here and was left
+   alone; the only thing it needed was its old URLs to keep resolving, which
+   the forwarding routes handle.)
 
 Had any of these been false — especially (1) — the answer would have been
 different, and a real data migration would have been required first.
@@ -59,6 +79,7 @@ different, and a real data migration would have been required first.
 | Labels (flat grouping) | already covered by `parentId` hierarchy (a superset) |
 | `MediaPlayer` UI | **reused in place**, not copied — see below |
 | Admin panels, routes, home section, seed | dropped with the aspect |
+| Old `/knowledge*` URLs | forwarded to `/knowledge-library` (see below) |
 
 ### Deliberately NOT moved: `MediaPlayer`
 
@@ -105,18 +126,40 @@ self-contained. The platform hardcodes references to features it does not own.
 Retiring any feature requires grepping the platform scope for its routes and
 Hebrew labels, not just unregistering the aspect.
 
-## Wisdom feed migration
+## Keeping old links alive: mail-forwarding
 
-`knowledge-domains/hooks/use-wisdom-feed` sourced its `'record'` channel from
-`knowledge-base`'s mocks. It now sources from a new `mockKnowledgePages()` in
-`knowledge-library/entities/knowledge-page` and links to `/knowledge-library/:slug`.
+Retiring the `/knowledge*` routes and leaving the feed untouched are both
+required — but together they would have left the feed's cards pointing at
+dead URLs. Verified, not assumed: `/knowledge/record/:slug` rendered the
+"הדף הזה איננו" page after the aspect was dropped.
 
-The channel **key** stays `'record'` even though the source changed. Renaming it
-would ripple into `DomainTag.targetType` values already persisted in the database
-and into several unrelated mocks, for zero user-visible benefit. Only the
-user-facing **label** changed (`מאגר ידע` → `ספריית הידע`). This is a deliberate
-divergence between an internal key and its display name, recorded here so nobody
-"fixes" it later without understanding the cost.
+Resolution: `knowledge-library` registers forwarding routes for `/knowledge`,
+`/knowledge/record/:slug` and `/knowledge/:labelSlug`, all landing on
+`/knowledge-library`. The forwarding lives in the scope that *absorbed* the
+content, so no out-of-scope feature is edited to make it work.
+
+Two implementation details that are easy to get wrong:
+
+- **Not `<Navigate>`.** It is a no-op during server-side rendering
+  (react-router warns "must not be used on the initial render in a
+  StaticRouter") and would serve a blank page to anyone whose JS has not run.
+  `LegacyKnowledgeRedirect` renders a real readable message server-side and
+  forwards on mount instead.
+- **One `registerRoute` call, not two.** See below — this one cost real time.
+
+## Discovered the hard way: the route slot is keyed by aspect
+
+Adding the forwarding routes in a *second* `helamPlatform.registerRoute([...])`
+call silently 404'd `/knowledge-library` itself. `routeSlot.register()` is keyed
+by the calling aspect id, so a second call from the same aspect **replaces** the
+first rather than appending to it.
+
+There is no error and no warning — the earlier routes simply stop existing.
+
+**Rule for any aspect in this codebase: register all of your routes in a single
+`registerRoute` call.** The same almost certainly applies to the other slots
+(`registerNavigationItem`, `registerAdminRoute`, `registerFooterLink`,
+`registerHomeSection`), which share the mechanism.
 
 ## Data boundary (unchanged by this work)
 
@@ -134,6 +177,8 @@ neither read nor modify page content.
 - a real chapter renders with breadcrumb, backdated 2023 date, body, byline and its YouTube embed
 - `listRecords` / `getRecord` / `listLabels` / `getLabel` are gone from the GraphQL schema
 - the 7 real library pages survived the demo-data deletion
+- old `/knowledge*` URLs forward to the library; the feed's links resolve again
+- the wisdom feed still renders and still shows its original `מאגר ידע` label
 - 65/65 tests across 8 components
 
 **Not verified:**
