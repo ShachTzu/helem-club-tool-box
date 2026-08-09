@@ -33,7 +33,13 @@
         "version": "",
         "defaultScope": "helemclub.platform",
         "mainFile": "index.ts",
-        "rootDir": "platform/admin/approve-members"
+        "rootDir": "platform/admin/approve-members",
+        "config": {
+            "helemclub.design/envs/helam-env": {},
+            "teambit.envs/envs": {
+                "env": "helemclub.design/envs/helam-env"
+            }
+        }
     },
     "admin/blog-dashboard": {
         "name": "admin/blog-dashboard",

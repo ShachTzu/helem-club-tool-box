@@ -15,33 +15,38 @@ function renderQueue(currentUser = admin.toObject()) {
   );
 }
 
+// the responsive Table renders every row twice — a desktop row and a mobile
+// card — so a name legitimately appears more than once in the DOM.
+const countOf = (queryAllByText: (text: string) => unknown[], name: string) =>
+  queryAllByText(name).length;
+
 it(`should open on the pending tab and list only pending applicants`, () => {
-  const { queryByText } = renderQueue();
-  expect(queryByText(`רותם לוי`)).toBeTruthy();
-  expect(queryByText(`אמיר כהן`)).toBeTruthy();
+  const { queryAllByText } = renderQueue();
+  expect(countOf(queryAllByText, `רותם לוי`)).toBeGreaterThan(0);
+  expect(countOf(queryAllByText, `אמיר כהן`)).toBeGreaterThan(0);
   // approved and never-onboarded members belong to other tabs
-  expect(queryByText(`יעל ברק`)).toBeNull();
+  expect(countOf(queryAllByText, `יעל ברק`)).toBe(0);
 });
 
 it(`should switch to the approved tab`, () => {
-  const { getByText, queryByText } = renderQueue();
+  const { getByText, queryAllByText } = renderQueue();
   fireEvent.click(getByText(`חברי קהילה`));
-  expect(queryByText(`יעל ברק`)).toBeTruthy();
-  expect(queryByText(`רותם לוי`)).toBeNull();
+  expect(countOf(queryAllByText, `יעל ברק`)).toBeGreaterThan(0);
+  expect(countOf(queryAllByText, `רותם לוי`)).toBe(0);
 });
 
 it(`should reveal the sensitive answers only after opening a row`, () => {
-  const { getAllByText, queryByText } = renderQueue();
-  expect(queryByText(`פציעת ברך מהשירות, בשיקום כשנתיים`)).toBeNull();
+  const { getAllByText, queryAllByText } = renderQueue();
+  expect(countOf(queryAllByText, `פציעת ברך מהשירות, בשיקום כשנתיים`)).toBe(0);
 
   fireEvent.click(getAllByText(`הצג פרטים`)[0]);
-  expect(queryByText(`פציעת ברך מהשירות, בשיקום כשנתיים`)).toBeTruthy();
+  expect(countOf(queryAllByText, `פציעת ברך מהשירות, בשיקום כשנתיים`)).toBeGreaterThan(0);
 });
 
 it(`should move an applicant out of the pending tab once approved`, () => {
-  const { getAllByText, queryByText } = renderQueue();
+  const { getAllByText, queryAllByText } = renderQueue();
   fireEvent.click(getAllByText(`אישור`)[0]);
-  expect(queryByText(`רותם לוי`)).toBeNull();
+  expect(countOf(queryAllByText, `רותם לוי`)).toBe(0);
 });
 
 it(`should deny access to a non-admin`, () => {
