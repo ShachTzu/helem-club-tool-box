@@ -54,7 +54,7 @@ describe(`DomainSelector`, () => {
     const trigger = container.querySelector(`div[class*="trigger"]`) as HTMLElement;
     fireEvent.click(trigger);
 
-    const options = container.querySelectorAll(`button[class*="option"]`);
+    const options = container.querySelectorAll(`[role="option"]`);
     fireEvent.click(options[0]);
 
     expect(handleChange).toHaveBeenCalledWith([`anxiety`]);

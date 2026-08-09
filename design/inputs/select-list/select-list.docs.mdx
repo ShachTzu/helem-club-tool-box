@@ -83,3 +83,17 @@ function SearchExample() {
   );
 }
 ```
+
+## Keyboard and screen readers
+
+The control follows the ARIA select-only combobox pattern, as required by IS 5568 (WCAG 2.0 AA, 2.1.1 Keyboard and 4.1.2 Name, Role, Value).
+
+| Key | Action |
+| --- | --- |
+| `Tab` | moves focus to the control |
+| `Enter` / `Space` / `↓` / `↑` | opens the list, or selects the active option when already open |
+| `↓` / `↑` | moves the active option, wrapping at the ends |
+| `Home` / `End` | jumps to the first / last option |
+| `Esc` | closes the list and returns focus to the control |
+
+The trigger is exposed as `role="combobox"` with `aria-expanded`, `aria-haspopup="listbox"` and `aria-activedescendant`; the popup is a `role="listbox"` of `role="option"` items carrying `aria-selected`. Pass a `label` so the control has an accessible name — it is wired to the combobox via `aria-labelledby`.
