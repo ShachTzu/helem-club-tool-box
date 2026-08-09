@@ -12,6 +12,10 @@ The feature is **fully coded, tested, and committed on this branch**
 - New sibling scope `helemclub.knowledge-library` — additive, route-isolated.
   Does **not** touch `knowledge-base` (video/audio) or `knowledge-domains` (tags).
 
+**2026-08-07 (later): מאגר הידע was absorbed into ספריית הידע.** There is now one
+content library, not two. Design + rationale:
+`docs/superpowers/specs/2026-08-07-knowledge-unification-design.md`.
+
 Detailed docs already in this branch:
 - Design spec: `docs/superpowers/specs/2026-08-06-knowledge-library-design.md`
 - Release-candidate report: `docs/release-candidates/knowledge-library.md`

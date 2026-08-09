@@ -1,5 +1,15 @@
 # Knowledge Library (ספריית הידע) — Design
 
+> **PARTLY SUPERSEDED — 2026-08-07.** The "keep `knowledge-base` separate"
+> decision below was **reversed** one day later, after the app was first run
+> against a live database and the two features were seen side by side in the
+> navigation. `knowledge-library` has since absorbed `knowledge-base`, which is
+> retired from the running app. Everything else here (data model, hierarchy,
+> embed allowlist, CSV import, access control) still describes the code
+> accurately. Read
+> [`2026-08-07-knowledge-unification-design.md`](./2026-08-07-knowledge-unification-design.md)
+> for what changed and why. Sections affected are marked ⚠️ below.
+
 ## What
 
 A new hierarchical, taggable text/article content system for Helam Club, with:
@@ -16,7 +26,7 @@ This is requested directly by the organization (עמותה), not a speculative f
 
 ## Not doing
 
-- Not extending or modifying the existing `knowledge-base` scope (video/audio catalog) or `knowledge-domains` scope (14-domain taxonomy) — this is a new sibling scope. `knowledge-base` stays exactly as it is.
+- ⚠️ *(reversed 2026-08-07 — knowledge-base was absorbed and retired)* Not extending or modifying the existing `knowledge-base` scope (video/audio catalog) or `knowledge-domains` scope (14-domain taxonomy) — this is a new sibling scope. `knowledge-base` stays exactly as it is.
 - No scheduling/future-dated publishing.
 - No draft → review → publish moderation workflow — a single `isPublished` on/off flag is the only visibility lever.
 - No rich-text/WYSIWYG editor — body is plain multi-line text (rendered with preserved line breaks), matching how the source CSV content is actually formatted (plain paragraphs, no markup).
@@ -24,6 +34,8 @@ This is requested directly by the organization (עמותה), not a speculative f
 - No new "system user" account/login for הלם קלאב — content authorship is a display-only flag, not a real authenticated identity.
 
 ## Shape chosen, and what was rejected
+
+⚠️ *(the "alongside knowledge-base" half of this was reversed 2026-08-07; the new-scope half stands.)*
 
 **Chosen: new sibling scope** (`knowledge-library/`), own entity (`KnowledgePage`), own Mongo collection, own GraphQL schema, own admin + public routes — alongside `knowledge-base` and `knowledge-domains`, not touching them.
 
@@ -51,6 +63,9 @@ New entity, new Mongo collection, in `knowledge-library/entities/knowledge-page/
 | `image` | string? | Cloudinary URL (uploaded) or a plain image URL |
 | `videoUrl` | string? | YouTube/Spotify link, auto-embedded via existing `getMediaEmbedInfo` (from `knowledge-base/ui/media-player`) |
 | `videoEmbedHtml` | string? | only accepted if it matches the strict iframe allowlist (see Security) |
+| `mediaType` | 'video'\|'audio'? | ⚠️ *added 2026-08-07* — absorbed from knowledge-base |
+| `durationSec` | number? | ⚠️ *added 2026-08-07* — absorbed from knowledge-base |
+| `viewCount` | number | ⚠️ *added 2026-08-07* — absorbed from knowledge-base |
 | `publishDate` | ISO date string | defaults to today; editable to backdate; drives both displayed date and chronological sort order everywhere (lobbies, series listings, sibling nav) |
 | `authorName` | string | hardcoded `'הלם קלאב'` |
 | `isStaffAuthor` | boolean | hardcoded `true`, mirrors `blog`'s existing `Post.isStaffAuthor` pattern |
@@ -107,6 +122,11 @@ Per row:
 No real user record for "הלם קלאב." Wherever authorship is shown (chapter pages, series listings), render the fixed `authorName` + a fixed avatar image asset (the existing brand illustration — night-mountain silhouettes carrying a boulder, `Big plate HC BG image.png`, cropped/sized for avatar use) as a static constant, not a database-backed profile.
 
 ## Which system does content go in?
+
+> ⚠️ **Out of date since 2026-08-07.** There are now **two** content systems, not
+> three: `blog` (single dated posts) and `knowledge-library` (everything else —
+> text chapters, video and audio, in a hierarchy). `מאגר הידע` no longer exists
+> in the product, so the three-way rule of thumb below no longer applies.
 
 Three content systems now exist for a non-technical admin: `blog` (single dated posts/announcements), `knowledge-base` (single video/audio recordings), `knowledge-library` (hierarchical text series). The admin dashboard's "content" section groups all three "create content" entry points together with a one-line rule of thumb next to each: "פוסט בודד ← בלוג · הקלטת וידאו/שמע בודדת ← מאגר הידע · סדרת פרקים עם טקסט ← ספריית הידע." This isn't a new system, just shared placement + copy so the choice isn't left implicit.
 
