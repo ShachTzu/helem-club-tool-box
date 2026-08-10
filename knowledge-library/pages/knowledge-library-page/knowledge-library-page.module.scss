@@ -1,0 +1,108 @@
+.loadingState,
+.notFound {
+  color: var(--colors-text-secondary);
+  padding: var(--spacing-x4) 0;
+  text-align: center;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-secondary);
+  margin-bottom: var(--spacing-medium);
+}
+
+.breadcrumbSeparator {
+  color: var(--colors-text-secondary);
+}
+
+.title {
+  font-size: var(--typography-sizes-heading-h2);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+  margin: 0 0 var(--spacing-xs);
+}
+
+.byline {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-secondary);
+  margin-bottom: var(--spacing-medium);
+}
+
+.bylineSeparator {
+  color: var(--colors-text-secondary);
+}
+
+.domainRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-medium);
+}
+
+.image {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: var(--borders-radius-large);
+  margin-bottom: var(--spacing-medium);
+}
+
+.embedWrapper {
+  margin-bottom: var(--spacing-medium);
+
+  iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+    border-radius: var(--borders-radius-medium);
+  }
+}
+
+.body {
+  white-space: pre-wrap;
+  font-size: var(--typography-sizes-body-default);
+  line-height: var(--typography-line-height-base);
+  color: var(--colors-text-primary);
+  margin: 0 0 var(--spacing-large);
+}
+
+.childrenGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-medium);
+  margin-top: var(--spacing-large);
+}
+
+.tileLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.tile {
+  height: 100%;
+}
+
+.tileTitle {
+  margin: 0;
+  font-size: var(--typography-sizes-heading-h4);
+  font-weight: var(--typography-font-weight-bold);
+  color: var(--colors-primary-default);
+}
+
+.chapterNav {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-medium);
+  margin-top: var(--spacing-large);
+  padding-top: var(--spacing-medium);
+  border-top: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+}

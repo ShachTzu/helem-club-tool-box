@@ -14,7 +14,7 @@ const DEFAULT_TYPE_LABELS: Record<string, string> = {
   blog: `בלוג`,
   event: `אירועים`,
   gallery: `גלריית PTSDART`,
-  knowledge: `מאגר ידע`,
+  knowledge: `ספריית הידע`,
   wisdom: `חוכמת הקהילה`,
   domain: `תחומי התמודדות`,
 };
