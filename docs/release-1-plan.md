@@ -47,8 +47,9 @@ validation · confirmation email.
 
 1. **`CLOUDINARY_URL` missing on the app's hosting env** — Shachar/hopeAI.
    Image upload dies for every member on day one. Graded FALSE, not untested.
-2. **`rateToolboxApp` has no auth** — Claude, ~30 min.
-   Unauthenticated write on a public site, client-supplied display name.
+2. ~~**`rateToolboxApp` has no auth**~~ — FIXED in `231ed33`, not yet verified.
+   `requireUser` added, reviewer name taken from the signed-in user, 2 tests.
+   Still needs `bit compile` + `bit test` + export before it counts as closed.
 3. **hopeAI live test of 4a/4b-2/4e/4g/4h** — hopeAI.
    The core flow of this release. Nobody has run it against a live browser.
 
