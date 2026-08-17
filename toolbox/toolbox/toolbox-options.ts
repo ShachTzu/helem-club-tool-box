@@ -148,9 +148,4 @@ export type RateAppInput = {
    * optional free-text comment left by the reviewer.
    */
   comment?: string;
-
-  /**
-   * optional display name of the reviewer.
-   */
-  displayName?: string;
 };
