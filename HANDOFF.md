@@ -67,7 +67,8 @@ picture. This handoff is the working context around it.
 ## 3. How we work (the workflow)
 
 - **Source of truth is the Bit lane** `helemclub.marketplace/helam-club`. The git
-  repo (`github.com/ShachTzu/helem-club-tool-box`, private) **mirrors** the lane —
+  repo (`github.com/ShachTzu/helem-club-tool-box`, **public** — that is how hopeAI
+  reads the code; verified public on 2026-08-17) **mirrors** the lane —
   Claude keeps git in sync because hopeAI can't push to GitHub. Git is the record /
   fallback; the lane (bit.cloud + Ripple CI) is what actually deploys.
 
@@ -79,7 +80,15 @@ picture. This handoff is the working context around it.
      ⚠️ Run **`bit compile`** before `bit test` on a component that depends on
      another you just edited — otherwise the test imports stale `dist`.
   4. `bit snap -m "..."` then `bit export` (ship to the lane; Ripple CI builds).
+     **Ripple is the CI gate — the export is not done until its build is green.**
+     Check the lane build on bit.cloud before step 5. A red Ripple build that gets
+     mirrored to git and handed off reads as "done" and is not.
   5. `git add -A && git commit && git push` (mirror to git). Verify `.env` is never staged.
+     GitHub secret scanning + push protection are on (enabled 2026-08-17), so a
+     known-provider token in a push is blocked at the server. That is a backstop,
+     not the check — the repo is public, so a leaked secret is public the moment
+     it lands. `.gitignore` covers `.env`/`.env.*`; nothing covers a key typed
+     straight into a `.ts` file.
   6. Hand off to hopeAI (via Shachar) with a short "what to test" list.
 
 - **Ownership split:** hopeAI = auth files (§2). Claude = toolbox (submission,

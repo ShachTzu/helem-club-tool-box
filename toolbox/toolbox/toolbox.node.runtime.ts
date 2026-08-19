@@ -318,14 +318,18 @@ export class ToolboxNode {
    * create a review for an app and recompute the app's aggregate rating
    * metrics (average, count and histogram).
    */
-  async rateToolboxApp(input: RateAppInput): Promise<PlainAppReview> {
+  async rateToolboxApp(input: RateAppInput, context: ResolverContext): Promise<PlainAppReview> {
+    const user = await this.requireUser(context);
     const boundedStars = Math.max(1, Math.min(5, Math.round(input.stars)));
 
+    // the reviewer name comes from the authenticated user, never from the
+    // client — otherwise anyone can post a review under any name they like.
     const review = await this.appReviewRepository.createReview(
       input.appId,
       boundedStars,
       input.comment,
-      input.displayName
+      user.displayName,
+      user.id
     );
 
     const allReviews = await this.appReviewRepository.listReviewsByAppId(input.appId);

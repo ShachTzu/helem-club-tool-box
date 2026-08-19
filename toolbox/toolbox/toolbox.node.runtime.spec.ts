@@ -74,3 +74,80 @@ it('submitApp still returns the submitted app even when the confirmation email f
 
   expect(result?.id).toBe('a1');
 });
+
+/**
+ * these two pin the authorization on rateToolboxApp. before this, the mutation
+ * had no requireUser at all and took the reviewer's displayName straight from
+ * the client — anyone could post a rating and a comment under any name, without
+ * signing in, on a public site.
+ */
+
+function buildToolboxWithReviews(
+  helamPlatform: unknown,
+  appReviewRepository: unknown,
+  appRepository: unknown
+) {
+  return new ToolboxNode(
+    {},
+    {} as never,
+    helamPlatform as never,
+    appRepository as never,
+    appReviewRepository as never,
+    undefined
+  );
+}
+
+it('rateToolboxApp refuses a caller who is not signed in', async () => {
+  const helamPlatform = { getCurrentUser: async () => null };
+  const appReviewRepository = {
+    createReview: async () => {
+      throw new Error('createReview must not be reached for an anonymous caller');
+    },
+  };
+
+  await expect(
+    buildToolboxWithReviews(helamPlatform, appReviewRepository, {}).rateToolboxApp(
+      { appId: 'a1', stars: 5 },
+      {}
+    )
+  ).rejects.toThrow();
+});
+
+it('rateToolboxApp takes the reviewer name from the signed-in user, not the client', async () => {
+  const createReviewCalls: unknown[][] = [];
+  const storedReview = {
+    id: 'r1',
+    appId: 'a1',
+    stars: 5,
+    comment: '',
+    displayName: 'Real Member',
+    helpfulCount: 0,
+    userId: 'user-1',
+    createdAt: new Date(),
+  };
+  const helamPlatform = {
+    getCurrentUser: async () => ({ id: 'user-1', role: 'member', displayName: 'Real Member' }),
+  };
+  const appReviewRepository = {
+    createReview: async (...args: unknown[]) => {
+      createReviewCalls.push(args);
+      return storedReview;
+    },
+    listReviewsByAppId: async () => [storedReview],
+  };
+  const appRepository = { updateAppRating: async () => undefined };
+
+  // a displayName sent by the client must be ignored even if it arrives over
+  // the wire — the graphql input no longer declares the field, but the server
+  // is what has to be safe.
+  const input = { appId: 'a1', stars: 5, displayName: 'Impersonated Admin' } as never;
+  const result = await buildToolboxWithReviews(
+    helamPlatform,
+    appReviewRepository,
+    appRepository
+  ).rateToolboxApp(input, {});
+
+  expect(createReviewCalls[0][3]).toBe('Real Member');
+  expect(createReviewCalls[0][4]).toBe('user-1');
+  expect(result.displayName).toBe('Real Member');
+});

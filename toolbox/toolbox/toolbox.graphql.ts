@@ -141,7 +141,6 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         appId: String!
         stars: Int!
         comment: String
-        displayName: String
       }
 
       type Query {
@@ -228,9 +227,10 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         },
         rateToolboxApp: async (
           _parent: unknown,
-          { options }: { options: RateAppInput }
+          { options }: { options: RateAppInput },
+          context: ResolverContext
         ) => {
-          return toolboxNode.rateToolboxApp(options);
+          return toolboxNode.rateToolboxApp(options, context);
         },
         createToolboxUploadSignature: async (
           _parent: unknown,

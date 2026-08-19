@@ -121,7 +121,6 @@ export function AppDetail({
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [selectedStars, setSelectedStars] = useState(5);
   const [reviewComment, setReviewComment] = useState(``);
-  const [reviewerName, setReviewerName] = useState(``);
   const [reviewFormError, setReviewFormError] = useState<string | undefined>(undefined);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
@@ -140,16 +139,16 @@ export function AppDetail({
 
     setReviewFormError(undefined);
 
+    // no display name is sent — the server names the review after the
+    // signed-in user.
     const createdReview = await rateApp({
       stars: selectedStars,
       comment: reviewComment.trim() || undefined,
-      displayName: reviewerName.trim() || undefined,
     });
 
     if (createdReview) {
       setReviewSubmitted(true);
       setReviewComment(``);
-      setReviewerName(``);
       setSelectedStars(5);
     }
   };
@@ -317,16 +316,6 @@ export function AppDetail({
                 </button>
               ))}
             </div>
-            <label className={styles.fieldLabel}>
-              שם לתצוגה (אופציונלי)
-              <input
-                className={styles.textInput}
-                type="text"
-                value={reviewerName}
-                onChange={(event) => setReviewerName(event.target.value)}
-                placeholder="אנונימי"
-              />
-            </label>
             <label className={styles.fieldLabel}>
               ביקורת (אופציונלי)
               <textarea
