@@ -2,8 +2,15 @@
 
 First release ever. `git tag` is empty; nothing has been versioned before.
 
-Planned 2026-08-17. Lane to cut from: `helemclub.toolbox/toolbox-moderation`.
-Target lane: `helemclub.toolbox/release-1`.
+Planned 2026-08-17. Cut from: `helemclub.toolbox/toolbox-moderation`.
+**Lane `helemclub.toolbox/release-1` created and exported 2026-08-17**, 166
+components, verified present on bit.cloud from a second workspace.
+
+It is an exact fork — nothing was staged at fork time, so no local content
+leaked in. **Do not `bit snap` on release-1** until the workspace is reconciled:
+`bit status` showed 115 components modified against this base (disjoint
+histories, not real edits), and a snap would bake that stale content into the
+release lane.
 
 **`helemclub.marketplace/helam-club` no longer exists on bit.cloud.** It was
 archived. The base was re-identified by the `helam-env` pin: only
@@ -128,7 +135,20 @@ versions. The `helam-env` component settled it:
 matches the workspace exactly. It is either the trunk or a lane forked from it;
 either way it is the only base consistent with the workspace and the docs.
 
-**Caveat, not buried:** the lane name matches the git branch
-`claude/helam-club-step-5-moderation-a5212b`, so this base most likely carries
-Step 5 moderation work — which this release puts OUT of scope. A release-1 cut
-from it will contain it.
+**Caveat, now confirmed — not a guess.** Switching to this base put these files
+on disk:
+
+```
+toolbox/toolbox/app-deletion-repository.ts
+toolbox/toolbox/app-deletion.model.ts
+toolbox/hooks/use-apps/use-delete-submission.tsx
+toolbox/hooks/use-apps/use-correct-note.tsx
+```
+
+Submission deletion, correction notes, decided-apps listing — that is Step 5
+moderation, which the IN/OUT section above puts out of scope. `release-1`
+contains it. Either the scope line moves to include Step 5, or the release is
+cut from something else; it cannot be both.
+
+Also not in this lane: the `rateToolboxApp` auth fix (`231ed33`). This lane
+carries its own divergent versions of every file that fix touched.
