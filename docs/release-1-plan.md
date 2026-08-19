@@ -2,8 +2,14 @@
 
 First release ever. `git tag` is empty; nothing has been versioned before.
 
-Planned 2026-08-17. Lane to cut from: `helemclub.marketplace/helam-club`.
-Target lane: `helemclub.marketplace/release-1`.
+Planned 2026-08-17. Lane to cut from: `helemclub.toolbox/toolbox-moderation`.
+Target lane: `helemclub.toolbox/release-1`.
+
+**`helemclub.marketplace/helam-club` no longer exists on bit.cloud.** It was
+archived. The base was re-identified by the `helam-env` pin: only
+`toolbox-moderation` still carries `275621ea…`, the version this workspace and
+HANDOFF.md both document. The two `archive-*` lanes moved it. See "Which lane"
+below.
 
 ## Reality check — 3 true · 2 untested · 2 false · 2 unknown
 
@@ -86,15 +92,43 @@ to the new lane**, so step 6 puts you back.
 
 ```bash
 cd /Users/shachartzuk-bazak/Developer/helemclubmarketplace
-bit lane list                                          # 0. confirm where you are
-bit lane switch helemclub.marketplace/helam-club       # 1. a lane forked from main comes out EMPTY
-bit checkout head                                      # 2. pull hopeAI's latest
-bit status                                             # 3. must be clean before forking
-bit lane create release-1                              # 4. scope defaults to helemclub.marketplace
+bit lane switch helemclub.toolbox/toolbox-moderation   # 1. the base — see "Which lane"
+bit status                                             # 2. must be clean before forking
+bit lane create release-1                              # 3. inherits the parent lane's scope
+bit lane list                                          # 4. confirm: helemclub.toolbox/release-1
 bit export                                             # 5. publishes the lane to bit.cloud
-bit lane switch helemclub.marketplace/helam-club       # 6. back to the working lane
+bit lane switch helemclub.toolbox/toolbox-moderation   # 6. step 3 switched you to release-1
 ```
 
 Step 1 is the one that matters: `bit lane create` from `main` produces an empty
 lane, and from another lane produces a full copy. Getting this wrong yields a
 release lane with nothing in it.
+
+No `--fork-lane-new-scope` is needed: the new lane lands in its parent's scope,
+which is already `helemclub.toolbox`. If step 4 shows it under
+`helemclub.marketplace` instead, fix it with
+`bit lane change-scope helemclub.toolbox` — that only works before the first
+export, so check at step 4, not after step 5.
+
+## Which lane is the base, and how it was determined
+
+All four candidate histories are disjoint — zero shared component versions
+between any pair of lanes, so "which is ahead" cannot be read from the
+versions. The `helam-env` component settled it:
+
+| Source | `helam-env` |
+|---|---|
+| this workspace's `.bitmap` | `275621ea…` |
+| `HANDOFF.md` documented pin | `275621ea…` |
+| `helemclub.toolbox/toolbox-moderation` | `275621ea…` |
+| `helemclub.marketplace/archive-helam-club-sync` | `bada4c84…` |
+| `helemclub.marketplace/archive-helam-club` | `96deb9dd…` |
+
+`toolbox-moderation` is also the only remote lane whose 166-component set
+matches the workspace exactly. It is either the trunk or a lane forked from it;
+either way it is the only base consistent with the workspace and the docs.
+
+**Caveat, not buried:** the lane name matches the git branch
+`claude/helam-club-step-5-moderation-a5212b`, so this base most likely carries
+Step 5 moderation work — which this release puts OUT of scope. A release-1 cut
+from it will contain it.
