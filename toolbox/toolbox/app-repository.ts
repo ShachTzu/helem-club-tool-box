@@ -89,6 +89,100 @@ export class AppRepository {
   }
 
   /**
+   * list submissions a moderator has already decided against, newest decision
+   * first. approved apps are excluded — their note is cleared on approval and
+   * they are visible in the catalog anyway; this list exists so a moderator can
+   * find a decision they just made and fix the note they wrote on it.
+   */
+  async listDecidedApps(limit: number): Promise<AppModel[]> {
+    const docs = await this.appModel
+      .find({ status: { $in: ['rejected', 'changes_requested'] } })
+      .sort({ reviewedAt: -1 })
+      .limit(limit)
+      .exec();
+    return docs.map((doc) => doc.toObject());
+  }
+
+  /**
+   * replace the note on an already-decided submission and record the change as
+   * its own history entry. the status is untouched — this corrects what was
+   * written, it does not re-decide anything. the previous wording stays in the
+   * history: the member is shown the correction, the team can still see it was
+   * corrected and from what.
+   */
+  async correctModeratorNote(
+    appId: string,
+    note: string,
+    moderator: { id: string; name: string }
+  ): Promise<AppModel | null> {
+    const updated = await this.appModel.findOneAndUpdate(
+      { id: appId, status: { $in: ['rejected', 'changes_requested'] } },
+      {
+        $set: { moderatorNote: note },
+        $push: {
+          moderationHistory: {
+            action: 'correction',
+            note,
+            moderatorId: moderator.id,
+            moderatorName: moderator.name,
+            createdAt: new Date(),
+          },
+        },
+      },
+      { new: true }
+    );
+    return updated ? updated.toObject() : null;
+  }
+
+  /**
+   * strip everything personal from a submission the member owns, leaving the
+   * tool itself in place: their contact email, the names attached to it, the
+   * ownership link, the moderator's note, and the whole review trail — the
+   * notes in that trail are about them, so clearing only the current note
+   * would leave the same words readable one click away.
+   *
+   * ownership is enforced in the query, so this can never touch another
+   * member's submission.
+   */
+  async anonymizeApp(appId: string, userId: string): Promise<AppModel | null> {
+    if (!userId) return null;
+
+    const updated = await this.appModel.findOneAndUpdate(
+      { id: appId, submittedBy: userId },
+      {
+        $set: {
+          contactEmail: '',
+          developerName: '',
+          originatorName: '',
+          submittedBy: '',
+          moderatorNote: '',
+          moderationHistory: [],
+          // uploads are signed into `toolbox/submissions/<userId>/…`, so every
+          // image URL carries the member's id in plain sight. leaving them
+          // would make this "anonymised" tool point straight back at them.
+          screenshots: [],
+          icon: '🧩',
+        },
+      },
+      { new: true }
+    );
+    return updated ? updated.toObject() : null;
+  }
+
+  /**
+   * remove a submission the member owns outright. ownership is enforced in the
+   * query. returns whether a document was actually removed.
+   */
+  async deleteOwnedApp(appId: string, userId: string): Promise<boolean> {
+    // an anonymised submission carries submittedBy '', so an empty userId here
+    // would match every one of them and delete somebody else's tool.
+    if (!userId) return false;
+
+    const result = await this.appModel.deleteOne({ id: appId, submittedBy: userId });
+    return result.deletedCount > 0;
+  }
+
+  /**
    * list every submission owned by a member, across all statuses, newest first.
    * scoped to the member's own records by the submittedBy filter in the query.
    */
@@ -207,16 +301,44 @@ export class AppRepository {
   }
 
   /**
-   * update an app's status after a moderation decision. approving also makes
-   * the app public (featured stays as-is).
+   * apply a moderation decision to one or more apps. approving makes an app
+   * public (featured stays as-is). only submissions still awaiting review are
+   * touched, so a stale queue in a moderator's browser can never re-decide an
+   * app that another moderator already handled. returns the apps it changed —
+   * ids that were already decided are simply absent from the result.
    */
-  async updateAppStatus(appId: string, status: string): Promise<AppModel | null> {
-    const updated = await this.appModel.findOneAndUpdate(
-      { id: appId },
-      { $set: { status } },
-      { new: true }
+  async reviewApps(
+    appIds: string[],
+    status: string,
+    action: string,
+    moderatorNote: string,
+    moderator: { id: string; name: string }
+  ): Promise<AppModel[]> {
+    if (appIds.length === 0) return [];
+
+    const reviewedAt = new Date();
+    await this.appModel.updateMany(
+      { id: { $in: appIds }, status: 'pending' },
+      {
+        $set: { status, moderatorNote, reviewedAt },
+        // append, never overwrite — the trail has to survive a
+        // changes_requested → resubmit → re-review cycle.
+        $push: {
+          moderationHistory: {
+            action,
+            note: moderatorNote,
+            moderatorId: moderator.id,
+            moderatorName: moderator.name,
+            createdAt: reviewedAt,
+          },
+        },
+      }
     );
-    return updated ? updated.toObject() : null;
+
+    // re-read by the exact stamp we just wrote, so apps that were already
+    // decided before this call are not reported back as freshly changed.
+    const docs = await this.appModel.find({ id: { $in: appIds }, reviewedAt }).exec();
+    return docs.map((doc) => doc.toObject());
   }
 
   /**

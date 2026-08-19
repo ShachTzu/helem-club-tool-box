@@ -18,9 +18,12 @@ const DEFAULT_NAVIGATION_ITEMS: HeaderNavigationItem[] = [
   { label: `חוכמת הקהילה`, path: `/wisdom` },
   { label: `ארגז כלים`, path: `/toolbox` },
   { label: `מאגר ידע`, path: `/knowledge` },
-  { label: `בלוג`, path: `/blog` },
-  { label: `אירועים`, path: `/events` },
-  { label: `גלריית PTSDART`, path: `/gallery` },
+
+  // disabled for this lane — blog, events and gallery aspects are not
+  // mounted (see platform/helam/helam.bit-app.ts); these would 404.
+  // { label: `בלוג`, path: `/blog` },
+  // { label: `אירועים`, path: `/events` },
+  // { label: `גלריית PTSDART`, path: `/gallery` },
   { label: `תחומי התמודדות`, path: `/domains` },
 ];
 

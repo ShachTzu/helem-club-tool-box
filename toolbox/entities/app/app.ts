@@ -125,6 +125,12 @@ export type PlainApp = {
    * publication status of the app.
    */
   status?: AppStatus;
+
+  /**
+   * the moderator's explanation for a 'rejected' or 'changes_requested'
+   * decision, shown to the submitter. empty for any other status.
+   */
+  moderatorNote?: string;
 };
 
 /**
@@ -246,7 +252,13 @@ export class App {
     /**
      * name of the community member who originated/suggested the app.
      */
-    readonly originatorName?: string
+    readonly originatorName?: string,
+
+    /**
+     * the moderator's explanation for a 'rejected' or 'changes_requested'
+     * decision, shown to the submitter.
+     */
+    readonly moderatorNote?: string
   ) {}
 
   /**
@@ -284,6 +296,7 @@ export class App {
       ratingCount: this.ratingCount,
       ratingHistogram: this.ratingHistogram,
       status: this.status,
+      moderatorNote: this.moderatorNote,
     };
   }
 
@@ -315,6 +328,7 @@ export class App {
       ratingCount = 0,
       ratingHistogram = [0, 0, 0, 0, 0],
       status = 'approved',
+      moderatorNote,
     } = plainApp;
 
     return new App(
@@ -340,7 +354,8 @@ export class App {
       ratingCount,
       ratingHistogram,
       status,
-      originatorName
+      originatorName,
+      moderatorNote
     );
   }
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
-import { HomeIcon, ToolboxIcon, LibraryIcon, BlogIcon, EventsIcon } from '@helemclub/platform.icons.helam-icons';
+// BlogIcon and EventsIcon are unused while those aspects are disabled below.
+import { HomeIcon, ToolboxIcon, LibraryIcon } from '@helemclub/platform.icons.helam-icons';
 import type { MobileNavItem } from './mobile-nav-item-type.js';
 import styles from './mobile-nav.module.scss';
 
@@ -9,8 +10,11 @@ const DEFAULT_NAV_ITEMS: MobileNavItem[] = [
   { label: `בית`, path: `/`, icon: HomeIcon, order: 0 },
   { label: `כלים`, path: `/toolbox`, icon: ToolboxIcon, order: 1 },
   { label: `ידע`, path: `/knowledge`, icon: LibraryIcon, order: 2 },
-  { label: `בלוג`, path: `/blog`, icon: BlogIcon, order: 3 },
-  { label: `אירועים`, path: `/events`, icon: EventsIcon, order: 4 },
+
+  // disabled for this lane — blog, events and gallery aspects are not
+  // mounted (see platform/helam/helam.bit-app.ts); these would 404.
+  // { label: `בלוג`, path: `/blog`, icon: BlogIcon, order: 3 },
+  // { label: `אירועים`, path: `/events`, icon: EventsIcon, order: 4 },
 ];
 
 export type MobileNavProps = {

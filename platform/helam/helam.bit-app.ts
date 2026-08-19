@@ -7,10 +7,13 @@ import { HelamPlatformAspect } from '@helemclub/platform.helam-platform';
 import { KnowledgeDomainsAspect } from '@helemclub/knowledge-domains.knowledge-domains';
 import { EngagementAspect } from '@helemclub/engagement.engagement';
 import { ToolboxAspect } from '@helemclub/toolbox.toolbox';
-import { BlogAspect } from '@helemclub/blog.blog';
 import { KnowledgeBaseAspect } from '@helemclub/knowledge-base.knowledge-base';
-import { EventsAspect } from '@helemclub/events.events';
-import { GalleryAspect } from '@helemclub/gallery.gallery';
+// disabled for this lane — blog, events and gallery are out of scope for the
+// hackathon submission wave. re-enable by restoring the imports and the
+// entries in the aspects list below.
+// import { BlogAspect } from '@helemclub/blog.blog';
+// import { EventsAspect } from '@helemclub/events.events';
+// import { GalleryAspect } from '@helemclub/gallery.gallery';
 
 /**
  * The Helam Club Harmony application. Composes the symphony platform gateway,
@@ -35,10 +38,10 @@ export const helamApp = HarmonyPlatform.from({
     KnowledgeDomainsAspect,
     EngagementAspect,
     ToolboxAspect,
-    BlogAspect,
+    // BlogAspect,
     KnowledgeBaseAspect,
-    EventsAspect,
-    GalleryAspect,
+    // EventsAspect,
+    // GalleryAspect,
   ] as unknown as Aspect[],
 });
 

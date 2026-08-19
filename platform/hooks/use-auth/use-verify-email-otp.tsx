@@ -17,6 +17,8 @@ export const VERIFY_EMAIL_OTP_MUTATION = gql`
         role
         provider
         createdAt
+        onboardingCompleted
+        interests
       }
     }
   }

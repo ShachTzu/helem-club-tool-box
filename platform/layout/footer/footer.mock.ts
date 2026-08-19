@@ -4,9 +4,12 @@ import type { EmergencyContact } from './emergency-contact-type.js';
 export const DEFAULT_FOOTER_LINKS: FooterLink[] = [
   { label: `ארגז כלים`, href: `/toolbox`, group: `האקוסיסטם` },
   { label: `מאגר ידע`, href: `/knowledge`, group: `האקוסיסטם` },
-  { label: `בלוג`, href: `/blog`, group: `האקוסיסטם` },
-  { label: `אירועים`, href: `/events`, group: `האקוסיסטם` },
-  { label: `גלריית PTSDART`, href: `/gallery`, group: `האקוסיסטם` },
+
+  // disabled for this lane — blog, events and gallery aspects are not
+  // mounted (see platform/helam/helam.bit-app.ts); these would 404.
+  // { label: `בלוג`, href: `/blog`, group: `האקוסיסטם` },
+  // { label: `אירועים`, href: `/events`, group: `האקוסיסטם` },
+  // { label: `גלריית PTSDART`, href: `/gallery`, group: `האקוסיסטם` },
   { label: `תחומי התמודדות`, href: `/domains`, group: `קהילה` },
   { label: `שמורים שלי`, href: `/saved`, group: `קהילה` },
   { label: `התחברות / הרשמה`, href: `/login`, group: `קהילה` },

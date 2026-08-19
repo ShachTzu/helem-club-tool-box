@@ -1,4 +1,57 @@
 import { AppRepository } from './app-repository.js';
+
+/**
+ * deletion is ownership-scoped in the query. an empty userId must never be
+ * treated as a wildcard: anonymised submissions carry submittedBy '', so a
+ * blank owner would match every one of them.
+ */
+it('deleteOwnedApp refuses an empty userId instead of matching anonymised rows', async () => {
+  const calls: unknown[] = [];
+  const model = {
+    deleteOne: async (filter: unknown) => {
+      calls.push(filter);
+      return { deletedCount: 1 };
+    },
+  };
+
+  const removed = await new AppRepository(model as never).deleteOwnedApp('a1', '');
+
+  expect(removed).toBe(false);
+  expect(calls).toHaveLength(0);
+});
+
+it('anonymizeApp refuses an empty userId', async () => {
+  const calls: unknown[] = [];
+  const model = {
+    findOneAndUpdate: async (filter: unknown) => {
+      calls.push(filter);
+      return null;
+    },
+  };
+
+  const result = await new AppRepository(model as never).anonymizeApp('a1', '');
+
+  expect(result).toBeNull();
+  expect(calls).toHaveLength(0);
+});
+
+it('anonymizeApp clears the uploaded images, whose urls carry the member id', async () => {
+  let update: { $set: Record<string, unknown> } | undefined;
+  const model = {
+    findOneAndUpdate: async (_filter: unknown, next: { $set: Record<string, unknown> }) => {
+      update = next;
+      return { toObject: () => ({ id: 'a1' }) };
+    },
+  };
+
+  await new AppRepository(model as never).anonymizeApp('a1', 'user-1');
+
+  expect(update?.$set.screenshots).toEqual([]);
+  expect(update?.$set.icon).toBe('🧩');
+  expect(update?.$set.contactEmail).toBe('');
+  expect(update?.$set.submittedBy).toBe('');
+  expect(update?.$set.moderationHistory).toEqual([]);
+});
 import type { SubmitAppInput } from './toolbox-options.js';
 
 /**

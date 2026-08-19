@@ -20,6 +20,16 @@ export class AppReviewRepository {
   }
 
   /**
+   * remove every review left on an app. used when the submission itself is
+   * deleted — ratings pointing at a tool that no longer exists are orphans.
+   * returns how many were removed.
+   */
+  async deleteReviewsForApp(appId: string): Promise<number> {
+    const result = await this.appReviewModel.deleteMany({ appId });
+    return result.deletedCount || 0;
+  }
+
+  /**
    * add a new review to an app.
    */
   async createReview(

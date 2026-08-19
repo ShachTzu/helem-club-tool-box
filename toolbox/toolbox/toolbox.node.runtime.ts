@@ -16,13 +16,17 @@ import type { ToolboxConfig } from './toolbox-config.js';
 import { toolboxGqlSchema } from './toolbox.graphql.js';
 import { AppModel, APP_MOCKS } from './app.model.js';
 import { AppReviewModel, APP_REVIEW_MOCKS } from './app-review.model.js';
+import { AppDeletionRecord } from './app-deletion.model.js';
 import { AppRepository } from './app-repository.js';
 import { AppReviewRepository } from './app-review-repository.js';
+import { AppDeletionRepository } from './app-deletion-repository.js';
 import { parseCloudinaryUrl, signCloudinaryUpload, type CloudinaryConfig } from './cloudinary-signature.js';
 import type {
   ListToolboxAppsOptions,
   SubmitAppInput,
   ReviewAppInput,
+  CorrectNoteInput,
+  DeleteSubmissionInput,
   IncrementClickInput,
   RateAppInput,
 } from './toolbox-options.js';
@@ -39,6 +43,18 @@ type ModeratorApp = PlainApp & {
   contactEmail?: string;
   submittedBy?: string;
   submissionSource?: string;
+  moderationHistory?: ModerationEntry[];
+};
+
+/**
+ * one past decision, as handed to the review console. moderator-only — it
+ * names the deciding moderator and repeats the note written about a member.
+ */
+type ModerationEntry = {
+  action: string;
+  note: string;
+  moderatorName: string;
+  createdAt: string;
 };
 
 const MODERATOR_ROLES = ['admin', 'moderator'];
@@ -55,6 +71,57 @@ function escapeHtml(value: string): string {
 
 function buildSubmissionConfirmationText(appName: string): string {
   return `היי, קיבלנו את ההגשה שלך "${escapeHtml(appName)}" לארגז הכלים של הלם קלאב. הכלי ממתין כעת לבדיקת צוות המנחים, ותקבלו עדכון נוסף ברגע שיאושר. תודה שתרמת לקהילה!`;
+}
+
+/**
+ * the only moderation actions the server accepts, and the status each one
+ * writes. an action outside this map is rejected rather than silently
+ * falling through to a decision the moderator did not ask for.
+ */
+const REVIEW_ACTION_STATUS = new Map<string, string>([
+  ['approve', 'approved'],
+  ['reject', 'rejected'],
+  ['request_changes', 'changes_requested'],
+]);
+
+/**
+ * ponytail: a flat cap on one batch, not a job queue. every decision in a
+ * batch writes one document and sends one email inline; move to a queue if
+ * moderators ever need to decide more than this at once.
+ */
+const MAX_REVIEW_BATCH = 100;
+const MAX_NOTE_LENGTH = 2000;
+
+/**
+ * ponytail: a flat cap, not pagination. this list exists to find a decision
+ * you just made, not to browse the archive. add paging if moderators ever ask
+ * to scroll past this.
+ */
+const DECIDED_LIST_LIMIT = 50;
+
+/**
+ * the only deletion modes the server accepts. a Map, not an object literal —
+ * an object literal would resolve `mode: "constructor"` up the prototype
+ * chain and walk straight through this check.
+ */
+const DELETION_MODES = new Map<string, string>([
+  ['personal_data', 'personal_data'],
+  ['everything', 'everything'],
+]);
+
+function buildModerationDecisionText(appName: string, status: string, note: string): string {
+  const name = escapeHtml(appName);
+  const why = note ? ` הערת הצוות: "${escapeHtml(note)}"` : '';
+  if (status === 'approved') {
+    return `היי, שמחים לעדכן שהכלי שלך "${name}" אושר ופורסם בארגז הכלים של הלם קלאב. תודה שתרמת לקהילה!`;
+  }
+  if (status === 'changes_requested') {
+    return `היי, בדקנו את הכלי שלך "${name}" ויש כמה דברים שצריך לתקן לפני פרסום.${why} אפשר לערוך ולהגיש מחדש דרך "ההגשות שלי".`;
+  }
+  if (status === 'rejected') {
+    return `היי, בדקנו את הכלי שלך "${name}" והוא לא אושר לפרסום בארגז הכלים.${why} תודה על ההגשה ועל התרומה לקהילה.`;
+  }
+  return '';
 }
 
 /**
@@ -78,7 +145,8 @@ export class ToolboxNode {
     private helamPlatform: HelamPlatformNode,
     private appRepository: AppRepository,
     private appReviewRepository: AppReviewRepository,
-    private cloudinaryConfig: CloudinaryConfig | undefined
+    private cloudinaryConfig: CloudinaryConfig | undefined,
+    private appDeletionRepository?: AppDeletionRepository
   ) {}
 
   /**
@@ -114,6 +182,7 @@ export class ToolboxNode {
           ? model.ratingHistogram
           : [0, 0, 0, 0, 0],
       status: (model.status as PlainApp['status']) || 'pending',
+      moderatorNote: model.moderatorNote || '',
     };
   }
 
@@ -154,10 +223,21 @@ export class ToolboxNode {
   }
 
   /**
-   * resolve a single app by its id or slug.
+   * resolve a single app by its id or slug. only approved apps are public —
+   * a draft, a pending submission or a rejected one is readable solely by the
+   * member who submitted it and by moderators. without this gate anyone who
+   * can guess a slug reads the submission and, worse, the moderator's note
+   * explaining why a named person's tool was turned down.
    */
-  async getApp(idOrSlug: string): Promise<PlainApp | null> {
+  async getApp(idOrSlug: string, context: ResolverContext): Promise<PlainApp | null> {
     const app = await this.appRepository.getAppByIdOrSlug(idOrSlug);
+    if (!app) return null;
+    if (app.status === 'approved') return this.toPlainApp(app);
+
+    const user = await this.helamPlatform.getCurrentUser(context || {});
+    if (!user) return null;
+    const isOwner = Boolean(app.submittedBy) && app.submittedBy === user.id;
+    if (!isOwner && !MODERATOR_ROLES.includes(user.role)) return null;
     return this.toPlainApp(app);
   }
 
@@ -173,6 +253,13 @@ export class ToolboxNode {
       contactEmail: model.contactEmail || '',
       submittedBy: model.submittedBy || '',
       submissionSource: model.submissionSource || '',
+      // oldest first — the console reads it as a story, not a stack.
+      moderationHistory: (model.moderationHistory || []).map((entry) => ({
+        action: entry.action,
+        note: entry.note || '',
+        moderatorName: entry.moderatorName || '',
+        createdAt: entry.createdAt ? new Date(entry.createdAt).toISOString() : '',
+      })),
     };
   }
 
@@ -186,6 +273,88 @@ export class ToolboxNode {
     return apps
       .map((app) => this.toModeratorApp(app))
       .filter((app): app is ModeratorApp => Boolean(app));
+  }
+
+  /**
+   * list submissions already decided against (rejected / changes requested),
+   * newest first. moderators and admins only — every row carries the note a
+   * moderator wrote about a named member.
+   */
+  async listDecidedToolboxApps(context: ResolverContext): Promise<ModeratorApp[]> {
+    await this.requireModerator(context);
+    const apps = await this.appRepository.listDecidedApps(DECIDED_LIST_LIMIT);
+    return apps
+      .map((app) => this.toModeratorApp(app))
+      .filter((app): app is ModeratorApp => Boolean(app));
+  }
+
+  /**
+   * fix the wording of a note already written on a decided submission. the
+   * decision itself is untouched. no email goes out: the member was already
+   * told, and a second notification for a rephrasing is noise.
+   */
+  async correctModerationNote(
+    input: CorrectNoteInput,
+    context: ResolverContext
+  ): Promise<PlainApp | null> {
+    const moderator = await this.requireModerator(context);
+
+    const note = (input.note || '').trim();
+    if (!note) throw new Error(`a corrected note cannot be empty`);
+
+    const updated = await this.appRepository.correctModeratorNote(
+      input.appId,
+      note.slice(0, MAX_NOTE_LENGTH),
+      { id: moderator.id || '', name: moderator.displayName || '' }
+    );
+    if (!updated) throw new NotFound();
+
+    return this.toPlainApp(updated);
+  }
+
+  /**
+   * carry out a member's own deletion request on their own submission.
+   *
+   * self-service and immediate: it is their data and their tool, and putting
+   * a moderator between a person and the removal of what was written about
+   * them would make it a favour rather than a right. ownership is enforced in
+   * the repository query, so an id belonging to somebody else matches nothing.
+   *
+   * both modes are irreversible. a receipt carrying no personal data is
+   * written afterwards so we can show the request was honoured.
+   */
+  async deleteMySubmission(
+    input: DeleteSubmissionInput,
+    context: ResolverContext
+  ): Promise<boolean> {
+    const user = await this.requireUser(context);
+
+    const mode = DELETION_MODES.get(input.mode);
+    if (!mode) throw new Error(`unknown deletion mode`);
+    if (!input.appId) throw new Error(`no submission selected`);
+
+    let removed = false;
+    if (mode === 'everything') {
+      removed = await this.appRepository.deleteOwnedApp(input.appId, user.id);
+      // the ratings are about a tool that no longer exists — leaving them
+      // would strand other members' words against nothing.
+      if (removed) await this.appReviewRepository.deleteReviewsForApp(input.appId);
+    } else {
+      removed = Boolean(await this.appRepository.anonymizeApp(input.appId, user.id));
+    }
+
+    if (!removed) throw new NotFound();
+
+    // best-effort: the data is already gone, and failing to write the receipt
+    // must never look like the deletion failed.
+    try {
+      await this.appDeletionRepository?.record(input.appId, mode);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn(`[toolbox] deletion receipt failed for app ${input.appId}: ${(err as Error).message}`);
+    }
+
+    return true;
   }
 
   /**
@@ -298,12 +467,60 @@ export class ToolboxNode {
    * apply a moderation decision to a pending app. approving makes it public.
    * moderators and admins only.
    */
-  async reviewToolboxApp(input: ReviewAppInput, context: ResolverContext): Promise<PlainApp | null> {
-    await this.requireModerator(context);
-    const status = input.action === 'approve' ? 'approved' : 'rejected';
-    const updated = await this.appRepository.updateAppStatus(input.appId, status);
-    if (!updated) throw new NotFound();
-    return this.toPlainApp(updated);
+  async reviewToolboxApp(input: ReviewAppInput, context: ResolverContext): Promise<PlainApp[]> {
+    const moderator = await this.requireModerator(context);
+
+    // a Map, not a plain object: `action: "constructor"` against an object
+    // literal resolves up the prototype chain and walks straight through the
+    // whitelist this check exists to enforce.
+    const status = REVIEW_ACTION_STATUS.get(input.action);
+    if (!status) throw new Error(`unknown moderation action`);
+
+    const appIds = (input.appIds || []).filter((id) => typeof id === 'string' && id.length > 0);
+    if (appIds.length === 0) throw new Error(`no submissions selected`);
+
+    // approval carries no note; rejecting or asking for changes must say why,
+    // enforced here and not only in the console — the client is not trusted.
+    const note = (input.note || '').trim();
+    if (status !== 'approved' && !note) {
+      throw new Error(`a moderator note is required to reject or request changes`);
+    }
+    if (appIds.length > MAX_REVIEW_BATCH) throw new Error(`too many submissions in one batch`);
+
+    const reviewed = await this.appRepository.reviewApps(
+      appIds,
+      status,
+      input.action,
+      status === 'approved' ? '' : note.slice(0, MAX_NOTE_LENGTH),
+      { id: moderator.id || '', name: moderator.displayName || '' }
+    );
+    if (reviewed.length === 0) throw new NotFound();
+
+    await Promise.all(reviewed.map((app) => this.sendModerationDecisionEmail(app)));
+
+    return reviewed
+      .map((app) => this.toPlainApp(app))
+      .filter((app): app is PlainApp => Boolean(app));
+  }
+
+  /**
+   * best-effort notification telling the submitter what was decided and why.
+   * a mail failure must never fail the decision — it is already persisted.
+   */
+  private async sendModerationDecisionEmail(app: AppModel): Promise<void> {
+    if (!app.contactEmail) return;
+    const message = buildModerationDecisionText(app.name, app.status, app.moderatorNote || '');
+    if (!message) return;
+    try {
+      await this.helamPlatform.sendEmail(
+        app.contactEmail,
+        `עדכון על הכלי "${app.name}" — הלם קלאב`,
+        message
+      );
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn(`[toolbox] decision email failed for app ${app.id}: ${(err as Error).message}`);
+    }
   }
 
   /**
@@ -318,14 +535,18 @@ export class ToolboxNode {
    * create a review for an app and recompute the app's aggregate rating
    * metrics (average, count and histogram).
    */
-  async rateToolboxApp(input: RateAppInput): Promise<PlainAppReview> {
+  async rateToolboxApp(input: RateAppInput, context: ResolverContext): Promise<PlainAppReview> {
+    // the reviewer's identity comes from the session, never from the request
+    // body — otherwise anyone can post a rating under someone else's name.
+    const user = await this.requireUser(context);
     const boundedStars = Math.max(1, Math.min(5, Math.round(input.stars)));
 
     const review = await this.appReviewRepository.createReview(
       input.appId,
       boundedStars,
       input.comment,
-      input.displayName
+      user.displayName,
+      user.id
     );
 
     const allReviews = await this.appReviewRepository.listReviewsByAppId(input.appId);
@@ -357,6 +578,7 @@ export class ToolboxNode {
 
     const appRepository = new AppRepository(appModel);
     const appReviewRepository = new AppReviewRepository(appReviewModel);
+    const appDeletionRepository = new AppDeletionRepository(getModelForClass(AppDeletionRecord));
 
     // image upload is optional at boot — catalog browsing doesn't need it, so
     // a missing/malformed CLOUDINARY_URL only fails the upload-signature call
@@ -376,7 +598,8 @@ export class ToolboxNode {
       helamPlatform,
       appRepository,
       appReviewRepository,
-      cloudinaryConfig
+      cloudinaryConfig,
+      appDeletionRepository
     );
 
     const gqlSchema = toolboxGqlSchema(toolbox);

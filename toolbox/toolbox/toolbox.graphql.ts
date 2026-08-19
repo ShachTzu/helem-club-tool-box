@@ -5,6 +5,8 @@ import type {
   ListToolboxAppsOptions,
   SubmitAppInput,
   ReviewAppInput,
+  CorrectNoteInput,
+  DeleteSubmissionInput,
   IncrementClickInput,
   RateAppInput,
 } from './toolbox-options.js';
@@ -45,6 +47,23 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         ratingCount: Int
         ratingHistogram: [Int]
         status: String!
+        """
+        why a submission was rejected or sent back for changes. only ever set
+        on the submitter's own non-public records — approval clears it.
+        """
+        moderatorNote: String
+      }
+
+      """
+      one past moderation decision. moderator-only: it carries the deciding
+      moderator's name and the note written about a member's submission, so it
+      must never appear on the public ToolboxApp type.
+      """
+      type ToolboxModerationEntry {
+        action: String!
+        note: String
+        moderatorName: String
+        createdAt: String
       }
 
       """
@@ -76,9 +95,11 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         ratingCount: Int
         ratingHistogram: [Int]
         status: String!
+        moderatorNote: String
         contactEmail: String
         submittedBy: String
         submissionSource: String
+        moderationHistory: [ToolboxModerationEntry]
       }
 
       """
@@ -128,8 +149,24 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
       }
 
       input ReviewToolboxAppOptions {
-        appId: String!
+        appIds: [String!]!
         action: String!
+        note: String
+      }
+
+      input CorrectModerationNoteOptions {
+        appId: String!
+        note: String!
+      }
+
+      """
+      how much of a member's own submission to remove.
+      'personal_data' keeps the tool in the catalog but strips everything
+      tying it to them; 'everything' removes the submission outright.
+      """
+      input DeleteMySubmissionOptions {
+        appId: String!
+        mode: String!
       }
 
       input IncrementToolboxAppClickOptions {
@@ -141,13 +178,13 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         appId: String!
         stars: Int!
         comment: String
-        displayName: String
       }
 
       type Query {
         listToolboxApps(options: ListToolboxAppsOptions): [ToolboxApp]
         getToolboxApp(idOrSlug: String!): ToolboxApp
         listPendingToolboxApps: [PendingToolboxApp]
+        listDecidedToolboxApps: [PendingToolboxApp]
         listToolboxAppReviews(appId: String!): [ToolboxAppReview]
         getMyToolboxDraft(id: String!): PendingToolboxApp
         listMyToolboxSubmissions: [ToolboxApp]
@@ -156,7 +193,9 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
       type Mutation {
         submitToolboxApp(options: SubmitToolboxAppOptions!, id: String): ToolboxApp
         saveToolboxDraft(options: SubmitToolboxAppOptions!, id: String): PendingToolboxApp
-        reviewToolboxApp(options: ReviewToolboxAppOptions!): ToolboxApp
+        reviewToolboxApp(options: ReviewToolboxAppOptions!): [ToolboxApp]
+        correctModerationNote(options: CorrectModerationNoteOptions!): ToolboxApp
+        deleteMySubmission(options: DeleteMySubmissionOptions!): Boolean
         incrementToolboxAppClick(options: IncrementToolboxAppClickOptions!): Boolean
         rateToolboxApp(options: RateToolboxAppOptions!): ToolboxAppReview
         createToolboxUploadSignature: ToolboxUploadSignature
@@ -170,8 +209,12 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         ) => {
           return toolboxNode.listToolboxApps(options);
         },
-        getToolboxApp: async (_parent: unknown, { idOrSlug }: { idOrSlug: string }) => {
-          return toolboxNode.getApp(idOrSlug);
+        getToolboxApp: async (
+          _parent: unknown,
+          { idOrSlug }: { idOrSlug: string },
+          context: ResolverContext
+        ) => {
+          return toolboxNode.getApp(idOrSlug, context);
         },
         listPendingToolboxApps: async (
           _parent: unknown,
@@ -179,6 +222,13 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
           context: ResolverContext
         ) => {
           return toolboxNode.listPendingToolboxApps(context);
+        },
+        listDecidedToolboxApps: async (
+          _parent: unknown,
+          _args: unknown,
+          context: ResolverContext
+        ) => {
+          return toolboxNode.listDecidedToolboxApps(context);
         },
         listToolboxAppReviews: async (_parent: unknown, { appId }: { appId: string }) => {
           return toolboxNode.listAppReviews(appId);
@@ -220,6 +270,20 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         ) => {
           return toolboxNode.reviewToolboxApp(options, context);
         },
+        correctModerationNote: async (
+          _parent: unknown,
+          { options }: { options: CorrectNoteInput },
+          context: ResolverContext
+        ) => {
+          return toolboxNode.correctModerationNote(options, context);
+        },
+        deleteMySubmission: async (
+          _parent: unknown,
+          { options }: { options: DeleteSubmissionInput },
+          context: ResolverContext
+        ) => {
+          return toolboxNode.deleteMySubmission(options, context);
+        },
         incrementToolboxAppClick: async (
           _parent: unknown,
           { options }: { options: IncrementClickInput }
@@ -228,9 +292,10 @@ export function toolboxGqlSchema(toolboxNode: ToolboxNode): GqlSchema {
         },
         rateToolboxApp: async (
           _parent: unknown,
-          { options }: { options: RateAppInput }
+          { options }: { options: RateAppInput },
+          context: ResolverContext
         ) => {
-          return toolboxNode.rateToolboxApp(options);
+          return toolboxNode.rateToolboxApp(options, context);
         },
         createToolboxUploadSignature: async (
           _parent: unknown,

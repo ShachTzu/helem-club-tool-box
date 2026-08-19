@@ -17,6 +17,8 @@ export const GET_CURRENT_USER_QUERY = gql`
       role
       provider
       createdAt
+      onboardingCompleted
+      interests
     }
   }
 `;
