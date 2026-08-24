@@ -11,6 +11,8 @@ import { App, type PlainApp } from '@helemclub/toolbox.entities.app';
 import type { PlainAppReview } from '@helemclub/toolbox.entities.app-review';
 import { useApps } from '@helemclub/toolbox.hooks.use-apps';
 import { useAppReviews } from '@helemclub/toolbox.hooks.use-app-reviews';
+import { useAuth } from '@helemclub/platform.hooks.use-auth';
+import type { PlainUser } from '@helemclub/platform.entities.user';
 import type { AppDetailDomain } from './app-detail-domain-type.js';
 import { mockGroundMeAppData, mockAppDetailReviewsData } from './app-detail.mock.js';
 import styles from './app-detail.module.scss';
@@ -82,6 +84,12 @@ export type AppDetailProps = {
    * style for the root element.
    */
   style?: React.CSSProperties;
+
+  /**
+   * pre-loaded current user, overriding the live auth session. pass null to
+   * simulate a signed-out visitor, useful for tests and previews.
+   */
+  mockCurrentUser?: PlainUser | null;
 };
 
 /**
@@ -99,6 +107,7 @@ export function AppDetail({
   backHref = `/toolbox`,
   className,
   style,
+  mockCurrentUser,
 }: AppDetailProps) {
   const params = useParams<{ slug?: string }>();
   const resolvedSlug = slug || params.slug || DEFAULT_APP_DATA.slug;
@@ -118,6 +127,10 @@ export function AppDetail({
     mockData: reviewsProp || (appProp ? undefined : DEFAULT_REVIEWS_DATA.filter((review) => review.appId === resolvedApp?.id)),
   });
 
+  const { user: currentUser } = useAuth(
+    mockCurrentUser !== undefined ? { mockData: mockCurrentUser } : undefined
+  );
+
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [selectedStars, setSelectedStars] = useState(5);
   const [reviewComment, setReviewComment] = useState(``);
@@ -130,7 +143,7 @@ export function AppDetail({
   };
 
   const handleSubmitReview = async () => {
-    if (!resolvedApp) return;
+    if (!resolvedApp || !currentUser) return;
 
     if (selectedStars < 1) {
       setReviewFormError(`נא לבחור דירוג בין 1 ל-5 כוכבים`);
@@ -287,16 +300,22 @@ export function AppDetail({
       <div className={styles.card}>
         <div className={styles.ratingHeader}>
           <h3 className={styles.sectionTitle}>דירוגים וביקורות</h3>
-          <button
-            type="button"
-            className={styles.writeReviewButton}
-            onClick={() => setShowReviewForm(!showReviewForm)}
-          >
-            כתבו ביקורת
-          </button>
+          {currentUser ? (
+            <button
+              type="button"
+              className={styles.writeReviewButton}
+              onClick={() => setShowReviewForm(!showReviewForm)}
+            >
+              כתבו ביקורת
+            </button>
+          ) : (
+            <Link to="/login" className={styles.writeReviewButton}>
+              התחברו כדי לכתוב ביקורת
+            </Link>
+          )}
         </div>
 
-        {showReviewForm && (
+        {showReviewForm && currentUser && (
           <form
             className={styles.reviewForm}
             onSubmit={(event) => {

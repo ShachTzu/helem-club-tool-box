@@ -6,7 +6,7 @@ import { Button } from '@helemclub/design.actions.button';
 import { ProtectedRoute, type ProtectedRouteProps } from '@helemclub/platform.ui.protected-route';
 import styles from './review-submissions.module.scss';
 
-type ReviewAction = `approve` | `reject`;
+type ReviewAction = `approve` | `reject` | `changes_requested`;
 
 export type ReviewSubmissionsProps = {
   /**
@@ -43,12 +43,13 @@ export function ReviewSubmissions({ mockPendingData, mockUser, className, style 
   });
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [processingAction, setProcessingAction] = useState<ReviewAction | null>(null);
+  const [notesByAppId, setNotesByAppId] = useState<Record<string, string>>({});
 
   const handleReview = async (appId: string, action: ReviewAction) => {
     setProcessingId(appId);
     setProcessingAction(action);
     try {
-      await reviewApp({ appId, action });
+      await reviewApp({ appId, action, note: notesByAppId[appId]?.trim() || undefined });
     } finally {
       setProcessingId(null);
       setProcessingAction(null);
@@ -93,6 +94,25 @@ export function ReviewSubmissions({ mockPendingData, mockUser, className, style 
     { key: `domains`, header: `תחומים`, hideOnMobile: true },
     { key: `costType`, header: `עלות`, hideOnMobile: true },
     {
+      key: `note`,
+      header: `הערת מנחה`,
+      hideOnMobile: true,
+      renderCell: (row) => {
+        const appId = String(row.id);
+        return (
+          <input
+            type="text"
+            className={styles.noteInput}
+            value={notesByAppId[appId] || ``}
+            onChange={(event) =>
+              setNotesByAppId((prev) => ({ ...prev, [appId]: event.target.value }))
+            }
+            placeholder="הערה אופציונלית למגיש"
+          />
+        );
+      },
+    },
+    {
       key: `actions`,
       header: `פעולות`,
       align: `end`,
@@ -109,6 +129,15 @@ export function ReviewSubmissions({ mockPendingData, mockUser, className, style 
               onClick={() => handleReview(appId, `approve`)}
             >
               אישור
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              disabled={isProcessing}
+              loading={isProcessing && processingAction === `changes_requested`}
+              onClick={() => handleReview(appId, `changes_requested`)}
+            >
+              נדרשים שינויים
             </Button>
             <Button
               variant="danger"

@@ -18,6 +18,8 @@ function serializeUser(user: User) {
     role: plain.role,
     provider: plain.provider,
     createdAt: plain.createdAt,
+    onboardingCompleted: plain.onboardingCompleted ?? false,
+    interests: plain.interests ?? [],
   };
 }
 
@@ -38,6 +40,8 @@ export function helamPlatformGqlSchema(helamPlatform: HelamPlatformNode): GqlSch
         role: String
         provider: String
         createdAt: String
+        onboardingCompleted: Boolean
+        interests: [String!]
       }
 
       type AuthSession {
@@ -82,6 +86,10 @@ export function helamPlatformGqlSchema(helamPlatform: HelamPlatformNode): GqlSch
         idToken: String!
       }
 
+      input CompleteOnboardingOptions {
+        interests: [String!]
+      }
+
       type Query {
         getCurrentUser: PlatformUser
         authConfig: AuthConfig
@@ -91,6 +99,7 @@ export function helamPlatformGqlSchema(helamPlatform: HelamPlatformNode): GqlSch
         requestEmailOtp(options: RequestEmailOtpOptions!): RequestEmailOtpResult
         verifyEmailOtp(options: VerifyEmailOtpOptions!): AuthSession
         signInWithGoogle(options: SignInWithGoogleOptions!): AuthSession
+        completeOnboarding(options: CompleteOnboardingOptions!): PlatformUser
         signOut: Boolean
       }
     `,
@@ -135,6 +144,16 @@ export function helamPlatformGqlSchema(helamPlatform: HelamPlatformNode): GqlSch
           });
 
           return { token: session.token, user: serializeUser(session.user) };
+        },
+
+        completeOnboarding: async (_parent: unknown, { options }: any, context: any) => {
+          const userId = context?.session?.userId;
+          if (!userId) throw new Error('יש להתחבר כדי להשלים את תהליך ההרשמה');
+
+          const user = await helamPlatform.completeOnboarding(userId, {
+            interests: options?.interests ?? [],
+          });
+          return serializeUser(user);
         },
 
         signOut: async (_parent: unknown, _args: unknown, context: any) => {

@@ -36,6 +36,8 @@ it('serializes a User into a plain object including the id', () => {
     role: user.role,
     provider: user.provider,
     createdAt: user.createdAt,
+    onboardingCompleted: user.onboardingCompleted,
+    interests: user.interests,
   });
 });
 

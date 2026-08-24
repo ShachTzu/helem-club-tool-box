@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { OnboardingWizard, type OnboardingWizardProps } from '@helemclub/platform.ui.onboarding-wizard';
 import { useOnboarding, type OnboardingProfile } from '@helemclub/platform.hooks.use-onboarding';
+import { useAuth } from '@helemclub/platform.hooks.use-auth';
 import styles from './onboarding-page.module.scss';
 
 export type OnboardingPageProps = {
@@ -46,10 +47,20 @@ export function OnboardingPage({
   style,
 }: OnboardingPageProps) {
   const navigate = useNavigate();
-  const { completeOnboarding } = useOnboarding();
+  const { completeOnboarding: completeOnboardingLocally } = useOnboarding();
+  const { completeOnboarding: completeOnboardingOnServer } = useAuth();
 
-  const handleComplete = (profile: OnboardingProfile) => {
-    completeOnboarding(profile);
+  const handleComplete = async (profile: OnboardingProfile) => {
+    // persist locally right away for a snappy redirect, then sync to the
+    // server so the gate stays correct across devices and sessions. a server
+    // failure is tolerated here — the local flag still lets the user through,
+    // and the gate will re-sync from `getCurrentUser` on the next load.
+    completeOnboardingLocally(profile);
+    try {
+      await completeOnboardingOnServer(profile.interests);
+    } catch {
+      // ignore — see comment above.
+    }
     onComplete?.(profile);
     navigate(redirectTo);
   };

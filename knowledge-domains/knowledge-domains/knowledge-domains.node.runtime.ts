@@ -94,7 +94,11 @@ export class KnowledgeDomainsNode {
       },
     ]);
 
-    helamPlatform.registerOnStart(async () => {
+    // the 14 coping domains are reference taxonomy rather than invented demo
+    // content, but `registerSeed` still gates them behind DISABLE_SEED_DATA for
+    // consistency with every other aspect's seeding, and so a production
+    // deployment can supply its own curated domain list instead.
+    helamPlatform.registerSeed(async () => {
       const existingDocs = await domainModel.find().limit(1);
       const hasDocs = Boolean(existingDocs.length);
       if (hasDocs) return undefined;

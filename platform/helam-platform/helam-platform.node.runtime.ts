@@ -128,6 +128,22 @@ export class HelamPlatformNode {
   }
 
   /**
+   * persist the mandatory post-signup onboarding profile for a signed-in
+   * user: marks onboarding as completed and stores the coping-domain
+   * interests they selected in the wizard.
+   *
+   * @param userId the stable id of the user completing onboarding.
+   * @param options the interests collected by the onboarding wizard.
+   * @returns the updated user.
+   */
+  async completeOnboarding(
+    userId: string,
+    options: { interests?: string[] }
+  ): Promise<User> {
+    return this.userRepository.completeOnboarding(userId, options);
+  }
+
+  /**
    * send a one-time sign-in code to an email address.
    *
    * this is the way in for members who do not use Google. the code is random,

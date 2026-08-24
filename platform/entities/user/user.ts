@@ -52,6 +52,17 @@ export type PlainUser = {
    * ISO timestamp of when the user was created.
    */
   createdAt: string;
+
+  /**
+   * whether the user has completed the mandatory post-signup onboarding flow.
+   */
+  onboardingCompleted?: boolean;
+
+  /**
+   * the coping-domain names the user is most interested in, captured during
+   * onboarding.
+   */
+  interests?: string[];
 };
 
 /**
@@ -94,7 +105,18 @@ export class User {
     /**
      * optional avatar image url.
      */
-    readonly avatarUrl?: string
+    readonly avatarUrl?: string,
+
+    /**
+     * whether the user has completed the mandatory post-signup onboarding flow.
+     */
+    readonly onboardingCompleted: boolean = false,
+
+    /**
+     * the coping-domain names the user is most interested in, captured during
+     * onboarding.
+     */
+    readonly interests: string[] = []
   ) {}
 
   /**
@@ -120,6 +142,8 @@ export class User {
       role: this.role,
       provider: this.provider,
       createdAt: this.createdAt,
+      onboardingCompleted: this.onboardingCompleted,
+      interests: this.interests,
     };
   }
 
@@ -135,8 +159,20 @@ export class User {
       role = 'member',
       provider = 'email',
       createdAt = new Date().toISOString(),
+      onboardingCompleted = false,
+      interests = [],
     } = plainUser || ({} as PlainUser);
 
-    return new User(id, email, displayName, role, provider, createdAt, avatarUrl);
+    return new User(
+      id,
+      email,
+      displayName,
+      role,
+      provider,
+      createdAt,
+      avatarUrl,
+      onboardingCompleted,
+      interests
+    );
   }
 }

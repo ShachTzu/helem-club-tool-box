@@ -41,6 +41,8 @@ function toPlainUser(doc: UserModel): PlainUser {
     role: (doc.role || 'member') as PlainUser['role'],
     provider: (doc.provider || 'email') as PlainUser['provider'],
     createdAt: doc.createdAt || new Date().toISOString(),
+    onboardingCompleted: doc.onboardingCompleted ?? false,
+    interests: doc.interests ?? [],
   };
 }
 
@@ -220,6 +222,31 @@ export class UserRepository {
       interests: [],
       createdAt: new Date().toISOString(),
     });
+
+    return User.from(toPlainUser(doc.toObject()));
+  }
+
+  /**
+   * persist the mandatory post-signup onboarding profile: marks the user as
+   * having completed onboarding and stores the coping-domain interests they
+   * selected. called once, right after the onboarding wizard is submitted.
+   *
+   * @param userId the stable id of the user completing onboarding.
+   * @param options the interests collected by the onboarding wizard.
+   * @returns the updated user.
+   */
+  async completeOnboarding(
+    userId: string,
+    options: { interests?: string[] }
+  ): Promise<User> {
+    const doc = await this.userModel.findOne({ userId });
+    if (!doc) {
+      throw new Error('לא נמצא משתמש להשלמת תהליך ההרשמה');
+    }
+
+    doc.onboardingCompleted = true;
+    doc.interests = options.interests ?? [];
+    await doc.save();
 
     return User.from(toPlainUser(doc.toObject()));
   }

@@ -18,6 +18,8 @@ export const SIGN_IN_WITH_GOOGLE_MUTATION = gql`
         role
         provider
         createdAt
+        onboardingCompleted
+        interests
       }
     }
   }

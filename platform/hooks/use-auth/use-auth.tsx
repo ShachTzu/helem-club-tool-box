@@ -6,6 +6,7 @@ import { useAuthConfig } from './use-auth-config.js';
 import { useVerifyEmailOtp, type AuthSession } from './use-verify-email-otp.js';
 import { useSignInWithGoogle } from './use-sign-in-with-google.js';
 import { useSignOut } from './use-sign-out.js';
+import { useCompleteOnboarding } from './use-complete-onboarding.js';
 
 export type { AuthSession } from './use-verify-email-otp.js';
 export type { RequestOtpResult } from './use-request-email-otp.js';
@@ -81,6 +82,13 @@ export type UseAuthValue = {
    * therefore allowed to create or edit content.
    */
   canWrite: boolean;
+
+  /**
+   * persists the mandatory post-signup onboarding profile's interests to the
+   * server and marks the signed-in user as onboarded. resolves with the
+   * updated user, or undefined when the visitor is signed out.
+   */
+  completeOnboarding: (interests: string[]) => Promise<User | undefined>;
 };
 
 /**
@@ -97,6 +105,7 @@ export function useAuth(options?: UseAuthOptions): UseAuthValue {
   const { signInWithGoogle: signInWithGoogleMutation } = useSignInWithGoogle();
   const { signOut: signOutMutation } = useSignOut();
   const { googleClientId } = useAuthConfig();
+  const { completeOnboarding: completeOnboardingMutation } = useCompleteOnboarding();
 
   const verifyEmailOtp = useCallback(
     async (email: string, code: string) => {
@@ -125,6 +134,17 @@ export function useAuth(options?: UseAuthOptions): UseAuthValue {
     await refetch();
   }, [signOutMutation, refetch]);
 
+  const completeOnboarding = useCallback(
+    async (interests: string[]) => {
+      const updated = await completeOnboardingMutation(interests);
+      if (updated) {
+        await refetch();
+      }
+      return updated;
+    },
+    [completeOnboardingMutation, refetch]
+  );
+
   const isAdmin = Boolean(user?.isAtLeast('admin'));
   const isModerator = Boolean(user?.isAtLeast('moderator'));
   const canWrite = Boolean(user?.isAtLeast('writer'));
@@ -141,5 +161,6 @@ export function useAuth(options?: UseAuthOptions): UseAuthValue {
     isAdmin,
     isModerator,
     canWrite,
+    completeOnboarding,
   };
 }
