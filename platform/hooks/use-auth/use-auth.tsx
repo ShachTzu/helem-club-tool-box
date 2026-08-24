@@ -84,6 +84,31 @@ export type UseAuthValue = {
   canWrite: boolean;
 
   /**
+   * whether the current user was approved into the community and may
+   * participate — post, comment and react. pending and rejected members get
+   * read-only access until a moderator decides.
+   */
+  isApprovedMember: boolean;
+
+  /**
+   * whether the current user is still awaiting a membership decision.
+   */
+  isPendingApproval: boolean;
+
+  /**
+   * whether the current user may approve or reject other members.
+   */
+  canModerateMembers: boolean;
+
+  /**
+   * whether the current user may manage the content domain — blog authors,
+   * the blog itself and the knowledge library. true for full admins and for
+   * users scoped in as content admins; does not grant any other admin
+   * privilege (user management, other domains).
+   */
+  canManageContent: boolean;
+
+  /**
    * persists the mandatory post-signup onboarding profile's interests to the
    * server and marks the signed-in user as onboarded. resolves with the
    * updated user, or undefined when the visitor is signed out.
@@ -148,6 +173,10 @@ export function useAuth(options?: UseAuthOptions): UseAuthValue {
   const isAdmin = Boolean(user?.isAtLeast('admin'));
   const isModerator = Boolean(user?.isAtLeast('moderator'));
   const canWrite = Boolean(user?.isAtLeast('writer'));
+  const isApprovedMember = Boolean(user?.isApprovedMember);
+  const isPendingApproval = Boolean(user?.isPendingApproval);
+  const canModerateMembers = Boolean(user?.canModerateMembers());
+  const canManageContent = Boolean(user?.canManageContent());
 
   return {
     user,
@@ -161,6 +190,10 @@ export function useAuth(options?: UseAuthOptions): UseAuthValue {
     isAdmin,
     isModerator,
     canWrite,
+    isApprovedMember,
+    isPendingApproval,
+    canModerateMembers,
+    canManageContent,
     completeOnboarding,
   };
 }

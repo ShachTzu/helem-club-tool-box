@@ -19,6 +19,8 @@ export const GET_CURRENT_USER_QUERY = gql`
       createdAt
       onboardingCompleted
       interests
+      membershipStatus
+      contentAdmin
     }
   }
 `;

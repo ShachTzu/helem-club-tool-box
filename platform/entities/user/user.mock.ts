@@ -13,12 +13,14 @@ export function mockUser(overrides: Partial<PlainUser> = {}): User {
     role: 'member',
     provider: 'email',
     createdAt: new Date('2024-01-15T09:30:00.000Z').toISOString(),
+    membershipStatus: 'approved',
     ...overrides,
   });
 }
 
 /**
- * create a list of mock Users covering the different roles and providers.
+ * create a list of mock Users covering the different roles, providers and
+ * membership statuses.
  */
 export function mockUsers(): User[] {
   return [
@@ -28,6 +30,23 @@ export function mockUsers(): User[] {
       displayName: 'Sam Doe',
       role: 'member',
       provider: 'email',
+    }),
+    mockUser({
+      id: uuid(),
+      email: 'maya.new@example.com',
+      displayName: 'Maya Levi',
+      role: 'member',
+      provider: 'email',
+      membershipStatus: 'pending',
+    }),
+    mockUser({
+      id: uuid(),
+      email: 'yossi.waiting@example.com',
+      displayName: 'Yossi Cohen',
+      role: 'member',
+      provider: 'google',
+      membershipStatus: 'pending',
+      avatarUrl: 'https://i.pravatar.cc/150?u=yossi.waiting@example.com',
     }),
     mockUser({
       id: uuid(),

@@ -41,14 +41,64 @@ it(`should update the search input value when typed into`, () => {
   expect(searchInput.value).toBe(`שירה`);
 });
 
-it(`should show an access-denied message for a non-admin user`, () => {
+it(`should allow a moderator in — they hold the membership gate`, () => {
   const moderator = mockUser({ displayName: `דנה מודרטורית`, role: `moderator` });
-  const { getByText } = render(
+  const { container } = render(
     <MockProvider>
       <ManageUsers mockCurrentUser={moderator.toObject()} mockUsers={MOCK_PLATFORM_USERS} />
     </MockProvider>
   );
+  const title = container.querySelector(`.${styles.title}`);
+  expect(title?.textContent).toBe(`ניהול משתמשים`);
+});
+
+it(`should show an access-denied message for a regular member`, () => {
+  const member = mockUser({ displayName: `חבר רגיל`, role: `member` });
+  const { getByText } = render(
+    <MockProvider>
+      <ManageUsers mockCurrentUser={member.toObject()} mockUsers={MOCK_PLATFORM_USERS} />
+    </MockProvider>
+  );
   expect(getByText(`אין לך הרשאה לצפות בעמוד זה`)).toBeTruthy();
+});
+
+it(`should badge how many signups are awaiting approval`, () => {
+  const { getByText } = render(
+    <MockProvider>
+      <ManageUsers mockCurrentUser={admin.toObject()} mockUsers={MOCK_PLATFORM_USERS} />
+    </MockProvider>
+  );
+  expect(getByText(`2 ממתינים לאישור`)).toBeTruthy();
+});
+
+it(`should filter the list down to pending signups`, () => {
+  const { getByText, queryAllByText } = render(
+    <MockProvider>
+      <ManageUsers mockCurrentUser={admin.toObject()} mockUsers={MOCK_PLATFORM_USERS} />
+    </MockProvider>
+  );
+
+  fireEvent.click(getByText(`ממתינים לאישור`));
+
+  expect(queryAllByText(`שירה אזולאי`).length).toBeGreaterThan(0);
+  expect(queryAllByText(`Sam Doe`)).toHaveLength(0);
+});
+
+it(`should approve a pending member and move them out of the queue`, () => {
+  const { getAllByText, getByText, queryAllByText } = render(
+    <MockProvider>
+      <ManageUsers mockCurrentUser={admin.toObject()} mockUsers={MOCK_PLATFORM_USERS} />
+    </MockProvider>
+  );
+
+  fireEvent.click(getByText(`ממתינים לאישור`));
+  expect(queryAllByText(`שירה אזולאי`).length).toBeGreaterThan(0);
+
+  // approve the first pending signup in the queue.
+  fireEvent.click(getAllByText(`אישור`)[0]);
+
+  expect(queryAllByText(`שירה אזולאי`)).toHaveLength(0);
+  expect(getByText(`1 ממתינים לאישור`)).toBeTruthy();
 });
 
 it(`should show the empty message when there are no users`, () => {

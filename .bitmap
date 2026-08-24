@@ -96,7 +96,7 @@
     "admin/manage-users": {
         "name": "admin/manage-users",
         "scope": "helemclub.platform",
-        "version": "16221045cb9895dacf58ce17b499fdd26050b240",
+        "version": "0.1.1",
         "mainFile": "index.ts",
         "rootDir": "platform/admin/manage-users"
     },
@@ -376,7 +376,7 @@
     "entities/user": {
         "name": "entities/user",
         "scope": "helemclub.platform",
-        "version": "0.0.3",
+        "version": "0.1.1",
         "mainFile": "index.ts",
         "rootDir": "platform/entities/user"
     },
@@ -418,7 +418,7 @@
     "helam-platform": {
         "name": "helam-platform",
         "scope": "helemclub.platform",
-        "version": "e8becf0add00f807921af11030b67d2d2eafb5ec",
+        "version": "0.1.3",
         "mainFile": "index.ts",
         "rootDir": "platform/helam-platform"
     },
@@ -460,7 +460,7 @@
     "hooks/use-auth": {
         "name": "hooks/use-auth",
         "scope": "helemclub.platform",
-        "version": "1ec29de1bfe478b5b60810cb97c8c868f745b053",
+        "version": "0.1.1",
         "mainFile": "index.ts",
         "rootDir": "platform/hooks/use-auth"
     },
@@ -670,14 +670,14 @@
     "inputs/select-list": {
         "name": "inputs/select-list",
         "scope": "helemclub.design",
-        "version": "0.0.3",
+        "version": "0.0.13",
         "mainFile": "index.ts",
         "rootDir": "design/inputs/select-list"
     },
     "inputs/text-input": {
         "name": "inputs/text-input",
         "scope": "helemclub.design",
-        "version": "0.0.3",
+        "version": "0.1.4",
         "mainFile": "index.ts",
         "rootDir": "design/inputs/text-input"
     },
@@ -796,7 +796,7 @@
     "pages/admin-dashboard": {
         "name": "pages/admin-dashboard",
         "scope": "helemclub.platform",
-        "version": "eed325d8d52e95e9cb68056bc114608546dca1e0",
+        "version": "0.1.1",
         "mainFile": "index.ts",
         "rootDir": "platform/pages/admin-dashboard"
     },
@@ -1083,7 +1083,7 @@
     "ui/admin-shell": {
         "name": "ui/admin-shell",
         "scope": "helemclub.platform",
-        "version": "c71cb7cf91f9d7dd52945366265130fab711cc85",
+        "version": "0.1.1",
         "mainFile": "index.ts",
         "rootDir": "platform/ui/admin-shell"
     },

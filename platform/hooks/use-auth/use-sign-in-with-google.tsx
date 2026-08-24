@@ -20,6 +20,7 @@ export const SIGN_IN_WITH_GOOGLE_MUTATION = gql`
         createdAt
         onboardingCompleted
         interests
+        membershipStatus
       }
     }
   }

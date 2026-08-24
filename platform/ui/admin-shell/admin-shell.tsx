@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { Tabs } from '@helemclub/design.navigation.tabs';
+import { Badge } from '@helemclub/design.content.badge';
 import { PageLayout } from '@helemclub/design.layouts.page-layout';
 import { useAuth } from '@helemclub/platform.hooks.use-auth';
 import type { PlainUser } from '@helemclub/platform.entities.user';
@@ -17,6 +18,22 @@ const NAV_ICONS: Record<string, string> = {
 
 function panelIconFor(panelId: string) {
   return NAV_ICONS[panelId] || `🗂️`;
+}
+
+/**
+ * whether a panel has outstanding items worth flagging. a count of zero is
+ * treated as nothing to show, so panels with an empty queue stay quiet.
+ */
+function hasBadge(count?: number): count is number {
+  return typeof count === `number` && count > 0;
+}
+
+/**
+ * accessible suffix appended to a nav label when the panel has a queue, so
+ * screen-reader users hear the count rather than only seeing it.
+ */
+function badgeLabelFor(count: number) {
+  return `${count} פריטים בהמתנה`;
 }
 
 export type AdminShellProps = {
@@ -74,8 +91,16 @@ export function AdminShell({
   const activePanel = visiblePanels.find((panel) => panel.id === activePanelId);
   const ActivePanelComponent = activePanel?.component;
 
+  // the tabs primitive renders plain text labels, so the count is appended
+  // inline there rather than as a Badge element.
   const tabItems = useMemo(
-    () => visiblePanels.map((panel) => ({ key: panel.id, label: `${panelIconFor(panel.id)} ${panel.label}` })),
+    () =>
+      visiblePanels.map((panel) => ({
+        key: panel.id,
+        label: hasBadge(panel.badgeCount)
+          ? `${panelIconFor(panel.id)} ${panel.label} (${panel.badgeCount})`
+          : `${panelIconFor(panel.id)} ${panel.label}`,
+      })),
     [visiblePanels]
   );
 
@@ -130,7 +155,16 @@ export function AdminShell({
                   onClick={() => setActiveId(panel.id)}
                 >
                   <span className={styles.navIcon}>{panelIconFor(panel.id)}</span>
-                  <span>{panel.label}</span>
+                  <span className={styles.navLabel}>{panel.label}</span>
+                  {hasBadge(panel.badgeCount) && (
+                    <>
+                      <Badge variant="warning" className={styles.navBadge}>
+                        {panel.badgeCount}
+                      </Badge>
+                      {/* the badge shows a bare number; screen readers get the meaning. */}
+                      <span className={styles.srOnly}>{badgeLabelFor(panel.badgeCount)}</span>
+                    </>
+                  )}
                 </button>
               </li>
             ))}

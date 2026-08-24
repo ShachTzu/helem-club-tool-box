@@ -11,6 +11,12 @@ export type UserModelRole = 'member' | 'writer' | 'moderator' | 'admin';
 export type UserModelProvider = 'email' | 'google';
 
 /**
+ * the community membership status of a user. new signups start as 'pending'
+ * and must be approved by a moderator or an admin before they may participate.
+ */
+export type UserModelMembershipStatus = 'pending' | 'approved' | 'rejected';
+
+/**
  * the typegoose User model persisted in MongoDB. mirrors the platform's
  * User entity (helemclub.platform/entities/user) with a few backend-only
  * fields used for the onboarding gate and interest matching.
@@ -81,8 +87,35 @@ export class UserModel {
   public interests!: string[];
 
   /**
+   * community membership status. new signups are 'pending' until a moderator
+   * or an admin approves them into the community.
+   */
+  @prop({ type: String, default: 'pending' })
+  public membershipStatus!: string;
+
+  /**
+   * the id of the moderator or admin who last decided on this membership.
+   */
+  @prop({ type: String })
+  public membershipDecidedBy?: string;
+
+  /**
+   * ISO timestamp of the last membership approval/rejection decision.
+   */
+  @prop({ type: String })
+  public membershipDecidedAt?: string;
+
+  /**
    * ISO timestamp of when the user was created.
    */
   @prop({ type: String })
   public createdAt?: string;
+
+  /**
+   * scoped content-domain admin: can manage writers, the knowledge library
+   * and the blog, without holding the site-wide 'admin' role. granted on
+   * top of any role — typically 'moderator' — by a full admin.
+   */
+  @prop({ type: Boolean, default: false })
+  public contentAdmin!: boolean;
 }

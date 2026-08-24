@@ -1,7 +1,9 @@
 import { GqlSchema } from '@bitdev/symphony.backends.backend-server';
 import { gql } from 'graphql-tag';
-import type { User } from '@helemclub/platform.entities.user';
+import type { User, MembershipStatus } from '@helemclub/platform.entities.user';
 import type { HelamPlatformNode } from './helam-platform.node.runtime.js';
+
+const MEMBERSHIP_STATUSES: MembershipStatus[] = ['pending', 'approved', 'rejected'];
 
 /**
  * serialize a User entity into the GraphQL PlatformUser shape expected by the
@@ -20,7 +22,26 @@ function serializeUser(user: User) {
     createdAt: plain.createdAt,
     onboardingCompleted: plain.onboardingCompleted ?? false,
     interests: plain.interests ?? [],
+    membershipStatus: plain.membershipStatus ?? 'pending',
+    contentAdmin: plain.contentAdmin ?? false,
   };
+}
+
+/**
+ * resolve the signed-in user and assert they may moderate community
+ * membership. approving members is a moderator/admin power, so the check is
+ * enforced here on the server rather than relying on the admin UI alone.
+ */
+async function requireMemberModerator(
+  helamPlatform: HelamPlatformNode,
+  context: any
+): Promise<User> {
+  const currentUser = await helamPlatform.getCurrentUser(context);
+  if (!currentUser) throw new Error('יש להתחבר כדי לבצע פעולה זו');
+  if (!currentUser.canModerateMembers()) {
+    throw new Error('אין לך הרשאה לנהל חברות בקהילה');
+  }
+  return currentUser;
 }
 
 /**
@@ -42,6 +63,18 @@ export function helamPlatformGqlSchema(helamPlatform: HelamPlatformNode): GqlSch
         createdAt: String
         onboardingCompleted: Boolean
         interests: [String!]
+
+        """
+        community membership status: pending, approved or rejected. new
+        signups stay pending until a moderator or an admin approves them.
+        """
+        membershipStatus: String
+
+        """
+        scoped content-domain admin: can manage writers, the knowledge
+        library and the blog, without holding the site-wide admin role.
+        """
+        contentAdmin: Boolean
       }
 
       type AuthSession {
@@ -90,9 +123,32 @@ export function helamPlatformGqlSchema(helamPlatform: HelamPlatformNode): GqlSch
         interests: [String!]
       }
 
+      input ListPlatformUsersOptions {
+        query: String
+        membershipStatus: String
+        limit: Int
+      }
+
+      input UpdatePlatformUserRoleOptions {
+        userId: ID!
+        role: String!
+      }
+
+      input UpdateMembershipStatusOptions {
+        userId: ID!
+        membershipStatus: String!
+      }
+
+      input UpdateContentAdminOptions {
+        userId: ID!
+        contentAdmin: Boolean!
+      }
+
       type Query {
         getCurrentUser: PlatformUser
         authConfig: AuthConfig
+        listUsers(options: ListPlatformUsersOptions): [PlatformUser!]!
+        pendingMembersCount: Int
       }
 
       type Mutation {
@@ -100,6 +156,9 @@ export function helamPlatformGqlSchema(helamPlatform: HelamPlatformNode): GqlSch
         verifyEmailOtp(options: VerifyEmailOtpOptions!): AuthSession
         signInWithGoogle(options: SignInWithGoogleOptions!): AuthSession
         completeOnboarding(options: CompleteOnboardingOptions!): PlatformUser
+        updateUserRole(options: UpdatePlatformUserRoleOptions!): PlatformUser
+        updateMembershipStatus(options: UpdateMembershipStatusOptions!): PlatformUser
+        updateContentAdmin(options: UpdateContentAdminOptions!): PlatformUser
         signOut: Boolean
       }
     `,
@@ -115,6 +174,27 @@ export function helamPlatformGqlSchema(helamPlatform: HelamPlatformNode): GqlSch
             googleClientId: helamPlatform.getGoogleClientId() || null,
             emailSignInEnabled: true,
           };
+        },
+
+        listUsers: async (_parent: unknown, { options }: any, context: any) => {
+          await requireMemberModerator(helamPlatform, context);
+
+          const requestedStatus = options?.membershipStatus;
+          const membershipStatus = MEMBERSHIP_STATUSES.includes(requestedStatus)
+            ? (requestedStatus as MembershipStatus)
+            : undefined;
+
+          const users = await helamPlatform.listUsers({
+            query: options?.query ?? undefined,
+            membershipStatus,
+            limit: options?.limit ?? undefined,
+          });
+          return users.map(serializeUser);
+        },
+
+        pendingMembersCount: async (_parent: unknown, _args: unknown, context: any) => {
+          await requireMemberModerator(helamPlatform, context);
+          return helamPlatform.countPendingMembers();
         },
       },
       Mutation: {
@@ -153,6 +233,52 @@ export function helamPlatformGqlSchema(helamPlatform: HelamPlatformNode): GqlSch
           const user = await helamPlatform.completeOnboarding(userId, {
             interests: options?.interests ?? [],
           });
+          return serializeUser(user);
+        },
+
+        updateUserRole: async (_parent: unknown, { options }: any, context: any) => {
+          const currentUser = await helamPlatform.getCurrentUser(context);
+          if (!currentUser) throw new Error('יש להתחבר כדי לבצע פעולה זו');
+          // assigning roles is an admin-only power — a moderator may approve
+          // members, but may not promote anyone (including themselves).
+          if (!currentUser.isAtLeast('admin')) {
+            throw new Error('אין לך הרשאה לעדכן תפקידים');
+          }
+
+          const user = await helamPlatform.updateUserRole(options.userId, options.role);
+          return serializeUser(user);
+        },
+
+        updateContentAdmin: async (_parent: unknown, { options }: any, context: any) => {
+          const currentUser = await helamPlatform.getCurrentUser(context);
+          if (!currentUser) throw new Error('יש להתחבר כדי לבצע פעולה זו');
+          // granting the scoped content-admin flag is a full-admin-only power,
+          // exactly like assigning roles — a content admin may not grant it to
+          // anyone else, including themselves.
+          if (!currentUser.isAtLeast('admin')) {
+            throw new Error('אין לך הרשאה לעדכן הרשאות תוכן');
+          }
+
+          const user = await helamPlatform.updateContentAdmin(
+            options.userId,
+            options.contentAdmin
+          );
+          return serializeUser(user);
+        },
+
+        updateMembershipStatus: async (_parent: unknown, { options }: any, context: any) => {
+          const currentUser = await requireMemberModerator(helamPlatform, context);
+
+          const requestedStatus = options?.membershipStatus;
+          if (!MEMBERSHIP_STATUSES.includes(requestedStatus)) {
+            throw new Error('סטטוס חברות לא חוקי');
+          }
+
+          const user = await helamPlatform.updateMembershipStatus(
+            options.userId,
+            requestedStatus as MembershipStatus,
+            currentUser.id
+          );
           return serializeUser(user);
         },
 

@@ -19,6 +19,7 @@ export const COMPLETE_ONBOARDING_MUTATION = gql`
       createdAt
       onboardingCompleted
       interests
+      membershipStatus
     }
   }
 `;

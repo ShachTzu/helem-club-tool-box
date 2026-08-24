@@ -7,6 +7,7 @@ import { Home } from '@helemclub/platform.pages.home';
 import { Login } from '@helemclub/platform.pages.login';
 import { Signup } from '@helemclub/platform.pages.signup';
 import { OnboardingPage } from '@helemclub/platform.pages.onboarding-page';
+import { ManageUsers } from '@helemclub/platform.admin.manage-users';
 import { Profile } from '@helemclub/platform.pages.profile';
 import { AdminDashboard } from '@helemclub/platform.pages.admin-dashboard';
 import { PlanToProduction } from '@helemclub/platform.pages.plan-to-production';
@@ -181,6 +182,18 @@ export class HelamPlatformBrowser {
         </AppLayout>
       );
     });
+
+    /**
+     * membership moderation lives in the admin dashboard — this is the gate
+     * where moderators and admins approve or reject new community signups.
+     */
+    platform.registerAdminRoute([
+      {
+        path: 'users',
+        label: 'אישור חברים',
+        component: () => <ManageUsers />,
+      },
+    ]);
 
     /**
      * register the platform's own routes. feature routes are registered

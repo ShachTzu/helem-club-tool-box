@@ -7,11 +7,11 @@ import {
   SymphonyPlatformAspect,
   type SymphonyPlatformNode,
 } from '@bitdev/symphony.symphony-platform';
-import { User } from '@helemclub/platform.entities.user';
+import { User, type MembershipStatus } from '@helemclub/platform.entities.user';
 import type { BackendServerDefinition } from '@bitdev/symphony.backends.backend-server';
 import type { HelamPlatformConfig } from './helam-platform-config.js';
 import { helamPlatformGqlSchema } from './helam-platform.graphql.js';
-import { UserRepository } from './user-repository.js';
+import { UserRepository, type ListUsersOptions } from './user-repository.js';
 import { UserModel } from './user.model.js';
 import { EmailOtpModel } from './email-otp.model.js';
 import { EmailOtpService } from './email-otp-service.js';
@@ -144,6 +144,66 @@ export class HelamPlatformNode {
   }
 
   /**
+   * list platform users for the admin panel, optionally filtered by a
+   * free-text query and by membership status.
+   *
+   * @param options the search query, status filter and result limit.
+   * @returns the matching users.
+   */
+  async listUsers(options: ListUsersOptions = {}): Promise<User[]> {
+    return this.userRepository.listUsers(options);
+  }
+
+  /**
+   * update a user's community role. restricted to admins at the API layer.
+   *
+   * @param userId the stable id of the user to update.
+   * @param role the role to assign.
+   * @returns the updated user.
+   */
+  async updateUserRole(userId: string, role: string): Promise<User> {
+    return this.userRepository.updateUserRole(userId, role);
+  }
+
+  /**
+   * grant or revoke scoped content-domain admin — manage writers, the
+   * knowledge library and the blog — without site-wide admin privileges.
+   * restricted to full admins at the API layer.
+   *
+   * @param userId the stable id of the user to update.
+   * @param contentAdmin whether the user should hold the content-admin scope.
+   * @returns the updated user.
+   */
+  async updateContentAdmin(userId: string, contentAdmin: boolean): Promise<User> {
+    return this.userRepository.updateContentAdmin(userId, contentAdmin);
+  }
+
+  /**
+   * decide on a pending member's community membership — approving them into
+   * the community or rejecting them. this is the community gate: until a
+   * moderator or an admin approves, a signup stays read-only.
+   *
+   * @param userId the stable id of the user being decided on.
+   * @param membershipStatus the decision to record.
+   * @param decidedBy the id of the moderator or admin making the decision.
+   * @returns the updated user.
+   */
+  async updateMembershipStatus(
+    userId: string,
+    membershipStatus: MembershipStatus,
+    decidedBy?: string
+  ): Promise<User> {
+    return this.userRepository.updateMembershipStatus(userId, membershipStatus, decidedBy);
+  }
+
+  /**
+   * count the users awaiting a membership decision.
+   */
+  async countPendingMembers(): Promise<number> {
+    return this.userRepository.countPendingMembers();
+  }
+
+  /**
    * send a one-time sign-in code to an email address.
    *
    * this is the way in for members who do not use Google. the code is random,
@@ -212,6 +272,16 @@ export class HelamPlatformNode {
    */
   isAdmin(user: User): boolean {
     return user.role === 'admin';
+  }
+
+  /**
+   * whether the given user may manage the content domain — blog authors,
+   * the blog itself and the knowledge library. true for full admins and for
+   * users scoped in as content admins; does not grant any other admin
+   * privilege (user management, other domains).
+   */
+  canManageContent(user: User): boolean {
+    return user.role === 'admin' || user.contentAdmin;
   }
 
   /**

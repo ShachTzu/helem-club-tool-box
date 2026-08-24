@@ -63,6 +63,33 @@ it(`should show a restricted message for a member user`, () => {
   expect(stateTitle?.textContent).toBe(`הגישה חסומה`);
 });
 
+it(`should render a count badge on a panel with pending items`, () => {
+  const admin = mockUser({ role: `admin` });
+  const panelsWithBadge: AdminPanelItem[] = [
+    { ...testPanels[0], badgeCount: 3 },
+    testPanels[1],
+  ];
+  const { container } = render(
+    <MockProvider>
+      <AdminShell mockUser={admin.toObject()} panels={panelsWithBadge} />
+    </MockProvider>
+  );
+  const badges = container.querySelectorAll(`.${styles.navBadge}`);
+  expect(badges.length).toBe(1);
+  expect(badges[0].textContent).toBe(`3`);
+});
+
+it(`should not render a badge when the count is zero`, () => {
+  const admin = mockUser({ role: `admin` });
+  const panelsWithZero: AdminPanelItem[] = [{ ...testPanels[0], badgeCount: 0 }];
+  const { container } = render(
+    <MockProvider>
+      <AdminShell mockUser={admin.toObject()} panels={panelsWithZero} />
+    </MockProvider>
+  );
+  expect(container.querySelectorAll(`.${styles.navBadge}`).length).toBe(0);
+});
+
 it(`should hide panels restricted to admin role for a moderator user`, () => {
   const moderator = mockUser({ role: `moderator` });
   const restrictedPanels: AdminPanelItem[] = [

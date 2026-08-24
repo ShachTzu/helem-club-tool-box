@@ -48,6 +48,19 @@ export const ModeratorWithCustomPanels = () => {
   );
 };
 
+export const WithPendingApprovalsBadge = () => {
+  const admin = mockUser({ displayName: `הלם אדמין`, role: `admin` });
+  const panelsWithQueue: AdminPanelItem[] = [
+    { id: `users`, label: `אישור חברים`, path: `/admin/users`, component: EventsPanel, badgeCount: 7 },
+    ...customPanels,
+  ];
+  return (
+    <MockProvider>
+      <AdminShell mockUser={admin.toObject()} panels={panelsWithQueue} />
+    </MockProvider>
+  );
+};
+
 export const RestrictedForMembers = () => {
   const member = mockUser({ displayName: `שם דו`, role: `member` });
   return (

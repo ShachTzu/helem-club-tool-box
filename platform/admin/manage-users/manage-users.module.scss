@@ -94,6 +94,52 @@
   color: var(--colors-text-primary);
 }
 
+.pendingNotice {
+  margin-top: var(--spacing-default);
+}
+
+.statusFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-small);
+}
+
+.statusFilter {
+  box-sizing: border-box;
+  padding: var(--spacing-small) var(--spacing-default);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-pill);
+  background: transparent;
+  color: var(--colors-text-secondary);
+  font-family: inherit;
+  font-size: var(--typography-sizes-body-small);
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+.statusFilter:hover {
+  border-color: var(--colors-primary-default);
+  color: var(--colors-text-primary);
+}
+
+.statusFilter:focus-visible {
+  outline: 2px solid var(--colors-primary-default);
+  outline-offset: 2px;
+}
+
+.statusFilterActive {
+  background: var(--colors-primary-default);
+  border-color: var(--colors-primary-default);
+  color: var(--colors-surface-primary);
+  font-weight: var(--typography-font-weight-semi-bold);
+}
+
+.membershipActions {
+  display: flex;
+  gap: var(--spacing-small);
+  flex-wrap: wrap;
+}
+
 .stateMessage {
   box-sizing: border-box;
   padding: var(--spacing-x4);
@@ -118,5 +164,9 @@
 
   .searchField {
     max-width: none;
+  }
+
+  .statusFilters {
+    justify-content: flex-start;
   }
 }

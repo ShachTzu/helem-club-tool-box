@@ -50,6 +50,19 @@ export const AdminUserView = () => {
   );
 };
 
+export const WithPendingApprovals = () => {
+  const admin = mockUser({ displayName: `הלם אדמין`, role: `admin` });
+  const panelsWithQueue: AdminPanelItem[] = [
+    { id: `users`, label: `אישור חברים`, path: `/admin/users`, component: DomainsPanel },
+    ...customPanels,
+  ];
+  return (
+    <MockProvider>
+      <AdminDashboard mockUser={admin.toObject()} panels={panelsWithQueue} mockPendingCount={5} />
+    </MockProvider>
+  );
+};
+
 export const ModeratorView = () => {
   const moderator = mockUser({ displayName: `דנה מודרטורית`, role: `moderator` });
   return (

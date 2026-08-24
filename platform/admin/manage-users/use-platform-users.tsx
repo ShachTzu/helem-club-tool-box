@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { gql } from '@apollo/client';
 import { useMutation, useQuery } from '@apollo/client/react';
-import { User, type PlainUser, type UserRole } from '@helemclub/platform.entities.user';
+import {
+  User,
+  type PlainUser,
+  type UserRole,
+  type MembershipStatus,
+} from '@helemclub/platform.entities.user';
 
 const LIST_PLATFORM_USERS_QUERY = gql`
   query ListPlatformUsers($options: ListPlatformUsersOptions) {
@@ -13,6 +18,8 @@ const LIST_PLATFORM_USERS_QUERY = gql`
       role
       provider
       createdAt
+      membershipStatus
+      contentAdmin
     }
   }
 `;
@@ -27,6 +34,40 @@ const UPDATE_PLATFORM_USER_ROLE_MUTATION = gql`
       role
       provider
       createdAt
+      membershipStatus
+      contentAdmin
+    }
+  }
+`;
+
+const UPDATE_MEMBERSHIP_STATUS_MUTATION = gql`
+  mutation UpdateMembershipStatus($options: UpdateMembershipStatusOptions!) {
+    updateMembershipStatus(options: $options) {
+      id
+      email
+      displayName
+      avatarUrl
+      role
+      provider
+      createdAt
+      membershipStatus
+      contentAdmin
+    }
+  }
+`;
+
+const UPDATE_CONTENT_ADMIN_MUTATION = gql`
+  mutation UpdateContentAdmin($options: UpdateContentAdminOptions!) {
+    updateContentAdmin(options: $options) {
+      id
+      email
+      displayName
+      avatarUrl
+      role
+      provider
+      createdAt
+      membershipStatus
+      contentAdmin
     }
   }
 `;
@@ -57,6 +98,12 @@ export type UsePlatformUsersOptions = {
    * search query applied to the user's display name and email.
    */
   query?: string;
+
+  /**
+   * when set, only users with this membership status are returned. use
+   * 'pending' to show the approval queue.
+   */
+  status?: MembershipStatus | 'all';
 
   /**
    * mock/initial list of users, bypassing the GraphQL query. role changes
@@ -90,6 +137,30 @@ export type UsePlatformUsersValue = {
    * whether a role update is currently in flight.
    */
   updating: boolean;
+
+  /**
+   * approves a pending member into the community, granting full
+   * participation rights. resolves with whether the update succeeded.
+   */
+  approveMember: (userId: string) => Promise<boolean>;
+
+  /**
+   * rejects a pending member. the user keeps read-only access but can never
+   * participate. resolves with whether the update succeeded.
+   */
+  rejectMember: (userId: string) => Promise<boolean>;
+
+  /**
+   * the number of users currently awaiting an approval decision.
+   */
+  pendingCount: number;
+
+  /**
+   * grants or revokes scoped content-domain admin (writers, the knowledge
+   * library and the blog) for a user, without changing their site-wide
+   * role. resolves with whether the update succeeded.
+   */
+  setContentAdmin: (userId: string, contentAdmin: boolean) => Promise<boolean>;
 };
 
 /**
@@ -98,7 +169,7 @@ export type UsePlatformUsersValue = {
  * entirely, useful for tests and previews.
  */
 export function usePlatformUsers(options?: UsePlatformUsersOptions): UsePlatformUsersValue {
-  const { query = ``, mockData } = options || {};
+  const { query = ``, status = `all`, mockData } = options || {};
   const hasMock = mockData !== undefined;
   const debouncedQuery = useDebouncedValue(query, DEFAULT_DEBOUNCE_MS);
 
@@ -113,12 +184,33 @@ export function usePlatformUsers(options?: UsePlatformUsersOptions): UsePlatform
     UPDATE_PLATFORM_USER_ROLE_MUTATION
   );
 
-  const users = useMemo(() => {
+  const [mutateStatus, { loading: updatingStatus }] = useMutation<{
+    updateMembershipStatus: PlainUser;
+  }>(UPDATE_MEMBERSHIP_STATUS_MUTATION);
+
+  const [mutateContentAdmin, { loading: updatingContentAdmin }] = useMutation<{
+    updateContentAdmin: PlainUser;
+  }>(UPDATE_CONTENT_ADMIN_MUTATION);
+
+  const allUsers = useMemo(() => {
     if (hasMock) {
-      return mockUsersState.filter((user) => matchesQuery(user, debouncedQuery)).map((user) => User.from(user));
+      return mockUsersState.map((user) => User.from(user));
     }
     return (queryResult.data?.listUsers || []).map((user) => User.from(user));
-  }, [hasMock, mockUsersState, debouncedQuery, queryResult.data]);
+  }, [hasMock, mockUsersState, queryResult.data]);
+
+  const users = useMemo(() => {
+    return allUsers.filter((user) => {
+      if (!matchesQuery(user.toObject(), debouncedQuery)) return false;
+      if (status === `all`) return true;
+      return user.membershipStatus === status;
+    });
+  }, [allUsers, debouncedQuery, status]);
+
+  const pendingCount = useMemo(
+    () => allUsers.filter((user) => user.isPendingApproval).length,
+    [allUsers]
+  );
 
   const updateRole = async (userId: string, role: UserRole) => {
     if (hasMock) {
@@ -134,11 +226,46 @@ export function usePlatformUsers(options?: UsePlatformUsersOptions): UsePlatform
     return true;
   };
 
+  const setMembershipStatus = async (userId: string, membershipStatus: MembershipStatus) => {
+    if (hasMock) {
+      setMockUsersState((previousUsers) =>
+        previousUsers.map((user) => (user.id === userId ? { ...user, membershipStatus } : user))
+      );
+      return true;
+    }
+
+    const result = await mutateStatus({ variables: { options: { userId, membershipStatus } } });
+    if (!result.data?.updateMembershipStatus) return false;
+    await queryResult.refetch();
+    return true;
+  };
+
+  const approveMember = (userId: string) => setMembershipStatus(userId, `approved`);
+  const rejectMember = (userId: string) => setMembershipStatus(userId, `rejected`);
+
+  const setContentAdmin = async (userId: string, contentAdmin: boolean) => {
+    if (hasMock) {
+      setMockUsersState((previousUsers) =>
+        previousUsers.map((user) => (user.id === userId ? { ...user, contentAdmin } : user))
+      );
+      return true;
+    }
+
+    const result = await mutateContentAdmin({ variables: { options: { userId, contentAdmin } } });
+    if (!result.data?.updateContentAdmin) return false;
+    await queryResult.refetch();
+    return true;
+  };
+
   return {
     users,
     loading: hasMock ? false : queryResult.loading,
     error: hasMock ? undefined : queryResult.error?.message,
     updateRole,
-    updating,
+    updating: updating || updatingStatus || updatingContentAdmin,
+    approveMember,
+    rejectMember,
+    pendingCount,
+    setContentAdmin,
   };
 }

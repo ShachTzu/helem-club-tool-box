@@ -24,6 +24,7 @@ const GET_CURRENT_USER_QUERY = gql`
       onboardingCompleted
       interests
       membershipStatus
+      contentAdmin
     }
   }
 `;
@@ -43,6 +44,7 @@ const writerUserMock = {
         onboardingCompleted: true,
         interests: [],
         membershipStatus: 'approved',
+        contentAdmin: false,
       },
     },
   },

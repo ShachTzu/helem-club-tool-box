@@ -38,6 +38,68 @@ it('serializes a User into a plain object including the id', () => {
     createdAt: user.createdAt,
     onboardingCompleted: user.onboardingCompleted,
     interests: user.interests,
+    membershipStatus: user.membershipStatus,
+    contentAdmin: user.contentAdmin,
+  });
+});
+
+describe('membership status', () => {
+  it('defaults a user with no explicit status to pending', () => {
+    const user = User.from({
+      id: 'u3',
+      email: 'new.signup@example.com',
+      displayName: 'New Signup',
+      role: 'member',
+      provider: 'email',
+      createdAt: '2024-01-15T09:30:00.000Z',
+    });
+
+    expect(user.membershipStatus).toEqual('pending');
+    expect(user.isPendingApproval).toBe(true);
+    expect(user.isApprovedMember).toBe(false);
+  });
+
+  it('marks an approved member as able to participate', () => {
+    const user = mockUser({ membershipStatus: 'approved' });
+    expect(user.isApprovedMember).toBe(true);
+    expect(user.isPendingApproval).toBe(false);
+  });
+
+  it('keeps a rejected member out of participation', () => {
+    const user = mockUser({ membershipStatus: 'rejected' });
+    expect(user.isApprovedMember).toBe(false);
+    expect(user.isPendingApproval).toBe(false);
+  });
+
+  it('round-trips the membership status through serialization', () => {
+    const user = mockUser({ membershipStatus: 'pending' });
+    expect(User.from(user.toObject()).membershipStatus).toEqual('pending');
+  });
+});
+
+describe('canManageContent()', () => {
+  it('allows full admins regardless of the contentAdmin flag', () => {
+    expect(mockUser({ role: 'admin', contentAdmin: false }).canManageContent()).toBe(true);
+  });
+
+  it('allows a moderator scoped in as a content admin', () => {
+    expect(mockUser({ role: 'moderator', contentAdmin: true }).canManageContent()).toBe(true);
+  });
+
+  it('denies a moderator without the contentAdmin flag', () => {
+    expect(mockUser({ role: 'moderator', contentAdmin: false }).canManageContent()).toBe(false);
+  });
+});
+
+describe('canModerateMembers()', () => {
+  it('allows moderators and admins to hold the membership gate', () => {
+    expect(mockUser({ role: 'moderator' }).canModerateMembers()).toBe(true);
+    expect(mockUser({ role: 'admin' }).canModerateMembers()).toBe(true);
+  });
+
+  it('denies members and writers', () => {
+    expect(mockUser({ role: 'member' }).canModerateMembers()).toBe(false);
+    expect(mockUser({ role: 'writer' }).canModerateMembers()).toBe(false);
   });
 });
 
@@ -66,8 +128,14 @@ describe('isAtLeast()', () => {
 describe('mockUsers()', () => {
   it('returns a list of User instances', () => {
     const users = mockUsers();
-    expect(users).toHaveLength(4);
+    expect(users).toHaveLength(6);
     users.forEach((user) => expect(user).toBeInstanceOf(User));
+  });
+
+  it('covers both pending and approved membership statuses', () => {
+    const users = mockUsers();
+    expect(users.some((user) => user.isPendingApproval)).toBe(true);
+    expect(users.some((user) => user.isApprovedMember)).toBe(true);
   });
 
   it('supports partial overrides in mockUser()', () => {

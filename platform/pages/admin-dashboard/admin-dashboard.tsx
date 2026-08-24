@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { Card } from '@helemclub/design.content.card';
 import { ProtectedRoute } from '@helemclub/platform.ui.protected-route';
 import { AdminShell, DEFAULT_ADMIN_PANELS, type AdminPanelItem, type AdminShellProps } from '@helemclub/platform.ui.admin-shell';
 import type { AdminDashboardMetric } from './admin-dashboard-metric-type.js';
 import { DEFAULT_ADMIN_DASHBOARD_METRICS } from './admin-dashboard.mock.js';
+import { usePendingMembersCount } from './use-pending-members-count.js';
 import styles from './admin-dashboard.module.scss';
+
+/**
+ * panel ids that represent the membership approval queue. the browser runtime
+ * registers this panel under the `users` path, and the shell's fallback panels
+ * use the same id.
+ */
+const MEMBERSHIP_PANEL_IDS = [`users`, `אישור חברים`];
 
 export type AdminDashboardProps = {
   /**
@@ -24,6 +32,12 @@ export type AdminDashboardProps = {
    * tests and previews. pass null to simulate a signed-out state.
    */
   mockUser?: AdminShellProps['mockUser'];
+
+  /**
+   * overrides the pending-members count, bypassing the GraphQL query. useful
+   * for tests and previews that need a predictable badge.
+   */
+  mockPendingCount?: number;
 
   /**
    * class name for the root element.
@@ -45,10 +59,27 @@ export function AdminDashboard({
   panels = DEFAULT_ADMIN_PANELS,
   metrics = DEFAULT_ADMIN_DASHBOARD_METRICS,
   mockUser,
+  mockPendingCount,
   className,
   style,
 }: AdminDashboardProps) {
   const hasMockUser = mockUser !== undefined;
+  const hasMockPendingCount = mockPendingCount !== undefined;
+
+  // the query is always mounted (hooks cannot be conditional); the mock value
+  // simply wins when supplied.
+  const { count: queriedPendingCount } = usePendingMembersCount();
+  const pendingCount = hasMockPendingCount ? mockPendingCount : queriedPendingCount;
+
+  // surface the approval queue on the membership panel's nav entry, so a
+  // moderator sees there is something waiting without opening the panel.
+  const panelsWithBadges = useMemo(
+    () =>
+      panels.map((panel) =>
+        MEMBERSHIP_PANEL_IDS.includes(panel.id) ? { ...panel, badgeCount: pendingCount } : panel
+      ),
+    [panels, pendingCount]
+  );
 
   return (
     <ProtectedRoute
@@ -71,7 +102,7 @@ export function AdminDashboard({
         </section>
 
         <div className={styles.shell}>
-          <AdminShell panels={panels} mockUser={hasMockUser ? mockUser : undefined} />
+          <AdminShell panels={panelsWithBadges} mockUser={hasMockUser ? mockUser : undefined} />
         </div>
       </div>
     </ProtectedRoute>

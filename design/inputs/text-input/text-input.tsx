@@ -2,7 +2,7 @@ import React, { useId, useState } from 'react';
 import classNames from 'classnames';
 import styles from './text-input.module.scss';
 
-export type TextInputType = 'text' | 'email' | 'tel' | 'url';
+export type TextInputType = 'text' | 'email' | 'tel' | 'url' | 'date' | 'number';
 
 export type TextInputProps = {
   /**
@@ -26,7 +26,7 @@ export type TextInputProps = {
   defaultValue?: string;
 
   /**
-   * input type. supports text, email, tel and url.
+   * input type. supports text, email, tel, url, date and number.
    */
   type?: TextInputType;
 

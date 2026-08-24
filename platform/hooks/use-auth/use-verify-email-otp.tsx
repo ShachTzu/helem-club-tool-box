@@ -19,6 +19,7 @@ export const VERIFY_EMAIL_OTP_MUTATION = gql`
         createdAt
         onboardingCompleted
         interests
+        membershipStatus
       }
     }
   }

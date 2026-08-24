@@ -9,6 +9,14 @@ export type UserRole = 'member' | 'writer' | 'moderator' | 'admin';
 export type UserProvider = 'email' | 'google';
 
 /**
+ * The community membership status of a user, independent of their role.
+ * New signups start as 'pending' and must be approved by a moderator or an
+ * admin before they gain full participation rights. 'rejected' users keep
+ * read-only access but can never participate.
+ */
+export type MembershipStatus = 'pending' | 'approved' | 'rejected';
+
+/**
  * Ordered role hierarchy used to compare privilege levels.
  * Roles later in the array have higher privilege.
  */
@@ -63,6 +71,20 @@ export type PlainUser = {
    * onboarding.
    */
   interests?: string[];
+
+  /**
+   * community membership status. new signups are 'pending' until a moderator
+   * or an admin approves them. defaults to 'pending'.
+   */
+  membershipStatus?: MembershipStatus;
+
+  /**
+   * scoped content-domain admin: can manage writers, the knowledge library
+   * and the blog, without holding the site-wide 'admin' role. granted
+   * on top of any role — typically 'moderator' — by a full admin. defaults
+   * to false.
+   */
+  contentAdmin?: boolean;
 };
 
 /**
@@ -116,8 +138,43 @@ export class User {
      * the coping-domain names the user is most interested in, captured during
      * onboarding.
      */
-    readonly interests: string[] = []
+    readonly interests: string[] = [],
+
+    /**
+     * community membership status. new signups are 'pending' until a moderator
+     * or an admin approves them.
+     */
+    readonly membershipStatus: MembershipStatus = 'pending',
+
+    /**
+     * scoped content-domain admin: can manage writers, the knowledge library
+     * and the blog, without holding the site-wide 'admin' role.
+     */
+    readonly contentAdmin: boolean = false
   ) {}
+
+  /**
+   * whether the user was approved into the community and may participate
+   * (post, comment, react). pending and rejected users are read-only.
+   */
+  get isApprovedMember(): boolean {
+    return this.membershipStatus === 'approved';
+  }
+
+  /**
+   * whether the user is awaiting a moderator or admin decision.
+   */
+  get isPendingApproval(): boolean {
+    return this.membershipStatus === 'pending';
+  }
+
+  /**
+   * whether this user may approve or reject other members. moderators and
+   * admins hold the membership gate.
+   */
+  canModerateMembers(): boolean {
+    return this.isAtLeast('moderator');
+  }
 
   /**
    * checks whether the user's role is at least as privileged as the
@@ -128,6 +185,17 @@ export class User {
     const currentIndex = ROLE_HIERARCHY.indexOf(this.role);
     const targetIndex = ROLE_HIERARCHY.indexOf(role);
     return currentIndex >= targetIndex;
+  }
+
+  /**
+   * whether this user may manage the content domain — blog authors, the
+   * blog itself and the knowledge library — either because they are a
+   * full site admin, or because they were scoped in as a content admin.
+   * a content admin does NOT gain site-wide admin privileges (user
+   * management, other domains) — only this content-domain gate.
+   */
+  canManageContent(): boolean {
+    return this.role === 'admin' || this.contentAdmin;
   }
 
   /**
@@ -144,6 +212,8 @@ export class User {
       createdAt: this.createdAt,
       onboardingCompleted: this.onboardingCompleted,
       interests: this.interests,
+      membershipStatus: this.membershipStatus,
+      contentAdmin: this.contentAdmin,
     };
   }
 
@@ -161,6 +231,8 @@ export class User {
       createdAt = new Date().toISOString(),
       onboardingCompleted = false,
       interests = [],
+      membershipStatus = 'pending',
+      contentAdmin = false,
     } = plainUser || ({} as PlainUser);
 
     return new User(
@@ -172,7 +244,9 @@ export class User {
       createdAt,
       avatarUrl,
       onboardingCompleted,
-      interests
+      interests,
+      membershipStatus,
+      contentAdmin
     );
   }
 }

@@ -102,6 +102,30 @@
   line-height: 1;
 }
 
+.navLabel {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* pushed to the inline-end of the nav item so counts align in a column. */
+.navBadge {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+}
+
+/* visually hidden, still announced by screen readers. */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .content {
   box-sizing: border-box;
   flex: 1 1 auto;
