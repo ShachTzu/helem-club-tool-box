@@ -1,0 +1,72 @@
+---
+description: "ישות FieldDiff ולוגיקת השוואה בין שתי גרסאות של payload."
+labels: ['entity', 'diff', 'field-diff']
+---
+
+רכיב לישות `FieldDiff`, המייצגת שינוי בודד בשדה בין שתי גרסאות של תוכן. הרכיב חושף גם את הפונקציות `diffPayloads` ו-`summarizeDiff` להשוואת שני אובייקטים ולסיכום השינויים ביניהם בעברית. הלוגיקה טהורה (pure) וללא תלויות חיצוניות.
+
+## Get started
+
+התקינו והשתמשו ברכיב בקוד שלכם:
+
+```tsx
+import { FieldDiff } from '@helemclub/editorial.entities.field-diff';
+
+const diff = FieldDiff.from({
+  field: 'title',
+  label: 'כותרת',
+  before: 'כותרת ישנה',
+  after: 'כותרת חדשה',
+  changeKind: 'modified',
+});
+
+console.log(diff.toObject());
+```
+
+## השוואת שני payloads
+
+השתמשו ב-`diffPayloads` כדי להשוות בין שתי גרסאות של אובייקט ולקבל רשימת שינויים לכל שדה, כולל השוואת ערכים מקוננים (מערכים ואובייקטים).
+
+```tsx
+import { diffPayloads } from '@helemclub/editorial.entities.field-diff';
+
+const before = { title: 'ישן', domains: ['הלכה'] };
+const after = { title: 'חדש', domains: ['הלכה', 'מוסר'] };
+
+const diffs = diffPayloads(before, after, {
+  title: 'כותרת',
+  domains: 'תחומים',
+});
+
+diffs.forEach((diff) => {
+  console.log(diff.field, diff.changeKind, diff.before, diff.after);
+});
+```
+
+## סיכום השינויים בעברית
+
+השתמשו ב-`summarizeDiff` כדי לייצר משפט תמציתי בעברית שמתאר את השינויים שהתגלו.
+
+```tsx
+import { diffPayloads, summarizeDiff } from '@helemclub/editorial.entities.field-diff';
+
+const diffs = diffPayloads(
+  { title: 'ישן', authorName: 'ישראל ישראלי' },
+  { title: 'חדש', status: 'draft' }
+);
+
+const summary = summarizeDiff(diffs);
+console.log(summary);
+// לדוגמה: 'עודכן שדה אחד, נוסף שדה אחד, הוסר שדה אחד'
+```
+
+## נתוני Mock
+
+ניתן להשתמש בנתוני mock לצורכי פיתוח ובדיקות באמצעות `mockFieldDiffs`.
+
+```tsx
+import { mockFieldDiffs } from '@helemclub/editorial.entities.field-diff';
+
+const diffs = mockFieldDiffs();
+console.log(diffs);
+```

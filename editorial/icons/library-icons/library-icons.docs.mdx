@@ -1,0 +1,66 @@
+---
+description: "Icon set for the knowledge library editorial workflow, built on the design system's base icon."
+labels: ['icons', 'library', 'editorial', 'design-system']
+---
+
+The `library-icons` package provides the named icon exports used across the knowledge library editorial workflow: draft lifecycle icons (draft, review, approve, reject, changes requested) and revision/publishing icons (history, diff, publish, restore, library).
+
+All icons are built on top of the `Icon` component from `@helemclub/design.content.icon`, so they share the same `size` and `color` API and inherit the platform's theming.
+
+## Basic usage
+
+Import the icon you need and render it directly. Icons default to `medium` size and `current` color, which inherits the surrounding text color.
+
+```tsx
+import { DraftIcon, ReviewIcon, ApproveIcon } from '@helemclub/editorial.icons.library-icons';
+
+function StatusRow() {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+      <DraftIcon color="muted" title="טיוטה" />
+      <ReviewIcon color="primary" title="בבדיקה" />
+      <ApproveIcon color="accent" title="אושר" />
+    </div>
+  );
+}
+```
+
+## Editorial workflow icons
+
+The full set of editorial status icons represents each stage of a draft's lifecycle, from creation through approval or rejection.
+
+```tsx
+import { DraftIcon, ReviewIcon, ApproveIcon, RejectIcon, ChangesRequestedIcon } from '@helemclub/editorial.icons.library-icons';
+
+function EditorialStatusLegend() {
+  return (
+    <div style={{ display: 'flex', gap: 16 }}>
+      <DraftIcon size="small" color="muted" title="טיוטה" />
+      <ReviewIcon size="small" color="primary" title="בבדיקה" />
+      <ApproveIcon size="small" color="accent" title="אושר" />
+      <RejectIcon size="small" color="secondary" title="נדחה" />
+      <ChangesRequestedIcon size="small" color="secondary" title="נדרשים שינויים" />
+    </div>
+  );
+}
+```
+
+## Revision and publishing icons
+
+Use `HistoryIcon`, `DiffIcon`, `PublishIcon` and `RestoreIcon` for actions related to a draft's revision history, and `LibraryIcon` to represent the knowledge library itself.
+
+```tsx
+import { HistoryIcon, DiffIcon, PublishIcon, RestoreIcon, LibraryIcon } from '@helemclub/editorial.icons.library-icons';
+
+function RevisionActions() {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+      <HistoryIcon color="secondary" title="היסטוריה" />
+      <DiffIcon color="secondary" title="השוואת גרסאות" />
+      <PublishIcon color="accent" title="פרסום" />
+      <RestoreIcon color="secondary" title="שחזור" />
+      <LibraryIcon color="primary" title="ספריית הידע" />
+    </div>
+  );
+}
+```

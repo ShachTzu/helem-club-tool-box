@@ -1,0 +1,83 @@
+---
+title: עורך הטיוטה
+description: מסך העריכה של טיוטה בודדת — כותרת, תחומים ותוכן ייעודי לסוג התוכן, עם שמירה אוטומטית וסרגל צד של גרסאות ואישורים.
+labels: ['editorial', 'page', 'editor', 'autosave', 'rtl']
+---
+
+import { MockProvider } from '@helemclub/platform.testing.mock-provider';
+import { DraftEditor } from './draft-editor';
+import {
+  mockEditorWriter,
+  mockNewDraft,
+  mockEditingDraft,
+  mockChangesRequestedDraft,
+  mockEditorRevisions,
+  mockEditorApprovals,
+} from './draft-editor.mock';
+
+`DraftEditor` הוא המסך ב-`/library/draft/:id`. הוא עורך שלושה דברים: כותרת הטיוטה,
+תחומי ההתמודדות שלה, וה-payload הייעודי של סוג התוכן. השמירה אוטומטית — שתי שניות
+אחרי שמפסיקים להקליד — וכל שמירה יוצרת גרסה חדשה בהיסטוריה.
+
+העורך עצמו מוזרק מבחוץ: כל פיצ'ר רושם קומפוננטת עורך לסלוט `ContentType` של הספרייה.
+כשאין עורך רשום, נופלים לעורך גנרי שמייצר שדות טקסט לפי רשימת ה-`fields`.
+
+## שימוש בסיסי
+
+```js
+<DraftEditor draftId="draft-1" />
+```
+
+## טיוטה בעריכה
+
+```js live
+<MockProvider>
+  <DraftEditor
+    draftId="draft-1"
+    fields={[
+      { name: 'excerpt', label: 'תקציר', multiline: true },
+      { name: 'body', label: 'גוף המאמר', multiline: true },
+    ]}
+    mockUser={mockEditorWriter}
+    mockDraft={mockEditingDraft}
+    mockRevisions={mockEditorRevisions}
+    mockApprovals={mockEditorApprovals}
+  />
+</MockProvider>
+```
+
+## אחרי דרישת תיקונים
+
+כשמנחה מחזיר טיוטה, ההערה שלו מוצגת בראש המסך:
+
+```js live
+<MockProvider>
+  <DraftEditor
+    draftId="draft-3"
+    mockUser={mockEditorWriter}
+    mockDraft={mockChangesRequestedDraft}
+    mockRevisions={mockEditorRevisions}
+    mockApprovals={mockEditorApprovals}
+  />
+</MockProvider>
+```
+
+## טיוטה חדשה
+
+```js live
+<MockProvider>
+  <DraftEditor
+    draftId="draft-new"
+    mockUser={mockEditorWriter}
+    mockDraft={mockNewDraft}
+    mockRevisions={[]}
+    mockApprovals={[]}
+  />
+</MockProvider>
+```
+
+## עורך ייעודי לסוג תוכן
+
+```js
+<DraftEditor draftId="draft-1" editor={PostEditorPanel} />
+```

@@ -1,0 +1,91 @@
+---
+description: "A React Hook exposing editorial system metrics for the dashboard."
+labels: ['hook', 'react', 'editorial', 'dashboard']
+---
+
+A React Hook that fetches editorial system metrics for the dashboard: total drafts, pending reviews, approvals/publications/rejections within a measured period, the average time to approval, and breakdowns by content type and by reviewer.
+
+## Usage
+
+### Basic usage
+
+```tsx
+const EditorialStatsSummary = () => {
+  const { stats, loading, error } = useEditorialStats();
+
+  if (loading) return <p>טוען נתונים...</p>;
+  if (error) return <p>שגיאה בטעינת הנתונים: {error}</p>;
+
+  return (
+    <div>
+      <p>סה&quot;כ טיוטות: {stats?.totalDrafts ?? 0}</p>
+      <p>ממתינות לביקורת: {stats?.pendingReview ?? 0}</p>
+      <p>אושרו בתקופה: {stats?.approvedThisPeriod ?? 0}</p>
+      <p>פורסמו בתקופה: {stats?.publishedThisPeriod ?? 0}</p>
+    </div>
+  );
+};
+```
+
+This example renders the top-line editorial metrics along with loading and error states.
+
+### Switching the measured period
+
+```tsx
+const EditorialStatsPeriodPicker = () => {
+  const { stats, setDays } = useEditorialStats(30);
+
+  return (
+    <div>
+      <button onClick={() => setDays(7)}>7 ימים אחרונים</button>
+      <button onClick={() => setDays(30)}>30 ימים אחרונים</button>
+      <button onClick={() => setDays(90)}>90 ימים אחרונים</button>
+      <p>זמן ממוצע לאישור: {stats?.avgHoursToApproval ?? 0} שעות</p>
+    </div>
+  );
+};
+```
+
+This example lets the user switch the measured period; calling `setDays` updates the underlying query variables and refetches the stats.
+
+### Breakdown by content type and reviewer, with mock data
+
+```tsx
+const EditorialStatsBreakdown = () => {
+  const mockStats = {
+    totalDrafts: 42,
+    pendingReview: 5,
+    approvedThisPeriod: 18,
+    publishedThisPeriod: 15,
+    rejectedThisPeriod: 3,
+    avgHoursToApproval: 14.5,
+    byContentType: [{ contentType: 'post', label: 'פוסט', count: 20 }],
+    byReviewer: [{ actorId: 'user-1', actorName: 'נועה כהן', approvals: 11, rejections: 1 }],
+  };
+
+  const { stats } = useEditorialStats(30, { mockData: mockStats });
+
+  return (
+    <div>
+      <h4>לפי סוג תוכן</h4>
+      <ul>
+        {stats?.byContentType.map((item) => (
+          <li key={item.contentType}>
+            {item.label}: {item.count}
+          </li>
+        ))}
+      </ul>
+      <h4>לפי מבקר/ת</h4>
+      <ul>
+        {stats?.byReviewer.map((reviewer) => (
+          <li key={reviewer.actorId}>
+            {reviewer.actorName}: {reviewer.approvals} אישורים, {reviewer.rejections} דחיות
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+```
+
+This example shows how to supply `mockData` to bypass the network request entirely, useful for tests and previews, and demonstrates rendering the per-content-type and per-reviewer breakdowns.

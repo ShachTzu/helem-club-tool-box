@@ -1,0 +1,68 @@
+---
+description: "ישות ApprovalEntry — רשומה ביומן האישורים (append-only) של טיוטת תוכן."
+labels: ['entity', 'approval', 'editorial-workflow']
+---
+
+`ApprovalEntry` מייצגת רשומה בודדת ביומן האישורים של טיוטה. היומן הוא append-only — כל פעולה עריכתית (שליחה לביקורת, אישור, דחייה, פרסום וכו') נרשמת כרשומה חדשה ואינה נמחקת או משתנה.
+
+## שימוש בסיסי
+
+יצירת רשומת אישור מאובייקט רגיל, וקבלת התווית העברית של הפעולה:
+
+```tsx
+import { ApprovalEntry } from '@helemclub/editorial.entities.approval-entry';
+
+const entry = ApprovalEntry.from({
+  id: 'entry-1',
+  draftId: 'draft-42',
+  action: 'approved',
+  actorId: 'user-7',
+  actorName: 'רות כהן',
+  actorRole: 'moderator',
+  note: 'תוקן כנדרש, מוכן לפרסום.',
+  fromStatus: 'in_review',
+  toStatus: 'approved',
+  versionNumber: 2,
+  createdAt: new Date().toISOString(),
+});
+
+console.log(entry.actionLabel()); // 'אושר'
+console.log(entry.isDecision); // true
+```
+
+## המרה חזרה לאובייקט פשוט
+
+שימוש ב-`toObject()` לצורך סריאליזציה, לדוגמה לפני שמירה במסד נתונים או שליחה ברשת:
+
+```tsx
+import { ApprovalEntry } from '@helemclub/editorial.entities.approval-entry';
+
+const entry = ApprovalEntry.from({
+  id: 'entry-2',
+  draftId: 'draft-42',
+  action: 'changes_requested',
+  actorId: 'user-7',
+  actorName: 'רות כהן',
+  actorRole: 'moderator',
+  note: 'יש לחדד את הפתיחה ולהוסיף מקורות.',
+  fromStatus: 'in_review',
+  toStatus: 'changes_requested',
+  createdAt: new Date().toISOString(),
+});
+
+const plain = entry.toObject();
+console.log(plain.action); // 'changes_requested'
+```
+
+## נתוני דמה למסלול אישורים מלא
+
+ניתן להשתמש ב-`mockApprovalEntries` לקבלת מסלול אישורים מלא לצורך פיתוח ובדיקות: `created → submitted → changes_requested → submitted → approved → published`.
+
+```tsx
+import { mockApprovalEntries } from '@helemclub/editorial.entities.approval-entry';
+
+const trail = mockApprovalEntries();
+trail.forEach((entry) => {
+  console.log(entry.actionLabel(), entry.isDecision);
+});
+```

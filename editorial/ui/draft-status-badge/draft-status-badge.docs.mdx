@@ -1,0 +1,55 @@
+---
+description: "באדג' סטטוס לטיוטה בעברית, RTL, עם תמיכה באייקון וגודל."
+labels: ["badge", "draft", "status", "rtl"]
+---
+
+`DraftStatusBadge` מציג את סטטוס הטיוטה הנוכחי בתווית עברית ובצבע מתאים, בהתבסס על רכיב ה-`Badge` מספריית העיצוב, עם אייקון תואם מתוך `library-icons`.
+
+## שימוש בסיסי
+
+```tsx
+import { DraftStatusBadge } from '@helemclub/editorial.ui.draft-status-badge';
+
+function Example() {
+  return <DraftStatusBadge status="draft" />;
+}
+```
+
+## כל הסטטוסים
+
+הרכיב ממפה כל אחד מששת הסטטוסים לתווית ולצבע ייחודיים:
+
+```tsx
+import { DraftStatusBadge } from '@helemclub/editorial.ui.draft-status-badge';
+
+function Example() {
+  return (
+    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+      <DraftStatusBadge status="draft" />
+      <DraftStatusBadge status="in_review" />
+      <DraftStatusBadge status="changes_requested" />
+      <DraftStatusBadge status="approved" />
+      <DraftStatusBadge status="published" />
+      <DraftStatusBadge status="archived" />
+    </div>
+  );
+}
+```
+
+## ללא אייקון וגדלים שונים
+
+ניתן להסתיר את האייקון עם `showIcon={false}` ולשלוט בגודל עם `size`:
+
+```tsx
+import { DraftStatusBadge } from '@helemclub/editorial.ui.draft-status-badge';
+
+function Example() {
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+      <DraftStatusBadge status="approved" showIcon={false} />
+      <DraftStatusBadge status="in_review" size="small" />
+      <DraftStatusBadge status="in_review" size="large" />
+    </div>
+  );
+}
+```

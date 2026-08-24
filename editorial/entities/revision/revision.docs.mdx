@@ -1,0 +1,82 @@
+---
+description: "ישות Revision — תצלום בלתי־משתנה של טיוטה בנקודת זמן."
+labels: ['entity', 'revision', 'versioning']
+---
+
+`Revision` הוא אובייקט ישות המייצג תצלום (snapshot) בלתי־משתנה של טיוטה (Draft) בנקודת זמן נתונה.
+כל עריכה בטיוטה יוצרת רשומת `Revision` חדשה, כך שנשמר תיעוד מלא ומדויק של ההיסטוריה שלה.
+
+## עיקרון מרכזי: אי־שינוי (Immutability)
+
+**גרסאות (revisions) לעולם לא נמחקות ולעולם לא נערכות.** ברגע שנוצרה רשומת `Revision`, היא קבועה לצמיתות.
+
+כאשר משתמש משחזר (`restore`) גרסה ישנה יותר, המערכת **אינה** מוחקת או משנה גרסאות קיימות — היא יוצרת
+**גרסה חדשה** (עם `versionNumber` עוקב חדש) שתוכנה זהה לגרסה הישנה שמשוחזרת. כך שרשרת ההיסטוריה
+נשארת שלמה ורציפה, וניתן תמיד לדעת בדיוק מה קרה ומתי.
+
+## Get started
+
+התקינו והשתמשו בישות בקוד שלכם:
+
+```tsx
+import { Revision } from '@helemclub/editorial.entities.revision';
+
+const revision = Revision.from({
+  id: 'revision-1',
+  draftId: 'draft-42',
+  versionNumber: 1,
+  payload: { title: 'מדריך התחלה', body: 'תוכן ראשוני' },
+  domains: ['onboarding'],
+  title: 'מדריך התחלה',
+  authorId: 'user-1',
+  authorName: 'דנה כהן',
+  changeSummary: 'יצירת הטיוטה הראשונית',
+  createdAt: new Date().toISOString(),
+});
+
+console.log(revision.isInitial); // true
+```
+
+## בדיקה האם מדובר בגרסה הראשונית
+
+הגטר `isInitial` מחזיר `true` כאשר `versionNumber` שווה ל-1, כלומר זו הגרסה הראשונה שנוצרה עבור הטיוטה.
+
+```tsx
+import { Revision } from '@helemclub/editorial.entities.revision';
+
+const firstRevision = Revision.from({
+  id: 'revision-1',
+  draftId: 'draft-42',
+  versionNumber: 1,
+  payload: {},
+  domains: [],
+  title: 'טיוטה ראשונה',
+  authorId: 'user-1',
+  authorName: 'דנה כהן',
+  changeSummary: 'יצירה ראשונית',
+  createdAt: new Date().toISOString(),
+});
+
+const laterRevision = Revision.from({
+  ...firstRevision.toObject(),
+  id: 'revision-3',
+  versionNumber: 3,
+});
+
+console.log(firstRevision.isInitial); // true
+console.log(laterRevision.isInitial); // false
+```
+
+## שימוש בנתוני Mock
+
+ניתן להשתמש ב-`mockRevisions` כדי לקבל שרשרת של 4 גרסאות עוקבות של אותה טיוטה, לצורכי פיתוח ובדיקות.
+
+```tsx
+import { mockRevisions } from '@helemclub/editorial.entities.revision';
+
+const revisions = mockRevisions();
+
+revisions.forEach((revision) => {
+  console.log(`v${revision.versionNumber}: ${revision.changeSummary}`);
+});
+```

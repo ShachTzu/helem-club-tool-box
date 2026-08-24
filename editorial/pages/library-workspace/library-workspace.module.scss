@@ -1,0 +1,121 @@
+.workspace {
+  box-sizing: border-box;
+  width: 100%;
+  direction: var(--layout-direction);
+}
+
+.header {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+  align-items: flex-start;
+  margin-bottom: var(--spacing-large);
+}
+
+.headerText {
+  flex: 1;
+  min-width: 0;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-x-small);
+  color: var(--colors-accent-default);
+  font-weight: var(--typography-font-weight-bold);
+  font-size: var(--typography-sizes-caption-medium);
+  letter-spacing: var(--typography-letter-spacing-wide);
+  margin-bottom: var(--spacing-small);
+}
+
+.title {
+  margin-bottom: var(--spacing-small);
+}
+
+.subtitle {
+  max-width: 60ch;
+}
+
+.controls {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+  margin-bottom: var(--spacing-large);
+}
+
+.filterRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.searchInput {
+  width: 100%;
+}
+
+.showAllToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-x-small);
+  color: var(--colors-text-secondary);
+  font-size: var(--typography-sizes-body-small);
+  cursor: pointer;
+  user-select: none;
+}
+
+.stateBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-small);
+  padding: var(--spacing-x-large) var(--spacing-medium);
+  text-align: center;
+}
+
+.loadingText {
+  color: var(--colors-text-secondary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-medium);
+}
+
+.contentTypeList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  min-width: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .filterRow {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .searchInput {
+    max-width: 320px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

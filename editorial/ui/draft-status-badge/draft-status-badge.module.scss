@@ -1,0 +1,39 @@
+.draftStatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  direction: rtl;
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.small {
+  font-size: var(--typography-sizes-caption-default);
+}
+
+.medium {
+  font-size: var(--typography-sizes-caption-medium);
+}
+
+.large {
+  font-size: var(--typography-sizes-body-small);
+  padding: var(--spacing-small) var(--spacing-medium);
+}
+
+.published {
+  background-color: var(--colors-status-info-subtle);
+  color: var(--colors-primary-default);
+}
+
+.archived {
+  background-color: var(--colors-surface-secondary);
+  color: var(--colors-text-muted);
+}

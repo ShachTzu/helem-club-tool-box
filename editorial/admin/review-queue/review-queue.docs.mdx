@@ -1,0 +1,64 @@
+---
+title: תור ביקורת
+description: פאנל האדמין של המנחים — כל הטיוטות שממתינות להחלטה, מהוותיקה לחדשה, עם אישור, דרישת תיקונים ודחייה.
+labels: ['editorial', 'admin', 'moderation', 'rtl']
+---
+
+import { MockProvider } from '@helemclub/platform.testing.mock-provider';
+import { ReviewQueue } from './review-queue';
+import {
+  mockReviewQueueNow,
+  mockReviewQueueModerator,
+  mockReviewQueueDrafts,
+  mockReviewQueueDecisions,
+} from './review-queue.mock';
+
+`ReviewQueue` הוא פאנל האדמין שבו מנחים מכריעים מה מתפרסם. הטבלה ממוינת
+לפי ותק — מה שחיכה הכי הרבה מופיע למעלה — וכל טיוטה שממתינה יותר משבוע מסומנת באדום.
+
+לחיצה על שורה פותחת חלון ביקורת עם תוכן הטיוטה ושורת הפעולות. כל החלטה נרשמת
+ביומן האישורים של הטיוטה — הטאב "הוכרעו לאחרונה" מראה את ההיסטוריה הזו.
+
+הפאנל מוגן ל-`moderator` ומעלה.
+
+## שימוש בסיסי
+
+```js
+<ReviewQueue />
+```
+
+## תור עם טיוטות ממתינות
+
+```js live
+<MockProvider>
+  <ReviewQueue
+    mockUser={mockReviewQueueModerator}
+    mockPendingDrafts={mockReviewQueueDrafts}
+    mockDecisions={mockReviewQueueDecisions}
+    now={mockReviewQueueNow}
+  />
+</MockProvider>
+```
+
+## תור ריק
+
+```js live
+<MockProvider>
+  <ReviewQueue
+    mockUser={mockReviewQueueModerator}
+    mockPendingDrafts={[]}
+    mockDecisions={[]}
+    now={mockReviewQueueNow}
+  />
+</MockProvider>
+```
+
+## רישום לפלטפורמה
+
+ה-aspect רושם את הפאנל לסלוט האדמין של הפלטפורמה:
+
+```js
+import { reviewQueueAdminPanel } from '@helemclub/editorial.admin.review-queue';
+
+helamPlatform.registerAdminRoute(reviewQueueAdminPanel);
+```

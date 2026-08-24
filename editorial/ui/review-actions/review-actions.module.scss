@@ -1,0 +1,61 @@
+.reviewActions {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  width: 100%;
+  font-family: var(--typography-font-family);
+  direction: rtl;
+}
+
+.actionsRow {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-small);
+}
+
+.statusMessage {
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-muted);
+}
+
+.errorMessage {
+  margin: 0;
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-status-negative-default);
+}
+
+.modalBody {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.modalHelper {
+  margin: 0;
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-secondary);
+}
+
+.modalFooter {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-small);
+}
+
+@media (max-width: 480px) {
+  .actionsRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modalFooter {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+}

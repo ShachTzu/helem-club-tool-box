@@ -1,0 +1,82 @@
+---
+description: 'ספריית הידע — שכבת העריכה של הלם קלאב: טיוטות, גרסאות בלתי־משתנות ויומן אישורים append-only, פולימורפי לכל סוג תוכן.'
+labels: ['aspect', 'editorial', 'drafts', 'revisions', 'approvals']
+---
+
+`editorial` הוא שכבת העריכה של המערכת. הוא לא מאחסן תוכן שפורסם ולא מגדיר טקסונומיה —
+הוא מנהל את מה שקורה **לפני** הפרסום: טיוטות, גרסאות, ומי אישר מה ומתי.
+
+שלוש חלוקות עבודה ברורות באקוסיסטם:
+
+- `knowledge-base` — אחסון של תוכן שכבר פורסם.
+- `knowledge-domains` — טקסונומיה: אילו תחומים קיימים.
+- `editorial` — שכבת העריכה: טיוטות, גרסאות, מי אישר ומתי.
+
+## שלושת חוקי הליבה
+
+1. **כל שמירה יוצרת גרסה חדשה.** גרסאות הן בלתי־משתנות — שחזור גרסה ישנה כותב אותה קדימה כגרסה חדשה, ולא מוחק כלום.
+2. **כל שינוי סטטוס נרשם ביומן האישורים.** היומן הוא append-only, והוא מקור האמת ל"מי אישר ומתי" — לא הסטטוס עצמו.
+3. **הספרייה לא מפרסמת בעצמה.** היא קוראת ל-publish handler שהפיצ'ר רשם, והתוכן המפורסם נשאר במאגר של אותו פיצ'ר.
+
+## הרכבה בפלטפורמה
+
+```ts
+import { SymphonyPlatform } from '@bitdev/symphony.symphony-platform';
+import { EditorialAspect } from '@helemclub/editorial.editorial';
+
+export const HelamPlatform = SymphonyPlatform({
+  name: 'helam',
+  aspects: [EditorialAspect],
+});
+```
+
+## רישום סוג תוכן (IoC)
+
+הספרייה לא מכירה אף פיצ'ר. כל פיצ'ר רושם את עצמו אליה — בדפדפן את העורך, ובשרת את הנדלר הפרסום:
+
+```ts
+// blog.browser.runtime.tsx
+editorial.registerContentType({
+  contentType: 'post',
+  label: 'מאמר בבלוג',
+  editor: PostEditorPanel,
+  fields: [
+    { name: 'excerpt', label: 'תקציר' },
+    { name: 'body', label: 'גוף המאמר' },
+  ],
+});
+```
+
+```ts
+// blog.node.runtime.ts
+editorial.registerPublishHandler({
+  contentType: 'post',
+  publish: async (draft) => {
+    const post = await postRepository.publish(draft);
+    return { contentRef: post.id, url: `/blog/${post.slug}` };
+  },
+  validate: (payload) => ({
+    valid: Boolean(payload.title && payload.body),
+    errors: ['חסרים כותרת או גוף המאמר'],
+  }),
+});
+```
+
+## מסלול הטיוטה
+
+```
+draft → in_review → approved → published
+          ↓
+   changes_requested → in_review
+```
+
+כותב שולח לביקורת, מנחה מאשר / מבקש תיקונים / דוחה, ואישור מאפשר פרסום.
+כל מעבר כזה מייצר רשומה ביומן עם השם, התפקיד, ההערה והתאריך.
+
+## מסכים
+
+- `/library` — סביבת העבודה של הכותב
+- `/library/draft/:id` — עורך הטיוטה עם שמירה אוטומטית
+- `/library/draft/:id/history` — היסטוריית גרסאות והשוואה
+- פאנל אדמין "תור ביקורת" — התור של המנחים
+- פאנל אדמין "לוח עריכה" — מדדי תפוקה וזמן אישור

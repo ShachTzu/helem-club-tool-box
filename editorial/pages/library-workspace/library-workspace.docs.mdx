@@ -1,0 +1,61 @@
+---
+title: סביבת העבודה של הכותב
+description: המסך הראשי של ספריית הידע — הטיוטות של הכותב, מקובצות לפי סטטוס עריכה, עם חיפוש וסינון לפי תחומים.
+labels: ['editorial', 'page', 'drafts', 'rtl']
+---
+
+import { MockProvider } from '@helemclub/platform.testing.mock-provider';
+import { LibraryWorkspace } from './library-workspace';
+import { mockWorkspaceDrafts, mockWorkspaceWriter, mockWorkspaceModerator } from './library-workspace.mock';
+
+`LibraryWorkspace` הוא המסך ב-`/library` — נקודת הכניסה של הכותב לשכבת העריכה.
+הוא מציג את הטיוטות שלו לפי סטטוס, מאפשר חיפוש חופשי וסינון לפי תחומי התמודדות,
+ופותח טיוטה חדשה מתוך סוגי התוכן שפיצ'רים רשמו לסלוט `ContentType` של הספרייה.
+
+המסך מוגן ל-`writer` ומעלה. מנחים ואדמינים מקבלים בנוסף מתג "הצג את כל הטיוטות",
+שמרחיב את התצוגה מעבר לטיוטות שלהם עצמם.
+
+## שימוש בסיסי
+
+```js
+<LibraryWorkspace />
+```
+
+## עם נתוני דמה
+
+```js live
+<MockProvider>
+  <LibraryWorkspace mockUser={mockWorkspaceWriter} mockDrafts={mockWorkspaceDrafts} />
+</MockProvider>
+```
+
+## תצוגת מנחה
+
+מנחה רואה את המתג להצגת כל הטיוטות במערכת, לא רק שלו:
+
+```js live
+<MockProvider>
+  <LibraryWorkspace mockUser={mockWorkspaceModerator} mockDrafts={mockWorkspaceDrafts} />
+</MockProvider>
+```
+
+## מצב ריק
+
+```js live
+<MockProvider>
+  <LibraryWorkspace mockUser={mockWorkspaceWriter} mockDrafts={[]} />
+</MockProvider>
+```
+
+## חיבור סוגי תוכן
+
+בפלטפורמה הרצה, ה-aspect מזריק את סוגי התוכן שנרשמו אליו:
+
+```js
+<LibraryWorkspace
+  contentTypes={[
+    { contentType: 'post', label: 'מאמר בבלוג' },
+    { contentType: 'media-record', label: 'רשומת מדיה' },
+  ]}
+/>
+```

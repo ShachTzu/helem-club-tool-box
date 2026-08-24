@@ -1,0 +1,82 @@
+---
+description: "שורת פעולות עריכה מודעת־תפקיד ומודעת־סטטוס לטיוטות ספריית הידע, RTL"
+labels: ['review', 'approvals', 'editorial', 'draft']
+---
+
+`ReviewActions` מציגה רק את פעולות העריכה החוקיות עבור המשתמש המחובר ועבור מצב הטיוטה הנוכחי: כותב/ת על טיוטה שלהם במצב `draft` או `changes_requested` רואים "שלח לביקורת"; מנחה או אדמין על טיוטה במצב `in_review` רואים "אשר", "בקש תיקונים" ו"דחה"; מנחה או אדמין על טיוטה שאושרה (`approved`) רואים "פרסם". פעולות שמחייבות נימוק פותחות חלון עם שדה טקסט חובה בעברית.
+
+## שימוש בסיסי
+
+```tsx
+const draft = {
+  id: 'draft-1',
+  contentType: 'post',
+  title: 'מדריך זכויות עובדים',
+  payload: {},
+  domains: ['תעסוקה'],
+  status: 'draft',
+  authorId: 'user-101',
+  authorName: 'נועה כהן',
+  currentVersion: 1,
+  createdAt: '2024-05-01T08:30:00.000Z',
+  updatedAt: '2024-05-01T08:30:00.000Z',
+};
+
+<ReviewActions draft={draft} onDone={(updated) => console.log('הטיוטה עודכנה', updated.status)} />;
+```
+
+הרכיב משתמש ב-`useAuth` כדי לזהות את המשתמש המחובר ואת תפקידו, וב-`useReviewActions` כדי לבצע את הפעולה בפועל מול השרת. כשהפעולה מצליחה, `onDone` נקרא עם הטיוטה המעודכנת.
+
+## מנחה על טיוטה בביקורת
+
+כשמשתמש בתפקיד מנחה או אדמין צופה בטיוטה במצב `in_review`, מוצגות שלוש פעולות: אישור מיידי, בקשת תיקונים ודחייה. שתי הפעולות האחרונות פותחות חלון עם שדה טקסט חובה להסבר ההחלטה, שנשלח כהערה לכותב/ת.
+
+```tsx
+const draftInReview = {
+  id: 'draft-2',
+  contentType: 'post',
+  title: 'מדריך זכויות עובדים חדשים',
+  payload: {},
+  domains: ['תעסוקה', 'זכויות'],
+  status: 'in_review',
+  authorId: 'user-102',
+  authorName: 'איתי לוי',
+  currentVersion: 2,
+  createdAt: '2024-05-03T10:00:00.000Z',
+  updatedAt: '2024-05-04T12:15:00.000Z',
+};
+
+<ReviewActions draft={draftInReview} />;
+```
+
+## הזרקת משתמש לצורך בדיקות ותצוגות מקדימות
+
+ניתן להעביר `mockUser` כדי לעקוף את שאילתת האימות בפועל, שימושי לתצוגות מקדימות ובדיקות. העברת `null` מדמה מצב שבו אין משתמש מחובר.
+
+```tsx
+const moderatorUser = {
+  id: 'user-900',
+  email: 'dana@example.com',
+  displayName: 'דנה מנחה',
+  role: 'moderator',
+  provider: 'email',
+  createdAt: '2024-01-01T00:00:00.000Z',
+  membershipStatus: 'approved',
+};
+
+const approvedDraft = {
+  id: 'draft-3',
+  contentType: 'post',
+  title: 'מדריך מענק דיור',
+  payload: {},
+  domains: ['דיור'],
+  status: 'approved',
+  authorId: 'user-104',
+  authorName: 'דנה שפירא',
+  currentVersion: 3,
+  createdAt: '2024-04-10T07:20:00.000Z',
+  updatedAt: '2024-04-18T16:00:00.000Z',
+};
+
+<ReviewActions draft={approvedDraft} mockUser={moderatorUser} />;
+```

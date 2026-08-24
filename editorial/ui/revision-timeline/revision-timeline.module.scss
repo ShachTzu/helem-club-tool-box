@@ -1,0 +1,202 @@
+.timeline {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  direction: rtl;
+  font-family: var(--typography-font-family);
+}
+
+.item {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: var(--spacing-medium);
+}
+
+.marker {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.badge {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--borders-radius-large);
+  box-shadow: var(--effects-shadows-small);
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.line {
+  width: 2px;
+  flex: 1 1 auto;
+  min-height: 24px;
+  background-color: var(--colors-border);
+}
+
+.badgeMuted {
+  background-color: var(--colors-text-muted);
+}
+
+.badgeInfo {
+  background-color: var(--colors-status-info-default);
+}
+
+.badgeWarning {
+  background-color: var(--colors-status-warning-default);
+}
+
+.badgePositive {
+  background-color: var(--colors-status-positive-default);
+}
+
+.badgeNegative {
+  background-color: var(--colors-status-negative-default);
+}
+
+.badgeAccent {
+  background-color: var(--colors-accent-default);
+}
+
+.badgeSecondary {
+  background-color: var(--colors-secondary-default);
+}
+
+.content {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  min-width: 0;
+  background-color: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-medium);
+  margin-bottom: var(--spacing-large);
+  box-shadow: var(--effects-shadows-card);
+  transition: box-shadow var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out),
+    border-color var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-out);
+}
+
+.selectable {
+  cursor: var(--interactions-cursor-pointer);
+}
+
+.selectable:hover {
+  box-shadow: var(--effects-shadows-card-hover);
+}
+
+.selected {
+  border-color: var(--colors-accent-default);
+}
+
+.header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-small);
+  flex-wrap: wrap;
+}
+
+.actorGroup {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  min-width: 0;
+}
+
+.actorMeta {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.actorName {
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.actionLabel {
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-secondary);
+}
+
+.date {
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.description {
+  margin-top: var(--spacing-small);
+}
+
+.actions {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-small);
+  margin-top: var(--spacing-medium);
+  padding-top: var(--spacing-small);
+  border-top: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+}
+
+.selectedTag {
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-muted);
+}
+
+.selectedTagActive {
+  color: var(--colors-accent-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+}
+
+.compact .badge {
+  width: 26px;
+  height: 26px;
+}
+
+.compact .content {
+  padding: var(--spacing-small);
+  margin-bottom: var(--spacing-medium);
+}
+
+.compact .actorName {
+  font-size: var(--typography-sizes-caption-medium);
+}
+
+.compact .actionLabel {
+  font-size: var(--typography-sizes-caption-default);
+}
+
+.compact .date {
+  font-size: var(--typography-sizes-caption-default);
+}
+
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

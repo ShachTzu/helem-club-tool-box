@@ -1,0 +1,94 @@
+---
+description: "הוקים לניהול טיוטות מול ה-GraphQL של ה-aspect, כולל autosave עם debounce."
+labels: ['hook', 'react', 'drafts', 'graphql']
+---
+
+hook לניהול טיוטות מול ה-GraphQL של ה-aspect. מייצא `useDrafts` לשליפת רשימת טיוטות עם סינון, `useDraft` לשליפת טיוטה בודדת, ו-`useSaveDraft` לשמירה מיידית או עם autosave מנוהל (debounce). כל השגיאות מוחזרות כטקסט בעברית, ותפקידי המשתמש נלקחים בחשבון אוטומטית: משתמש בתפקיד writer יראה רק את הטיוטות שלו.
+
+## שימוש בסיסי — שליפת רשימת טיוטות
+
+```tsx
+import React from 'react';
+import { useDrafts } from '@helemclub/editorial.hooks.use-drafts';
+
+function DraftsList() {
+  const { drafts, loading, error, refetch } = useDrafts({ status: ['draft', 'changes_requested'] });
+
+  if (loading) return <p>טוען טיוטות...</p>;
+  if (error) return <p>{error}</p>;
+
+  return (
+    <div>
+      <button onClick={() => refetch()}>רענון</button>
+      <ul>
+        {drafts.map((draft) => (
+          <li key={draft.id}>{draft.title} — {draft.status}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+## סינון לפי סוג תוכן, תחומים וחיפוש טקסט
+
+```tsx
+import React, { useState } from 'react';
+import { useDrafts } from '@helemclub/editorial.hooks.use-drafts';
+
+function FilteredDrafts() {
+  const [search, setSearch] = useState('');
+  const { drafts, loading } = useDrafts({
+    contentType: 'post',
+    domains: ['רווחה נפשית'],
+    search,
+  });
+
+  return (
+    <div>
+      <input
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
+        placeholder="חיפוש טיוטות..."
+      />
+      {loading ? <p>טוען...</p> : (
+        <ul>
+          {drafts.map((draft) => (
+            <li key={draft.id}>{draft.title}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+```
+
+## עריכה עם autosave וטיוטה בודדת
+
+```tsx
+import React, { useState } from 'react';
+import { useDraft } from '@helemclub/editorial.hooks.use-drafts';
+import { useSaveDraft } from '@helemclub/editorial.hooks.use-drafts';
+
+function DraftEditor({ draftId }: { draftId: string }) {
+  const { draft, loading } = useDraft(draftId);
+  const { autosave, saveDraft, saving } = useSaveDraft();
+  const [title, setTitle] = useState('');
+
+  if (loading || !draft) return <p>טוען טיוטה...</p>;
+
+  const handleChange = (value: string) => {
+    setTitle(value);
+    autosave({ id: draft.id, title: value, changeSummary: 'עדכון כותרת אוטומטי' });
+  };
+
+  return (
+    <div>
+      <input value={title || draft.title} onChange={(event) => handleChange(event.target.value)} />
+      <button onClick={() => saveDraft({ id: draft.id, title, changeSummary: 'שמירה ידנית' })} disabled={saving}>
+        {saving ? 'שומר...' : 'שמור עכשיו'}
+      </button>
+    </div>
+  );
+}
+```

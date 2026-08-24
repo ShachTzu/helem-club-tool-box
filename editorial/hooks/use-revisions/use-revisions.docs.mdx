@@ -1,0 +1,104 @@
+---
+description: "Hooks להיסטוריית גרסאות של טיוטה: useRevisions, useDiff, useRestoreRevision והעזר compareLatest."
+labels: ['hook', 'react', 'revisions', 'graphql']
+---
+
+קבוצת hooks לניהול היסטוריית הגרסאות (Revisions) של טיוטה בספריית הידע. הגרסאות הן תצלומים בלתי־משתנים — הן לעולם לא נמחקות ולא נערכות, ושחזור גרסה ישנה תמיד יוצר גרסה חדשה על גבי ההיסטוריה.
+
+## `useRevisions`
+
+מביא את רשימת הגרסאות של טיוטה נתונה, לפי `draftId`.
+
+```tsx
+import { useRevisions } from '@helemclub/editorial.hooks.use-revisions';
+
+function RevisionsList({ draftId }: { draftId: string }) {
+  const { revisions, loading, error } = useRevisions(draftId);
+
+  if (loading) return <p>טוען היסטוריית גרסאות...</p>;
+  if (error) return <p>שגיאה: {error}</p>;
+
+  return (
+    <ul>
+      {revisions.map((revision) => (
+        <li key={revision.id}>
+          גרסה {revision.versionNumber} · {revision.authorName} · {revision.changeSummary}
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+## `useDiff`
+
+מחשב הבדלים ברמת השדה בין שתי גרסאות מסוימות של אותה טיוטה.
+
+```tsx
+import { useDiff } from '@helemclub/editorial.hooks.use-revisions';
+
+function RevisionDiff({ draftId }: { draftId: string }) {
+  const { diffs, loading } = useDiff(draftId, 1, 2);
+
+  if (loading) return <p>טוען השוואה...</p>;
+
+  return (
+    <ul>
+      {diffs.map((diff) => (
+        <li key={diff.field}>
+          {diff.label}: {diff.changeKind}
+        </li>
+      ))}
+    </ul>
+  );
+}
+```
+
+## `useRestoreRevision`
+
+משחזר גרסה ישנה של טיוטה. השחזור אינו דורס היסטוריה — הוא יוצר גרסה חדשה עם תוכן הגרסה המשוחזרת.
+
+```tsx
+import { useRestoreRevision } from '@helemclub/editorial.hooks.use-revisions';
+
+function RestoreButton({ draftId, versionNumber }: { draftId: string; versionNumber: number }) {
+  const { restoreRevision, restoring } = useRestoreRevision();
+
+  const handleRestore = async () => {
+    const draft = await restoreRevision({ draftId, versionNumber });
+    if (draft) {
+      console.log('הטיוטה שוחזרה, גרסה נוכחית:', draft.currentVersion);
+    }
+  };
+
+  return (
+    <button type="button" disabled={restoring} onClick={() => handleRestore()}>
+      {restoring ? 'משחזר...' : 'שחזר גרסה זו'}
+    </button>
+  );
+}
+```
+
+## `compareLatest`
+
+פונקציית עזר טהורה שמשווה בין שתי הגרסאות האחרונות ברשימת גרסאות, ומחזירה את ההבדלים ברמת השדה ביניהן. שימושית להצגת "מה השתנה לאחרונה" מבלי לבצע קריאת שרת נוספת.
+
+```tsx
+import { compareLatest } from '@helemclub/editorial.hooks.use-revisions';
+import { mockRevisions } from '@helemclub/editorial.entities.revision';
+
+function LatestChangeSummary() {
+  const revisions = mockRevisions();
+  const diffs = compareLatest(revisions);
+
+  return (
+    <ul>
+      {diffs
+        .filter((diff) => diff.changeKind !== 'unchanged')
+        .map((diff) => (
+          <li key={diff.field}>{diff.label} השתנה</li>
+        ))}
+    </ul>
+  );
+}
+```

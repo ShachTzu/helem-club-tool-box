@@ -1,0 +1,59 @@
+---
+description: "ציר זמן אנכי RTL שממזג גרסאות ורשומות אישור לסיפור כרונולוגי אחד"
+labels: ["timeline", "revisions", "approvals", "rtl"]
+---
+
+`RevisionTimeline` הוא רכיב ציר זמן אנכי בכיוון RTL, שממזג את הגרסאות (Revisions) ואת רשומות יומן האישורים (ApprovalEntry) של טיוטה לסיפור כרונולוגי אחד — התשובה החזותית לשאלה "מי אישר ומתי".
+
+כל פריט בציר מציג אייקון פעולה צבוע, avatar ושם המבצע, תווית פעולה בעברית, תאריך ושעה, וסיכום השינוי או הערת המנחה. גרסאות ניתנות ללחיצה לבחירה להשוואה, ולכל גרסה יש כפתור "שחזר גרסה זו".
+
+### שימוש בסיסי
+
+```tsx
+import { RevisionTimeline } from '@helemclub/editorial.ui.revision-timeline';
+
+function ArticleHistory() {
+  return <RevisionTimeline />;
+}
+```
+
+### בחירת גרסאות להשוואה ושחזור
+
+מעבירים `selectedVersions` ו-`onSelectVersion` כדי לתמוך בבחירת שתי גרסאות להשוואה, ו-`onRestore` כדי לטפל בלחיצה על "שחזר גרסה זו":
+
+```tsx
+import React, { useState } from 'react';
+import { RevisionTimeline } from '@helemclub/editorial.ui.revision-timeline';
+
+function ArticleHistoryWithCompare() {
+  const [selectedVersions, setSelectedVersions] = useState<number[]>([]);
+
+  const toggleVersion = (versionNumber: number) => {
+    setSelectedVersions((current) =>
+      current.includes(versionNumber)
+        ? current.filter((version) => version !== versionNumber)
+        : [...current, versionNumber].slice(-2)
+    );
+  };
+
+  return (
+    <RevisionTimeline
+      selectedVersions={selectedVersions}
+      onSelectVersion={(versionNumber) => toggleVersion(versionNumber)}
+      onRestore={(versionNumber) => console.log(`restore version ${versionNumber}`)}
+    />
+  );
+}
+```
+
+### מצב מצומצם לסיידבר
+
+הפעילו `compact` כדי לצמצם ריווח וגדלים, לתצוגה בסיידבר צר:
+
+```tsx
+import { RevisionTimeline } from '@helemclub/editorial.ui.revision-timeline';
+
+function SidebarHistory() {
+  return <RevisionTimeline compact />;
+}
+```

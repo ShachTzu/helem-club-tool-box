@@ -1,0 +1,81 @@
+---
+description: "hook לזרימת האישורים ויומן הביקורת של טיוטות בספריית הידע"
+labels: ['hook', 'react', 'approvals', 'editorial']
+---
+
+hook לזרימת האישורים ויומן הביקורת של טיוטות. מייצא את `useApprovalTrail` לקריאת יומן הביקורת המלא של טיוטה, את `useReviewActions` לביצוע פעולות עריכה (שליחה לביקורת, דרישת תיקונים, אישור, דחייה ופרסום), ואת פונקציות ההרשאה `canReview` ו-`canPublish`. כל ההודעות המוצגות למשתמש כתובות בעברית.
+
+## שימוש
+
+### הצגת יומן הביקורת של טיוטה
+
+```tsx
+const ApprovalTrailList = () => {
+  const { entries, loading } = useApprovalTrail('draft-123');
+
+  if (loading) return <p>טוען יומן ביקורת...</p>;
+
+  return (
+    <ul>
+      {entries.map((entry) => (
+        <li key={entry.id}>
+          {entry.actorName} · {entry.actionLabel()} · {new Date(entry.createdAt).toLocaleString('he-IL')}
+          {entry.note ? ` · ${entry.note}` : ''}
+        </li>
+      ))}
+    </ul>
+  );
+};
+```
+
+הרכיב לעיל טוען את יומן הביקורת המלא של טיוטה ומציג לכל רשומה את שם המבצע, תווית הפעולה בעברית, זמן הביצוע וההערה אם קיימת.
+
+### ביצוע פעולות ביקורת על טיוטה
+
+```tsx
+const ReviewPanel = ({ draftId }: { draftId: string }) => {
+  const { submitForReview, approveDraft, requestChanges, rejectDraft, publishDraft, acting, error } = useReviewActions();
+
+  return (
+    <div>
+      {error && <p>{error}</p>}
+      <button disabled={acting} onClick={() => submitForReview({ draftId })}>
+        שליחה לביקורת
+      </button>
+      <button disabled={acting} onClick={() => approveDraft({ draftId, note: 'מאושר לפרסום' })}>
+        אישור
+      </button>
+      <button disabled={acting} onClick={() => requestChanges({ draftId, note: 'יש להוסיף מקורות' })}>
+        דרישת תיקונים
+      </button>
+      <button disabled={acting} onClick={() => rejectDraft({ draftId, note: 'לא מתאים לפרסום' })}>
+        דחייה
+      </button>
+      <button disabled={acting} onClick={() => publishDraft({ draftId })}>
+        פרסום
+      </button>
+    </div>
+  );
+};
+```
+
+כל פעולה מקבלת אובייקט עם `draftId` ו-`note` אופציונלי, ומחזירה את הטיוטה המעודכנת. השדה `acting` מציין אם פעולה כלשהי מתבצעת כרגע, ומאפשר להשבית את הכפתורים בזמן הביצוע.
+
+### בדיקת הרשאות ביקורת ופרסום
+
+```tsx
+const ReviewGate = ({ user }: { user: { isAtLeast: (role: 'member' | 'writer' | 'moderator' | 'admin') => boolean } }) => {
+  if (!canReview(user)) {
+    return <p>אין לך הרשאה לבצע ביקורת על טיוטות.</p>;
+  }
+
+  return (
+    <div>
+      <p>ניתן לבצע ביקורת על הטיוטה.</p>
+      {canPublish(user) && <p>ניתן גם לפרסם טיוטות שאושרו.</p>}
+    </div>
+  );
+};
+```
+
+`canReview` ו-`canPublish` בודקות שהמשתמש הוא לפחות בדרגת מנחה (`moderator`) לפי `user.isAtLeast('moderator')`.

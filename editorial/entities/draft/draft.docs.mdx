@@ -1,0 +1,96 @@
+---
+description: "ישות Draft — טיוטה פולימורפית לכל סוג תוכן, כולל ניהול מעברי סטטוס."
+labels: ['entity', 'draft', 'editorial']
+---
+
+A component for a `Draft` entity — a polymorphic draft that can represent any content type
+(e.g. a post or a media record) going through an editorial workflow. Supports serialization
+and de-serialization of `Draft` objects and can be used from both backend and frontend.
+
+## Get started
+
+Install and use the component in your code:
+
+```tsx
+import { Draft } from '@helemclub/editorial.entities.draft';
+
+const draft = Draft.from({
+  id: 'draft-1',
+  contentType: 'post',
+  title: 'חמישה טיפים לניהול זמן יעיל בעבודה מהבית',
+  payload: { body: 'תוכן הפוסט...' },
+  domains: ['תעסוקה'],
+  status: 'draft',
+  authorId: 'user-101',
+  authorName: 'נועה כהן',
+  currentVersion: 1,
+  createdAt: '2024-05-01T08:30:00.000Z',
+  updatedAt: '2024-05-01T08:30:00.000Z',
+});
+
+console.log(draft.isEditable); // true
+```
+
+## Getters
+
+`Draft` exposes convenience getters that derive information from the `status` field:
+
+```tsx
+import { Draft } from '@helemclub/editorial.entities.draft';
+
+const draft = Draft.from({
+  id: 'draft-2',
+  contentType: 'media-record',
+  title: 'הרצאה מוקלטת: התמודדות עם חרדה חברתית',
+  payload: { videoUrl: 'https://example.com/videos/anxiety-lecture.mp4' },
+  domains: ['רווחה נפשית'],
+  status: 'changes_requested',
+  authorId: 'user-103',
+  authorName: 'מיכל אברהם',
+  currentVersion: 2,
+  createdAt: '2024-04-20T09:00:00.000Z',
+  updatedAt: '2024-04-25T14:40:00.000Z',
+});
+
+console.log(draft.isEditable); // true, draft is either 'draft' or 'changes_requested'
+console.log(draft.needsAttention); // true, status is 'changes_requested'
+console.log(draft.isPending); // false
+console.log(draft.isPublished); // false
+```
+
+## Managing status transitions
+
+Use `canTransition` to validate whether moving a draft from one status to another is legal
+according to the editorial workflow (`draft` → `in_review` → `approved` → `published` → `archived`,
+with `changes_requested` and rejection paths):
+
+```tsx
+import { canTransition } from '@helemclub/editorial.entities.draft';
+
+console.log(canTransition('draft', 'in_review')); // true
+console.log(canTransition('in_review', 'approved')); // true
+console.log(canTransition('in_review', 'changes_requested')); // true
+console.log(canTransition('draft', 'published')); // false, illegal jump
+```
+
+## Mock data
+
+You can use draft mock data for development and testing purposes using the `mockDrafts` API.
+It returns 6 drafts in Hebrew, covering all statuses in the editorial workflow.
+
+```tsx
+import { mockDrafts } from '@helemclub/editorial.entities.draft';
+
+const drafts = mockDrafts();
+console.log(drafts.map((draft) => draft.status));
+```
+
+`mockDrafts` also accepts an array of partial overrides, one per generated draft, useful for
+tailoring specific scenarios in tests:
+
+```tsx
+import { mockDrafts } from '@helemclub/editorial.entities.draft';
+
+const drafts = mockDrafts([{ title: 'כותרת מותאמת אישית לטיוטה הראשונה' }]);
+console.log(drafts[0].title);
+```

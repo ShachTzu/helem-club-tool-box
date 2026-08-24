@@ -1,0 +1,62 @@
+---
+description: "כרטיס טיוטה RTL ורספונסיבי המציג כותרת, סטטוס, מחבר, גרסה, תאריך עדכון ותגי תחומים"
+labels: ["draft", "card", "editorial", "rtl"]
+---
+
+`DraftCard` מציג סיכום של טיוטת תוכן: כותרת, תווית סוג התוכן בעברית, באדג' סטטוס, שם המחבר עם avatar, מספר הגרסה הנוכחית, תאריך העדכון האחרון בפורמט יחסי בעברית, תגי תחומים, ואם קיימת — הערת המנחה האחרונה בהבלטה עדינה. לחיצה על הכרטיס מנווטת לעמוד הטיוטה.
+
+## שימוש בסיסי
+
+```tsx
+import { DraftCard } from '@helemclub/editorial.ui.draft-card';
+import { mockDrafts } from '@helemclub/editorial.entities.draft';
+
+const draft = mockDrafts()[0].toObject();
+
+export function BasicExample() {
+  return <DraftCard draft={draft} />;
+}
+```
+
+## טיוטה עם הערת מנחה
+
+כאשר לטיוטה יש `lastReviewNote`, הכרטיס מציג אותה בהבלטה עדינה מתחת לתגי התחומים:
+
+```tsx
+import { DraftCard } from '@helemclub/editorial.ui.draft-card';
+import { mockDrafts } from '@helemclub/editorial.entities.draft';
+
+const draftWithNote = {
+  ...mockDrafts()[2].toObject(),
+  lastReviewNote: `יש להוסיף כתוביות בעברית ולקצר את המבוא.`,
+};
+
+export function ReviewNoteExample() {
+  return <DraftCard draft={draftWithNote} />;
+}
+```
+
+## כרטיס עם כפתורי פעולה
+
+ניתן להעביר `actions` כדי לרנדר כפתורים בתחתית הכרטיס, מבלי לגרום לניווט בעת הלחיצה עליהם:
+
+```tsx
+import { DraftCard } from '@helemclub/editorial.ui.draft-card';
+import { mockDrafts } from '@helemclub/editorial.entities.draft';
+
+const draft = mockDrafts()[4].toObject();
+
+export function WithActionsExample() {
+  return (
+    <DraftCard
+      draft={draft}
+      actions={
+        <>
+          <button type="button">צפייה</button>
+          <button type="button">העברה לארכיון</button>
+        </>
+      }
+    />
+  );
+}
+```

@@ -1,0 +1,91 @@
+---
+description: "תצוגת השוואה בין שתי גרסאות תוכן, RTL, עם מצבי תצוגה זה-לצד-זה ומאוחד."
+labels: ["diff", "editorial", "rtl", "compare"]
+---
+
+`DiffViewer` מציג השוואה בין שתי גרסאות של תוכן, בהתבסס על רשימת `FieldDiff` שמגיעה מהישות `@helemclub/editorial.entities.field-diff`.
+
+הרכיב תומך בשני מצבי תצוגה דרך `Tabs`: **זה לצד זה** (שתי עמודות, לפני מימין ואחרי משמאל בדסקטופ) ו**מאוחד** (שינוי אחד מתחת לשני). במסכים צרים (מובייל) הרכיב עובר תמיד לתצוגה מאוחדת.
+
+שדות שלא השתנו מוסתרים כברירת מחדל, וניתן לחשוף אותם בלחיצה על כפתור "הצג שדות שלא השתנו".
+
+## שימוש בסיסי
+
+```tsx
+import { DiffViewer } from '@helemclub/editorial.ui.diff-viewer';
+import { FieldDiff } from '@helemclub/editorial.entities.field-diff';
+
+const diffs = [
+  FieldDiff.from({
+    field: `title`,
+    label: `כותרת`,
+    before: `כותרת ישנה`,
+    after: `כותרת חדשה`,
+    changeKind: `modified`,
+  }),
+];
+
+export function DraftDiffExample() {
+  return <DiffViewer diffs={diffs} fromLabel="גרסה 2" toLabel="גרסה 3" />;
+}
+```
+
+## דיף עם שינויים מרובים
+
+דוגמה עם שדה שהשתנה, שדה שנוסף, שדה שהוסר ושדות שלא השתנו (מוסתרים כברירת מחדל):
+
+```tsx
+import { DiffViewer } from '@helemclub/editorial.ui.diff-viewer';
+import { FieldDiff } from '@helemclub/editorial.entities.field-diff';
+
+const diffs = [
+  FieldDiff.from({
+    field: `title`,
+    label: `כותרת`,
+    before: `הרצאה על התמודדות עם חרדה`,
+    after: `הרצאה על התמודדות עם חרדה ולחץ`,
+    changeKind: `modified`,
+  }),
+  FieldDiff.from({
+    field: `summary`,
+    label: `תקציר`,
+    before: undefined,
+    after: `תקציר חדש שנוסף לכתבה`,
+    changeKind: `added`,
+  }),
+  FieldDiff.from({
+    field: `coAuthorName`,
+    label: `שם שותף לכתיבה`,
+    before: `דנה כהן`,
+    after: undefined,
+    changeKind: `removed`,
+  }),
+];
+
+export function MultipleChangesExample() {
+  return <DiffViewer diffs={diffs} fromLabel="גרסה 2" toLabel="גרסה 3" />;
+}
+```
+
+## דיף ללא שינויים
+
+כאשר כל השדות זהים בין שתי הגרסאות, הרכיב מציג מצב ריק ברור:
+
+```tsx
+import { DiffViewer } from '@helemclub/editorial.ui.diff-viewer';
+import { FieldDiff } from '@helemclub/editorial.entities.field-diff';
+
+const diffs = [
+  FieldDiff.from({
+    field: `title`,
+    label: `כותרת`,
+    before: `מדריך לתמיכה בבני משפחה`,
+    after: `מדריך לתמיכה בבני משפחה`,
+    changeKind: `unchanged`,
+  }),
+];
+
+export function NoChangesExample() {
+  return <DiffViewer diffs={diffs} fromLabel="גרסה 4" toLabel="גרסה 5" />;
+}
+```

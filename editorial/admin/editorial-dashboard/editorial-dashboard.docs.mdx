@@ -1,0 +1,75 @@
+---
+description: "פאנל אדמין ללוח עריכה: מדדי מערכת עריכה, פילוח לפי סוג תוכן, פעילות מנחים וטיוטות הממתינות הכי הרבה זמן."
+labels: ['admin', 'dashboard', 'editorial', 'react']
+---
+
+פאנל אדמין "לוח עריכה" הנרשם דרך `registerAdminRoute` ומוגן לתפקיד אדמין בלבד. מציג מסנן טווח זמן גלובלי (7 / 30 / 90 ימים), כרטיסי מדדים ראשיים, טבלת פילוח לפי סוג תוכן, טבלת פעילות מנחים ורשימת הטיוטות שהכי הרבה זמן ממתינות לביקורת. כל התצוגה RTL ורספונסיבית, ומבוססת אך ורק על טוקנים של helam-theme.
+
+## שימוש בסיסי
+
+```tsx
+const AdminEditorialDashboard = () => {
+  return <EditorialDashboard />;
+};
+```
+
+הפאנל טוען את הנתונים בעצמו דרך `useEditorialStats` ו-`useDrafts`, ומוגן על ידי `ProtectedRoute` כך שרק משתמשי אדמין יראו את התוכן.
+
+## תצוגה עם נתוני דמו
+
+```tsx
+const EditorialDashboardPreview = () => {
+  const mockUser = {
+    id: `admin-1`,
+    email: `admin@helem.club`,
+    displayName: `הלם אדמין`,
+    role: `admin` as const,
+    provider: `email` as const,
+    createdAt: `2026-01-01T00:00:00.000Z`,
+  };
+
+  const mockStats = {
+    totalDrafts: 64,
+    pendingReview: 8,
+    approvedThisPeriod: 22,
+    publishedThisPeriod: 19,
+    rejectedThisPeriod: 4,
+    avgHoursToApproval: 16.4,
+    byContentType: [
+      { contentType: `post`, label: `פוסט`, count: 28 },
+      { contentType: `media-record`, label: `רשומת מדיה`, count: 18 },
+    ],
+    byReviewer: [{ actorId: `user-1`, actorName: `נועה כהן`, approvals: 14, rejections: 1 }],
+  };
+
+  return <EditorialDashboard mockUser={mockUser} mockStats={mockStats} mockPendingDrafts={[]} />;
+};
+```
+
+שימוש ב-`mockUser` ו-`mockStats` מדלג על קריאות הרשת, שימושי לתצוגות מקדימות ובדיקות.
+
+## הרשמה כפאנל אדמין
+
+```tsx
+const EditorialDashboardAdminRegistration = () => {
+  const panels = [
+    {
+      id: `editorial-dashboard`,
+      label: `לוח עריכה`,
+      path: `/admin/editorial-dashboard`,
+      component: EditorialDashboard,
+      roles: [`admin` as const],
+    },
+  ];
+
+  return (
+    <ul>
+      {panels.map((panel) => (
+        <li key={panel.id}>{panel.label}</li>
+      ))}
+    </ul>
+  );
+};
+```
+
+ערך `editorialDashboardAdminPanel` המיוצא מהרכיב מכיל את אותו מבנה, מוכן להעברה ל-`registerAdminRoute` של הפלטפורמה.

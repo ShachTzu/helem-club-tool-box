@@ -1,0 +1,116 @@
+.draftCard {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  width: 100%;
+  direction: rtl;
+  font-family: var(--typography-font-family);
+  text-align: right;
+}
+
+.header {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-small);
+}
+
+.contentType {
+  font-size: var(--typography-sizes-caption-medium);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-secondary-default);
+  text-transform: uppercase;
+  letter-spacing: var(--typography-letter-spacing-wide);
+}
+
+.title {
+  margin: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.metaRow {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-small);
+}
+
+.authorGroup {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  min-width: 0;
+}
+
+.authorName {
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--colors-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+.separator {
+  color: var(--colors-text-muted);
+}
+
+.version {
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-secondary);
+  white-space: nowrap;
+}
+
+.updated {
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-muted);
+  white-space: nowrap;
+}
+
+.domains {
+  margin-top: var(--spacing-small);
+}
+
+.reviewNote {
+  box-sizing: border-box;
+  background-color: var(--colors-status-info-subtle);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-small) var(--spacing-medium);
+  margin-top: var(--spacing-small);
+}
+
+.reviewNoteText {
+  margin: 0;
+  color: var(--colors-text-secondary);
+}
+
+.actions {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  flex-wrap: wrap;
+  margin-top: var(--spacing-small);
+  padding-top: var(--spacing-small);
+  border-top: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+}
+
+@media (max-width: 480px) {
+  .metaRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-small);
+  }
+
+  .separator {
+    display: none;
+  }
+}

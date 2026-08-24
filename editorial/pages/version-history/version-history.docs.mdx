@@ -1,0 +1,72 @@
+---
+description: "A protected page rendering a draft's full version history: a merged revision and approval timeline alongside a field-level diff viewer."
+labels: ['editorial', 'history', 'revisions', 'rtl']
+---
+
+The `VersionHistory` page is served at `/library/draft/:id/history`, and is protected for writers,
+moderators and admins. It renders a right-hand timeline merging the draft's revisions and approval
+trail events, and a left-hand diff viewer comparing two selected versions — defaulting to the two
+latest revisions. Selecting any two revisions on the timeline updates the comparison. A "שחזר גרסה
+זו" button opens a Hebrew confirmation modal explaining that restoring creates a brand new revision
+without deleting anything.
+
+On mobile, the timeline and the diff viewer stack vertically, one below the other.
+
+### Full history with five revisions
+
+```tsx
+<VersionHistory
+  mockUser={{
+    id: `writer-1`,
+    email: `writer@helem.club`,
+    displayName: `נועה כותבת`,
+    role: `writer`,
+    provider: `email`,
+    createdAt: new Date(`2024-02-10T08:00:00.000Z`).toISOString(),
+  }}
+  mockDraft={{
+    id: `draft-history-1`,
+    contentType: `post`,
+    title: `מדריך התחלה לחברי קהילה חדשים`,
+    payload: {},
+    domains: [`כללי`],
+    status: `in_review`,
+    authorId: `writer-1`,
+    authorName: `נועה כותבת`,
+    currentVersion: 5,
+    createdAt: new Date(`2024-01-01T09:00:00.000Z`).toISOString(),
+    updatedAt: new Date(`2024-05-15T12:30:00.000Z`).toISOString(),
+  }}
+/>
+```
+
+### A draft with a single revision
+
+When a draft has only one revision, the page shows the timeline entry alone and a hint explaining
+that at least two revisions are required to render a comparison.
+
+```tsx
+<VersionHistory
+  mockDraft={{
+    id: `draft-history-single`,
+    contentType: `post`,
+    title: `רשומה חדשה שזה עתה נוצרה`,
+    payload: {},
+    domains: [],
+    status: `draft`,
+    authorId: `writer-1`,
+    authorName: `נועה כותבת`,
+    currentVersion: 1,
+    createdAt: new Date(`2024-06-01T09:00:00.000Z`).toISOString(),
+    updatedAt: new Date(`2024-06-01T09:00:00.000Z`).toISOString(),
+  }}
+  mockRevisions={[]}
+  mockApprovals={[]}
+/>
+```
+
+### Loading state
+
+```tsx
+<VersionHistory mockLoading />
+```

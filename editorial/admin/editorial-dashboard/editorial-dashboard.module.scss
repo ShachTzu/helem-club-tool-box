@@ -1,0 +1,216 @@
+.dashboard {
+  box-sizing: border-box;
+  width: 100%;
+  direction: var(--layout-direction);
+}
+
+.header {
+  box-sizing: border-box;
+  margin-bottom: var(--spacing-large);
+}
+
+.eyebrow {
+  display: block;
+  color: var(--colors-accent-default);
+  font-weight: var(--typography-font-weight-bold);
+  font-size: var(--typography-sizes-caption-medium);
+  letter-spacing: var(--typography-letter-spacing-wide);
+  margin-bottom: var(--spacing-small);
+}
+
+.title {
+  margin-bottom: var(--spacing-small);
+}
+
+.subtitle {
+  max-width: 640px;
+}
+
+.filterBar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: var(--spacing-default);
+  margin-bottom: var(--spacing-large);
+}
+
+.filterBar .filterSelect {
+  max-width: 240px;
+}
+
+.stateMessage {
+  box-sizing: border-box;
+  padding: var(--spacing-x4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--colors-text-secondary);
+  font-size: var(--typography-sizes-body-default);
+  background-color: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+  border-radius: var(--borders-radius-large);
+}
+
+.metricsGrid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--spacing-default);
+  margin-bottom: var(--spacing-large);
+}
+
+.metricCard {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-small);
+  text-align: center;
+  padding: var(--spacing-large) var(--spacing-small);
+}
+
+.metricValue {
+  font-size: var(--typography-sizes-heading-h2);
+  font-weight: var(--typography-font-weight-extra-bold);
+  color: var(--colors-primary-default);
+}
+
+.metricLabel {
+  font-size: var(--typography-sizes-caption-medium);
+  font-weight: var(--typography-font-weight-medium);
+  color: var(--colors-text-secondary);
+}
+
+.sectionsGrid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-default);
+  margin-bottom: var(--spacing-default);
+  align-items: start;
+}
+
+.panelCard {
+  box-sizing: border-box;
+  margin-bottom: var(--spacing-default);
+}
+
+.panelTitle {
+  margin-bottom: var(--spacing-small);
+}
+
+.panelSubtitle {
+  margin-bottom: var(--spacing-default);
+}
+
+.emptyText {
+  margin: 0;
+  color: var(--colors-text-muted);
+  font-size: var(--typography-sizes-body-default);
+}
+
+.reviewerCell {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+}
+
+.reviewerName {
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+}
+
+.pendingList {
+  box-sizing: border-box;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.pendingItem {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-default);
+  padding: var(--spacing-default);
+  background-color: var(--colors-surface-secondary);
+  border-radius: var(--borders-radius-medium);
+}
+
+.pendingRank {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--borders-radius-small);
+  background-color: var(--colors-surface-primary);
+  color: var(--colors-primary-default);
+  font-weight: var(--typography-font-weight-bold);
+  font-size: var(--typography-sizes-caption-medium);
+}
+
+.pendingInfo {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pendingTitle {
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pendingMeta {
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-secondary);
+}
+
+.pendingWaiting {
+  flex: 0 0 auto;
+  text-align: end;
+}
+
+@media (max-width: 1280px) {
+  .metricsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .sectionsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filterBar .filterSelect {
+    max-width: 100%;
+  }
+
+  .pendingItem {
+    flex-wrap: wrap;
+  }
+
+  .pendingWaiting {
+    text-align: start;
+  }
+}
