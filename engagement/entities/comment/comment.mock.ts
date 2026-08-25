@@ -35,7 +35,7 @@ export function mockComments(): Comment[] {
       reportCount: 0,
     }),
     mockComment({
-      text: 'שמחים שעזר 🤍 יש עוד תרגול קרקוע מודרך במאגר הידע אם בא לך.',
+      text: 'שמחים שעזר 🤍 יש עוד תרגול קרקוע מודרך בספריית הידע אם בא לך.',
       displayName: 'צוות הלם קלאב',
       isAnonymous: false,
       membersOnly: false,

@@ -161,12 +161,12 @@ function ManageAuthorsPanel({ mockAuthors, className, style }: ManageAuthorsPane
 /**
  * admin panel for managing blog authors: grants or revokes write permission
  * and shows the number of posts published by each author. restricted to
- * users holding the admin role, registered as an AdminPanel in the
- * platform's admin shell.
+ * users holding the admin role or scoped in as content admins, registered
+ * as an AdminPanel in the platform's admin shell.
  */
 export function ManageAuthors({ mockAuthors, mockUser, className, style }: ManageAuthorsProps) {
   return (
-    <ProtectedRoute allowedRoles={[`admin`]} mockData={mockUser}>
+    <ProtectedRoute allowedRoles={[`admin`]} allowContentAdmin mockData={mockUser}>
       <ManageAuthorsPanel mockAuthors={mockAuthors} className={className} style={style} />
     </ProtectedRoute>
   );

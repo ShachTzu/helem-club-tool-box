@@ -81,7 +81,7 @@ export function LabelLobby({
         <PageLayout>
           <EmptyState
             title="הפרויקט לא נמצא"
-            description="ייתכן שהקישור שגוי או שהפרויקט הוסר. חזרו למאגר הידע כדי לבחור פרויקט אחר."
+            description="ייתכן שהקישור שגוי או שהפרויקט הוסר. חזרו לספריית הידע כדי לבחור פרויקט אחר."
             actionLabel="לכל הפרויקטים"
             actionHref={labelsLinkBase}
           />

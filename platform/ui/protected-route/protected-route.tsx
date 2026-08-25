@@ -25,6 +25,14 @@ export type ProtectedRouteProps = {
   allowedRoles?: UserRole[];
 
   /**
+   * also allow users scoped in as content-domain admins (writers, the
+   * knowledge library and the blog), even when their role is not in
+   * `allowedRoles`. use on content-management routes that a content admin
+   * should reach without holding the site-wide admin role.
+   */
+  allowContentAdmin?: boolean;
+
+  /**
    * provide mock data for the current user, bypassing the auth query.
    * useful for tests and previews. pass null to simulate a signed-out state.
    */
@@ -42,6 +50,7 @@ export function ProtectedRoute({
   children,
   redirectTo = '/login',
   allowedRoles,
+  allowContentAdmin,
   mockData,
 }: ProtectedRouteProps) {
   const hasMockData = mockData !== undefined;
@@ -59,7 +68,11 @@ export function ProtectedRoute({
     return <Navigate to={redirectTo} replace />;
   }
 
-  const isAllowed = !allowedRoles || allowedRoles.length === 0 || allowedRoles.includes(user.role);
+  const isAllowed =
+    !allowedRoles ||
+    allowedRoles.length === 0 ||
+    allowedRoles.includes(user.role) ||
+    (allowContentAdmin && user.contentAdmin === true);
 
   if (!isAllowed) {
     return (

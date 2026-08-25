@@ -72,7 +72,7 @@ export type BlogDashboardProps = {
  * unique visitors, views), a top 10 posts panel, an authors table with a
  * hover popover listing each author's posts, and engagement metrics
  * (comments/reactions/saves) alongside verified members. restricted to
- * admins. RTL.
+ * admins and to users scoped in as content admins. RTL.
  */
 export function BlogDashboard({
   mockStats,
@@ -82,7 +82,7 @@ export function BlogDashboard({
   style,
 }: BlogDashboardProps) {
   return (
-    <ProtectedRoute allowedRoles={['admin']} redirectTo={redirectTo} mockData={mockUser}>
+    <ProtectedRoute allowedRoles={['admin']} allowContentAdmin redirectTo={redirectTo} mockData={mockUser}>
       <BlogDashboardContent mockStats={mockStats} className={className} style={style} />
     </ProtectedRoute>
   );

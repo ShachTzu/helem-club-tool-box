@@ -50,14 +50,14 @@ export type KnowledgePreviewProps = {
 };
 
 /**
- * "מאגר הידע" — a home-page preview of the knowledge base's project labels,
+ * "ספריית הידע" — a home-page preview of the knowledge base's project labels,
  * shown as a grid of label cards with a "see all" link to the full knowledge
  * base. registered into the platform's HomeSection slot by the knowledge-base
  * aspect. RTL, responsive.
  */
 export function KnowledgePreview({
   eyebrow = `ה-Mother Ship`,
-  title = `מאגר הידע`,
+  title = `ספריית הידע`,
   subtitle = `סדרות וידאו, הקלטות והרצאות — מאורגנות בפרויקטים לפי נושא`,
   limit = 5,
   labelLinkBase = `/knowledge`,
@@ -80,7 +80,7 @@ export function KnowledgePreview({
           subtitle={subtitle}
           action={
             <Link as={RouterLink} href="/knowledge" className={styles.seeAll}>
-              לכל המאגר ←
+              לכל הספרייה ←
             </Link>
           }
         >

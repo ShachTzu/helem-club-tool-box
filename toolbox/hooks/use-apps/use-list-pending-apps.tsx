@@ -35,6 +35,12 @@ export const LIST_PENDING_TOOLBOX_APPS_QUERY = gql`
       contactEmail
       submittedBy
       submissionSource
+      moderationHistory {
+        action
+        note
+        moderatorName
+        createdAt
+      }
     }
   }
 `;
@@ -47,6 +53,19 @@ export type PendingModeratorApp = PlainApp & {
   contactEmail?: string;
   submittedBy?: string;
   submissionSource?: string;
+  moderationHistory?: ModerationEntry[];
+};
+
+/**
+ * one past decision on a submission. moderator-only, like the contact details
+ * beside it — it names the deciding moderator and repeats the note written
+ * about a member's tool.
+ */
+export type ModerationEntry = {
+  action: string;
+  note: string;
+  moderatorName: string;
+  createdAt: string;
 };
 
 /**
@@ -55,7 +74,12 @@ export type PendingModeratorApp = PlainApp & {
  */
 export type ModeratorMeta = Record<
   string,
-  { contactEmail: string; submittedBy: string; submissionSource: string }
+  {
+    contactEmail: string;
+    submittedBy: string;
+    submissionSource: string;
+    moderationHistory: ModerationEntry[];
+  }
 >;
 
 export type UseListPendingAppsOptions = {
@@ -89,6 +113,7 @@ export function useListPendingApps(options?: UseListPendingAppsOptions) {
         contactEmail: m.contactEmail || '',
         submittedBy: m.submittedBy || '',
         submissionSource: m.submissionSource || '',
+        moderationHistory: m.moderationHistory || [],
       };
     });
     return meta;

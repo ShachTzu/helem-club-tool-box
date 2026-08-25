@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { Heading } from '@helemclub/design.typography.heading';
@@ -74,13 +74,6 @@ export function Signup({
   const { requestEmailOtp, verifyEmailOtp, signInWithGoogle } = useAuth(
     hasMockData ? { mockData } : undefined
   );
-  const { requestGoogleIdToken: gsiRequestToken, available: googleAvailable } = useGoogleSignIn();
-
-  // Google is offered only when it can actually complete: either the server
-  // has a client id configured, or a resolver was injected for previews.
-  const resolveGoogleToken = requestGoogleIdToken || gsiRequestToken;
-  const showGoogle = Boolean(requestGoogleIdToken) || googleAvailable;
-
   const [step, setStep] = useState<SignupStep>(`details`);
   const [displayName, setDisplayName] = useState(``);
   const [email, setEmail] = useState(``);
@@ -89,13 +82,49 @@ export function Signup({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
 
-  const handleSuccess = (user: User) => {
-    if (onSignupSuccess) {
-      onSignupSuccess(user);
-      return;
-    }
-    void navigate(`/`);
-  };
+  const handleSuccess = useCallback(
+    (user: User) => {
+      if (onSignupSuccess) {
+        onSignupSuccess(user);
+        return;
+      }
+      void navigate(`/`);
+    },
+    [onSignupSuccess, navigate]
+  );
+
+  /**
+   * exchanges a Google-issued ID token for a platform session, creating the
+   * account on first sign-in.
+   */
+  const completeGoogleSignup = useCallback(
+    async (idToken: string) => {
+      setError(undefined);
+      setIsGoogleSubmitting(true);
+      try {
+        const session = await signInWithGoogle(idToken);
+        if (!session) {
+          setError(`ההרשמה עם Google נכשלה. נסו שוב`);
+          return;
+        }
+        handleSuccess(session.user);
+      } catch {
+        setError(`משהו השתבש בהרשמה עם Google. נסו שוב`);
+      } finally {
+        setIsGoogleSubmitting(false);
+      }
+    },
+    [signInWithGoogle, handleSuccess]
+  );
+
+  const { googleButtonRef, available: googleAvailable } = useGoogleSignIn({
+    onCredential: completeGoogleSignup,
+    buttonText: `signup_with`,
+  });
+
+  // Google is offered only when it can actually complete: either the server
+  // has a client id configured, or a resolver was injected for previews.
+  const showGoogle = Boolean(requestGoogleIdToken) || googleAvailable;
 
   const handleRequestOtp = async () => {
     setError(undefined);
@@ -150,26 +179,17 @@ export function Signup({
     }
   };
 
+  // preview/test path: a resolver was injected, so keep the custom button.
   const handleGoogleSignup = async () => {
+    if (!requestGoogleIdToken) return;
     setError(undefined);
-
-    if (!showGoogle) {
-      setError(`ההרשמה עם Google אינה זמינה כרגע. נסו עם מייל`);
-      return;
-    }
-
     setIsGoogleSubmitting(true);
     try {
-      const idToken = await resolveGoogleToken();
+      const idToken = await requestGoogleIdToken();
       if (!idToken) {
         return;
       }
-      const session = await signInWithGoogle(idToken);
-      if (!session) {
-        setError(`ההרשמה עם Google נכשלה. נסו שוב`);
-        return;
-      }
-      handleSuccess(session.user);
+      await completeGoogleSignup(idToken);
     } catch {
       setError(`משהו השתבש בהרשמה עם Google. נסו שוב`);
     } finally {
@@ -199,15 +219,21 @@ export function Signup({
 
         {showGoogle && (
           <>
-            <button
-              type="button"
-              className={styles.googleButton}
-              onClick={() => handleGoogleSignup()}
-              disabled={isGoogleSubmitting}
-            >
-              <GoogleIcon />
-              {isGoogleSubmitting ? `מתחברים...` : `הרשמה עם Google`}
-            </button>
+            {requestGoogleIdToken ? (
+              <button
+                type="button"
+                className={styles.googleButton}
+                onClick={() => handleGoogleSignup()}
+                disabled={isGoogleSubmitting}
+              >
+                <GoogleIcon />
+                {isGoogleSubmitting ? `מתחברים...` : `הרשמה עם Google`}
+              </button>
+            ) : (
+              // Google renders its own button here — the only flow it still
+              // supports for an explicit sign-up click.
+              <div ref={googleButtonRef} className={styles.googleMount} />
+            )}
 
             <div className={styles.divider}>
               <span className={styles.dividerLine} />

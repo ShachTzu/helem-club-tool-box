@@ -5,7 +5,7 @@ import type { FooterLink } from './footer-link-type.js';
 
 const ecosystemLinks: FooterLink[] = [
   { label: `ארגז כלים`, href: `/toolbox`, group: `האקוסיסטם` },
-  { label: `מאגר ידע`, href: `/knowledge`, group: `האקוסיסטם` },
+  { label: `ספריית הידע`, href: `/knowledge`, group: `האקוסיסטם` },
   { label: `בלוג`, href: `/blog`, group: `האקוסיסטם` },
   { label: `אירועים`, href: `/events`, group: `האקוסיסטם` },
   { label: `גלריית PTSDART`, href: `/gallery`, group: `האקוסיסטם` },

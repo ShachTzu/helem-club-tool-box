@@ -18,7 +18,7 @@ const CUSTOM_PILLARS: EcosystemPillar[] = [
   {
     slug: `knowledge`,
     icon: `📚`,
-    title: `מאגר ידע`,
+    title: `ספריית הידע`,
     description: `סרטונים והרצאות שנבנו עם אנשי מקצוע, מסודרים לפי תחום התמודדות.`,
     href: `/knowledge`,
   },

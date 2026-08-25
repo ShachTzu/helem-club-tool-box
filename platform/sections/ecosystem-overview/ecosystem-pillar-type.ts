@@ -13,7 +13,7 @@ export type EcosystemPillar = {
   icon: string;
 
   /**
-   * the pillar title, for example "מאגר ידע".
+   * the pillar title, for example "ספריית הידע".
    */
   title: string;
 

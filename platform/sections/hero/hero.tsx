@@ -13,8 +13,8 @@ const DEFAULT_PRIMARY_CTA: HeroCtaLink = {
 };
 
 const DEFAULT_SECONDARY_CTA: HeroCtaLink = {
-  label: `למאגר הידע`,
-  href: `/knowledge`,
+  label: `לספריית הידע`,
+  href: `/knowledge-library`,
 };
 
 export type HeroProps = {

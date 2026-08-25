@@ -4,7 +4,7 @@ import { BasicRecordPage } from './record-page.compositions.js';
 
 it('renders the record breadcrumb', () => {
   const { getByText } = render(<BasicRecordPage />);
-  expect(getByText('מאגר ידע')).toBeTruthy();
+  expect(getByText('ספריית הידע')).toBeTruthy();
 });
 
 it('renders without crashing', () => {

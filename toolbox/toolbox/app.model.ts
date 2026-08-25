@@ -1,6 +1,29 @@
 import { prop, index } from '@typegoose/typegoose';
 
 /**
+ * one append-only entry in an app's moderation history. every decision
+ * (approve / reject / request_changes) pushes a new entry rather than
+ * overwriting the last one, so the full review trail survives a
+ * changes_requested → resubmit → re-review cycle.
+ */
+export class ModerationHistoryEntry {
+  @prop({ required: true, type: String })
+  public action: string;
+
+  @prop({ type: String, default: '' })
+  public note: string;
+
+  @prop({ required: true, type: String })
+  public moderatorId: string;
+
+  @prop({ type: String, default: '' })
+  public moderatorName: string;
+
+  @prop({ type: Date, default: Date.now })
+  public createdAt: Date;
+}
+
+/**
  * a typegoose model backing a coping-app catalog entry in the toolbox.
  * mirrors the PlainApp shape consumed by the toolbox hooks, so every field
  * selected by the GraphQL contract is persisted here.
@@ -96,6 +119,28 @@ export class AppModel {
 
   @prop({ type: String, default: '' })
   public submittedBy: string;
+
+  /**
+   * the moderator's explanation for a 'rejected' or 'changes_requested'
+   * decision. required for those two actions, cleared on approval.
+   */
+  @prop({ type: String, default: '' })
+  public moderatorNote: string;
+
+  /**
+   * append-only moderation trail. who decided what, when, and why — never
+   * overwritten, so a resubmitted tool keeps its earlier decisions on record.
+   */
+  @prop({ type: () => [ModerationHistoryEntry], default: [] })
+  public moderationHistory: ModerationHistoryEntry[];
+
+  /**
+   * when the last decision was applied. also the key a batch reads its own
+   * results back by, so it never reports apps another moderator had already
+   * decided. the "who" lives in moderationHistory, not here.
+   */
+  @prop({ type: Date })
+  public reviewedAt?: Date;
 
   @prop({ type: Date, default: Date.now })
   public createdAt: Date;

@@ -11,10 +11,10 @@ import styles from './mobile-nav.module.scss';
 const HOME_ITEM: MobileNavItem = { label: `בית`, path: `/`, icon: HomeIcon, order: 0 };
 
 /**
- * the bottom bar has room for a handful of destinations, so it shows only the
- * features it has an icon and a short label for. a feature appears here only
- * when its aspect registered the matching navigation item, which means
- * switching a feature off removes it from the bar too.
+ * the bottom bar has room for a handful of destinations, so it carries a short
+ * label and an icon for the ones it can show. an entry appears only when the
+ * matching navigation item was registered, so mounting or unmounting a feature
+ * updates the bar on its own.
  */
 const MOBILE_ENTRIES: Record<string, { label: string; icon: MobileNavItem['icon']; order: number }> = {
   '/toolbox': { label: `כלים`, icon: ToolboxIcon, order: 1 },
@@ -24,8 +24,8 @@ const MOBILE_ENTRIES: Record<string, { label: string; icon: MobileNavItem['icon'
 };
 
 /**
- * pick the bottom-bar entries that correspond to currently registered
- * navigation items, always led by home.
+ * pick the bottom-bar entries matching the currently registered navigation
+ * items, always led by home.
  */
 function toMobileItems(navPaths: string[]): MobileNavItem[] {
   const featured = navPaths
@@ -42,8 +42,8 @@ export type MobileNavProps = {
   items?: MobileNavItem[];
 
   /**
-   * paths of the navigation items registered by the loaded feature aspects.
-   * used to decide which bottom-bar entries to show when `items` is not given.
+   * paths of the navigation items registered by the mounted feature aspects.
+   * decides which bottom-bar entries to show when `items` is not given.
    */
   navigationPaths?: string[];
 

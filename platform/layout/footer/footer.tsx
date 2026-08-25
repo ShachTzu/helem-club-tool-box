@@ -89,7 +89,7 @@ export function Footer({
     <footer className={classNames(styles.footer, className)} style={style}>
       <div className={styles.inner}>
         <div className={styles.brandColumn}>
-          <Logo variant="dark" size="medium" />
+          <Logo variant="dark" size="large" />
           <Paragraph size="sm" className={styles.description}>
             {description}
           </Paragraph>

@@ -206,10 +206,10 @@ export function ManageLabels({ mockLabels, className, style }: ManageLabelsProps
     <div className={classNames(styles.manageLabels, className)} style={style}>
       <div className={styles.header}>
         <div className={styles.headerText}>
-          <div className={styles.eyebrow}>ניהול מאגר הידע</div>
+          <div className={styles.eyebrow}>ניהול ספריית הידע</div>
           <h2 className={styles.title}>ניהול תוויות (פרויקטים)</h2>
           <p className={styles.subtitle}>
-            יצירה, עריכה וניהול של תוויות המקבצות תכנים במאגר הידע — שם, כתובת, תיאור ותמונת שער.
+            יצירה, עריכה וניהול של תוויות המקבצות תכנים בספריית הידע — שם, כתובת, תיאור ותמונת שער.
           </p>
         </div>
         {!isFormOpen && (
@@ -280,7 +280,7 @@ export function ManageLabels({ mockLabels, className, style }: ManageLabelsProps
         {loading ? (
           <div className={styles.loadingState}>טוען תוויות...</div>
         ) : (
-          <Table columns={columns} rows={rows} emptyMessage="לא נמצאו תוויות במאגר הידע" />
+          <Table columns={columns} rows={rows} emptyMessage="לא נמצאו תוויות בספריית הידע" />
         )}
       </div>
     </div>

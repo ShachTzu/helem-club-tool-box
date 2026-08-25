@@ -78,8 +78,8 @@ export const FeatureNavigationIcons = () => {
         <IconTile label="ארגז כלים">
           <ToolboxIcon color="secondary" size="large" title="ארגז כלים" />
         </IconTile>
-        <IconTile label="מאגר ידע">
-          <LibraryIcon color="secondary" size="large" title="מאגר ידע" />
+        <IconTile label="ספריית הידע">
+          <LibraryIcon color="secondary" size="large" title="ספריית הידע" />
         </IconTile>
         <IconTile label="בלוג">
           <BlogIcon color="secondary" size="large" title="בלוג" />

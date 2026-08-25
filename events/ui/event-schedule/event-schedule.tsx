@@ -81,7 +81,7 @@ export function EventSchedule({
   emptyUpcomingTitle = `אין אירועים קרובים כרגע`,
   emptyUpcomingDescription = `ברגע שיתפרסמו אירועים חדשים בקהילה, הם יופיעו כאן.`,
   emptyPastTitle = `עדיין אין אירועים שהסתיימו`,
-  emptyPastDescription = `אירועים שהסתיימו יופיעו כאן, כולל הקלטות אם פורסמו למאגר הידע.`,
+  emptyPastDescription = `אירועים שהסתיימו יופיעו כאן, כולל הקלטות אם פורסמו לספריית הידע.`,
   className,
   style,
 }: EventScheduleProps) {

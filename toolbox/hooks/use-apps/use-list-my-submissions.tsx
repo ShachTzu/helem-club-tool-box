@@ -33,6 +33,7 @@ export const LIST_MY_TOOLBOX_SUBMISSIONS_QUERY = gql`
       ratingCount
       ratingHistogram
       status
+      moderatorNote
     }
   }
 `;

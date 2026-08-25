@@ -10,7 +10,7 @@ export const AllHeadingLevels = () => {
         <div style={{ padding: 32, display: 'flex', flexDirection: 'column', gap: 12 }}>
           <Heading level={1}>הלם קלאב — כותרת ראשית H1</Heading>
           <Heading level={2}>ארגז הכלים — כותרת H2</Heading>
-          <Heading level={3}>מאגר הידע — כותרת H3</Heading>
+          <Heading level={3}>ספריית הידע — כותרת H3</Heading>
           <Heading level={4}>אירועים קהילתיים — כותרת H4</Heading>
           <Heading level={5}>גלריית PTSDART — כותרת H5</Heading>
           <Heading level={6}>תחומי התמודדות — כותרת H6</Heading>

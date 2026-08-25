@@ -23,22 +23,6 @@ bit run helam
 
 Your platform will be available at the URL printed in the command output.
 
-## Required environment variables
-
-The platform refuses to start unless a session signing key is provided — it will not fall back to a guessable default, since that would let anyone forge a signed session cookie.
-
-| Variable | Required | Purpose |
-| --- | --- | --- |
-| `SESSION_SECRET` | Yes | Signs session cookies. Use a long random string (32+ characters). |
-| `RESEND_API_KEY` | Yes | Sends transactional email (login codes, submission decisions). |
-| `MAIL_FROM_ADDRESS` | Yes | The from-address used for outgoing email. |
-
-Without `SESSION_SECRET` the node runtime exits on boot with:
-
-```
-[helam-platform] SESSION_SECRET is not set. refusing to start with a guessable session key.
-```
-
 ## Composed aspects
 
 The `helam.bit-app.ts` file composes the following aspects:
@@ -47,32 +31,19 @@ The `helam.bit-app.ts` file composes the following aspects:
 import { HelamPlatformAspect } from '@helemclub/platform.helam-platform';
 import { KnowledgeDomainsAspect } from '@helemclub/knowledge-domains.knowledge-domains';
 import { EngagementAspect } from '@helemclub/engagement.engagement';
-import { ToolboxAspect } from '@helemclub/toolbox.toolbox';
-import { BlogAspect } from '@helemclub/blog.blog';
-import { KnowledgeBaseAspect } from '@helemclub/knowledge-base.knowledge-base';
-import { EventsAspect } from '@helemclub/events.events';
-import { GalleryAspect } from '@helemclub/gallery.gallery';
 
 const aspects = [
   HelamPlatformAspect,
   KnowledgeDomainsAspect,
   EngagementAspect,
-  ToolboxAspect,
-  BlogAspect,
-  KnowledgeBaseAspect,
-  EventsAspect,
-  GalleryAspect,
 ];
 ```
 
 - `helam-platform` — the core platform aspect, providing the app shell, layout, routing slots, authentication, and the primary pages (home, login, signup, onboarding, profile, admin dashboard).
 - `knowledge-domains` — cross-cutting feature exposing the community wisdom hub and the coping-domains lobby, along with their admin panel and navigation entries.
-- `engagement` — cross-cutting feature exposing comments, reactions, the saved-for-later page and the moderation queue in the admin dashboard.
-- `toolbox` — the coping-apps catalog, with submissions, ratings and the review queue.
-- `blog` — community articles, the editorial workflow and author management.
-- `knowledge-base` — media records and project labels.
-- `events` — event listings and RSVP flows.
-- `gallery` — the PTSDART community art gallery.
+- `engagement` — cross-cutting feature exposing the saved-for-later page and the moderation queue in the admin dashboard.
+
+Additional content aspects — toolbox, blog, knowledge-base, events, and gallery — will be composed into this same `aspects` array in later steps, following the same pattern.
 
 ## Extending the composition
 

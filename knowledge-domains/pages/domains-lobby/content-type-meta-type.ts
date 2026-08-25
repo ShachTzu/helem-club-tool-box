@@ -27,7 +27,7 @@ export type ContentTypeMeta = {
 export const DEFAULT_CONTENT_TYPE_META: ContentTypeMeta[] = [
   { type: `app`, icon: `🧰`, label: `כלים מארגז הכלים` },
   { type: `post`, icon: `📝`, label: `כתבות מהבלוג` },
-  { type: `record`, icon: `📚`, label: `תכנים ממאגר הידע` },
+  { type: `record`, icon: `📚`, label: `תכנים מספריית הידע` },
   { type: `event`, icon: `📅`, label: `אירועים קהילתיים` },
   { type: `gallery`, icon: `🎨`, label: `גלריית יצירות` },
 ];

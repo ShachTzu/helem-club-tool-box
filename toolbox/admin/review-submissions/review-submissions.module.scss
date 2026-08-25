@@ -100,23 +100,133 @@
   display: flex;
   gap: var(--spacing-small);
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
-.noteInput {
+.tabs {
+  display: flex;
+  gap: var(--spacing-small);
+  flex-wrap: wrap;
+  border-bottom: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
+}
+
+.tab {
+  appearance: none;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: var(--spacing-small) var(--spacing-default);
+  font-family: inherit;
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-secondary);
+  cursor: pointer;
+}
+
+.tabActive {
+  color: var(--colors-primary-default);
+  border-bottom-color: var(--colors-primary-default);
+}
+
+.currentNote {
+  white-space: pre-wrap;
+  color: var(--colors-text-secondary);
+}
+
+.modalHint {
+  margin: 0 0 var(--spacing-default);
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-secondary);
+  line-height: var(--typography-line-height-base);
+}
+
+.history {
+  margin-top: var(--spacing-small);
+  font-size: var(--typography-sizes-caption-default);
+}
+
+.historySummary {
+  cursor: pointer;
+  color: var(--colors-status-warning-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+}
+
+.historyList {
+  list-style: none;
+  margin: var(--spacing-small) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.historyItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-inline-start: var(--spacing-small);
+  border-inline-start: 2px solid var(--colors-border);
+}
+
+.historyAction {
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+}
+
+.historyMeta {
+  color: var(--colors-text-muted);
+}
+
+.historyNote {
+  color: var(--colors-text-secondary);
+  white-space: pre-wrap;
+}
+
+.rowCheckbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--colors-primary-default);
+  cursor: pointer;
+}
+
+.bulkBar {
   box-sizing: border-box;
-  width: 100%;
-  min-width: 160px;
-  padding: var(--spacing-x-small) var(--spacing-small);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-default);
+  background-color: var(--colors-surface-secondary);
   border: var(--borders-default-width) var(--borders-default-style) var(--colors-border);
   border-radius: var(--borders-radius-medium);
-  font-size: var(--typography-sizes-caption-default);
-  color: var(--colors-text-primary);
-  background-color: var(--colors-surface-primary);
+  padding: var(--spacing-default);
+}
 
-  &:focus {
-    outline: none;
-    border-color: var(--colors-accent-default);
-  }
+.selectAll {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  font-size: var(--typography-sizes-body-small);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+  cursor: pointer;
+}
+
+.selectionCount {
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-secondary);
+}
+
+.bulkActions {
+  display: flex;
+  gap: var(--spacing-small);
+  margin-inline-start: auto;
+  flex-wrap: wrap;
+}
+
+.modalActions {
+  display: flex;
+  gap: var(--spacing-small);
+  justify-content: flex-end;
 }
 
 .stateCard {

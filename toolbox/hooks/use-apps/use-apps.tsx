@@ -4,11 +4,14 @@ import { useGetApp } from './use-get-app.js';
 import { useListPendingApps } from './use-list-pending-apps.js';
 import { useSubmitApp, type SubmitAppOptions } from './use-submit-app.js';
 import { useReviewApp, type ReviewAppOptions } from './use-review-app.js';
+import { useListDecidedApps } from './use-list-decided-apps.js';
+import { useCorrectNote, type CorrectNoteOptions } from './use-correct-note.js';
 import { useIncrementAppClick, type IncrementAppClickOptions } from './use-increment-app-click.js';
 
 export type { AppSort } from './use-list-apps.js';
 export type { SubmitAppOptions } from './use-submit-app.js';
-export type { ReviewAppOptions } from './use-review-app.js';
+export type { ReviewAppOptions, ReviewAction } from './use-review-app.js';
+export type { CorrectNoteOptions } from './use-correct-note.js';
 export type { IncrementAppClickOptions } from './use-increment-app-click.js';
 
 export type UseAppsOptions = {
@@ -41,6 +44,12 @@ export type UseAppsOptions = {
    * provide mock pending apps to skip the network request, useful for tests and previews.
    */
   mockPendingData?: PlainApp[];
+
+  /**
+   * provide mock decided submissions (rejected / changes requested) to skip
+   * the network request, useful for tests and previews.
+   */
+  mockDecidedData?: PlainApp[];
 };
 
 /**
@@ -68,6 +77,14 @@ export function useApps(options?: UseAppsOptions) {
     error: pendingError,
     refetch: refetchPending,
   } = useListPendingApps({ mockData: options?.mockPendingData });
+  const {
+    apps: decidedApps,
+    moderatorMeta: decidedModeratorMeta,
+    loading: decidedLoading,
+    error: decidedError,
+    refetch: refetchDecided,
+  } = useListDecidedApps({ mockData: options?.mockDecidedData });
+  const { correctNote: correctNoteMutation, loading: correcting, error: correctError } = useCorrectNote();
   const { submitApp, loading: submitting, error: submitError } = useSubmitApp();
   const { reviewApp: reviewAppMutation, loading: reviewing, error: reviewError } = useReviewApp();
   const { incrementClick, loading: incrementing, error: incrementError } = useIncrementAppClick();
@@ -76,13 +93,23 @@ export function useApps(options?: UseAppsOptions) {
     // in mock mode (tests/previews) no Apollo mutation is wired, so resolve
     // locally instead of hitting the (unmocked) network.
     if (options?.mockPendingData) {
-      return undefined;
+      return [];
     }
 
-    const reviewedApp = await reviewAppMutation(reviewOptions);
+    const reviewedApps = await reviewAppMutation(reviewOptions);
     await refetchPending?.();
 
-    return reviewedApp;
+    return reviewedApps;
+  };
+
+  const correctNote = async (correctOptions: CorrectNoteOptions) => {
+    // in mock mode (tests/previews) no Apollo mutation is wired.
+    if (options?.mockDecidedData) return undefined;
+
+    const corrected = await correctNoteMutation(correctOptions);
+    await refetchDecided?.();
+
+    return corrected;
   };
 
   const submit = async (submitOptions: SubmitAppOptions, draftId?: string) => {
@@ -115,6 +142,14 @@ export function useApps(options?: UseAppsOptions) {
     pendingLoading,
     pendingError,
     refetchPending,
+    decidedApps,
+    decidedModeratorMeta,
+    decidedLoading,
+    decidedError,
+    refetchDecided,
+    correctNote,
+    correcting,
+    correctError,
     incrementClick,
     incrementing,
     incrementError,

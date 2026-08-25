@@ -13,12 +13,12 @@ function renderPreview(ui: React.ReactElement) {
 describe('KnowledgePreview', () => {
   it('renders the section title', () => {
     renderPreview(<KnowledgePreview mockLabels={labels} />);
-    expect(screen.getByText('מאגר הידע')).toBeInTheDocument();
+    expect(screen.getByText('ספריית הידע')).toBeInTheDocument();
   });
 
   it('shows a link to the full knowledge base', () => {
     renderPreview(<KnowledgePreview mockLabels={labels} />);
-    const link = screen.getByText('לכל המאגר ←').closest('a');
+    const link = screen.getByText('לכל הספרייה ←').closest('a');
     expect(link).toHaveAttribute('href', '/knowledge');
   });
 });

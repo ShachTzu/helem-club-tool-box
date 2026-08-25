@@ -56,7 +56,7 @@ export function EcosystemOverview({
 }: EcosystemOverviewProps) {
   /**
    * nothing to advertise when no feature registered a pillar — render nothing
-   * rather than an empty section with a heading over a blank grid.
+   * rather than a heading over an empty grid.
    */
   if (!pillars.length) return null;
 

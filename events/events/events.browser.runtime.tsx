@@ -52,7 +52,7 @@ export class EventsBrowser {
 
     /**
      * advertise this feature as an ecosystem pillar on the home page. the
-     * platform renders only the pillars registered by loaded aspects, so a
+     * platform renders only the pillars registered by mounted aspects, so a
      * feature that is switched off is never linked to.
      */
     helamPlatform.registerEcosystemPillar([

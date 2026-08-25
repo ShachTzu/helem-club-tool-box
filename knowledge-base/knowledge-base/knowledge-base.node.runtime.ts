@@ -1,6 +1,11 @@
 import { SymphonyPlatformAspect, type SymphonyPlatformNode } from '@bitdev/symphony.symphony-platform';
 import { HelamPlatformAspect, type HelamPlatformNode } from '@helemclub/platform.helam-platform';
 import { getModelForClass } from '@typegoose/typegoose';
+import {
+  EditorialAspect,
+  type EditorialNode,
+  type PublishableDraft,
+} from '@helemclub/editorial.editorial';
 import { MediaRecord, type PlainMediaRecord } from '@helemclub/knowledge-base.entities.media-record';
 import type { KnowledgeBaseConfig } from './knowledge-base-config.js';
 import { knowledgeBaseGqlSchema } from './knowledge-base.graphql.js';
@@ -149,10 +154,52 @@ export class KnowledgeBaseNode {
     return { ...label, recordCount };
   }
 
-  static dependencies = [SymphonyPlatformAspect, HelamPlatformAspect];
+  /**
+   * publish an approved editorial draft as a media record. an already
+   * published draft (contentRef) updates its record in place instead of
+   * creating a duplicate.
+   */
+  async publishDraft(draft: PublishableDraft): Promise<{ contentRef: string; url?: string }> {
+    const payload = draft.payload || {};
+    const mediaType = payload.mediaType === 'audio' ? 'audio' : 'video';
+
+    if (draft.contentRef) {
+      const updated = await this.updateRecord(draft.contentRef, {
+        title: draft.title,
+        description: payload.description,
+        mediaType,
+        mediaUrl: payload.mediaUrl,
+        thumbnailUrl: payload.thumbnailUrl,
+        durationSec: payload.durationSec,
+        domains: draft.domains,
+        labelId: payload.labelId,
+      });
+      if (!updated) throw new Error(`התוכן ${draft.contentRef} לא נמצא`);
+      return { contentRef: updated.id, url: `/knowledge/record/${updated.slug}` };
+    }
+
+    const created = await this.createRecord({
+      labelId: payload.labelId,
+      title: draft.title,
+      description: payload.description,
+      mediaType,
+      mediaUrl: payload.mediaUrl,
+      thumbnailUrl: payload.thumbnailUrl,
+      durationSec: payload.durationSec,
+      domains: draft.domains,
+    });
+
+    return { contentRef: created.id, url: `/knowledge/record/${created.slug}` };
+  }
+
+  static dependencies = [SymphonyPlatformAspect, HelamPlatformAspect, EditorialAspect];
 
   static async provider(
-    [symphonyPlatform, helamPlatform]: [SymphonyPlatformNode, HelamPlatformNode],
+    [symphonyPlatform, helamPlatform, knowledgeLibrary]: [
+      SymphonyPlatformNode,
+      HelamPlatformNode,
+      EditorialNode
+    ],
     config: KnowledgeBaseConfig
   ) {
     const mediaRecordModel = getModelForClass(MediaRecordModel);
@@ -176,6 +223,29 @@ export class KnowledgeBaseNode {
         gql: gqlSchema,
       },
     ]);
+
+    /**
+     * the knowledge base owns how an approved draft becomes a media record.
+     * the editorial library calls this handler when a moderator publishes a
+     * draft of type `media-record`.
+     */
+    knowledgeLibrary.registerPublishHandler({
+      contentType: 'media-record',
+      publish: (draft) => knowledgeBase.publishDraft(draft),
+      unpublish: async (contentRef) => {
+        await knowledgeBase.deleteRecord(contentRef);
+      },
+      validate: (payload) => {
+        const errors: string[] = [];
+        if (!payload?.mediaUrl || String(payload.mediaUrl).trim().length === 0) {
+          errors.push('חובה לצרף קישור למדיה');
+        }
+        if (!payload?.labelId || String(payload.labelId).trim().length === 0) {
+          errors.push('חובה לשייך את התוכן לפרויקט');
+        }
+        return { valid: errors.length === 0, errors };
+      },
+    });
 
     // demo labels and media records are invented content — seeded only when
     // seeding is permitted (see DISABLE_SEED_DATA on the platform aspect).

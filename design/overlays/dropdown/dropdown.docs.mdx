@@ -5,6 +5,8 @@ labels: ["dropdown", "menu", "overlay", "rtl"]
 
 The `Dropdown` component renders an accessible menu anchored to a trigger element. It supports keyboard navigation (arrow keys, `Enter`, `Escape`), dismisses on click-outside, and aligns the menu panel to either edge of the trigger — respecting the RTL direction used across Helam Club.
 
+The menu panel is rendered through a portal into `document.body` and positioned with `position: fixed`, tracked every frame while open. This means it always escapes ancestors that clip or reposition it — for example a sliding drawer with `overflow-y: auto` and a `transform`, which would otherwise trap a non-portaled `fixed`/`absolute` menu inside its bounds (a transformed ancestor becomes the CSS containing block for `position: fixed` descendants). Design tokens (CSS custom properties) and text direction are copied from the trigger onto the portaled menu on open, so it stays visually consistent with the surrounding theme even though it is rendered outside the themed DOM subtree.
+
 ## Basic usage
 
 Render a dropdown with a default trigger button and a list of items:

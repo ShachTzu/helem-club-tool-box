@@ -41,7 +41,7 @@ it('renders the panel title for an admin user', () => {
   );
 
   const title = container.querySelector(`.${styles.title}`);
-  expect(title?.textContent).toBe(`ניהול תכני מאגר הידע`);
+  expect(title?.textContent).toBe(`ניהול תכני ספריית הידע`);
 });
 
 it('renders a table row for each mock record', () => {

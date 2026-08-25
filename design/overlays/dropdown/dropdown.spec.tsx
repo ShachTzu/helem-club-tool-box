@@ -12,6 +12,9 @@ const ITEMS: DropdownItemType[] = [
 ];
 
 describe(`Dropdown`, () => {
+  // no manual DOM cleanup needed: @testing-library/react auto-unmounts after each test,
+  // which also tears down portaled content since it is owned by the same React tree.
+
   it(`renders the trigger label and keeps the menu closed initially`, () => {
     const { container } = render(
       <MemoryRouter>
@@ -19,14 +22,14 @@ describe(`Dropdown`, () => {
       </MemoryRouter>
     );
 
-    const menu = container.querySelector(`.${styles.menu}`);
+    const menu = document.body.querySelector(`.${styles.menu}`);
     expect(menu).toBeNull();
 
     const trigger = container.querySelector(`.${styles.defaultTrigger}`);
     expect(trigger?.textContent).toContain(`תפריט`);
   });
 
-  it(`opens the menu when the trigger is clicked`, () => {
+  it(`opens the menu when the trigger is clicked, portaled to document.body`, () => {
     const { container } = render(
       <MemoryRouter>
         <Dropdown label="תפריט" items={ITEMS} />
@@ -36,10 +39,13 @@ describe(`Dropdown`, () => {
     const trigger = container.querySelector(`.${styles.defaultTrigger}`) as HTMLButtonElement;
     fireEvent.click(trigger);
 
-    const menu = container.querySelector(`.${styles.menu}`);
+    const menu = document.body.querySelector(`.${styles.menu}`);
     expect(menu).not.toBeNull();
+    // the menu must not be a descendant of the dropdown root, confirming it escaped
+    // any clipping/transformed ancestor via the portal.
+    expect(container.contains(menu)).toBe(false);
 
-    const items = container.querySelectorAll(`.${styles.item}`);
+    const items = document.body.querySelectorAll(`.${styles.item}`);
     expect(items.length).toBe(3);
   });
 
@@ -59,15 +65,15 @@ describe(`Dropdown`, () => {
     const trigger = container.querySelector(`.${styles.defaultTrigger}`) as HTMLButtonElement;
     fireEvent.click(trigger);
 
-    const item = container.querySelector(`.${styles.item}`) as HTMLButtonElement;
+    const item = document.body.querySelector(`.${styles.item}`) as HTMLButtonElement;
     fireEvent.click(item);
 
     expect(selected).toBe(true);
-    const menu = container.querySelector(`.${styles.menu}`);
+    const menu = document.body.querySelector(`.${styles.menu}`);
     expect(menu).toBeNull();
   });
 
-  it(`closes the menu when clicking outside`, () => {
+  it(`closes the menu when clicking outside, but not when clicking inside the portaled menu`, () => {
     const { container } = render(
       <MemoryRouter>
         <div>
@@ -79,12 +85,17 @@ describe(`Dropdown`, () => {
 
     const trigger = container.querySelector(`.${styles.defaultTrigger}`) as HTMLButtonElement;
     fireEvent.click(trigger);
-    expect(container.querySelector(`.${styles.menu}`)).not.toBeNull();
+    expect(document.body.querySelector(`.${styles.menu}`)).not.toBeNull();
+
+    // clicking inside the portaled menu must not be treated as an outside click.
+    const menuItem = document.body.querySelector(`.${styles.item}`) as HTMLButtonElement;
+    fireEvent.mouseDown(menuItem);
+    expect(document.body.querySelector(`.${styles.menu}`)).not.toBeNull();
 
     const outside = container.querySelector(`.outside`) as HTMLDivElement;
     fireEvent.mouseDown(outside);
 
-    expect(container.querySelector(`.${styles.menu}`)).toBeNull();
+    expect(document.body.querySelector(`.${styles.menu}`)).toBeNull();
   });
 
   it(`does not call onSelect for a disabled item`, () => {
@@ -102,23 +113,26 @@ describe(`Dropdown`, () => {
     const trigger = container.querySelector(`.${styles.defaultTrigger}`) as HTMLButtonElement;
     fireEvent.click(trigger);
 
-    const item = container.querySelector(`.${styles.item}`) as HTMLButtonElement;
+    const item = document.body.querySelector(`.${styles.item}`) as HTMLButtonElement;
     fireEvent.click(item);
 
     expect(selected).toBe(false);
   });
 
-  it(`applies the alignEnd class when align is set to end`, () => {
+  it(`escapes an ancestor with overflow:hidden and a transform, which would otherwise clip a non-portaled fixed menu`, () => {
     const { container } = render(
       <MemoryRouter>
-        <Dropdown label="תפריט" items={ITEMS} align="end" />
+        <div style={{ overflow: `hidden`, transform: `translateX(0)`, width: 100, height: 50 }}>
+          <Dropdown label="תפריט" items={ITEMS} />
+        </div>
       </MemoryRouter>
     );
 
     const trigger = container.querySelector(`.${styles.defaultTrigger}`) as HTMLButtonElement;
     fireEvent.click(trigger);
 
-    const menu = container.querySelector(`.${styles.menu}`);
-    expect(menu?.className).toContain(styles.alignEnd);
+    const menu = document.body.querySelector(`.${styles.menu}`);
+    expect(menu).not.toBeNull();
+    expect(menu?.parentElement).toBe(document.body);
   });
 });

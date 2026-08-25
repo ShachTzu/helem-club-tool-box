@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { MockProvider } from '@helemclub/platform.testing.mock-provider';
-import { mockUser } from '@helemclub/platform.entities.user';
 import { AppDetail } from './app-detail.js';
 import { mockAppDetailData, mockGroundMeAppData, mockAppDetailReviewsData } from './app-detail.mock.js';
 import styles from './app-detail.module.scss';
@@ -77,11 +76,10 @@ it('should render an empty reviews message when there are no reviews', () => {
 
 it('should toggle the review form when the write review button is clicked', () => {
   const app = mockAppDetailData();
-  const signedInUser = mockUser();
 
   const { container } = render(
     <MockProvider>
-      <AppDetail app={app} reviews={[]} mockCurrentUser={signedInUser} />
+      <AppDetail app={app} reviews={[]} />
     </MockProvider>
   );
 

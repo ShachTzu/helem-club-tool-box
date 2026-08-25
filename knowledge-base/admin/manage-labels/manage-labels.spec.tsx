@@ -24,7 +24,7 @@ it('renders the empty message when there are no labels', () => {
     </MockProvider>
   );
 
-  expect(getByText(`לא נמצאו תוויות במאגר הידע`)).toBeTruthy();
+  expect(getByText(`לא נמצאו תוויות בספריית הידע`)).toBeTruthy();
 });
 
 it('opens the creation form when clicking the new label button', () => {

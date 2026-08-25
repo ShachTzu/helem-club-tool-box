@@ -97,7 +97,7 @@ export function KnowledgeLobby({
       <PageLayout>
         <SectionLayout
           eyebrow="ה-Mother Ship"
-          title="מאגר הידע"
+          title="ספריית הידע"
           subtitle="סדרות וידאו, הקלטות והרצאות — מאורגנות בפרויקטים ומתויגות לפי תחום. הכל במקום אחד, נגיש בכל רגע."
         />
 

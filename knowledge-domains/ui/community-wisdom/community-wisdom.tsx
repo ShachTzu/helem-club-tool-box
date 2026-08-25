@@ -9,7 +9,7 @@ import styles from './community-wisdom.module.scss';
 const CHANNEL_META: Record<WisdomChannel, { label: string; icon: string; color: string }> = {
   app: { label: 'כלים', icon: '🧰', color: '#E89F4B' },
   post: { label: 'כתבות', icon: '📝', color: '#4F6D7A' },
-  record: { label: 'מאגר ידע', icon: '📚', color: '#5B8A72' },
+  record: { label: 'ספריית הידע', icon: '📚', color: '#5B8A72' },
   event: { label: 'אירועים', icon: '📅', color: '#B0578D' },
   gallery: { label: 'גלריה', icon: '🎨', color: '#8367C7' },
 };

@@ -141,7 +141,7 @@ export class HelamPlatformBrowser {
 
   /**
    * register an ecosystem pillar card for the home page. features register
-   * their own pillar here, so a feature that is not loaded is never
+   * their own pillar here, so a feature that is not mounted is never
    * advertised on the home page.
    */
   registerEcosystemPillar(pillar: EcosystemPillar | EcosystemPillar[]) {
@@ -164,7 +164,15 @@ export class HelamPlatformBrowser {
   static async provider(
     [symphonyPlatform]: [SymphonyPlatformBrowser],
     config: HelamPlatformConfig,
-    [routeSlot, navigationItemSlot, headerActionSlot, adminRouteSlot, footerLinkSlot, homeSectionSlot, ecosystemPillarSlot]: [
+    [
+      routeSlot,
+      navigationItemSlot,
+      headerActionSlot,
+      adminRouteSlot,
+      footerLinkSlot,
+      homeSectionSlot,
+      ecosystemPillarSlot,
+    ]: [
       RouteSlot,
       NavigationItemSlot,
       HeaderActionSlot,
@@ -209,7 +217,7 @@ export class HelamPlatformBrowser {
 
     /**
      * home belongs to the platform itself, so the platform registers it the
-     * same way features register theirs — the header has no hard-coded links.
+     * same way features register theirs — no component hard-codes links.
      */
     platform.registerNavigationItem([
       {

@@ -2,13 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { StarRating } from '@helemclub/design.content.star-rating';
-import { Image } from '@helemclub/design.content.image';
 import { DomainBadge } from '@helemclub/knowledge-domains.ui.domain-badge';
+import { AppIcon } from '@helemclub/toolbox.ui.app-icon';
 import type { AppCardDomain } from './app-card-domain-type.js';
 import { DEFAULT_APP_CARD_DOMAINS } from './app-card.mock.js';
 import styles from './app-card.module.scss';
-
-const IMAGE_URL_PATTERN = /^https?:\/\//;
 
 export type AppCardProps = {
   /**
@@ -86,19 +84,13 @@ export function AppCard({
   className,
   style,
 }: AppCardProps) {
-  const isIconImage = IMAGE_URL_PATTERN.test(icon);
-
   return (
     <div className={classNames(styles.appCard, className)} style={style}>
       <Link to={href} className={styles.cardLink} aria-label={name} />
 
       <div className={styles.header}>
         <div className={styles.iconWrap}>
-          {isIconImage ? (
-            <Image className={styles.iconImage} src={icon} alt={name} aspectRatio="1 / 1" rounded="none" />
-          ) : (
-            <span>{icon}</span>
-          )}
+          <AppIcon className={styles.iconImage} icon={icon} alt={name} />
         </div>
         <div className={styles.body}>
           <div className={styles.titleRow}>

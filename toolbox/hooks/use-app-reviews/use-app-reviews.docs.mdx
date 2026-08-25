@@ -38,8 +38,7 @@ const RateAppForm = () => {
   const { rateApp, submitting, submitError } = useAppReviews('ground-me');
 
   const handleSubmit = async () => {
-    // requires a signed-in user; the review is named after them server-side.
-    await rateApp({ stars: 5, comment: 'עזר לי מאוד ברגעים קשים.' });
+    await rateApp({ stars: 5, comment: 'עזר לי מאוד ברגעים קשים.', displayName: 'אנונימי' });
   };
 
   return (

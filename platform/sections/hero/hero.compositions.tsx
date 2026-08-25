@@ -36,7 +36,7 @@ export const HeroWithExternalSecondaryCta = () => {
         <Hero
           eyebrow="שותפים ותומכים"
           title="בונים יחד את ארגז הכלים של המחר"
-          subtitle="הצטרפו כארגון שותף או תרמו ידע מקצועי למאגר הידע הקהילתי."
+          subtitle="הצטרפו כארגון שותף או תרמו ידע מקצועי לספריית הידע הקהילתית."
           primaryCta={{ label: `לארגז הכלים`, href: `/toolbox` }}
           secondaryCta={{ label: `אתר עמותת הלם קלאב`, href: `https://example.org`, external: true }}
         />

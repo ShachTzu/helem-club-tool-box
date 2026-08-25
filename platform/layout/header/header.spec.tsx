@@ -17,9 +17,8 @@ describe(`Header`, () => {
     expect(getAllByText(`בית`).length).toBeGreaterThan(0);
 
     /**
-     * feature links belong to the features. the header must never advertise a
-     * feature that did not register itself, or switching a feature off leaves
-     * a dead link in the nav.
+     * feature links belong to the features. the header must never carry one of
+     * its own, or unmounting a feature leaves a dead link behind.
      */
     expect(queryAllByText(`חוכמת הקהילה`).length).toBe(0);
     expect(queryAllByText(`ארגז כלים`).length).toBe(0);

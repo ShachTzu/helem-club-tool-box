@@ -3,8 +3,8 @@ import { useMutation } from '@apollo/client/react';
 import { App, type PlainApp } from '@helemclub/toolbox.entities.app';
 
 /**
- * GraphQL mutation applying a moderation decision (e.g. approve or reject)
- * to a pending toolbox app.
+ * GraphQL mutation applying a moderation decision to one or more pending
+ * toolbox apps. a single decision is a batch of one.
  */
 export const REVIEW_TOOLBOX_APP_MUTATION = gql`
   mutation ReviewToolboxApp($options: ReviewToolboxAppOptions!) {
@@ -32,50 +32,52 @@ export const REVIEW_TOOLBOX_APP_MUTATION = gql`
       ratingCount
       ratingHistogram
       status
+      moderatorNote
     }
   }
 `;
 
+/**
+ * the moderation decisions a moderator can apply. "request_changes" sends the
+ * submission back to its owner for edits instead of closing it.
+ */
+export type ReviewAction = 'approve' | 'reject' | 'request_changes';
+
 export type ReviewAppOptions = {
   /**
-   * id of the pending app being reviewed.
+   * ids of the pending apps being reviewed. pass one id for a single decision.
    */
-  appId: string;
+  appIds: string[];
 
   /**
-   * moderation action to apply: "approve", "reject", or "changes_requested"
-   * (sent back to the submitter for edits).
+   * moderation action to apply.
    */
-  action: string;
+  action: ReviewAction;
 
   /**
-   * optional moderator note explaining the decision. included in the
-   * decision email sent to the submitter.
+   * the moderator's explanation, shown to the submitter. required by the
+   * server for "reject" and "request_changes".
    */
   note?: string;
 };
 
 /**
- * applies a moderation decision to a pending toolbox app, such as approving
- * or rejecting it. intended for use by moderators and admins.
+ * applies a moderation decision to one or more pending toolbox apps.
+ * intended for use by moderators and admins.
  */
 export function useReviewApp() {
-  const [reviewToolboxAppMutation, { data, loading, error }] = useMutation<
-    { reviewToolboxApp: PlainApp },
+  const [reviewToolboxAppMutation, { loading, error }] = useMutation<
+    { reviewToolboxApp: PlainApp[] },
     { options: ReviewAppOptions }
   >(REVIEW_TOOLBOX_APP_MUTATION);
 
   const reviewApp = async (options: ReviewAppOptions) => {
     const result = await reviewToolboxAppMutation({ variables: { options } });
-    const reviewedApp = result.data?.reviewToolboxApp;
-    return reviewedApp ? App.from(reviewedApp) : undefined;
+    return (result.data?.reviewToolboxApp || []).map((reviewed) => App.from(reviewed));
   };
-
-  const app = data?.reviewToolboxApp ? App.from(data.reviewToolboxApp) : undefined;
 
   return {
     reviewApp,
-    app,
     loading,
     error,
   };

@@ -7,7 +7,24 @@ import { RecordPage } from '@helemclub/knowledge-base.pages.record-page';
 import { ManageLabels } from '@helemclub/knowledge-base.admin.manage-labels';
 import { ManageRecords } from '@helemclub/knowledge-base.admin.manage-records';
 import { KnowledgePreview } from '@helemclub/knowledge-base.sections.knowledge-preview';
+import {
+  EditorialAspect,
+  type EditorialBrowser,
+} from '@helemclub/editorial.editorial';
+import { GenericPayloadEditor } from '@helemclub/editorial.pages.draft-editor';
 import type { KnowledgeBaseConfig } from './knowledge-base-config.js';
+
+/**
+ * the editorial fields of a media record, shown to writers inside the
+ * knowledge library draft editor.
+ */
+const MEDIA_RECORD_FIELDS = [
+  { name: 'description', label: 'תיאור', multiline: true },
+  { name: 'mediaUrl', label: 'קישור למדיה' },
+  { name: 'mediaType', label: 'סוג מדיה (video / audio / article)' },
+  { name: 'thumbnailUrl', label: 'תמונה ממוזערת (קישור)' },
+  { name: 'labelId', label: 'מזהה הפרויקט' },
+];
 
 export class KnowledgeBaseBrowser {
   constructor(
@@ -16,10 +33,14 @@ export class KnowledgeBaseBrowser {
     private helamPlatform: HelamPlatformBrowser
   ) {}
 
-  static dependencies = [SymphonyPlatformAspect, HelamPlatformAspect];
+  static dependencies = [SymphonyPlatformAspect, HelamPlatformAspect, EditorialAspect];
 
   static async provider(
-    [symphonyPlatform, helamPlatform]: [SymphonyPlatformBrowser, HelamPlatformBrowser],
+    [symphonyPlatform, helamPlatform, knowledgeLibrary]: [
+      SymphonyPlatformBrowser,
+      HelamPlatformBrowser,
+      EditorialBrowser
+    ],
     config: KnowledgeBaseConfig
   ) {
     const knowledgeBase = new KnowledgeBaseBrowser(config, symphonyPlatform, helamPlatform);
@@ -48,7 +69,7 @@ export class KnowledgeBaseBrowser {
      */
     helamPlatform.registerNavigationItem([
       {
-        label: 'מאגר ידע',
+        label: 'ספריית הידע',
         href: '/knowledge',
         order: 30,
       },
@@ -56,7 +77,7 @@ export class KnowledgeBaseBrowser {
 
     /**
      * advertise this feature as an ecosystem pillar on the home page. the
-     * platform renders only the pillars registered by loaded aspects, so a
+     * platform renders only the pillars registered by mounted aspects, so a
      * feature that is switched off is never linked to.
      */
     helamPlatform.registerEcosystemPillar([
@@ -91,10 +112,28 @@ export class KnowledgeBaseBrowser {
       },
       {
         path: 'knowledge-records',
-        label: 'ניהול תכני מאגר הידע',
+        label: 'ניהול תכני ספריית הידע',
         component: () => <ManageRecords />,
       },
     ]);
+
+    /**
+     * media records can be drafted and reviewed in the editorial library
+     * before they appear in the knowledge base.
+     */
+    knowledgeLibrary.registerContentType({
+      contentType: 'media-record',
+      label: 'תוכן בספריית הידע',
+      editor: ({ payload, onChange, readOnly }) => (
+        <GenericPayloadEditor
+          payload={payload}
+          onChange={onChange}
+          readOnly={readOnly}
+          fields={MEDIA_RECORD_FIELDS}
+        />
+      ),
+      fields: MEDIA_RECORD_FIELDS,
+    });
 
     return knowledgeBase;
   }

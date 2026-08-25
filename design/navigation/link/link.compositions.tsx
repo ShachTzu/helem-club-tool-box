@@ -8,7 +8,7 @@ export const BasicLink = () => {
     <MockProvider>
       <div style={{ padding: 24, display: 'flex', gap: 20 }}>
         <Link href="/domains">תחומי התמודדות</Link>
-        <Link href="/knowledge">מאגר ידע</Link>
+        <Link href="/knowledge">ספריית הידע</Link>
         <Link href="/blog">בלוג</Link>
       </div>
     </MockProvider>

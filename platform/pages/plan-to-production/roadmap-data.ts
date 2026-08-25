@@ -96,7 +96,7 @@ export const ROADMAP: RoadmapSection[] = [
         status: 'done',
         priority: 'high',
         current:
-          'כל פיצ׳ר (ארגז כלים, בלוג, אירועים, גלריה, מאגר ידע, תחומים) רושם את עצמו לפלטפורמה דרך registerRoute / registerNavigationItem / registerBackendServer. הפלטפורמה לא תלויה באף פיצ׳ר ספציפי.',
+          'כל פיצ׳ר (ארגז כלים, בלוג, אירועים, גלריה, ספריית הידע, תחומים) רושם את עצמו לפלטפורמה דרך registerRoute / registerNavigationItem / registerBackendServer. הפלטפורמה לא תלויה באף פיצ׳ר ספציפי.',
         recommendation: 'אין פעולה נדרשת — זהו הבסיס הנכון. הוספת פיצ׳ר חדש לא תדרוש שינוי בפלטפורמה.',
         areas: ['platform', 'all features'],
       },
@@ -184,7 +184,7 @@ export const ROADMAP: RoadmapSection[] = [
         priority: 'high',
         current:
           'כל סוגי התוכן נושאים domains[] ופילטור עובד. אך לא אומת מקצה-לקצה שהתיוג עובר דרך שאילתות ה-DB האמיתיות בכל פיצ׳ר.',
-        recommendation: 'לבדוק ולוודא round-trip של תיוגים דרך ה-DB בכל פיצ׳ר (כלים, בלוג, אירועים, גלריה, מאגר).',
+        recommendation: 'לבדוק ולוודא round-trip של תיוגים דרך ה-DB בכל פיצ׳ר (כלים, בלוג, אירועים, גלריה, ספריית הידע).',
         areas: ['knowledge-domains', 'all features'],
       },
       {
@@ -215,7 +215,7 @@ export const ROADMAP: RoadmapSection[] = [
     id: 'content',
     title: 'אזורי תוכן',
     icon: '📚',
-    summary: 'ארגז כלים, בלוג, מאגר ידע, אירועים וגלריה.',
+    summary: 'ארגז כלים, בלוג, ספריית הידע, אירועים וגלריה.',
     items: [
       {
         id: 'toolbox',
@@ -240,7 +240,7 @@ export const ROADMAP: RoadmapSection[] = [
       },
       {
         id: 'knowledge-base',
-        title: 'מאגר ידע (Labels + רשומות)',
+        title: 'ספריית הידע (Labels + רשומות)',
         status: 'done',
         priority: 'high',
         current:
@@ -338,7 +338,7 @@ export const ROADMAP: RoadmapSection[] = [
         status: 'done',
         priority: 'critical',
         current:
-          'דף הבית מרכיב עכשיו את כל הקיפולים של הפרוטוטייפ דרך slot חדש (HomeSection) בפלטפורמה: Hero + סקירת אקוסיסטם, ואז "חוכמת הקהילה" (compact), תצוגה מקדימה של מאגר הידע, "מהבלוג" ו"אירועים קרובים" — כל אחת עם קישור "לכל…". כל פיצ׳ר רושם את התצוגה שלו דרך registerHomeSection, כך שהפלטפורמה לא מייבאת סקופי פיצ׳רים (IoC).',
+          'דף הבית מרכיב עכשיו את כל הקיפולים של הפרוטוטייפ דרך slot חדש (HomeSection) בפלטפורמה: Hero + סקירת אקוסיסטם, ואז "חוכמת הקהילה" (compact), תצוגה מקדימה של ספריית הידע, "מהבלוג" ו"אירועים קרובים" — כל אחת עם קישור "לכל…". כל פיצ׳ר רושם את התצוגה שלו דרך registerHomeSection, כך שהפלטפורמה לא מייבאת סקופי פיצ׳רים (IoC).',
         recommendation:
           'אין פעולה נדרשת. הוספת תצוגה מקדימה חדשה לדף הבית = registerHomeSection מהפיצ׳ר בלבד.',
         areas: ['platform', 'knowledge-domains', 'blog', 'events', 'knowledge-base'],
@@ -365,7 +365,7 @@ export const ROADMAP: RoadmapSection[] = [
       },
       {
         id: 'knowledge-cards-overlap',
-        title: 'מאגר ידע — כרטיסים חופפים + תמונות חסרות',
+        title: 'ספריית הידע — כרטיסים חופפים + תמונות חסרות',
         status: 'done',
         priority: 'high',
         current:

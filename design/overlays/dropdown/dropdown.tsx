@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { ChevronDownIcon } from './chevron-down-icon.js';
 import type { DropdownItemType } from './dropdown-item-type.js';
@@ -66,9 +67,28 @@ export type DropdownProps = {
 };
 
 /**
+ * copies the resolved custom properties (design tokens) and text direction from `source`
+ * onto `target`. the menu is portaled to `document.body`, which sits outside the themed
+ * DOM subtree, so CSS custom properties are no longer inherited through the real DOM tree —
+ * this restores them by reading the resolved values at the trigger and writing them inline.
+ */
+function copyThemeTokens(source: HTMLElement, target: HTMLElement) {
+  const computed = window.getComputedStyle(source);
+  for (let index = 0; index < computed.length; index += 1) {
+    const property = computed[index];
+    if (property.startsWith(`--`)) {
+      target.style.setProperty(property, computed.getPropertyValue(property));
+    }
+  }
+  target.style.direction = computed.direction;
+}
+
+/**
  * an accessible dropdown/menu anchored to a trigger element. supports RTL alignment,
- * keyboard navigation and click-outside dismissal. used by the user bar, sort menus
- * and header actions across Helam Club.
+ * keyboard navigation and click-outside dismissal. the menu is portaled to `document.body`
+ * so it always escapes ancestors with `overflow` or `transform` (e.g. a sliding drawer),
+ * which would otherwise clip or mis-position a `position: fixed`/`absolute` menu. used by
+ * the user bar, sort menus and header actions across Helam Club.
  */
 export function Dropdown({
   trigger,
@@ -87,6 +107,7 @@ export function Dropdown({
   const isOpen = isControlled ? open : internalOpen;
 
   const rootRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLUListElement>(null);
   const [activeIndex, setActiveIndex] = useState(-1);
 
   const setOpen = useCallback(
@@ -107,7 +128,9 @@ export function Dropdown({
 
     const handlePointerDown = (event: MouseEvent) => {
       const target = event.target as Node;
-      if (rootRef.current && !rootRef.current.contains(target)) {
+      const insideTrigger = rootRef.current?.contains(target);
+      const insideMenu = menuRef.current?.contains(target);
+      if (!insideTrigger && !insideMenu) {
         closeMenu();
       }
     };
@@ -125,6 +148,52 @@ export function Dropdown({
       document.removeEventListener(`keydown`, handleKeyDown);
     };
   }, [isOpen, closeMenu]);
+
+  // copy design tokens onto the portaled menu once per open — tokens don't change mid-session,
+  // so this doesn't need to run on every position frame below.
+  useLayoutEffect(() => {
+    if (!isOpen) return;
+    const trigger_ = rootRef.current;
+    const menu = menuRef.current;
+    if (!trigger_ || !menu) return;
+    copyThemeTokens(trigger_, menu);
+  }, [isOpen]);
+
+  // track the trigger's viewport position every frame while open, so the menu follows it
+  // even when an ancestor scrolls, resizes or animates (e.g. the header drawer sliding open).
+  // a continuous rAF loop already runs before every paint, so separate scroll/resize
+  // listeners would not observe anything earlier — they'd just be redundant.
+  useLayoutEffect(() => {
+    if (!isOpen) return undefined;
+
+    let frameId: number;
+
+    const updatePosition = () => {
+      const trigger_ = rootRef.current;
+      const menu = menuRef.current;
+      if (trigger_ && menu) {
+        const rect = trigger_.getBoundingClientRect();
+        const direction = window.getComputedStyle(trigger_).direction;
+        const spacing = parseFloat(window.getComputedStyle(trigger_).getPropertyValue(`--spacing-small`)) || 8;
+        const alignToRightEdge = direction === `rtl` ? align === `start` : align === `end`;
+
+        menu.style.top = `${rect.bottom + spacing}px`;
+        if (alignToRightEdge) {
+          menu.style.right = `${window.innerWidth - rect.right}px`;
+          menu.style.left = `auto`;
+        } else {
+          menu.style.left = `${rect.left}px`;
+          menu.style.right = `auto`;
+        }
+      }
+      frameId = requestAnimationFrame(updatePosition);
+    };
+
+    frameId = requestAnimationFrame(updatePosition);
+    updatePosition();
+
+    return () => cancelAnimationFrame(frameId);
+  }, [isOpen, align]);
 
   const toggleOpen = () => {
     setOpen(!isOpen);
@@ -169,27 +238,12 @@ export function Dropdown({
     }
   };
 
-  return (
-    <div ref={rootRef} className={classNames(styles.dropdown, className)} style={style}>
-      <div className={styles.triggerWrapper} onClick={() => toggleOpen()}>
-        {trigger ?? (
-          <button type="button" className={styles.defaultTrigger} aria-expanded={isOpen} aria-haspopup="true">
-            <span className={styles.defaultTriggerLabel}>{label}</span>
-            {!hideChevron && (
-              <ChevronDownIcon className={classNames(styles.chevron, isOpen && styles.chevronOpen)} />
-            )}
-          </button>
-        )}
-      </div>
-
-      {isOpen && (
+  const menu = isOpen && typeof document !== `undefined`
+    ? createPortal(
         <ul
+          ref={menuRef}
           role="menu"
-          className={classNames(
-            styles.menu,
-            align === `end` ? styles.alignEnd : styles.alignStart,
-            menuClassName
-          )}
+          className={classNames(styles.menu, menuClassName)}
           onKeyDown={(event) => handleMenuKeyDown(event)}
         >
           {items.map((item, index) => (
@@ -211,8 +265,25 @@ export function Dropdown({
               </button>
             </li>
           ))}
-        </ul>
-      )}
+        </ul>,
+        document.body
+      )
+    : null;
+
+  return (
+    <div ref={rootRef} className={classNames(styles.dropdown, className)} style={style}>
+      <div className={styles.triggerWrapper} onClick={() => toggleOpen()}>
+        {trigger ?? (
+          <button type="button" className={styles.defaultTrigger} aria-expanded={isOpen} aria-haspopup="true">
+            <span className={styles.defaultTriggerLabel}>{label}</span>
+            {!hideChevron && (
+              <ChevronDownIcon className={classNames(styles.chevron, isOpen && styles.chevronOpen)} />
+            )}
+          </button>
+        )}
+      </div>
+
+      {menu}
     </div>
   );
 }

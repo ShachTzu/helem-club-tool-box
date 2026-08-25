@@ -6,7 +6,7 @@ import type { TabItem } from './tab-item-type.js';
 const domainTabs: TabItem[] = [
   { key: `apps`, label: `🧰 כלים` },
   { key: `posts`, label: `📝 כתבות` },
-  { key: `records`, label: `📚 מאגר ידע` },
+  { key: `records`, label: `📚 ספריית הידע` },
   { key: `events`, label: `📅 אירועים` },
   { key: `gallery`, label: `🎨 גלריה` },
 ];
@@ -27,7 +27,7 @@ export const ControlledTabs = () => {
   const content: Record<string, string> = {
     apps: `כלים שנבחרו ומדורגים על ידי קהילת הלם קלאב.`,
     posts: `כתבות מהבלוג של הלם קלאב בנושאי התמודדות.`,
-    records: `הרצאות והדרכות ממאגר הידע הקהילתי.`,
+    records: `הרצאות והדרכות מספריית הידע הקהילתית.`,
     events: `אירועים קרובים ועבר של הקהילה.`,
     gallery: `יצירות מגלריית PTSDART.`,
   };

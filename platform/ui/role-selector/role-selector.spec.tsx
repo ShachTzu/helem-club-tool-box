@@ -26,7 +26,9 @@ describe(`RoleSelector`, () => {
     const trigger = container.querySelector(`.${styles.trigger}`) as HTMLButtonElement;
     fireEvent.click(trigger);
 
-    const items = container.querySelectorAll(`button[role="menuitem"]`);
+    // the menu is portaled to document.body by the underlying Dropdown, so it is
+    // not a descendant of `container`.
+    const items = document.body.querySelectorAll(`button[role="menuitem"]`);
     expect(items.length).toBe(4);
   });
 
@@ -41,7 +43,7 @@ describe(`RoleSelector`, () => {
     const trigger = container.querySelector(`.${styles.trigger}`) as HTMLButtonElement;
     fireEvent.click(trigger);
 
-    const items = container.querySelectorAll(`button[role="menuitem"]`);
+    const items = document.body.querySelectorAll(`button[role="menuitem"]`);
     const adminItem = Array.from(items).find((item) => item.textContent?.includes(`אדמין`)) as HTMLButtonElement;
     fireEvent.click(adminItem);
 

@@ -249,7 +249,7 @@ function ManageRecordsPanel({ mockRecords, mockLabels, className, style }: Manag
     <div className={classNames(styles.manageRecords, className)} style={style}>
       <div className={styles.headerRow}>
         <div>
-          <h2 className={styles.title}>ניהול תכני מאגר הידע</h2>
+          <h2 className={styles.title}>ניהול תכני ספריית הידע</h2>
           <p className={styles.subtitle}>יצירה, עריכה ומחיקה של רשומות מדיה — וידאו ואודיו — המתויגות לפרויקטים ותחומים.</p>
         </div>
         <Button variant="accent" onClick={() => openCreateForm()}>
@@ -262,7 +262,7 @@ function ManageRecordsPanel({ mockRecords, mockLabels, className, style }: Manag
       {loading ? (
         <div className={styles.loadingState}>טוען רשומות...</div>
       ) : (
-        <Table columns={columns} rows={rows} emptyMessage="עדיין אין רשומות מדיה במאגר." />
+        <Table columns={columns} rows={rows} emptyMessage="עדיין אין רשומות מדיה בספרייה." />
       )}
 
       {isFormOpen && (

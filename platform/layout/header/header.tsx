@@ -15,7 +15,8 @@ import styles from './header.module.scss';
 
 /**
  * only home belongs to the platform itself. every feature link arrives through
- * the NavigationItem slot, so a feature that is not loaded is never linked to.
+ * the NavigationItem slot, so a feature that is not mounted is never linked to
+ * and no one has to remember to comment a line out.
  */
 const DEFAULT_NAVIGATION_ITEMS: HeaderNavigationItem[] = [{ label: `בית`, path: `/` }];
 
@@ -104,7 +105,7 @@ export function Header({
   return (
     <header className={classNames(styles.header, className)} style={style}>
       <div className={styles.bar}>
-        <Logo href="/" size="medium" variant="dark" className={styles.logo} />
+        <Logo href="/" size="large" variant="dark" className={styles.logo} />
 
         <nav className={styles.desktopNav}>
           {navigationItems.map((item) => (
@@ -143,7 +144,7 @@ export function Header({
       >
         <div className={styles.drawer} onClick={(event) => event.stopPropagation()}>
           <div className={styles.drawerHeader}>
-            <Logo href="/" size="medium" variant="dark" />
+            <Logo href="/" size="large" variant="dark" />
             <button
               type="button"
               className={styles.drawerCloseButton}

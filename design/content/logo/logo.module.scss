@@ -1,11 +1,7 @@
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-small);
   text-decoration: none;
-  font-family: var(--typography-font-family);
-  font-weight: var(--typography-font-weight-extra-bold);
-  white-space: nowrap;
   cursor: var(--interactions-cursor-pointer);
   transition: opacity var(--interactions-transitions-duration-fast)
     var(--interactions-transitions-easing-ease-out);
@@ -15,13 +11,14 @@
   opacity: var(--effects-opacity-hover);
 }
 
-.dot {
-  color: var(--colors-accent-default);
-  line-height: 1;
-}
-
-.wordmark {
-  line-height: 1;
+/**
+ * the logo artwork. width is derived from the aspect ratio so the mark never
+ * distorts, and the height is driven by the size class below.
+ */
+.mark {
+  display: block;
+  width: auto;
+  max-width: 100%;
 }
 
 .dark {
@@ -32,14 +29,14 @@
   color: var(--colors-text-primary);
 }
 
-.sizeSmall {
-  font-size: var(--typography-sizes-body-large);
+.sizeSmall .mark {
+  height: 24px;
 }
 
-.sizeMedium {
-  font-size: var(--typography-sizes-heading-h5);
+.sizeMedium .mark {
+  height: 32px;
 }
 
-.sizeLarge {
-  font-size: var(--typography-sizes-heading-h3);
+.sizeLarge .mark {
+  height: 48px;
 }

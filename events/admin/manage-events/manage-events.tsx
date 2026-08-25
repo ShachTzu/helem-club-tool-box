@@ -299,7 +299,7 @@ function ManageEventsPanel({ mockEvents, mockLabels, mockDomains, className, sty
       return;
     }
 
-    setNotice(`ההקלטה פורסמה למאגר הידע בהצלחה.`);
+    setNotice(`ההקלטה פורסמה לספריית הידע בהצלחה.`);
     setPublishOpen(false);
     refetch();
   };
@@ -413,7 +413,7 @@ function ManageEventsPanel({ mockEvents, mockLabels, mockDomains, className, sty
         <div className={styles.eyebrow}>ניהול תוכן</div>
         <h1 className={styles.title}>ניהול אירועים</h1>
         <p className={styles.subtitle}>
-          יצירה, עריכה ומחיקה של אירועי הקהילה, ופרסום הקלטות של אירועים שהסתיימו למאגר הידע.
+          יצירה, עריכה ומחיקה של אירועי הקהילה, ופרסום הקלטות של אירועים שהסתיימו לספריית הידע.
         </p>
         <div className={styles.headerActions}>
           <Button variant="accent" onClick={() => openCreateForm()}>
@@ -583,7 +583,7 @@ function ManageEventsPanel({ mockEvents, mockLabels, mockDomains, className, sty
       {publishOpen ? (
         <div className={styles.overlay}>
           <div className={styles.formCard}>
-            <h2 className={styles.formTitle}>פרסום הקלטה למאגר הידע</h2>
+            <h2 className={styles.formTitle}>פרסום הקלטה לספריית הידע</h2>
 
             {publishError ? <p className={styles.formError}>{publishError}</p> : null}
 

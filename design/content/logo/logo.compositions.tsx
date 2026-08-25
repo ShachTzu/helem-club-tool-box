@@ -42,3 +42,20 @@ export const LightVariantOnSurface = () => {
     </MockProvider>
   );
 };
+
+export const BothVariantsOnTheirSurfaces = () => {
+  return (
+    <MockProvider>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div style={{ flex: '1 1 240px', padding: 24, background: 'var(--colors-primary-default)' }}>
+          <Logo variant="dark" size="large" />
+        </div>
+        <div
+          style={{ flex: '1 1 240px', padding: 24, background: 'var(--colors-surface-background)' }}
+        >
+          <Logo variant="light" size="large" />
+        </div>
+      </div>
+    </MockProvider>
+  );
+};

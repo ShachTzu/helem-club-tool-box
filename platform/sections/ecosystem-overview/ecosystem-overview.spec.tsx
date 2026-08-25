@@ -10,8 +10,8 @@ const TEST_PILLARS: EcosystemPillar[] = [
   {
     slug: `knowledge`,
     icon: `📚`,
-    title: `מאגר ידע`,
-    description: `תיאור מאגר הידע`,
+    title: `ספריית הידע`,
+    description: `תיאור ספריית הידע`,
     href: `/knowledge`,
   },
   {
@@ -73,8 +73,8 @@ it(`renders nothing when no feature registered a pillar`, () => {
   );
 
   /**
-   * the pillars come from the loaded aspects. with none registered the section
-   * must disappear rather than advertise features that are switched off.
+   * the pillars come from the mounted aspects. with none registered the
+   * section must disappear rather than advertise a feature that is off.
    */
   expect(container.textContent).toBe('');
 });

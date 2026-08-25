@@ -189,7 +189,8 @@ export class BlogNode {
   }
 
   /**
-   * grant or revoke a user's write permission. restricted to admins.
+   * grant or revoke a user's write permission. restricted to admins and to
+   * users scoped in as content admins.
    */
   async setWritePermission(
     userId: string,
@@ -198,7 +199,7 @@ export class BlogNode {
   ): Promise<Author | null> {
     const user = await this.currentUser(context);
     if (!user) throw new Unauthorized();
-    if (!this.hasRole(user, 'admin')) throw new AccessDenied();
+    if (!user.canManageContent()) throw new AccessDenied();
 
     const target = await this.helamPlatform.getUser(userId);
     const updated = await this.postRepository.setWritePermission(

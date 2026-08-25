@@ -67,7 +67,7 @@ it('should render as a router link when the as prop is provided', () => {
   const { container } = render(
     <MockProvider>
       <Link as={RouterLink} href="/knowledge">
-        מאגר ידע
+        ספריית הידע
       </Link>
     </MockProvider>
   );

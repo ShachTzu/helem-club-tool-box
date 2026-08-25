@@ -37,6 +37,15 @@
   margin-bottom: var(--spacing-medium);
 }
 
+/* Google renders its button in an iframe it sizes itself; center it and
+   force LTR so the logo and label are not mirrored inside the RTL page. */
+.googleMount {
+  display: flex;
+  justify-content: center;
+  direction: ltr;
+  min-height: 44px;
+}
+
 .divider {
   display: flex;
   align-items: center;

@@ -51,8 +51,8 @@ export function RecordPage({ slug, mockRecord, className, style }: RecordPagePro
       <PageLayout>
         <EmptyState
           title="הרשומה לא נמצאה"
-          description="ייתכן שהקישור השתנה או שהתוכן הוסר מהמאגר."
-          actionLabel="חזרה למאגר הידע"
+          description="ייתכן שהקישור השתנה או שהתוכן הוסר מהספרייה."
+          actionLabel="חזרה לספריית הידע"
           actionHref="/knowledge"
         />
       </PageLayout>
@@ -73,7 +73,7 @@ export function RecordPage({ slug, mockRecord, className, style }: RecordPagePro
     <div className={classNames(styles.recordPage, className)} style={style}>
       <PageLayout>
         <nav className={styles.breadcrumbs}>
-          <Link to="/knowledge">מאגר ידע</Link>
+          <Link to="/knowledge">ספריית הידע</Link>
           <span aria-hidden> / </span>
           <span>{data.title}</span>
         </nav>

@@ -103,16 +103,61 @@ export type SubmitAppInput = {
 /**
  * payload used to apply a moderation decision to a pending app.
  */
-export type ReviewAppInput = {
+export type ReviewAction = 'approve' | 'reject' | 'request_changes';
+
+/**
+ * what a member asks us to remove.
+ * 'personal_data' — their details and everything written about them go; the
+ * tool stays in the catalog with nothing tying it to them.
+ * 'everything' — the submission itself goes too.
+ */
+export type DeletionMode = 'personal_data' | 'everything';
+
+export type DeleteSubmissionInput = {
   /**
-   * id of the pending app being reviewed.
+   * id of the member's own submission being cleared.
    */
   appId: string;
 
   /**
-   * moderation action to apply, either "approve" or "reject".
+   * how much to remove.
    */
-  action: 'approve' | 'reject';
+  mode: DeletionMode;
+};
+
+/**
+ * payload used to fix the wording of a note already written on a decided
+ * submission. never changes the decision itself.
+ */
+export type CorrectNoteInput = {
+  /**
+   * id of the already-decided app whose note is being corrected.
+   */
+  appId: string;
+
+  /**
+   * the corrected note. this is what the submitter sees from now on.
+   */
+  note: string;
+};
+
+export type ReviewAppInput = {
+  /**
+   * ids of the pending apps being reviewed. a single decision is just a list
+   * of one, so bulk and single-app moderation share one code path.
+   */
+  appIds: string[];
+
+  /**
+   * moderation action to apply.
+   */
+  action: ReviewAction;
+
+  /**
+   * the moderator's explanation, shown to the submitter. required for
+   * "reject" and "request_changes", ignored for "approve".
+   */
+  note?: string;
 };
 
 /**
