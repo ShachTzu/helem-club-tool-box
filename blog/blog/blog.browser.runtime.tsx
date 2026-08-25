@@ -76,6 +76,22 @@ export class BlogBrowser {
     ]);
 
     /**
+     * advertise this feature as an ecosystem pillar on the home page. the
+     * platform renders only the pillars registered by loaded aspects, so a
+     * feature that is switched off is never linked to.
+     */
+    helamPlatform.registerEcosystemPillar([
+      {
+        slug: 'blog',
+        icon: '📝',
+        title: 'בלוג',
+        description: 'ידע מקצועי ושיתופים אישיים מהקהילה — סיפורים אמיתיים מהשטח.',
+        href: '/blog',
+        order: 40,
+      },
+    ]);
+
+    /**
      * surface the latest blog posts on the home page as a preview section with
      * a "see all" link to the full blog.
      */

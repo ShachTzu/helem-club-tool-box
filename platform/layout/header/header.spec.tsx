@@ -7,15 +7,22 @@ import { Header } from './header.js';
 import styles from './header.module.scss';
 
 describe(`Header`, () => {
-  it(`renders the default navigation items`, () => {
-    const { getAllByText } = render(
+  it(`links to home and to nothing else when no feature registered an item`, () => {
+    const { getAllByText, queryAllByText } = render(
       <MockProvider>
         <Header mockUser={null} mockSearchResults={mockSearchResults()} />
       </MockProvider>
     );
 
-    expect(getAllByText(`חוכמת הקהילה`).length).toBeGreaterThan(0);
-    expect(getAllByText(`ארגז כלים`).length).toBeGreaterThan(0);
+    expect(getAllByText(`בית`).length).toBeGreaterThan(0);
+
+    /**
+     * feature links belong to the features. the header must never advertise a
+     * feature that did not register itself, or switching a feature off leaves
+     * a dead link in the nav.
+     */
+    expect(queryAllByText(`חוכמת הקהילה`).length).toBe(0);
+    expect(queryAllByText(`ארגז כלים`).length).toBe(0);
   });
 
   it(`renders custom navigation items when provided`, () => {

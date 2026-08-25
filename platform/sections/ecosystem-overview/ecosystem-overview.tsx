@@ -7,7 +7,6 @@ import { Heading } from '@helemclub/design.typography.heading';
 import { Paragraph } from '@helemclub/design.typography.paragraph';
 import { Link } from '@helemclub/design.navigation.link';
 import { EcosystemPillar } from './ecosystem-pillar-type.js';
-import { DEFAULT_PILLARS } from './ecosystem-overview.mock.js';
 import styles from './ecosystem-overview.module.scss';
 
 export type EcosystemOverviewProps = {
@@ -48,13 +47,19 @@ export type EcosystemOverviewProps = {
  * combine into rehabilitation.
  */
 export function EcosystemOverview({
-  pillars = DEFAULT_PILLARS,
+  pillars = [],
   eyebrow = `האקוסיסטם הדיגיטלי של הלם קלאב`,
   title = `האקוסיסטם`,
-  subtitle = `חמישה רכיבים שנבנים על בסיס ידע מרכזי אחד`,
+  subtitle = `הרכיבים שנבנים על בסיס ידע מרכזי אחד`,
   className,
   style,
 }: EcosystemOverviewProps) {
+  /**
+   * nothing to advertise when no feature registered a pillar — render nothing
+   * rather than an empty section with a heading over a blank grid.
+   */
+  if (!pillars.length) return null;
+
   return (
     <SectionLayout
       eyebrow={eyebrow}

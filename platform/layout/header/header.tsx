@@ -13,16 +13,11 @@ import type { HeaderNavigationItem } from './header-navigation-item-type.js';
 import type { HeaderActionItem } from './header-action-item-type.js';
 import styles from './header.module.scss';
 
-const DEFAULT_NAVIGATION_ITEMS: HeaderNavigationItem[] = [
-  { label: `בית`, path: `/` },
-  { label: `חוכמת הקהילה`, path: `/wisdom` },
-  { label: `ארגז כלים`, path: `/toolbox` },
-  { label: `מאגר ידע`, path: `/knowledge` },
-  { label: `בלוג`, path: `/blog` },
-  { label: `אירועים`, path: `/events` },
-  { label: `גלריית PTSDART`, path: `/gallery` },
-  { label: `תחומי התמודדות`, path: `/domains` },
-];
+/**
+ * only home belongs to the platform itself. every feature link arrives through
+ * the NavigationItem slot, so a feature that is not loaded is never linked to.
+ */
+const DEFAULT_NAVIGATION_ITEMS: HeaderNavigationItem[] = [{ label: `בית`, path: `/` }];
 
 const DEFAULT_HEADER_ACTIONS: HeaderActionItem[] = [];
 

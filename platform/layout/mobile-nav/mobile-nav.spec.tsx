@@ -73,3 +73,20 @@ it(`should navigate active state when clicking a different item`, () => {
   fireEvent.click(toolboxLink);
   expect(toolboxLink.getAttribute(`href`)).toBe(`/toolbox`);
 });
+
+it(`shows only the features whose navigation items are registered`, () => {
+  const { getByText, queryByText } = render(
+    <MemoryRouter>
+      <MobileNav navigationPaths={['/toolbox', '/blog']} />
+    </MemoryRouter>
+  );
+
+  expect(getByText('בית')).toBeTruthy();
+  expect(getByText('כלים')).toBeTruthy();
+  expect(getByText('בלוג')).toBeTruthy();
+
+  /**
+   * events did not register, so the bar must not link to it.
+   */
+  expect(queryByText('אירועים')).toBeNull();
+});

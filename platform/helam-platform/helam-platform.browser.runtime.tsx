@@ -19,6 +19,7 @@ import { HeaderAction, HeaderActionSlot } from './header-action.js';
 import { AdminRoute, AdminRouteSlot } from './admin-route.js';
 import { FooterLink, FooterLinkSlot } from './footer-link.js';
 import { HomeSection, HomeSectionSlot } from './home-section.js';
+import { EcosystemPillar, EcosystemPillarSlot } from './ecosystem-pillar.js';
 import { OnboardingGate } from './onboarding-gate.js';
 
 export class HelamPlatformBrowser {
@@ -30,6 +31,7 @@ export class HelamPlatformBrowser {
     private adminRouteSlot: AdminRouteSlot,
     private footerLinkSlot: FooterLinkSlot,
     private homeSectionSlot: HomeSectionSlot,
+    private ecosystemPillarSlot: EcosystemPillarSlot,
     private symphonyPlatform: SymphonyPlatformBrowser
   ) {}
 
@@ -137,18 +139,39 @@ export class HelamPlatformBrowser {
     );
   }
 
+  /**
+   * register an ecosystem pillar card for the home page. features register
+   * their own pillar here, so a feature that is not loaded is never
+   * advertised on the home page.
+   */
+  registerEcosystemPillar(pillar: EcosystemPillar | EcosystemPillar[]) {
+    const pillars = Array.isArray(pillar) ? pillar : [pillar];
+    this.ecosystemPillarSlot.register(pillars);
+    return this;
+  }
+
+  /**
+   * list all ecosystem pillars, ordered by their `order` field.
+   */
+  listEcosystemPillars() {
+    return [...this.ecosystemPillarSlot.flatValues()].sort(
+      (a, b) => (a.order || 0) - (b.order || 0)
+    );
+  }
+
   static dependencies = [SymphonyPlatformAspect];
 
   static async provider(
     [symphonyPlatform]: [SymphonyPlatformBrowser],
     config: HelamPlatformConfig,
-    [routeSlot, navigationItemSlot, headerActionSlot, adminRouteSlot, footerLinkSlot, homeSectionSlot]: [
+    [routeSlot, navigationItemSlot, headerActionSlot, adminRouteSlot, footerLinkSlot, homeSectionSlot, ecosystemPillarSlot]: [
       RouteSlot,
       NavigationItemSlot,
       HeaderActionSlot,
       AdminRouteSlot,
       FooterLinkSlot,
-      HomeSectionSlot
+      HomeSectionSlot,
+      EcosystemPillarSlot
     ]
   ) {
     const platform = new HelamPlatformBrowser(
@@ -159,6 +182,7 @@ export class HelamPlatformBrowser {
       adminRouteSlot,
       footerLinkSlot,
       homeSectionSlot,
+      ecosystemPillarSlot,
       symphonyPlatform
     );
 
@@ -184,6 +208,18 @@ export class HelamPlatformBrowser {
     });
 
     /**
+     * home belongs to the platform itself, so the platform registers it the
+     * same way features register theirs — the header has no hard-coded links.
+     */
+    platform.registerNavigationItem([
+      {
+        label: 'בית',
+        href: '/',
+        order: 0,
+      },
+    ]);
+
+    /**
      * membership moderation lives in the admin dashboard — this is the gate
      * where moderators and admins approve or reject new community signups.
      */
@@ -204,7 +240,10 @@ export class HelamPlatformBrowser {
         path: '/',
         component: () => (
           <OnboardingGate>
-            <Home homeSections={platform.listHomeSections()} />
+            <Home
+              homeSections={platform.listHomeSections()}
+              ecosystemProps={{ pillars: platform.listEcosystemPillars() }}
+            />
           </OnboardingGate>
         ),
       },

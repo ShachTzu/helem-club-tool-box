@@ -51,6 +51,22 @@ export class EventsBrowser {
     ]);
 
     /**
+     * advertise this feature as an ecosystem pillar on the home page. the
+     * platform renders only the pillars registered by loaded aspects, so a
+     * feature that is switched off is never linked to.
+     */
+    helamPlatform.registerEcosystemPillar([
+      {
+        slug: 'events',
+        icon: '📅',
+        title: 'אירועים קהילתיים',
+        description: 'שולחנות עגולים, וובינרים ומפגשים — מקוונים ופנים אל פנים.',
+        href: '/events',
+        order: 50,
+      },
+    ]);
+
+    /**
      * surface upcoming events on the home page as a preview section with a
      * "see all" link to the events page.
      */

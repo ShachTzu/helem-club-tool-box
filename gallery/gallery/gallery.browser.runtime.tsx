@@ -64,6 +64,22 @@ export class GalleryBrowser {
       },
     ]);
 
+    /**
+     * advertise this feature as an ecosystem pillar on the home page. the
+     * platform renders only the pillars registered by loaded aspects, so a
+     * feature that is switched off is never linked to.
+     */
+    helamPlatform.registerEcosystemPillar([
+      {
+        slug: 'gallery',
+        icon: '🎨',
+        title: 'גלריית PTSDART',
+        description: 'אמנות ויצירה מתוך החוויה האישית של חברי הקהילה.',
+        href: '/gallery',
+        order: 60,
+      },
+    ]);
+
     return gallery;
   }
 }

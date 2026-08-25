@@ -64,3 +64,17 @@ it(`should respond to click on a pillar link without throwing`, () => {
   const link = container.querySelector(`.${styles.pillarLink}`) as HTMLAnchorElement;
   expect(() => fireEvent.click(link)).not.toThrow();
 });
+
+it(`renders nothing when no feature registered a pillar`, () => {
+  const { container } = render(
+    <MockProvider>
+      <EcosystemOverview />
+    </MockProvider>
+  );
+
+  /**
+   * the pillars come from the loaded aspects. with none registered the section
+   * must disappear rather than advertise features that are switched off.
+   */
+  expect(container.textContent).toBe('');
+});

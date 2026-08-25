@@ -55,6 +55,22 @@ export class KnowledgeBaseBrowser {
     ]);
 
     /**
+     * advertise this feature as an ecosystem pillar on the home page. the
+     * platform renders only the pillars registered by loaded aspects, so a
+     * feature that is switched off is never linked to.
+     */
+    helamPlatform.registerEcosystemPillar([
+      {
+        slug: 'knowledge',
+        icon: '📚',
+        title: 'מאגר ידע',
+        description: 'סדרות וידאו, הקלטות והרצאות לפי נושא — ידע מקצועי שנבנה עם אנשי מקצוע.',
+        href: '/knowledge',
+        order: 30,
+      },
+    ]);
+
+    /**
      * surface the knowledge base project labels on the home page as a preview
      * section with a "see all" link to the full knowledge base.
      */

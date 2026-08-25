@@ -82,7 +82,7 @@ export function AppLayout({
 
       <Footer />
 
-      <MobileNav />
+      <MobileNav navigationPaths={(navigationItems || []).map((item) => item.path)} />
     </div>
   );
 }

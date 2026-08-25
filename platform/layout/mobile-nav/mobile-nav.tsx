@@ -5,13 +5,34 @@ import { HomeIcon, ToolboxIcon, LibraryIcon, BlogIcon, EventsIcon } from '@helem
 import type { MobileNavItem } from './mobile-nav-item-type.js';
 import styles from './mobile-nav.module.scss';
 
-const DEFAULT_NAV_ITEMS: MobileNavItem[] = [
-  { label: `בית`, path: `/`, icon: HomeIcon, order: 0 },
-  { label: `כלים`, path: `/toolbox`, icon: ToolboxIcon, order: 1 },
-  { label: `ידע`, path: `/knowledge`, icon: LibraryIcon, order: 2 },
-  { label: `בלוג`, path: `/blog`, icon: BlogIcon, order: 3 },
-  { label: `אירועים`, path: `/events`, icon: EventsIcon, order: 4 },
-];
+/**
+ * home is the platform's own entry, not a feature's — it is always present.
+ */
+const HOME_ITEM: MobileNavItem = { label: `בית`, path: `/`, icon: HomeIcon, order: 0 };
+
+/**
+ * the bottom bar has room for a handful of destinations, so it shows only the
+ * features it has an icon and a short label for. a feature appears here only
+ * when its aspect registered the matching navigation item, which means
+ * switching a feature off removes it from the bar too.
+ */
+const MOBILE_ENTRIES: Record<string, { label: string; icon: MobileNavItem['icon']; order: number }> = {
+  '/toolbox': { label: `כלים`, icon: ToolboxIcon, order: 1 },
+  '/knowledge': { label: `ידע`, icon: LibraryIcon, order: 2 },
+  '/blog': { label: `בלוג`, icon: BlogIcon, order: 3 },
+  '/events': { label: `אירועים`, icon: EventsIcon, order: 4 },
+};
+
+/**
+ * pick the bottom-bar entries that correspond to currently registered
+ * navigation items, always led by home.
+ */
+function toMobileItems(navPaths: string[]): MobileNavItem[] {
+  const featured = navPaths
+    .filter((path) => MOBILE_ENTRIES[path])
+    .map((path) => ({ path, ...MOBILE_ENTRIES[path] }));
+  return [HOME_ITEM, ...featured];
+}
 
 export type MobileNavProps = {
   /**
@@ -19,6 +40,12 @@ export type MobileNavProps = {
    * from the platform's NavigationItem slot.
    */
   items?: MobileNavItem[];
+
+  /**
+   * paths of the navigation items registered by the loaded feature aspects.
+   * used to decide which bottom-bar entries to show when `items` is not given.
+   */
+  navigationPaths?: string[];
 
   /**
    * class name for the root element.
@@ -36,9 +63,10 @@ export type MobileNavProps = {
  * navigation items with icons and labels, highlights the active item in
  * amber, and respects the device safe-area. hidden on desktop via CSS.
  */
-export function MobileNav({ items = DEFAULT_NAV_ITEMS, className, style }: MobileNavProps) {
+export function MobileNav({ items, navigationPaths = [], className, style }: MobileNavProps) {
   const { pathname } = useLocation();
-  const sortedItems = [...items].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const resolved = items ?? toMobileItems(navigationPaths);
+  const sortedItems = [...resolved].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
   const isActive = (path: string) => (path === `/` ? pathname === `/` : pathname.startsWith(path));
 
